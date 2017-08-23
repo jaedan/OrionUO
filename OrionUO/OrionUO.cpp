@@ -263,6 +263,27 @@ bool COrion::Install()
 
 	CreateDirectoryA(g_App.ExeFilePath("snapshots").c_str(), NULL);
 
+	if (g_PacketManager.GetClientVersion() < CV_4011D)
+	{
+		/* On this client, Felucca and Trammel were narrower */
+		g_DefaultMapSize[0].Width = 6144;
+		g_DefaultMapSize[1].Width = 6144;
+	}
+
+	for (int i = 0; i < MAX_MAPS_COUNT; i++)
+	{
+		if (g_MapSize[i].Width == 0)
+		{
+			g_MapSize[i].Width = g_DefaultMapSize[i].Width;
+		}
+		g_MapBlockSize[i].Width = g_DefaultMapSize[i].Width / 8;
+		if (g_MapSize[i].Height == 0)
+		{
+			g_MapSize[i].Height = g_DefaultMapSize[i].Height;
+		}
+		g_MapBlockSize[i].Height = g_DefaultMapSize[i].Height / 8;
+	}
+
 	if (g_PacketManager.GetClientVersion() >= CV_70331) {
 		g_MaxViewRange = MAX_VIEW_RANGE_NEW;
 	} else {
@@ -1035,6 +1056,21 @@ CLIENT_VERSION COrion::ParseVersion(std::string& version)
 	return (CLIENT_VERSION)version_int;
 }
 //----------------------------------------------------------------------------------
+bool COrion::ParseMapSize(std::string& mapName, std::string& dimensions)
+{
+	int mapNum = atoi(&mapName[3]);
+
+	int sep = dimensions.find('x');
+	if (sep == string::npos)
+	{
+		return false;
+	}
+	g_MapSize[mapNum].Width = std::stoi(dimensions.substr(0, sep));
+	g_MapSize[mapNum].Height = std::stoi(dimensions.substr(sep + 1));
+
+	return true;
+}
+//----------------------------------------------------------------------------------
 void COrion::LoadClientConfig()
 {
 	WISPFUN_DEBUG("c194_f11");
@@ -1079,6 +1115,19 @@ void COrion::LoadClientConfig()
 			g_PacketManager.SetClientVersion(ParseVersion(strings[1]));
 		} else if (_stricmp("useverdata", strings[0].c_str()) == 0) {
 			g_FileManager.UseVerdata = ToBool(strings[1]);
+		} else if (_stricmp("map0size", strings[0].c_str()) == 0 ||
+				   _stricmp("map1size", strings[0].c_str()) == 0 ||
+				   _stricmp("map2size", strings[0].c_str()) == 0 ||
+				   _stricmp("map3size", strings[0].c_str()) == 0 ||
+				   _stricmp("map4size", strings[0].c_str()) == 0 ||
+				   _stricmp("map5size", strings[0].c_str()) == 0) {
+			bool success = ParseMapSize(strings[0], strings[1]);
+			if (!success)
+			{
+				g_OrionWindow.ShowMessage("Invalid MapSize (no 'x')", "Error!");
+				ExitProcess(0);
+				return;
+			}
 		}
 	}
 
@@ -1186,11 +1235,8 @@ void COrion::LoadClientConfig()
 
 		IFOR(i, 0, mapsCount)
 		{
-			g_MapSize[i].Width = file.ReadUInt16LE();
-			g_MapSize[i].Height = file.ReadUInt16LE();
-
-			g_MapBlockSize[i].Width = g_MapSize[i].Width / 8;
-			g_MapBlockSize[i].Height = g_MapSize[i].Height / 8;
+			file.ReadUInt16LE();
+			file.ReadUInt16LE();
 		}
 
 		g_CharacterList.ClientFlag = file.ReadInt8();
@@ -1250,6 +1296,11 @@ void COrion::SaveClientConfig()
 
 	sprintf_s(buf, "UseVerdata=%s\n", (g_FileManager.UseVerdata ? "yes" : "no"));
 	fputs(buf, uo_cfg);
+
+	for (int i = 0; i < MAX_MAPS_COUNT; i++) {
+		sprintf_s(buf, "Map%dSize=%dx%d\n", i, g_MapSize[i].Width, g_MapSize[i].Height);
+		fputs(buf, uo_cfg);
+	}
 
 	fclose(uo_cfg);
 }

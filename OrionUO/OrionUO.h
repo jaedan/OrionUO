@@ -52,6 +52,7 @@ private:
 	string m_GameServerIP = "";
 
 	CLIENT_VERSION ParseVersion(std::string& version);
+	bool ParseMapSize(std::string& mapName, std::string& dimensions);
 
 	void LoadClientConfig();
 	void SaveClientConfig();
