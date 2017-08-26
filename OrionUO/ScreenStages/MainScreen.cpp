@@ -29,7 +29,7 @@ CMainScreen::~CMainScreen()
 //----------------------------------------------------------------------------------
 /*!
 Инициализация
-@return 
+@return
 */
 void CMainScreen::Init()
 {
@@ -69,7 +69,7 @@ void CMainScreen::Init()
 /*!
 Обработка события после плавного затемнения экрана
 @param [__in_opt] action Идентификатор действия
-@return 
+@return
 */
 void CMainScreen::ProcessSmoothAction(uchar action)
 {
@@ -142,7 +142,7 @@ void CMainScreen::Paste()
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
 @param [__in] lparam не подписанный параметр
-@return 
+@return
 */
 void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
@@ -170,7 +170,7 @@ void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
 @param [__in] lparam не подписанный параметр
-@return 
+@return
 */
 void CMainScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {

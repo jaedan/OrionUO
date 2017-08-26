@@ -263,6 +263,12 @@ bool COrion::Install()
 
 	CreateDirectoryA(g_App.ExeFilePath("snapshots").c_str(), NULL);
 
+	if (g_PacketManager.GetClientVersion() >= CV_70331) {
+		g_MaxViewRange = MAX_VIEW_RANGE_NEW;
+	} else {
+		g_MaxViewRange = MAX_VIEW_RANGE_OLD;
+	}
+
 	if (g_PacketManager.GetClientVersion() >= CV_305D)
 	{
 		CGumpSpellbook::m_SpellReagents1[4] = "Sulfurous ash"; //Magic Arrow
@@ -768,7 +774,7 @@ void COrion::CheckStaticTileFilterFiles()
 
 			vegetationFile.Print("0x%04X\n", vegetationTiles[i]);
 		}
-			
+
 	}
 
 	filePath = path + "\\stumps.txt";
@@ -980,6 +986,55 @@ void COrion::LoadContaierOffsets()
 	LOG("g_ContainerOffset.size()=%i\n", g_ContainerOffset.size());
 }
 //----------------------------------------------------------------------------------
+CLIENT_VERSION COrion::ParseVersion(std::string& version)
+{
+	uint8_t shift = 3;
+	uint32_t version_int = 0;
+	size_t start = 0;
+	size_t end = 0;
+
+	for (char &c : version) {
+		c = tolower(c);
+
+		if (isdigit(c))
+		{
+			end++;
+		}
+		else if (c == '.')
+		{
+			if (shift == 0) {
+				g_OrionWindow.ShowMessage("Invalid version string: %s. Too many '.'\n", "Error!");
+				ExitProcess(EINVAL);
+				return CV_OLD;
+			}
+			version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
+			end++;
+			start = end;
+			shift--;
+		}
+		else if (isalpha(c))
+		{
+			if (shift != 1) {
+				g_OrionWindow.ShowMessage("Invalid version string: %s. Too many '.'\n", "Error!");
+				ExitProcess(EINVAL);
+				return CV_OLD;
+			}
+
+			version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
+			version_int |= c - 0x61; // The ascii offset of 'a' is 0x61, so a is treated as 0, b as 1, etc.
+			end++;
+			start = end;
+			shift--;
+		}
+	}
+
+	if (start != end) {
+		version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
+	}
+
+	return (CLIENT_VERSION)version_int;
+}
+//----------------------------------------------------------------------------------
 void COrion::LoadClientConfig()
 {
 	WISPFUN_DEBUG("c194_f11");
@@ -1019,6 +1074,11 @@ void COrion::LoadClientConfig()
 			if (strings.size() >= 3) {
 				Config.Port = std::stoi(strings[2]);
 			}
+		} else if (_stricmp("clientversion", strings[0].c_str()) == 0) {
+			ClientVersionText = strings[1];
+			g_PacketManager.SetClientVersion(ParseVersion(strings[1]));
+		} else if (_stricmp("useverdata", strings[0].c_str()) == 0) {
+			g_FileManager.UseVerdata = ToBool(strings[1]);
 		}
 	}
 
@@ -1090,15 +1150,10 @@ void COrion::LoadClientConfig()
 		else
 			subVersion = file.ReadInt8();
 
-		g_PacketManager.SetClientVersion((CLIENT_VERSION)file.ReadInt8());
-
-		if (g_PacketManager.GetClientVersion() >= CV_70331)
-			g_MaxViewRange = MAX_VIEW_RANGE_NEW;
-		else
-			g_MaxViewRange = MAX_VIEW_RANGE_OLD;
+		file.ReadInt8();
 
 		int len = file.ReadInt8();
-		ClientVersionText = file.ReadString(len);
+		file.ReadString(len);
 
 #if defined(_M_IX86)
 		g_NetworkInit = (NETWORK_INIT_TYPE*)file.ReadUInt32LE();
@@ -1189,6 +1244,13 @@ void COrion::SaveClientConfig()
 		sprintf_s(buf, "LoginServer=%s,%d\n", Config.HostName.c_str(), Config.Port);
 		fputs(buf, uo_cfg);
 	}
+
+	sprintf_s(buf, "ClientVersion=%s\n", ClientVersionText.c_str());
+	fputs(buf, uo_cfg);
+
+	sprintf_s(buf, "UseVerdata=%s\n", (g_FileManager.UseVerdata ? "yes" : "no"));
+	fputs(buf, uo_cfg);
+
 	fclose(uo_cfg);
 }
 //----------------------------------------------------------------------------------
@@ -1467,8 +1529,8 @@ void COrion::LoadStartupConfig(int serial)
 			if (!g_ConfigManager.LoadBin(orionFilesPath + "/options_debug.cuo"))
 				g_ConfigManager.LoadBin(uoFilesPath + "/options_debug.cuo");
 	}
-		
-	
+
+
 
 	g_SoundManager.SetMusicVolume(g_ConfigManager.GetMusicVolume());
 
@@ -1527,7 +1589,7 @@ void COrion::LoadPlugin(const string &libpath, const string &function, int flags
 		LOG("Failed to LoadLibrary\n", libpath);
 		LOG("Error code: %i\n", errorCode);
 	}
-		
+
 }
 //----------------------------------------------------------------------------------
 void COrion::LoadPluginConfig()
@@ -1758,7 +1820,7 @@ void COrion::ClearUnusedTextures()
 	g_GumpManager.PrepareTextures();
 
 	g_Ticks -= CLEAR_TEXTURES_DELAY;
-	
+
 	PVOID lists[5] =
 	{
 		&m_UsedLandList,
@@ -1844,7 +1906,7 @@ void COrion::Connect()
 
 	string login = "";
 	int port;
-	
+
 	LoadLogin(login, port);
 
 	if (g_ConnectionManager.Connect(login, port, g_GameSeed))
@@ -5246,7 +5308,7 @@ bool COrion::GumpPixelsInXY(ushort id, int x, int y, int width, int height)
 		return false;
 
 	int pos = (y * textureWidth) + x;
-	
+
 	if (pos < (int)texture->m_HitMap.size())
 		return (texture->m_HitMap[pos] != 0);
 
@@ -5486,7 +5548,7 @@ void COrion::CreateTextMessage(const TEXT_TYPE &type, int serial, uchar font, us
 	td->Timer = g_Ticks;
 	td->Type = type;
 	td->Text = text;
-	
+
 	switch (type)
 	{
 		case TT_SYSTEM:
@@ -5526,7 +5588,7 @@ void COrion::CreateTextMessage(const TEXT_TYPE &type, int serial, uchar font, us
 					td->SetY(g_ClickObject.Y);
 
 					CGump *gump = g_GumpManager.GetGump(container, 0, GT_CONTAINER);
-					
+
 					if (gump == NULL)
 					{
 						CGameObject *topobj = obj->GetTopObject();
@@ -5573,7 +5635,7 @@ void COrion::CreateTextMessage(const TEXT_TYPE &type, int serial, uchar font, us
 		case TT_CLIENT:
 		{
 			int width = g_FontManager.GetWidthA(font, text);
-			
+
 			if (width > TEXT_MESSAGE_MAX_WIDTH)
 			{
 				width = g_FontManager.GetWidthExA(font, text, TEXT_MESSAGE_MAX_WIDTH, TS_LEFT, 0);
@@ -5601,7 +5663,7 @@ void COrion::CreateUnicodeTextMessage(const TEXT_TYPE &type, int serial, uchar f
 	td->Timer = g_Ticks;
 	td->Type = type;
 	td->UnicodeText = text;
-	
+
 	switch (type)
 	{
 		case TT_SYSTEM:
@@ -5626,7 +5688,7 @@ void COrion::CreateUnicodeTextMessage(const TEXT_TYPE &type, int serial, uchar f
 				}
 				else
 					td->GenerateTexture(0, UOFONT_BLACK_BORDER, TS_CENTER);
-				
+
 				uint container = obj->Container;
 
 				if (container == 0xFFFFFFFF)
@@ -5763,11 +5825,11 @@ void COrion::ChangeMap(uchar newmap)
 					{
 						obj->RemoveRender();
 						g_GumpManager.UpdateContent(obj->Serial, 0, GT_STATUSBAR);
-					}					
+					}
 					else
 						g_World->RemoveObject(obj);
 				}
-					
+
 
 				obj = next;
 			}
@@ -6019,7 +6081,7 @@ void COrion::RemoveRangedObjects()
 						{
 							go->RemoveRender();
 							g_GumpManager.UpdateContent(go->Serial, 0, GT_STATUSBAR);
-						}							
+						}
 						else
 							g_World->RemoveObject(go);
 					}
