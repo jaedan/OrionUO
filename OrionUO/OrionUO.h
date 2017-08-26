@@ -43,6 +43,8 @@ private:
 
     string m_GameServerIP = "";
 
+    CLIENT_VERSION ParseVersion(std::string &version);
+
     void LoadClientConfig();
     void SaveClientConfig();
 
