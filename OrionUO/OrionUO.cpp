@@ -984,7 +984,7 @@ void COrion::LoadClientConfig()
 {
 	WISPFUN_DEBUG("c194_f11");
 
-	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
+	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=,", "#;", "");
 
 	while (!file.IsEOF()) {
 		std::vector<std::string> strings = file.ReadTokens(false);
@@ -1013,6 +1013,12 @@ void COrion::LoadClientConfig()
 		} else if (_stricmp("custompath", strings[0].c_str()) == 0) {
 			g_App.UOFilesPathA = strings[1];
 			g_App.UOFilesPathW = ToWString(strings[1]);
+		} else if (_stricmp("loginserver", strings[0].c_str()) == 0) {
+			Config.HostName = strings[1];
+
+			if (strings.size() >= 3) {
+				Config.Port = std::stoi(strings[2]);
+			}
 		}
 	}
 
@@ -1176,6 +1182,11 @@ void COrion::SaveClientConfig()
 
 	if (g_App.UOFilesPathA != g_App.ExePathA) {
 		sprintf_s(buf, "CustomPath=%s\n", g_App.UOFilesPathA.c_str());
+		fputs(buf, uo_cfg);
+	}
+
+	if (Config.HostName.length() > 0) {
+		sprintf_s(buf, "LoginServer=%s,%d\n", Config.HostName.c_str(), Config.Port);
 		fputs(buf, uo_cfg);
 	}
 	fclose(uo_cfg);
@@ -3232,7 +3243,7 @@ bool COrion::IsVegetation(ushort graphic)
 void COrion::LoadLogin(string &login, int &port)
 {
 	WISPFUN_DEBUG("c194_f45");
-	if (Config.Port)
+	if (Config.HostName.length() > 0)
 	{
 		login = Config.HostName;
 		port = Config.Port;
