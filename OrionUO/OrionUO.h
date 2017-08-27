@@ -6,7 +6,7 @@
 struct ClientConfiguration
 {
     std::string HostName = "";
-    int Port = 0;
+    int Port = 2593;
     std::string AccountName = "";
     std::string Password = "";
     bool RememberPassword = false;
