@@ -3,14 +3,6 @@
 #ifndef CONNECTIONMANAGER_H
 #define CONNECTIONMANAGER_H
 
-typedef void __cdecl NETWORK_INIT_TYPE(const bool &, BYTE *);
-typedef void __cdecl NETWORK_ACTION_TYPE(const bool &, BYTE *, BYTE *, const int &);
-typedef void __cdecl NETWORK_POST_ACTION_TYPE(BYTE *, BYTE *, const int &);
-
-extern NETWORK_INIT_TYPE *g_NetworkInit;
-extern NETWORK_ACTION_TYPE *g_NetworkAction;
-extern NETWORK_POST_ACTION_TYPE *g_NetworkPostAction;
-
 class CConnectionManager
 {
 protected:

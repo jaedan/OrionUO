@@ -226,9 +226,6 @@ UCHAR_LIST CSocket::Decompression(UCHAR_LIST data)
     {
         intptr_t inSize = (intptr_t)data.size();
 
-        if (g_NetworkPostAction != NULL)
-            g_NetworkPostAction(&data[0], &data[0], (int)inSize);
-
         UCHAR_LIST decBuf(inSize * 4 + 2);
 
         int outSize = 65536;
