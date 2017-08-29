@@ -217,34 +217,15 @@ LONG __stdcall OrionUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *excepti
 			}
 
 			Wisp::g_WispCrashLogger.Close();
-			string crashlogPath = "\"" + Wisp::g_WispCrashLogger.FileName + "\"";
-			STARTUPINFOA si;
-			PROCESS_INFORMATION pi;
-			ZeroMemory(&si, sizeof(si));
-			si.cb = sizeof(si);
-			ZeroMemory(&pi, sizeof(pi));
-			bool reportSent = CreateProcessA("OrionCrashReporter.exe",
-				&crashlogPath[0],        // Command line
-				NULL,           // Process handle not inheritable
-				NULL,           // Thread handle not inheritable
-				FALSE,          // Set handle inheritance to FALSE
-				0,              // No creation flags
-				NULL,           // Use parent's environment block
-				NULL,           // Use parent's starting directory 
-				&si,            // Pointer to STARTUPINFO structure
-				&pi);
 
 			g_Orion.Uninstall();
 
-			if (!reportSent)
-			{
-				string msg = "Orion client performed an unrecoverable operation.";
-				if (crashlog)
-					msg += "\nCrashlog has been created in crashlogs folder.";
-				msg += "\nTerminating...";
+			string msg = "Orion client performed an unrecoverable operation.";
+			if (crashlog)
+				msg += "\nCrashlog has been created in crashlogs folder.";
+			msg += "\nTerminating...";
 
-				MessageBoxA(0, msg.c_str(), 0, MB_ICONSTOP | MB_OK);
-			}
+			MessageBoxA(0, msg.c_str(), 0, MB_ICONSTOP | MB_OK);
 
 			ExitProcess(1);
 		}

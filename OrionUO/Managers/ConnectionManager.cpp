@@ -13,10 +13,6 @@
 //----------------------------------------------------------------------------------
 CConnectionManager g_ConnectionManager;
 //----------------------------------------------------------------------------------
-NETWORK_INIT_TYPE *g_NetworkInit = NULL;
-NETWORK_ACTION_TYPE *g_NetworkAction = NULL;
-NETWORK_POST_ACTION_TYPE *g_NetworkPostAction = NULL;
-//----------------------------------------------------------------------------------
 CConnectionManager::CConnectionManager()
 {
 }
@@ -108,7 +104,6 @@ void CConnectionManager::Init()
 			UCHAR_LIST &data = stream.Data();
 
 			memcpy(&m_Seed[0], &data[0], 4);
-			g_NetworkInit(true, &data[0]);
 		}
 	}
 
@@ -128,8 +123,6 @@ void CConnectionManager::Init(puchar gameSeed)
 		return;
 
 	m_IsLoginSocket = false;
-
-	g_NetworkInit(false, &gameSeed[0]);
 }
 //----------------------------------------------------------------------------------
 void CConnectionManager::SendIP(CSocket &socket, puchar seed)
@@ -348,22 +341,14 @@ int CConnectionManager::Send(puchar buf, int size)
 		if (!m_LoginSocket.Connected)
 			return 0; //Нет подключения
 
-		UCHAR_LIST cbuf(size); //Буффер для криптованного пакета
-
-		g_NetworkAction(true, &buf[0], &cbuf[0], size);
-
-		return m_LoginSocket.Send(cbuf); //Отправляем зашифрованный пакет
+		return m_LoginSocket.Send(buf, size); //Отправляем зашифрованный пакет
 	}
 	else
 	{
 		if (!m_GameSocket.Connected)
 			return 0; //Нет подключения
 
-		UCHAR_LIST cbuf(size); //Буффер для криптованного пакета
-
-		g_NetworkAction(false, &buf[0], &cbuf[0], size);
-
-		return m_GameSocket.Send(cbuf); //Отправляем зашифрованный пакет
+		return m_GameSocket.Send(buf, size); //Отправляем зашифрованный пакет
 	}
 
 	return 0;
