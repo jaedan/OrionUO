@@ -1,40 +1,26 @@
-# OrionUO Client
+This is a fork of the OrionUO project. The main repository is located at https://github.com/Hotride/OrionUO. Please support that project.
 
-[![Travis Build Status](https://travis-ci.org/Hotride/OrionUO.svg?branch=master)](https://travis-ci.org/Hotride/OrionUO)
-[![Build status](https://ci.appveyor.com/api/projects/status/qmd3795itrkiwnr3?svg=true)](https://ci.appveyor.com/project/Hotride/orionuo)
+The purpose of this fork is to remove the need for ConfigurationEditor.exe, Orion.dll, and Client.cuo. These are
+not open source and make it difficult to configure the Orion client. They are replaced by a simple
+text-based configuration file instead.
 
+# Building
 
-* OrionUO Client - is an alternative, open source Ultima Online graphic client.
+You'll need [Visual Studio 2017](https://www.visualstudio.com/downloads/). The free community edition should be fine. Once that
+is installed:
 
-* Platforms: Currently only Windows
+- Open OrionUO.sln in the root of the repository.
+- Select your configuration (Release, Win32 probably) at the top
+- Hit F5 to build. The output will be in the "Release" directory.
 
-* Rendering: OpenGL 2.0 and higher
+# Running
 
+First, create a file in the same directory as OrionUO.exe named 'client.cfg' that contains the following:
 
---------------
+~~~
+LoginServer=login.yourfavoriteserver.com,2593
+CustomPath=C:\Path\to\your\UO client
+ClientVersion=7.0.15.1
+~~~
 
-* Build it (preferably) with MVS 2013, platform toolset (v120_xp).
-
-* Download [Orion Launcher](https://orion-client.online/index.php?pages/downloads/) to set everything up and play!
-
---------------
-
-[Forum](http://forum.orion-client.online)
-
-[Our Mantis bugtracking system](http://bt.orion-client.online) or [github issue tracking](https://github.com/Hotride/OrionUO/issues)
-
-[Discord](https://discord.gg/UcVKWzB)
-
-[WIKI](https://github.com/Hotride/OrionUO/wiki)
-
-
---------------
-
-# Support this project, make a donation!
-
---------------
-
-[PayPal](https://www.paypal.me/Hotride)
-
-
-WebMoney: R644829964694 Z983232789532 E400319624386
+Then, double click OrionUO.exe and the game will launch!
