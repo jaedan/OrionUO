@@ -1221,18 +1221,19 @@ PACKET_HANDLER(CharacterStatus)
 
             if (flag >= 3)
             {
-                g_Player->StatsCap = ReadUInt16BE();
+                g_Player->MurderCounts = ReadUInt16BE();
                 g_Player->Followers = ReadUInt8();
                 g_Player->MaxFollowers = ReadUInt8();
             }
 
             if (flag >= 4)
             {
-                g_Player->FireResistance = ReadInt16BE();
-                g_Player->ColdResistance = ReadInt16BE();
-                g_Player->PoisonResistance = ReadInt16BE();
-                g_Player->EnergyResistance = ReadInt16BE();
-                g_Player->Luck = ReadInt16BE();
+                g_Player->MurderCountDecayHoursRemaining = ReadInt16BE();
+                g_Player->CriminalTimerSecondsRemaining = ReadInt16BE();
+                g_Player->PlayervsPlayerCooldownSecondsRemaining = ReadInt16BE();
+                g_Player->BandageTimerSecondsRemaining = ReadInt16BE();
+                g_Player->HungerSatisfactionMinutesRemaining = ReadInt16BE();
+
                 g_Player->MinDamage = ReadInt16BE();
                 g_Player->MaxDamage = ReadInt16BE();
                 g_Player->TithingPoints = ReadUInt32BE();

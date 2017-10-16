@@ -37,47 +37,37 @@ void CGumpStatusbar::InitToolTip()
     WISPFUN_DEBUG("c128_f3");
     uint id = g_SelectedObject.Serial;
 
-    if (id && id <= ID_GSB_TEXT_CAST_RECOVERY)
+    if (id > 0 && id < ID_GSB_TEXT_MAX)
     {
-        static const wstring tooltip[ID_GSB_TEXT_CAST_RECOVERY] = { L"Minimize the statusbar gump",
-                                                                    L"",
-                                                                    L"",
-                                                                    L"",
-                                                                    L"Remove bar from group",
-                                                                    L"Open buff window",
-                                                                    L"Change strength state",
-                                                                    L"Change dexterity state",
-                                                                    L"Change intelligence state",
-                                                                    L"",
-                                                                    L"Strength",
-                                                                    L"Dexterity",
-                                                                    L"Intelligence",
-                                                                    L"Sex",
-                                                                    L"Armor",
-                                                                    L"Hit Points",
-                                                                    L"Stamina",
-                                                                    L"Mana",
-                                                                    L"Maximum stats",
-                                                                    L"Luck",
-                                                                    L"Weight",
-                                                                    L"Damage",
-                                                                    L"Gold",
-                                                                    L"Followers",
-                                                                    L"Physical Resistance",
-                                                                    L"Fire Resistance",
-                                                                    L"Cold Resistance",
-                                                                    L"Poison Resistance",
-                                                                    L"Energy Resistance",
-                                                                    L"Tithing Points",
-                                                                    L"Hit Chance Increase",
-                                                                    L"Defense Chance Increase",
-                                                                    L"Lower Mana Cost",
-                                                                    L"Swing Speed Increase",
-                                                                    L"Weapon Damage Increase",
-                                                                    L"Lower Reagent Cost",
-                                                                    L"Spell Damage Increase",
-                                                                    L"Faster Casting",
-                                                                    L"Faster Cast Recovery" };
+        static const wstring tooltip[ID_GSB_TEXT_MAX] = {
+            L"Minimize the statusbar gump",
+            L"",
+            L"",
+            L"",
+            L"Remove bar from group",
+            L"Open buff window",
+            L"Change strength state",
+            L"Change dexterity state",
+            L"Change intelligence state",
+            L"Strength",
+            L"Dexterity",
+            L"Intelligence",
+            L"Sex",
+            L"Armor",
+            L"Hit Points",
+            L"Stamina",
+            L"Mana",
+            L"Carrying Capacity",
+            L"Hunger Satisfaction Remaining",
+            L"Murder Count",
+            L"Damage",
+            L"Gold",
+            L"Followers",
+            L"Hours Remaining Until Murder Counts Removed",
+            L"Criminal Time Remaining",
+            L"Player Vs. Player Time Remaining",
+            L"Bandage Timer",
+        };
 
         const wstring &text = tooltip[id - 1];
 
@@ -429,377 +419,310 @@ void CGumpStatusbar::UpdateContent()
     {
         if (!Minimized)
         {
-            POINT p = { 0, 0 };
+            static const int ROW_0_Y = 26;
+            static const int ROW_1_Y = 56;
+            static const int ROW_2_Y = 86;
+            static const int ROW_3_Y = 116;
+            static const int ROW_HEIGHT = 24;
+            static const int ROW_PADDING = 2;
 
-            if (g_PacketManager.GetClientVersion() >= CV_308D &&
-                !g_ConfigManager.GetOldStyleStatusbar())
-                Add(new CGUIGumppic(0x2A6C, 0, 0));
-            else
+            static const int LOCKER_COLUMN_X = 10;
+            static const int LOCKER_COLUMN_WIDTH = 10;
+
+            static const int COLUMN_1_X = 20;
+            static const int COLUMN_1_WIDTH = 80;
+            static const int COLUMN_1_ICON_WIDTH = 35;
+
+            static const int COLUMN_2_X = 100;
+            static const int COLUMN_2_WIDTH = 60;
+            static const int COLUMN_2_ICON_WIDTH = 20;
+
+            static const int COLUMN_3_X = 160;
+            static const int COLUMN_3_WIDTH = 60;
+            static const int COLUMN_3_ICON_WIDTH = 30;
+
+            static const int COLUMN_4_X = 220;
+            static const int COLUMN_4_WIDTH = 80;
+            static const int COLUMN_4_ICON_WIDTH = 35;
+
+            static const int COLUMN_5_X = 300;
+            static const int COLUMN_5_WIDTH = 80;
+            static const int COLUMN_5_ICON_WIDTH = 55;
+
+            Add(new CGUIGumppic(0x2A6C, 0, 0));
+
+            Add(new CGUIGumppic(0x0805, 34, 12));
+            int percent = CalculatePercents(g_Player->MaxHits, g_Player->Hits, 109);
+            if (percent > 0)
             {
-                p.x = 244;
-                p.y = 112;
-
-                Add(new CGUIGumppic(0x0802, 0, 0));
-            }
-            int xOffset = 0;
-
-            if (g_PacketManager.GetClientVersion() >= CV_308Z &&
-                !g_ConfigManager.GetOldStyleStatusbar())
-            {
-                p.x = 389;
-                p.y = 152;
-
-                if (g_Player->GetName().length())
+                ushort gumpid = 0x0806;
+                if (g_Player->Poisoned())
                 {
-                    text = (CGUIText *)Add(new CGUIText(0x0386, useUOPGumps ? 90 : 58, 50));
-                    text->CreateTextureA(1, g_Player->GetName(), 320, TS_CENTER);
+                    gumpid = 0x0808;
+                }
+                else if (g_Player->YellowHits())
+                {
+                    gumpid = 0x0809;
                 }
 
-                if (g_PacketManager.GetClientVersion() >= CV_5020)
-                {
-                    Add(new CGUIButton(ID_GSB_BUFF_GUMP, 0x7538, 0x7538, 0x7538, 40, 50));
-                }
-
-                if (g_DrawStatLockers)
-                {
-                    uchar status = g_Player->LockStr;
-                    xOffset = useUOPGumps ? 28 : 40;
-                    ushort gumpID = 0x0984;
-                    if (status == 1)
-                        gumpID = 0x0986;
-                    else if (status == 2)
-                        gumpID = 0x082C;
-
-                    Add(new CGUIButton(
-                        ID_GSB_BUFF_LOCKER_STR, gumpID, gumpID, gumpID, xOffset, 76));
-
-                    status = g_Player->LockDex;
-
-                    gumpID = 0x0984;
-                    if (status == 1)
-                        gumpID = 0x0986;
-                    else if (status == 2)
-                        gumpID = 0x082C;
-
-                    Add(new CGUIButton(
-                        ID_GSB_BUFF_LOCKER_DEX, gumpID, gumpID, gumpID, xOffset, 102));
-
-                    status = g_Player->LockInt;
-
-                    gumpID = 0x0984;
-                    if (status == 1)
-                        gumpID = 0x0986;
-                    else if (status == 2)
-                        gumpID = 0x082C;
-
-                    Add(new CGUIButton(
-                        ID_GSB_BUFF_LOCKER_INT, gumpID, gumpID, gumpID, xOffset, 132));
-                }
-
-                if (useUOPGumps)
-                {
-                    xOffset = 80;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(1, std::to_string(g_Player->AttackChance));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_HIT_CHANCE, 58, 154, 59, 24));
-                }
-                else
-                    xOffset = 88;
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 77));
-                text->CreateTextureA(1, std::to_string(g_Player->Str));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
-                text->CreateTextureA(1, std::to_string(g_Player->Dex));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 133));
-                text->CreateTextureA(1, std::to_string(g_Player->Int));
-
-                Add(new CGUIHitBox(ID_GSB_TEXT_STR, 58, 70, 59, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_DEX, 58, 98, 59, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_INT, 58, 126, 59, 24));
-
-                int textWidth = 40;
-                if (useUOPGumps)
-                {
-                    xOffset = 150;
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->DefenceChance) + "/" +
-                            std::to_string(g_Player->MaxDefenceChance));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_DEFENCE_CHANCE, 124, 154, 59, 24));
-                }
-                else
-                    xOffset = 146;
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 70));
-                text->CreateTextureA(1, std::to_string(g_Player->Hits), textWidth, TS_CENTER);
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 83));
-                text->CreateTextureA(1, std::to_string(g_Player->MaxHits), textWidth, TS_CENTER);
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 98));
-                text->CreateTextureA(1, std::to_string(g_Player->Stam), textWidth, TS_CENTER);
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 111));
-                text->CreateTextureA(1, std::to_string(g_Player->MaxStam), textWidth, TS_CENTER);
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 126));
-                text->CreateTextureA(1, std::to_string(g_Player->Mana), textWidth, TS_CENTER);
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 139));
-                text->CreateTextureA(1, std::to_string(g_Player->MaxMana), textWidth, TS_CENTER);
-
-                Add(new CGUILine(xOffset, 138, 185, 138, 0xFF383838));
-                Add(new CGUILine(xOffset, 110, 185, 110, 0xFF383838));
-                Add(new CGUILine(xOffset, 82, 185, 82, 0xFF383838));
-
-                Add(new CGUIHitBox(ID_GSB_TEXT_HITS, 124, 70, 59, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_STAM, 124, 98, 59, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_MANA, 124, 126, 59, 24));
-
-                if (useUOPGumps)
-                {
-                    xOffset = 240;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(1, std::to_string(g_Player->LowerManaCost));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_LOWER_MANA, 205, 154, 65, 24));
-                }
-                else
-                    xOffset = 220;
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 77));
-                text->CreateTextureA(1, std::to_string(g_Player->StatsCap));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
-                text->CreateTextureA(1, std::to_string(g_Player->Luck));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 126));
-                text->CreateTextureA(1, std::to_string(g_Player->Weight), textWidth, TS_CENTER);
-
-                Add(new CGUILine(
-                    useUOPGumps ? 236 : 216, 138, useUOPGumps ? 270 : 250, 138, 0xFF383838));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 139));
-                text->CreateTextureA(1, std::to_string(g_Player->MaxWeight), textWidth, TS_CENTER);
-
-                xOffset = useUOPGumps ? 205 : 188;
-                Add(new CGUIHitBox(ID_GSB_TEXT_TITHING_POINTS, xOffset, 70, 65, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_LUCK, xOffset, 98, 65, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_WEIGHT, xOffset, 126, 65, 24));
-
-                if (useUOPGumps)
-                {
-                    xOffset = 320;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
-                    text->CreateTextureA(1, std::to_string(g_Player->WeaponDamage));
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(1, std::to_string(g_Player->WeaponSpeed));
-
-                    Add(new CGUIHitBox(ID_GSB_TEXT_WEAPON_DMG, 285, 98, 69, 24));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_SWING_SPEED, 285, 154, 69, 24));
-                }
-                else
-                {
-                    xOffset = 280;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
-                    text->CreateTextureA(1, std::to_string(g_Player->Gold));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_GOLD, 260, 98, 69, 24));
-                }
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 77));
-                text->CreateTextureA(
-                    1,
-                    std::to_string(g_Player->MinDamage) + "-" +
-                        std::to_string(g_Player->MaxDamage));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 133));
-                text->CreateTextureA(
-                    1,
-                    std::to_string(g_Player->Followers) + "/" +
-                        std::to_string(g_Player->MaxFollowers));
-
-                xOffset = useUOPGumps ? 285 : 260;
-                Add(new CGUIHitBox(ID_GSB_TEXT_DAMAGE, xOffset, 70, 69, 24));
-                Add(new CGUIHitBox(ID_GSB_TEXT_FOLLOWERS, xOffset, 126, 69, 24));
-
-                if (useUOPGumps)
-                {
-                    xOffset = 400;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 77));
-                    text->CreateTextureA(1, std::to_string(g_Player->LowerRegCost));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
-                    text->CreateTextureA(1, std::to_string(g_Player->SpellDamage));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 133));
-                    text->CreateTextureA(1, std::to_string(g_Player->CastSpeed));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(1, std::to_string(g_Player->CastRecovery));
-
-                    xOffset = 365;
-                    Add(new CGUIHitBox(ID_GSB_TEXT_LOWER_REG_COST, xOffset, 70, 55, 24));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_SPELL_DMG, xOffset, 98, 55, 24));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_FASTER_CASTING, xOffset, 126, 55, 24));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_CAST_RECOVERY, xOffset, 154, 55, 24));
-
-                    xOffset = 480;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
-                    text->CreateTextureA(1, std::to_string(g_Player->Gold));
-                    Add(new CGUIHitBox(ID_GSB_TEXT_GOLD, 445, 154, 55, 24));
-
-                    xOffset = 475;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 74));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->Armor) + "/" +
-                            std::to_string(g_Player->MaxPhysicalResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 92));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->FireResistance) + "/" +
-                            std::to_string(g_Player->MaxFireResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 106));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->ColdResistance) + "/" +
-                            std::to_string(g_Player->MaxColdResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 120));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->PoisonResistance) + "/" +
-                            std::to_string(g_Player->MaxPoisonResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 134));
-                    text->CreateTextureA(
-                        1,
-                        std::to_string(g_Player->EnergyResistance) + "/" +
-                            std::to_string(g_Player->MaxEnergyResistance));
-                }
-                else
-                {
-                    xOffset = 354;
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 76));
-                    text->CreateTextureA(1, std::to_string(g_Player->Armor));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 92));
-                    text->CreateTextureA(1, std::to_string(g_Player->FireResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 106));
-                    text->CreateTextureA(1, std::to_string(g_Player->ColdResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 120));
-                    text->CreateTextureA(1, std::to_string(g_Player->PoisonResistance));
-
-                    text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 134));
-                    text->CreateTextureA(1, std::to_string(g_Player->EnergyResistance));
-                }
-
-                xOffset = useUOPGumps ? 445 : 334;
-                Add(new CGUIHitBox(ID_GSB_TEXT_RESISTANCE_PHYSICAL, xOffset, 76, 40, 14));
-                Add(new CGUIHitBox(ID_GSB_TEXT_RESISTANCE_FIRE, xOffset, 92, 40, 14));
-                Add(new CGUIHitBox(ID_GSB_TEXT_RESISTANCE_COLD, xOffset, 106, 40, 14));
-                Add(new CGUIHitBox(ID_GSB_TEXT_RESISTANCE_POISON, xOffset, 120, 40, 14));
-                Add(new CGUIHitBox(ID_GSB_TEXT_RESISTANCE_ENERGY, xOffset, 134, 40, 14));
-            }
-            else
-            {
-                if (!p.x)
-                {
-                    p.x = 243;
-                    p.y = 150;
-                }
-
-                if (g_Player->GetName().length())
-                {
-                    text = (CGUIText *)Add(new CGUIText(0x0386, 86, 42));
-                    text->CreateTextureA(1, g_Player->GetName());
-                }
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 86, 61));
-                text->CreateTextureA(1, std::to_string(g_Player->Str));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 86, 73));
-                text->CreateTextureA(1, std::to_string(g_Player->Dex));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 86, 85));
-                text->CreateTextureA(1, std::to_string(g_Player->Int));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 86, 97));
-                text->CreateTextureA(1, (g_Player->Gender == GENDER_FEMALE ? "F" : "M"));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 86, 109));
-                text->CreateTextureA(1, std::to_string(g_Player->Armor));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 171, 61));
-                text->CreateTextureA(
-                    1, std::to_string(g_Player->Hits) + "/" + std::to_string(g_Player->MaxHits));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 171, 73));
-                text->CreateTextureA(
-                    1, std::to_string(g_Player->Mana) + "/" + std::to_string(g_Player->MaxMana));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 171, 85));
-                text->CreateTextureA(
-                    1, std::to_string(g_Player->Stam) + "/" + std::to_string(g_Player->MaxStam));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 171, 97));
-                text->CreateTextureA(1, std::to_string(g_Player->Gold));
-
-                text = (CGUIText *)Add(new CGUIText(0x0386, 171, 109));
-                text->CreateTextureA(1, std::to_string(g_Player->Weight));
-
-                Add(new CGUIHitBox(ID_GSB_TEXT_STR, 86, 61, 34, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_DEX, 86, 73, 34, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_INT, 86, 85, 34, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_SEX, 86, 97, 34, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_ARMOR, 86, 109, 34, 12));
-
-                Add(new CGUIHitBox(ID_GSB_TEXT_HITS, 171, 61, 66, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_MANA, 171, 73, 66, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_STAM, 171, 85, 66, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_GOLD, 171, 97, 66, 12));
-                Add(new CGUIHitBox(ID_GSB_TEXT_WEIGHT, 171, 109, 66, 12));
-
-                if (!g_ConfigManager.GetOldStyleStatusbar())
-                {
-                    if (g_PacketManager.GetClientVersion() == CV_308D)
-                    {
-                        text = (CGUIText *)Add(new CGUIText(0x0386, 171, 124));
-                        text->CreateTextureA(1, std::to_string(g_Player->StatsCap));
-
-                        Add(new CGUIHitBox(ID_GSB_TEXT_MAX_STATS, 171, 124, 34, 12));
-                    }
-                    else if (g_PacketManager.GetClientVersion() == CV_308J)
-                    {
-                        text = (CGUIText *)Add(new CGUIText(0x0386, 180, 131));
-                        text->CreateTextureA(1, std::to_string(g_Player->StatsCap));
-
-                        text = (CGUIText *)Add(new CGUIText(0x0386, 180, 144));
-                        text->CreateTextureA(
-                            1,
-                            std::to_string(g_Player->Followers) + "/" +
-                                std::to_string(g_Player->MaxFollowers));
-
-                        Add(new CGUIHitBox(ID_GSB_TEXT_MAX_STATS, 180, 131, 34, 12));
-                        Add(new CGUIHitBox(ID_GSB_TEXT_FOLLOWERS, 171, 144, 34, 12));
-                    }
-                }
+                Add(new CGUIGumppicTiled(gumpid, 34, 12, percent, 0));
             }
 
-            if (!useUOPGumps)
-                Add(new CGUIHitBox(ID_GSB_MINIMIZE, p.x, p.y, 16, 16, true));
-            else
+            Add(new CGUIGumppic(0x0805, 34, 25));
+            percent = CalculatePercents(g_Player->MaxMana, g_Player->Mana, 109);
+            if (percent > 0)
             {
-                p.x = 540;
-                p.y = 180;
-                Add(new CGUIHitBox(ID_GSB_MINIMIZE, p.x, p.y, 16, 16, true));
+                Add(new CGUIGumppicTiled(0x0806, 34, 25, percent, 0));
             }
+
+            Add(new CGUIGumppic(0x0805, 34, 38));
+            percent = CalculatePercents(g_Player->MaxStam, g_Player->Stam, 109);
+            if (percent > 0)
+            {
+                Add(new CGUIGumppicTiled(0x0806, 34, 38, percent, 0));
+            }
+
+            if (g_Player->GetName().length())
+            {
+                text = (CGUIText *)Add(new CGUIText(0x0386, 100, 10));
+                text->CreateTextureA(1, g_Player->GetName(), 320, TS_CENTER);
+            }
+
+            Add(new CGUIButton(ID_GSB_BUFF_GUMP, 0x7538, 0x7538, 0x7538, 40, 50));
+
+            uchar status = g_Player->LockStr;
+            ushort gumpID = 0x0984;
+            if (status == 1)
+            {
+                gumpID = 0x0986;
+            }
+            else if (status == 2)
+            {
+                gumpID = 0x082C;
+            }
+            Add(new CGUIButton(
+                ID_GSB_BUFF_LOCKER_STR,
+                gumpID,
+                gumpID,
+                gumpID,
+                LOCKER_COLUMN_X,
+                ROW_1_Y + ROW_HEIGHT - ROW_PADDING));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_1_X + COLUMN_1_ICON_WIDTH,
+                ROW_1_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->Str));
+            Add(new CGUIHitBox(ID_GSB_TEXT_STR, COLUMN_1_X, ROW_1_Y, COLUMN_1_WIDTH, ROW_HEIGHT));
+
+            status = g_Player->LockDex;
+            gumpID = 0x0984;
+            if (status == 1)
+            {
+                gumpID = 0x0986;
+            }
+            else if (status == 2)
+            {
+                gumpID = 0x082C;
+            }
+            Add(new CGUIButton(
+                ID_GSB_BUFF_LOCKER_DEX,
+                gumpID,
+                gumpID,
+                gumpID,
+                LOCKER_COLUMN_X,
+                ROW_2_Y + ROW_HEIGHT - ROW_PADDING));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_1_X + COLUMN_1_ICON_WIDTH,
+                ROW_2_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->Dex));
+            Add(new CGUIHitBox(ID_GSB_TEXT_DEX, COLUMN_1_X, ROW_2_Y, COLUMN_1_WIDTH, ROW_HEIGHT));
+
+            status = g_Player->LockInt;
+            gumpID = 0x0984;
+            if (status == 1)
+            {
+                gumpID = 0x0986;
+            }
+            else if (status == 2)
+            {
+                gumpID = 0x082C;
+            }
+            Add(new CGUIButton(
+                ID_GSB_BUFF_LOCKER_INT,
+                gumpID,
+                gumpID,
+                gumpID,
+                LOCKER_COLUMN_X,
+                ROW_3_Y + ROW_HEIGHT - ROW_PADDING));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_1_X + COLUMN_1_ICON_WIDTH,
+                ROW_3_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->Int));
+            Add(new CGUIHitBox(ID_GSB_TEXT_INT, COLUMN_1_X, ROW_3_Y, COLUMN_1_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_1_Y + (ROW_HEIGHT / 2) - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->Hits), 40, TS_CENTER);
+            Add(new CGUILine(
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_1_Y + 23,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH + 30,
+                ROW_1_Y + 23,
+                0xFF383838));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386, COLUMN_2_X + COLUMN_2_ICON_WIDTH, ROW_1_Y + ROW_HEIGHT - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->MaxHits), 40, TS_CENTER);
+            Add(new CGUIHitBox(ID_GSB_TEXT_HITS, COLUMN_2_X, ROW_1_Y, COLUMN_2_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_2_Y + (ROW_HEIGHT / 2) - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->Stam), 40, TS_CENTER);
+            Add(new CGUILine(
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_2_Y + 23,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH + 30,
+                ROW_2_Y + 23,
+                0xFF383838));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386, COLUMN_2_X + COLUMN_2_ICON_WIDTH, ROW_2_Y + ROW_HEIGHT - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->MaxStam), 40, TS_CENTER);
+            Add(new CGUIHitBox(ID_GSB_TEXT_STAM, COLUMN_2_X, ROW_2_Y, COLUMN_2_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_3_Y + (ROW_HEIGHT / 2) - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->Mana), 40, TS_CENTER);
+            Add(new CGUILine(
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH,
+                ROW_3_Y + 23,
+                COLUMN_2_X + COLUMN_2_ICON_WIDTH + 30,
+                ROW_3_Y + 23,
+                0xFF383838));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386, COLUMN_2_X + COLUMN_2_ICON_WIDTH, ROW_3_Y + ROW_HEIGHT - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->MaxMana), 40, TS_CENTER);
+            Add(new CGUIHitBox(ID_GSB_TEXT_MANA, COLUMN_2_X, ROW_3_Y, COLUMN_2_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH,
+                ROW_1_Y + (ROW_HEIGHT / 2) - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->Followers), 40, TS_CENTER);
+            Add(new CGUILine(
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH,
+                ROW_1_Y + 23,
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH + 25,
+                ROW_1_Y + 23,
+                0xFF383838));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386, COLUMN_3_X + COLUMN_3_ICON_WIDTH, ROW_1_Y + ROW_HEIGHT - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->MaxFollowers), 40, TS_CENTER);
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_FOLLOWERS, COLUMN_3_X, ROW_1_Y, COLUMN_3_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH,
+                ROW_2_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->Armor));
+            Add(new CGUIHitBox(ID_GSB_TEXT_ARMOR, COLUMN_3_X, ROW_2_Y, COLUMN_3_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH,
+                ROW_3_Y + (ROW_HEIGHT / 2) - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->Weight), 40, TS_CENTER);
+            Add(new CGUILine(
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH,
+                ROW_3_Y + 23,
+                COLUMN_3_X + COLUMN_3_ICON_WIDTH + 25,
+                ROW_3_Y + 23,
+                0xFF383838));
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386, COLUMN_3_X + COLUMN_3_ICON_WIDTH, ROW_3_Y + ROW_HEIGHT - ROW_PADDING));
+            text->CreateTextureA(1, std::to_string(g_Player->MaxWeight), 40, TS_CENTER);
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_WEIGHT, COLUMN_3_X, ROW_3_Y, COLUMN_3_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_4_X + COLUMN_4_ICON_WIDTH + 20,
+                ROW_0_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->HungerSatisfactionMinutesRemaining));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_SATIETY, COLUMN_4_X, ROW_0_Y, COLUMN_4_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_4_X + COLUMN_4_ICON_WIDTH,
+                ROW_1_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->MurderCounts));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_DAMAGE, COLUMN_4_X, ROW_1_Y, COLUMN_4_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_4_X + COLUMN_4_ICON_WIDTH,
+                ROW_2_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(
+                1, std::to_string(g_Player->MinDamage) + "-" + std::to_string(g_Player->MaxDamage));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_DAMAGE, COLUMN_4_X, ROW_2_Y, COLUMN_4_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_4_X + COLUMN_4_ICON_WIDTH,
+                ROW_3_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->Gold));
+            Add(new CGUIHitBox(ID_GSB_TEXT_GOLD, COLUMN_4_X, ROW_3_Y, COLUMN_4_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_5_X + COLUMN_5_ICON_WIDTH,
+                ROW_0_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->CriminalTimerSecondsRemaining));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_SATIETY, COLUMN_5_X, ROW_0_Y, COLUMN_5_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_5_X + COLUMN_5_ICON_WIDTH,
+                ROW_1_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->MurderCountDecayHoursRemaining));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_SATIETY, COLUMN_5_X, ROW_1_Y, COLUMN_5_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_5_X + COLUMN_5_ICON_WIDTH,
+                ROW_2_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(
+                1, std::to_string(g_Player->PlayervsPlayerCooldownSecondsRemaining));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_SATIETY, COLUMN_5_X, ROW_2_Y, COLUMN_5_WIDTH, ROW_HEIGHT));
+
+            text = (CGUIText *)Add(new CGUIText(
+                0x0386,
+                COLUMN_5_X + COLUMN_5_ICON_WIDTH,
+                ROW_3_Y + ROW_HEIGHT - (3 * ROW_PADDING)));
+            text->CreateTextureA(1, std::to_string(g_Player->BandageTimerSecondsRemaining));
+            Add(new CGUIHitBox(
+                ID_GSB_TEXT_SATIETY, COLUMN_5_X, ROW_3_Y, COLUMN_5_WIDTH, ROW_HEIGHT));
+
+            Add(new CGUIHitBox(
+                ID_GSB_MINIMIZE,
+                COLUMN_5_X + COLUMN_5_WIDTH + 5,
+                ROW_3_Y + ROW_HEIGHT + 5,
+                20,
+                20,
+                true));
         }
         else
         {
