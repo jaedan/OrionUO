@@ -70,8 +70,7 @@ void CGumpScreenMain::UpdateContent()
     g_MainScreen.m_AutoLogin->Checked = g_Orion.Config.AutoLogin;
 
     CGUIText *text = (CGUIText *)Add(new CGUIText(0x0386, 253, 305));
-    text->CreateTextureA(
-        2, g_ClilocManager.Cliloc(g_Language)->GetA(3000038, false, "Log in to Ultima Online"));
+    text->CreateTextureA(2, "Begin your adventure!");
 
     text = (CGUIText *)Add(new CGUIText(0x0386, 183, 345));
     text->CreateTextureA(
