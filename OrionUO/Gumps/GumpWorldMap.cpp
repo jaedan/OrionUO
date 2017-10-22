@@ -21,8 +21,9 @@ CGumpWorldMap::CGumpWorldMap(short x, short y)
     m_Resizer = (CGUIResizeButton *)Add(
         new CGUIResizeButton(ID_GWM_RESIZE, 0x0837, 0x0838, 0x0838, Width - 8, Height + 13));
 
-    static const string mapNames[7] = { "Current map", "Britannia", "Trammel", "Illshenar",
-                                        "Malas",       "Tokuno",    "TerMur" };
+    static const string mapNames[1] = {
+        "Avadon",
+    };
 
     static const string scaleNames[7] = { "4:1", "2:1", "1:1", "1:2", "1:4", "1:6", "1:10" };
 
@@ -67,11 +68,11 @@ CGumpWorldMap::CGumpWorldMap(short x, short y)
             new CGUIComboboxText(0, 6, scaleNames[i], 36, TS_CENTER, UOFONT_FIXED));
 
     m_ComboboxMap = (CGUIComboBox *)Add(
-        new CGUIComboBox(ID_GWM_MAP_LIST, 0x098D, true, 0x09B5, 0, 0, 0, 7, false));
+        new CGUIComboBox(ID_GWM_MAP_LIST, 0x098D, true, 0x09B5, 0, 0, 0, 1, false));
     m_ComboboxMap->TextOffsetY = -5;
     m_ComboboxMap->SelectedIndex = m_Map;
 
-    IFOR (i, 0, 7)
+    IFOR (i, 0, 1)
         m_ComboboxMap->Add(new CGUIComboboxText(0, 6, mapNames[i], 98, TS_CENTER, UOFONT_FIXED));
 }
 

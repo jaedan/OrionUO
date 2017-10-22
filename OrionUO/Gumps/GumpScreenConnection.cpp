@@ -104,11 +104,7 @@ void CGumpScreenConnection::UpdateContent()
         }
         else
         {
-            CreateText(
-                189,
-                178,
-                g_ClilocManager.Cliloc(g_Language)->GetA(3000001, false, "Entering Britannia..."),
-                2);
+            CreateText(189, 178, "Entering Avadon...", 2);
 
             g_ConnectionScreen.CursorGraphic = 0x2077;
         }
