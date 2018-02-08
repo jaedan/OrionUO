@@ -226,7 +226,7 @@ void CMainScreen::LoadCustomPath()
 {
 	WISPFUN_DEBUG("c165_f14");
 
-	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("uo_debug.cfg"), "=", "#;", "");
+	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
 
 	while (!file.IsEOF())
 	{
@@ -258,7 +258,7 @@ void CMainScreen::LoadGlobalConfig()
 	m_AutoLogin->Checked = false;
 	g_ScreenEffectManager.Enabled = false;
 
-	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("uo_debug.cfg"), "=", "#;", "");
+	WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
 
 	while (!file.IsEOF())
 	{
@@ -357,7 +357,7 @@ void CMainScreen::SaveGlobalConfig()
 {
 	WISPFUN_DEBUG("c165_f11");
 	FILE *uo_cfg = NULL;
-	fopen_s(&uo_cfg, g_App.ExeFilePath("uo_debug.cfg").c_str(), "w");
+	fopen_s(&uo_cfg, g_App.ExeFilePath("client.cfg").c_str(), "w");
 
 	if (uo_cfg == NULL)
 		return;
