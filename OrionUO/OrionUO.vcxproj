@@ -69,15 +69,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)</OutDir>
+    <IntDir>$(Configuration)\$(Platform)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)</OutDir>
+    <IntDir>$(Configuration)\$(Platform)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(Configuration)\$(Platform)</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)</OutDir>
+    <IntDir>$(Configuration)\$(Platform)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,11 +145,11 @@ if exist "$(OutDir)bassmidi.dll" (del "$(OutDir)bassmidi.dll")
 if exist "$(OutDir)glew32.dll" (del "$(OutDir)glew32.dll")
 if exist "$(OutDir)zlib1.dll" (del "$(OutDir)zlib1.dll")
 if exist "$(OutDir)Freeimage.dll" (del "$(OutDir)Freeimage.dll")
-xcopy /y /d  "$(SolutionDir)test_bin64\bass.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\bassmidi.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\glew32.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\zlib1.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\Freeimage.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\bass.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\bassmidi.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\glew32.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\zlib1.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
       </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -225,11 +233,11 @@ if exist "$(OutDir)bassmidi.dll" (del "$(OutDir)bassmidi.dll")
 if exist "$(OutDir)glew32.dll" (del "$(OutDir)glew32.dll")
 if exist "$(OutDir)zlib1.dll" (del "$(OutDir)zlib1.dll")
 if exist "$(OutDir)Freeimage.dll" (del "$(OutDir)Freeimage.dll")
-xcopy /y /d  "$(SolutionDir)test_bin64\bass.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\bassmidi.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\glew32.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\zlib1.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)test_bin64\Freeimage.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\bass.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\bassmidi.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\glew32.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\zlib1.dll" "$(OutDir)"
+xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
         </Command>
     </PostBuildEvent>
     <PostBuildEvent>
