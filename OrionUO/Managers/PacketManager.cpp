@@ -2309,7 +2309,7 @@ PACKET_HANDLER(UpdateSkills)
                         "Your skill in %s has %s by %.1f%%.  It is now %.1f%%.",
                         skill->Name.c_str(),
                         ((change < 0) ? "decreased" : "increased"),
-                        abs(change),
+                        std::abs(change),
                         skill->BaseValue + change);
 
                     g_Orion.CreateTextMessage(TT_SYSTEM, 0, 3, 0x58, str);
