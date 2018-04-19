@@ -1308,7 +1308,7 @@ void CAnimationManager::Draw(CGameObject *obj, int x, int y, bool mirror, uchar 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_DST_COLOR, GL_ZERO);
 
-			g_GL_DrawShadow(frame, x, y, mirror);
+			g_GL.DrawShadow(frame, x, y, mirror);
 
 			if (m_UseBlending)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1445,10 +1445,10 @@ void CAnimationManager::Draw(CGameObject *obj, int x, int y, bool mirror, uchar 
 					}
 				}
 
-				g_GL_DrawSitting(frame, x, y, mirror, h3mod, h6mod, h9mod);
+				g_GL.DrawSitting(frame, x, y, mirror, h3mod, h6mod, h9mod);
 			}			
 			else
-				g_GL_DrawMirrored(frame, x, y, mirror);
+				g_GL.DrawMirrored(frame, x, y, mirror);
 
 			if (spectralColor)
 			{
@@ -2315,7 +2315,7 @@ bool CAnimationManager::TryReadUOPAnimDimins(CTextureAnimationDirection &directi
 			header = ReadUInt32LE();
 		}
 
-		g_GL_BindTexture16(frame, imageWidth, imageHeight, &data[0]);
+		g_GL.BindTexture16(frame, imageWidth, imageHeight, &data[0]);
 	}
 
 	m_UsedAnimList.push_back(&direction);
@@ -3246,7 +3246,7 @@ void CAnimationManager::ReadFramesPixelData(CTextureAnimationDirection &directio
 			header = ReadUInt32LE();
 		}
 
-		g_GL_BindTexture16(frame, imageWidth, imageHeight, &data[0]);
+		g_GL.BindTexture16(frame, imageWidth, imageHeight, &data[0]);
 	}
 }
 //----------------------------------------------------------------------------------

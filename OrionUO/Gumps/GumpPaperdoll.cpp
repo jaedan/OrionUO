@@ -608,7 +608,7 @@ void CGumpPaperdoll::UpdateContent()
 						}
 
 						texture = new CGLTexture();
-						g_GL_BindTexture16(*texture, wantImageWidth, wantImageHeight, &wantPixels[0]);
+						g_GL.BindTexture16(*texture, wantImageWidth, wantImageHeight, &wantPixels[0]);
 
 						if (wantImageWidth < 14)
 							tileX += 7 - (wantImageWidth / 2);

@@ -31,18 +31,18 @@ void CGLTexture::Draw(int x, int y, bool checktrans)
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			g_GL_Draw(*this, x, y);
+			g_GL.Draw(*this, x, y);
 
 			glDisable(GL_BLEND);
 
 			glEnable(GL_STENCIL_TEST);
 
-			g_GL_Draw(*this, x, y);
+			g_GL.Draw(*this, x, y);
 
 			glDisable(GL_STENCIL_TEST);
 		}
 		else
-			g_GL_Draw(*this, x, y);
+			g_GL.Draw(*this, x, y);
 	}
 }
 //----------------------------------------------------------------------------------
@@ -62,18 +62,18 @@ void CGLTexture::Draw(int x, int y, int width, int height, bool checktrans)
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			g_GL_DrawStretched(*this, x, y, width, height);
+			g_GL.DrawStretched(*this, x, y, width, height);
 
 			glDisable(GL_BLEND);
 
 			glEnable(GL_STENCIL_TEST);
 
-			g_GL_DrawStretched(*this, x, y, width, height);
+			g_GL.DrawStretched(*this, x, y, width, height);
 
 			glDisable(GL_STENCIL_TEST);
 		}
 		else
-			g_GL_DrawStretched(*this, x, y, width, height);
+			g_GL.DrawStretched(*this, x, y, width, height);
 	}
 }
 //----------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ void CGLTexture::DrawRotated(int x, int y, float angle)
 {
 	WISPFUN_DEBUG("c36_f4");
 	if (Texture != 0)
-		g_GL_DrawRotated(*this, x, y, angle);
+		g_GL.DrawRotated(*this, x, y, angle);
 }
 //----------------------------------------------------------------------------------
 void CGLTexture::DrawTransparent(int x, int y, bool stencil)
@@ -93,7 +93,7 @@ void CGLTexture::DrawTransparent(int x, int y, bool stencil)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(1.0f, 1.0f, 1.0f, 0.25f);
 
-		g_GL_Draw(*this, x, y);
+		g_GL.Draw(*this, x, y);
 
 		glDisable(GL_BLEND);
 
@@ -101,7 +101,7 @@ void CGLTexture::DrawTransparent(int x, int y, bool stencil)
 		{
 			glEnable(GL_STENCIL_TEST);
 
-			g_GL_Draw(*this, x, y);
+			g_GL.Draw(*this, x, y);
 
 			glDisable(GL_STENCIL_TEST);
 		}

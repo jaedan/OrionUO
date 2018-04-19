@@ -445,7 +445,7 @@ bool COrion::Install()
 	};
 
 	IFOR(i, 0, 2)
-		g_GL_BindTexture16(g_TextureGumpState[i], 10, 14, &pdwlt[i][0]);
+		g_GL.BindTexture16(g_TextureGumpState[i], 10, 14, &pdwlt[i][0]);
 
 	memset(&m_WinterTile[0], 0, sizeof(m_WinterTile));
 
@@ -4410,7 +4410,7 @@ void COrion::CreateAuraTexture()
 		}
 	}
 
-	g_GL_BindTexture32(g_AuraTexture, width, height, &pixels[0]);
+	g_GL.BindTexture32(g_AuraTexture, width, height, &pixels[0]);
 }
 //----------------------------------------------------------------------------------
 void COrion::CreateObjectHandlesBackground()
@@ -4943,7 +4943,7 @@ void COrion::DrawResizepicGump(ushort id, int x, int y, int width, int height)
 			th[i] = pth;
 	}
 
-	g_GL_DrawResizepic(th, x, y, width, height);
+	g_GL.DrawResizepic(th, x, y, width, height);
 }
 //----------------------------------------------------------------------------------
 void COrion::DrawLandTexture(CLandObject *land, ushort color, int x, int y)
@@ -4969,7 +4969,7 @@ void COrion::DrawLandTexture(CLandObject *land, ushort color, int x, int y)
 			glUniform1iARB(g_ShaderDrawMode, SDM_LAND);
 
 
-		g_GL_DrawLandTexture(*th, x, y + (land->GetZ() * 4), land);
+		g_GL.DrawLandTexture(*th, x, y + (land->GetZ() * 4), land);
 	}
 }
 //----------------------------------------------------------------------------------

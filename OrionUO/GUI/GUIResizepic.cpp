@@ -55,18 +55,18 @@ void CGUIResizepic::Draw(bool checktrans)
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		g_GL_DrawResizepic(th, m_X, m_Y, Width, Height);
+		g_GL.DrawResizepic(th, m_X, m_Y, Width, Height);
 
 		glDisable(GL_BLEND);
 
 		glEnable(GL_STENCIL_TEST);
 
-		g_GL_DrawResizepic(th, m_X, m_Y, Width, Height);
+		g_GL.DrawResizepic(th, m_X, m_Y, Width, Height);
 
 		glDisable(GL_STENCIL_TEST);
 	}
 	else
-		g_GL_DrawResizepic(th, m_X, m_Y, Width, Height);
+		g_GL.DrawResizepic(th, m_X, m_Y, Width, Height);
 }
 //----------------------------------------------------------------------------------
 bool CGUIResizepic::Select()

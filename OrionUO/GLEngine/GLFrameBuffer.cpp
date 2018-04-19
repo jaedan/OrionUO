@@ -163,7 +163,7 @@ void CGLFrameBuffer::Draw(int x, int y)
 	if (g_GL.CanUseFrameBuffer && m_Ready)
 	{
 		g_GL.OldTexture = 0;
-		g_GL.GL1_Draw(Texture, x, y);
+		g_GL.Draw(Texture, x, y);
 	}
 }
 //----------------------------------------------------------------------------------

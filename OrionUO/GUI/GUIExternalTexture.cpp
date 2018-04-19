@@ -86,7 +86,7 @@ void CGUIExternalTexture::Draw(bool checktrans)
 			else
 				tex.Height = m_Texture->Height;
 
-			g_GL.GL1_Draw(tex, m_X, m_Y);
+			g_GL.Draw(tex, m_X, m_Y);
 
 			tex.Texture = 0;
 		}
