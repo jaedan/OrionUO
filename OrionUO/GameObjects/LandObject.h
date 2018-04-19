@@ -26,15 +26,6 @@ public:
 	//Оригинальный индекс картинки
 	ushort OriginalGraphic = 0;
 
-	//!Буфер текстурных координат
-	GLuint PositionBuffer = 0;
-
-	//!Буфер вершин
-	GLuint VertexBuffer = 0;
-
-	//!Буфер нормалей
-	GLuint NormalBuffer = 0;
-
 private:
 	int GetDirectionZ(int direction);
 

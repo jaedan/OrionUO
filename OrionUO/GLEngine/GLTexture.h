@@ -25,12 +25,6 @@ public:
 	short ImageWidth = 0;
 	short ImageHeight = 0;
 
-	//!Буфер вершин
-	GLuint VertexBuffer = 0;
-
-	//!Буфер вершин для зеркального отображения анимации
-	GLuint MirroredVertexBuffer = 0;
-
 	CGLTexture();
 	virtual ~CGLTexture();
 

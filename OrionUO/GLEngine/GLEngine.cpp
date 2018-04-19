@@ -20,12 +20,6 @@ CGLEngine::CGLEngine()
 CGLEngine::~CGLEngine()
 {
 	WISPFUN_DEBUG("c29_f1");
-	if (PositionBuffer != 0)
-	{
-		glDeleteBuffers(1, &PositionBuffer);
-		PositionBuffer = 0;
-	}
-
 	Uninstall();
 }
 //----------------------------------------------------------------------------------
@@ -98,30 +92,11 @@ bool CGLEngine::Install()
 			glFramebufferTexture2D &&
 			glGenFramebuffers
 			);
-
-		CanUseBuffer = (GL_VERSION_1_5 &&
-			glBindBuffer &&
-			glBufferData &&
-			glDeleteBuffers &&
-			glGenBuffers
-			);
-
-		CanUseBuffer = false;
-
-		if (CanUseBuffer)
-		{
-			glGenBuffers(3, &PositionBuffer);
-
-			int positionArray[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
-
-			glBindBuffer(GL_ARRAY_BUFFER, PositionBuffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(positionArray), &positionArray[0], GL_STATIC_DRAW);
-		}
 	}
 	else
 		return false;
 
-	LOG("g_UseFrameBuffer = %i; CanUseBuffer = %i\n", CanUseFrameBuffer, CanUseBuffer);
+	LOG("g_UseFrameBuffer = %i\n", CanUseFrameBuffer);
 
 	if (!CanUseFrameBuffer && g_ShowWarnings)
 		g_OrionWindow.ShowMessage("Your graphics card does not support Frame Buffers!", "Warning!");
@@ -278,24 +253,12 @@ void CGLEngine::BeginDraw()
 
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
-
-	if (CanUseBuffer)
-	{
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
 }
 //----------------------------------------------------------------------------------
 void CGLEngine::EndDraw()
 {
 	WISPFUN_DEBUG("c29_f12");
 	Drawing = false;
-
-	if (CanUseBuffer)
-	{
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
 
 	glDisable(GL_ALPHA_TEST);
 

@@ -35,23 +35,6 @@ CLandObject::CLandObject(int serial, ushort graphic, ushort color, short x, shor
 CLandObject::~CLandObject()
 {
 	WISPFUN_DEBUG("c23_f2");
-	if (PositionBuffer != 0)
-	{
-		glDeleteBuffers(1, &PositionBuffer);
-		PositionBuffer = 0;
-	}
-
-	if (VertexBuffer != 0)
-	{
-		glDeleteBuffers(1, &VertexBuffer);
-		VertexBuffer = 0;
-	}
-
-	if (NormalBuffer != 0)
-	{
-		glDeleteBuffers(1, &NormalBuffer);
-		NormalBuffer = 0;
-	}
 }
 //---------------------------------------------------------------------------
 void CLandObject::UpdateGraphicBySeason()

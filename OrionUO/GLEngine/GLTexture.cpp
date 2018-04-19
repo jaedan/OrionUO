@@ -120,18 +120,6 @@ void CGLTexture::Clear()
 		glDeleteTextures(1, &Texture);
 		Texture = 0;
 	}
-
-	if (VertexBuffer != 0)
-	{
-		glDeleteBuffers(1, &VertexBuffer);
-		VertexBuffer = 0;
-	}
-
-	if (MirroredVertexBuffer != 0)
-	{
-		glDeleteBuffers(1, &MirroredVertexBuffer);
-		MirroredVertexBuffer = 0;
-	}
 }
 //----------------------------------------------------------------------------------
 bool CGLTexture::Select(int x, int y, bool pixelCheck)
