@@ -123,7 +123,7 @@ void CMultiMap::LoadMap(CGumpMap *gump, CGUIExternalTexture *mapObject)
             wordMap[i] = (pic ? colorTable[pic - 1] : 0);
         }
 
-        g_GL_BindTexture16(*mapObject->m_Texture, gump->Width, gump->Height, &wordMap[0]);
+        g_GL.BindTexture16(*mapObject->m_Texture, gump->Width, gump->Height, &wordMap[0]);
     }
 }
 
@@ -181,7 +181,7 @@ bool CMultiMap::LoadFacet(CGumpMap *gump, CGUIExternalTexture *mapObject, int fa
         }
     }
 
-    g_GL_BindTexture16(*mapObject->m_Texture, width, height, &map[0]);
+    g_GL.BindTexture16(*mapObject->m_Texture, width, height, &map[0]);
 
     mapObject->m_Texture->Width = gump->Width;
     mapObject->m_Texture->Height = gump->Height;

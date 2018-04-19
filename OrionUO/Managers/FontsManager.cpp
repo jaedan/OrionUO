@@ -803,7 +803,7 @@ bool CFontsManager::GenerateABase(
 
     if (pixels.size())
     {
-        g_GL_BindTexture32(th, th.Width, th.Height, &pixels[0]);
+        g_GL.BindTexture32(th, th.Width, th.Height, &pixels[0]);
 
         result = true;
     }
@@ -2693,7 +2693,7 @@ bool CFontsManager::GenerateWBase(
 
     if (pixels.size())
     {
-        g_GL_BindTexture32(th, th.Width, th.Height, &pixels[0]);
+        g_GL.BindTexture32(th, th.Width, th.Height, &pixels[0]);
 
         result = true;
     }

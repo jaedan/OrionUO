@@ -240,7 +240,7 @@ void CGameObject::GenerateObjectHandlesTexture(wstring text)
         }
     }
 
-    g_GL_BindTexture16(m_TextureObjectHalndes, g_ObjectHandlesWidth, g_ObjectHandlesHeight, pixels);
+    g_GL.BindTexture16(m_TextureObjectHalndes, g_ObjectHandlesWidth, g_ObjectHandlesHeight, pixels);
 }
 
 void CGameObject::AddText(CTextData *msg)

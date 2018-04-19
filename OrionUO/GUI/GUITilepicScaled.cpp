@@ -23,6 +23,6 @@ void CGUITilepicScaled::Draw(bool checktrans)
     {
         SetShaderMode();
 
-        g_GL_Draw(*th, m_X, m_Y);
+        g_GL.Draw(*th, m_X, m_Y);
     }
 }

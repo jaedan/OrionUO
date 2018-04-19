@@ -446,7 +446,7 @@ void CMouseManager::Draw(ushort id)
                     tex.Width = 35;
                     tex.Height = 35;
 
-                    g_GL.GL1_Draw(tex, x - 6, y - 2);
+                    g_GL.Draw(tex, x - 6, y - 2);
 
                     tex.Texture = 0;
 

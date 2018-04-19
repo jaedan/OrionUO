@@ -67,7 +67,7 @@ bool CGLTextureCircleOfTransparency::Create(int radius)
         Texture = 0;
     }
 
-    g_GL_BindTexture32(*this, Width, Height, &pixels[0]);
+    g_GL.BindTexture32(*this, Width, Height, &pixels[0]);
 
     return true;
 }
@@ -87,7 +87,7 @@ void CGLTextureCircleOfTransparency::Draw(int x, int y, bool checktrans)
         glStencilFunc(GL_ALWAYS, 1, 1);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        g_GL_Draw(*this, X, Y);
+        g_GL.Draw(*this, X, Y);
 
         glColorMask(true, true, true, true);
 
@@ -112,7 +112,7 @@ void CGLTextureCircleOfTransparency::Redraw()
         glStencilFunc(GL_ALWAYS, 1, 1);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        g_GL_Draw(*this, X, Y);
+        g_GL.Draw(*this, X, Y);
 
         glColorMask(true, true, true, true);
 

@@ -268,7 +268,7 @@ void CGUIShopItem::Draw(bool checktrans)
                 else
                     tex.Height = originalTexture.Height;
 
-                g_GL.GL1_Draw(tex, 2, m_ImageOffset);
+                g_GL.Draw(tex, 2, m_ImageOffset);
 
                 tex.Texture = 0;
             }

@@ -135,7 +135,7 @@ void CGumpMinimap::GenerateMap()
         }
     }
 
-    g_GL_BindTexture16(m_Texture, gumpWidth, gumpHeight, &data[0]);
+    g_GL.BindTexture16(m_Texture, gumpWidth, gumpHeight, &data[0]);
 
     WantUpdateContent = true;
 }
