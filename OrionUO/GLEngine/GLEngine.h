@@ -13,9 +13,7 @@ public:
     GLuint OldTexture = 0;
     bool Drawing = false;
     bool CanUseFrameBuffer = false;
-    bool CanUseBuffer = false;
     float SittingCharacterOffset = 8.0f;
-    GLuint PositionBuffer = 0;
     bool IgnoreHitMap = false;
 
 private:

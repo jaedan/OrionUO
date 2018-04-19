@@ -14,12 +14,6 @@ public:
 
     ushort OriginalGraphic = 0;
 
-    GLuint PositionBuffer = 0;
-
-    GLuint VertexBuffer = 0;
-
-    GLuint NormalBuffer = 0;
-
 private:
     int GetDirectionZ(int direction);
 

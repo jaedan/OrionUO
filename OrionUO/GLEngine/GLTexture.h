@@ -17,10 +17,6 @@ public:
     short ImageWidth = 0;
     short ImageHeight = 0;
 
-    GLuint VertexBuffer = 0;
-
-    GLuint MirroredVertexBuffer = 0;
-
     CGLTexture();
     virtual ~CGLTexture();
 
