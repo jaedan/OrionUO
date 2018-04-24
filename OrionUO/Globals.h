@@ -69,7 +69,7 @@ extern CGLTexture g_AuraTexture;
 
 extern bool g_LogoutAfterClick;
 
-extern int g_FrameDelay[2];
+extern int g_FrameDelay;
 
 extern uint g_LastSendTime;
 

@@ -23,7 +23,7 @@ CGLTexture g_AuraTexture;
 
 bool g_LogoutAfterClick = false;
 
-int g_FrameDelay[2] = { FRAME_DELAY_UNACTIVE_WINDOW, FRAME_DELAY_ACTIVE_WINDOW };
+int g_FrameDelay = FRAME_DELAY_ACTIVE_WINDOW;
 
 uint g_LastSendTime = 0;
 uint g_LastPacketTime = 0;

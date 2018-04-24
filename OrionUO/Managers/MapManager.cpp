@@ -561,7 +561,7 @@ void CMapManager::Init(bool delayed)
         maxBlockY = g_MapBlockSize[map].Height - 1;
 
     uint ticks = g_Ticks;
-    uint maxDelay = g_FrameDelay[1] / 2;
+    uint maxDelay = g_FrameDelay / 2;
 
     for (int i = minBlockX; i <= maxBlockX; i++)
     {

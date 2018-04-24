@@ -239,11 +239,6 @@ void CGumpOptions::InitToolTip()
             g_ToolTip.Set(L"Orion's FPS value");
             break;
         }
-        case ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW:
-        {
-            g_ToolTip.Set(L"Reduce FPS when Orion's window is unactive");
-            break;
-        }
         case ID_GO_P2_CHARACTERS_ANIMATION_DELAY:
         {
             g_ToolTip.Set(L"Original characters animation frame rate");
@@ -945,11 +940,6 @@ void CGumpOptions::DrawPage2()
     m_SliderClientFPS->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
 
     CGUICheckbox *checkbox = (CGUICheckbox *)html->Add(
-        new CGUICheckbox(ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW, 0x00D2, 0x00D3, 0x00D2, 140, 16));
-    checkbox->Checked = g_OptionsConfig.GetReduceFPSUnactiveWindow();
-    checkbox->SetTextParameters(0, L"Reduce FPS when UO window is unactive", g_OptionsTextColor);
-
-    checkbox = (CGUICheckbox *)html->Add(
         new CGUICheckbox(ID_GO_P2_CHARACTERS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 40));
     checkbox->Checked = g_OptionsConfig.StandartCharactersAnimationDelay;
     checkbox->SetTextParameters(0, L"Standard characters animation delay", g_OptionsTextColor);
@@ -2824,8 +2814,6 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.SetNoVegetation(state);
             else if (serial == ID_GO_P2_NO_ANIMATE_FIELDS)
                 g_OptionsConfig.SetNoAnimateFields(state);
-            else if (serial == ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW)
-                g_OptionsConfig.SetReduceFPSUnactiveWindow(state);
             else if (serial == ID_GO_P2_CHARACTERS_ANIMATION_DELAY)
                 g_OptionsConfig.StandartCharactersAnimationDelay = state;
             else if (serial == ID_GO_P2_ITEMS_ANIMATION_DELAY)
@@ -3450,8 +3438,6 @@ void CGumpOptions::ApplyPageChanges()
             g_ConfigManager.SetNoVegetation(g_OptionsConfig.GetNoVegetation());
             g_ConfigManager.SetNoAnimateFields(g_OptionsConfig.GetNoAnimateFields());
             g_ConfigManager.SetConsoleNeedEnter(g_OptionsConfig.GetConsoleNeedEnter());
-            g_ConfigManager.SetReduceFPSUnactiveWindow(
-                g_OptionsConfig.GetReduceFPSUnactiveWindow());
             g_ConfigManager.StandartCharactersAnimationDelay =
                 g_OptionsConfig.StandartCharactersAnimationDelay;
             g_ConfigManager.StandartItemsAnimationDelay =

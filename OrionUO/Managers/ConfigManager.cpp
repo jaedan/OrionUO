@@ -65,7 +65,6 @@ void CConfigManager::DefaultPage2()
 {
     WISPFUN_DEBUG("c138_f4");
     m_ClientFPS = 32;
-    m_ReduceFPSUnactiveWindow = true;
     StandartCharactersAnimationDelay = false;
     StandartItemsAnimationDelay = true;
     AutomaticallyOpenDoors = true;
@@ -269,12 +268,9 @@ void CConfigManager::SetClientFPS(uchar val)
         else if (m_ClientFPS > MAX_FPS_LIMIT)
             m_ClientFPS = MAX_FPS_LIMIT;
 
-        g_FrameDelay[1] = 1000 / m_ClientFPS;
+        g_FrameDelay = 1000 / m_ClientFPS;
 
-        if (!m_ReduceFPSUnactiveWindow)
-            g_FrameDelay[0] = g_FrameDelay[1];
-
-        g_OrionWindow.SetRenderTimerDelay(g_FrameDelay[g_OrionWindow.IsActive()]);
+        g_OrionWindow.SetRenderTimerDelay(g_FrameDelay);
     }
 }
 
@@ -371,22 +367,6 @@ void CConfigManager::SetDrawAuraState(uchar val)
         state = DAS_NEVER;
 
     m_DrawAuraState = state;
-}
-
-void CConfigManager::SetReduceFPSUnactiveWindow(bool val)
-{
-    WISPFUN_DEBUG("c138_f20");
-    if (this == &g_ConfigManager)
-    {
-        if (val)
-            g_FrameDelay[0] = FRAME_DELAY_UNACTIVE_WINDOW;
-        else
-            g_FrameDelay[0] = g_FrameDelay[1];
-
-        g_OrionWindow.SetRenderTimerDelay(g_FrameDelay[g_OrionWindow.IsActive()]);
-    }
-
-    m_ReduceFPSUnactiveWindow = val;
 }
 
 void CConfigManager::SetConsoleNeedEnter(bool val)
@@ -764,7 +744,6 @@ int CConfigManager::GetConfigKeyCode(const string &key)
                                              "DisableNewTargetSystem",
                                              "ItemPropertiesMode",
                                              "ItemPropertiesIcon",
-                                             "ReduceFPSUnactiveWindow",
                                              "HoldShiftForContextMenus",
                                              "HoldShiftForEnablePathfind",
                                              "ContainerDefaultX",
@@ -1081,9 +1060,6 @@ bool CConfigManager::Load(const string &path)
                 case CMKC_ITEMP_ROPERTIES_ICON:
                     m_ItemPropertiesIcon = ToBool(strings[1]);
                     break;
-                case CMKC_REDUCE_FPS_UNACTIVE_WINDOW:
-                    SetReduceFPSUnactiveWindow(ToBool(strings[1]));
-                    break;
                 case CMKC_HOLD_SHIFT_FOR_CONTEXT_MENUS:
                     HoldShiftForContextMenus = ToBool(strings[1]);
                     break;
@@ -1381,7 +1357,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("DisableNewTargetSystem", DisableNewTargetSystem);
         writter.WriteInt("ItemPropertiesMode", m_ItemPropertiesMode);
         writter.WriteBool("ItemPropertiesIcon", m_ItemPropertiesIcon);
-        writter.WriteBool("ReduceFPSUnactiveWindow", m_ReduceFPSUnactiveWindow);
         writter.WriteBool("HoldShiftForContextMenus", HoldShiftForContextMenus);
         writter.WriteBool("HoldShiftForEnablePathfind", HoldShiftForEnablePathfind);
         writter.WriteInt("ContainerDefaultX", g_ContainerRect.DefaultX);
