@@ -41,8 +41,6 @@ public:
     bool RemoveTextWithBlending = false;
     uchar DrawStatusConditionState = 0;
     uchar DrawStatusConditionValue = 0;
-    bool StandartCharactersAnimationDelay = false;
-    bool StandartItemsAnimationDelay = false;
     bool LockGumpsMoving = false;
     uchar HiddenCharactersRenderMode = 0;
     uchar HiddenAlpha = 0;
@@ -321,8 +319,6 @@ public:
         CMKC_IGNORE_ALLIANCE_MESSAGE,
         CMKC_DARK_NIGHTS,
         CMKC_COLORED_LIGHTING,
-        CMKC_STANDART_CHARACTERS_ANIMATION_DELAY,
-        CMKC_STANDART_ITEMS_ANIMATION_DELAY,
         CMKC_LOCK_RESIZING_GAME_WINDOW,
         CMKC_LOCK_GUMPS_MOVING,
         CMKC_INNOCENT_COLOR,

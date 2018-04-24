@@ -940,16 +940,6 @@ void CGumpOptions::DrawPage2()
     m_SliderClientFPS->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
 
     CGUICheckbox *checkbox = (CGUICheckbox *)html->Add(
-        new CGUICheckbox(ID_GO_P2_CHARACTERS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 40));
-    checkbox->Checked = g_OptionsConfig.StandartCharactersAnimationDelay;
-    checkbox->SetTextParameters(0, L"Standard characters animation delay", g_OptionsTextColor);
-
-    checkbox = (CGUICheckbox *)html->Add(
-        new CGUICheckbox(ID_GO_P2_ITEMS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 60));
-    checkbox->Checked = g_OptionsConfig.StandartItemsAnimationDelay;
-    checkbox->SetTextParameters(0, L"Standard items animation delay", g_OptionsTextColor);
-
-    checkbox = (CGUICheckbox *)html->Add(
         new CGUICheckbox(ID_GO_P2_AUTOMATICALLY_OPEN_DOORS, 0x00D2, 0x00D3, 0x00D2, 0, 80));
     checkbox->Checked = g_OptionsConfig.AutomaticallyOpenDoors;
     checkbox->SetTextParameters(0, L"Automatically Open Doors", g_OptionsTextColor);
@@ -2814,10 +2804,6 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.SetNoVegetation(state);
             else if (serial == ID_GO_P2_NO_ANIMATE_FIELDS)
                 g_OptionsConfig.SetNoAnimateFields(state);
-            else if (serial == ID_GO_P2_CHARACTERS_ANIMATION_DELAY)
-                g_OptionsConfig.StandartCharactersAnimationDelay = state;
-            else if (serial == ID_GO_P2_ITEMS_ANIMATION_DELAY)
-                g_OptionsConfig.StandartItemsAnimationDelay = state;
             else if (serial == ID_GO_P2_LOCK_GUMP_MOVING)
                 g_OptionsConfig.LockGumpsMoving = state;
             else if (serial == ID_GO_P2_CONSOLE_ENTER)
@@ -3438,10 +3424,6 @@ void CGumpOptions::ApplyPageChanges()
             g_ConfigManager.SetNoVegetation(g_OptionsConfig.GetNoVegetation());
             g_ConfigManager.SetNoAnimateFields(g_OptionsConfig.GetNoAnimateFields());
             g_ConfigManager.SetConsoleNeedEnter(g_OptionsConfig.GetConsoleNeedEnter());
-            g_ConfigManager.StandartCharactersAnimationDelay =
-                g_OptionsConfig.StandartCharactersAnimationDelay;
-            g_ConfigManager.StandartItemsAnimationDelay =
-                g_OptionsConfig.StandartItemsAnimationDelay;
             g_ConfigManager.LockGumpsMoving = g_OptionsConfig.LockGumpsMoving;
             g_ConfigManager.HiddenCharactersRenderMode = g_OptionsConfig.HiddenCharactersRenderMode;
             g_ConfigManager.HiddenAlpha = g_OptionsConfig.HiddenAlpha;
