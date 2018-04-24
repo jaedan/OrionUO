@@ -2557,19 +2557,16 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 		}
 		case VKI_STANDARD_CHARACTERS_DELAY:
 		{
+			// Only gettable, not settable
 			if (value == -1)
-				value = g_ConfigManager.StandartCharactersAnimationDelay;
-			else
-				g_ConfigManager.StandartCharactersAnimationDelay = (value != 0);
+				value = CHARACTER_ANIMATION_DELAY;
 
 			break;
 		}
 		case VKI_STANDARD_ITEMS_DELAY:
 		{
 			if (value == -1)
-				value = g_ConfigManager.StandartItemsAnimationDelay;
-			else
-				g_ConfigManager.StandartItemsAnimationDelay = (value != 0);
+				value = ITEM_ANIMATION_DELAY;
 
 			break;
 		}
@@ -3930,7 +3927,7 @@ void COrion::ProcessStaticAnimList()
 	WISPFUN_DEBUG("c194_f53");
 	if (m_AnimData.size() && g_ProcessStaticAnimationTimer < g_Ticks)
 	{
-		int delay = (g_ConfigManager.StandartItemsAnimationDelay ? ORIGINAL_ITEMS_ANIMATION_DELAY : ORION_ITEMS_ANIMATION_DELAY);
+		int delay = ITEM_ANIMATION_DELAY;
 		bool noAnimateFields = g_ConfigManager.GetNoAnimateFields();
 		uint nextTime = g_Ticks + 500;
 

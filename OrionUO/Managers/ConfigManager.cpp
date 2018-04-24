@@ -78,8 +78,6 @@ void CConfigManager::DefaultPage2()
 {
 	WISPFUN_DEBUG("c138_f4");
 	m_ClientFPS = 60;
-	StandartCharactersAnimationDelay = false;
-	StandartItemsAnimationDelay = true;
 	RemoveTextWithBlending = true;
 	m_DrawStatusState = DCSS_NO_DRAW;
 	DrawStatusConditionState = DCSCS_LOWER;
@@ -777,8 +775,6 @@ int CConfigManager::GetConfigKeyCode(const string &key)
 		"IgnoreAllianceMessage",
 		"DarkNights",
 		"ColoredLighting",
-		"StandartCharactersAnimationDelay",
-		"StandartItemsAnimationDelay",
 		"LockResizingGameWindow",
 		"LockGumpsMoving",
 		"InnocentColor",
@@ -1132,12 +1128,6 @@ bool CConfigManager::Load(const string &path)
 				case CMKC_COLORED_LIGHTING:
 					ColoredLighting = ToBool(strings[1]);
 					break;
-				case CMKC_STANDART_CHARACTERS_ANIMATION_DELAY:
-					StandartCharactersAnimationDelay = ToBool(strings[1]);
-					break;
-				case CMKC_STANDART_ITEMS_ANIMATION_DELAY:
-					StandartItemsAnimationDelay = ToBool(strings[1]);
-					break;
 				case CMKC_LOCK_RESIZING_GAME_WINDOW:
 					LockResizingGameWindow = ToBool(strings[1]);
 					break;
@@ -1399,8 +1389,6 @@ void CConfigManager::Save(const string &path)
 		writter.WriteBool("IgnoreAllianceMessage", IgnoreAllianceMessage);
 		writter.WriteBool("DarkNights", DarkNights);
 		writter.WriteBool("ColoredLighting", ColoredLighting);
-		writter.WriteBool("StandartCharactersAnimationDelay", StandartCharactersAnimationDelay);
-		writter.WriteBool("StandartItemsAnimationDelay", StandartItemsAnimationDelay);
 		writter.WriteBool("LockResizingGameWindow", LockResizingGameWindow);
 		writter.WriteBool("LockGumpsMoving", LockGumpsMoving);
 

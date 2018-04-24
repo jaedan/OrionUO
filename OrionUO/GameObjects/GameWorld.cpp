@@ -69,8 +69,8 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 				}
 			}
 
-			if (g_ConfigManager.StandartCharactersAnimationDelay)
-				delaySound = delaySound * 13 / 10;
+			delaySound = delaySound * 13 / 10;
+
 			soundID += incID;
 			gc->StepSoundOffset = (incID + 1) % 2;
 
@@ -88,7 +88,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 void CGameWorld::ProcessAnimation()
 {
 	WISPFUN_DEBUG("c22_f4");
-	int delay = (g_ConfigManager.StandartCharactersAnimationDelay ? ORIGINAL_CHARACTERS_ANIMATION_DELAY : ORION_CHARACTERS_ANIMATION_DELAY);
+	int delay = CHARACTER_ANIMATION_DELAY;
 	g_AnimCharactersDelayValue = (float)delay;
 	deque<CGameObject*> toRemove;
 

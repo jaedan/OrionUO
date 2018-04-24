@@ -80,11 +80,9 @@ const int DRAG_PIXEL_RANGE_WITH_TARGET = 3;
 
 static const int DEATH_MUSIC_INDEX = 42;
 
-static const int ORIGINAL_ITEMS_ANIMATION_DELAY = 80;
-static const int ORION_ITEMS_ANIMATION_DELAY = 50;
+static const int ITEM_ANIMATION_DELAY = 80;
 
-static const int ORIGINAL_CHARACTERS_ANIMATION_DELAY = 100;
-static const int ORION_CHARACTERS_ANIMATION_DELAY = 70;
+static const int CHARACTER_ANIMATION_DELAY = 100;
 
 static const ushort FIELD_REPLACE_GRAPHIC = 0x1826;
 
