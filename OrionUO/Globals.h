@@ -81,7 +81,7 @@ extern CGLTexture g_AuraTexture;
 extern bool g_LogoutAfterClick;
 
 //!Значения задержек в массиве
-extern int g_FrameDelay[2];
+extern int g_FrameDelay;
 
 //!Время последней отправки пакета серверу
 extern uint g_LastSendTime;

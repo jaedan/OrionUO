@@ -56,7 +56,6 @@ private:
 	static const int ID_GO_P1_BACKGROUND_SOUND = 106;
 	
 	static const int ID_GO_P2_CLIENT_FPS = 200;
-	static const int ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW = 201;
 	static const int ID_GO_P2_CHARACTERS_ANIMATION_DELAY = 202;
 	static const int ID_GO_P2_ITEMS_ANIMATION_DELAY = 203;
 	static const int ID_GO_P2_ENABLE_SCALING = 204;

@@ -59,8 +59,17 @@ void COrionWindow::SetRenderTimerDelay(int delay)
 	WISPFUN_DEBUG("c195_f1");
 	WISP_THREADED_TIMER::CThreadedTimer *timer = GetThreadedTimer(RENDER_TIMER_ID);
 
-	if (timer != NULL)
-		timer->ChangeDelay(delay);
+	if (timer == NULL) {
+		return;
+	}
+
+	if (delay == 0) {
+		timer->Pause();
+		return;
+	}
+
+	timer->ChangeDelay(delay);
+	timer->Resume();
 }
 //----------------------------------------------------------------------------------
 bool COrionWindow::OnCreate()
@@ -300,7 +309,6 @@ void COrionWindow::OnActivate()
 {
 	WISPFUN_DEBUG("c195_f17");
 	g_Orion.ResumeSound();
-	SetRenderTimerDelay(g_FrameDelay[1]);
 
 	if (!g_PluginManager.Empty())
 		g_PluginManager.WindowProc(Handle, WM_NCACTIVATE, 1, 0);
@@ -311,9 +319,6 @@ void COrionWindow::OnDeactivate()
 	WISPFUN_DEBUG("c195_f18");
 	if (!g_ConfigManager.BackgroundSound)
 		g_Orion.PauseSound();
-	
-	if (g_ConfigManager.GetReduceFPSUnactiveWindow())
-		SetRenderTimerDelay(g_FrameDelay[0]);
 
 	if (!g_PluginManager.Empty())
 		g_PluginManager.WindowProc(Handle, WM_NCACTIVATE, 0, 0);
@@ -376,9 +381,11 @@ void COrionWindow::OnShow(bool show)
 
 	if (show) {
 		/* Showing Window */
+		SetRenderTimerDelay(g_FrameDelay);
 		g_Orion.ResumeSound();
 	} else {
 		/* Hiding Window */
+		SetRenderTimerDelay(0);
 		g_Orion.PauseSound();
 	}
 
@@ -389,11 +396,13 @@ void COrionWindow::OnShow(bool show)
 void COrionWindow::OnMaximize()
 {
 	/* Maximizing */
+	SetRenderTimerDelay(g_FrameDelay);
 	g_Orion.ResumeSound();
 }
 //----------------------------------------------------------------------------------
 void COrionWindow::OnMinimize()
 {
+	SetRenderTimerDelay(0);
 	g_Orion.PauseSound();
 }
 //----------------------------------------------------------------------------------

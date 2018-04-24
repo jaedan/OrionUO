@@ -25,7 +25,6 @@ protected:
 	bool m_MarkingCaves = false;
 	bool m_NoVegetation = false;
 	bool m_NoAnimateFields = false;
-	bool m_ReduceFPSUnactiveWindow = false;
 	bool m_ConsoleNeedEnter = false;
 	uchar m_SpellIconAlpha = 0;
 	bool m_OldStyleStatusbar = false;
@@ -178,9 +177,6 @@ public:
 
 	bool GetNoAnimateFields() { return m_NoAnimateFields; };
 	void SetNoAnimateFields(bool val);
-
-	bool GetReduceFPSUnactiveWindow() { return m_ReduceFPSUnactiveWindow; };
-	void SetReduceFPSUnactiveWindow(bool val);
 
 	bool GetConsoleNeedEnter() { return m_ConsoleNeedEnter; };
 	void SetConsoleNeedEnter(bool val);
@@ -340,7 +336,6 @@ public:
 		CMKC_ITEMP_ROPERTIES_MODE,
 		CMKC_ITEMP_ROPERTIES_ICON,
 		CMKC_OBJECT_HANDLES,
-		CMKC_REDUCE_FPS_UNACTIVE_WINDOW,
 		CMKC_HOLD_SHIFT_FOR_CONTEXT_MENUS,
 		CMKC_HOLD_SHIFT_FOR_ENABLE_PATHFIND,
 		CMKC_CONTAINER_DEFAULT_X,
