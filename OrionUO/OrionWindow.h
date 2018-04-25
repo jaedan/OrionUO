@@ -50,6 +50,8 @@ protected:
 	virtual void OnKeyUp(const WPARAM &wParam, const LPARAM &lParam);
 	virtual HRESULT OnRepaint(const WPARAM &wParam, const LPARAM &lParam);
 	virtual void OnShow(bool show);
+	virtual void OnMaximize();
+	virtual void OnMinimize();
 	virtual void OnSetText(const LPARAM &lParam);
 	virtual void OnTimer(uint id);
 	virtual void OnThreadedTimer(uint nowTime, WISP_THREADED_TIMER::CThreadedTimer *timer);

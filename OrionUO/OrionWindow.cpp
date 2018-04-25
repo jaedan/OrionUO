@@ -373,8 +373,28 @@ HRESULT COrionWindow::OnRepaint(const WPARAM &wParam, const LPARAM &lParam)
 void COrionWindow::OnShow(bool show)
 {
 	WISPFUN_DEBUG("c195_f23");
+
+	if (show) {
+		/* Showing Window */
+		g_Orion.ResumeSound();
+	} else {
+		/* Hiding Window */
+		g_Orion.PauseSound();
+	}
+
 	if (!g_PluginManager.Empty())
 		g_PluginManager.WindowProc(Handle, WM_SHOWWINDOW, (WPARAM)show, 0);
+}
+//----------------------------------------------------------------------------------
+void COrionWindow::OnMaximize()
+{
+	/* Maximizing */
+	g_Orion.ResumeSound();
+}
+//----------------------------------------------------------------------------------
+void COrionWindow::OnMinimize()
+{
+	g_Orion.PauseSound();
 }
 //----------------------------------------------------------------------------------
 void COrionWindow::OnSetText(const LPARAM &lParam)

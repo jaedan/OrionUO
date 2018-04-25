@@ -71,7 +71,7 @@ void CConfigManager::DefaultPage1()
 	CombatMusic = true;
 	m_SoundVolume = 255;
 	m_MusicVolume = 255;
-	BackgroundSound = false;
+	BackgroundSound = true;
 }
 //---------------------------------------------------------------------------
 void CConfigManager::DefaultPage2()
