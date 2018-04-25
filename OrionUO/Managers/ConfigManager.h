@@ -38,7 +38,7 @@ protected:
 public:
     bool FootstepsSound = true;
     bool CombatMusic = true;
-    bool BackgroundSound = false;
+    bool BackgroundSound = true;
     bool RemoveTextWithBlending = false;
     uchar DrawStatusConditionState = 0;
     uchar DrawStatusConditionValue = 0;
