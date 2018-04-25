@@ -238,8 +238,6 @@ public:
 
     ushort GetColorByNotoriety(uchar notoriety);
 
-    bool LoadBin(string path);
-
     int GetConfigKeyCode(const string &key);
 
     enum CONFIG_MANAGER_KEY_CODE
