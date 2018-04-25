@@ -52,7 +52,6 @@ private:
     static const int ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW = 201;
     static const int ID_GO_P2_CHARACTERS_ANIMATION_DELAY = 202;
     static const int ID_GO_P2_ITEMS_ANIMATION_DELAY = 203;
-    static const int ID_GO_P2_ENABLE_SCALING = 204;
     static const int ID_GO_P2_REMOVE_TEXT_WITH_BLENDING = 205;
     static const int ID_GO_P2_NO_DRAW_CHARACTERS_STATUS = 206;
     static const int ID_GO_P2_DRAW_CHARACTERS_STATUS_TOP = 207;

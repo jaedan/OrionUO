@@ -11,7 +11,6 @@ protected:
     uchar m_SoundVolume = 255;
     uchar m_MusicVolume = 255;
     uchar m_ClientFPS = 32;
-    bool m_UseScaling = false;
     uchar m_DrawStatusState = 0;
     bool m_DrawStumps = false;
     bool m_MarkingCaves = false;
@@ -153,9 +152,6 @@ public:
     uchar GetClientFPS() { return m_ClientFPS; };
     void SetClientFPS(uchar val);
 
-    bool GetUseScaling() { return m_UseScaling; };
-    void SetUseScaling(bool val);
-
     uchar GetDrawStatusState() { return m_DrawStatusState; };
     void SetDrawStatusState(uchar val);
 
@@ -250,7 +246,6 @@ public:
         CMKC_COMBAT_MUSIC,
         CMKC_BACKGROUND_SOUND,
         CMKC_CLIENT_FPS,
-        CMKC_USE_SCALING,
         CMKC_REMOVE_TEXT_WITH_BLENDING,
         CMKC_DRAW_STATUS_STATE,
         CMKC_DRAW_STUMPS,

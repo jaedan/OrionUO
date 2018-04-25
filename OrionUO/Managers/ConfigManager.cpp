@@ -68,7 +68,6 @@ void CConfigManager::DefaultPage2()
     m_ReduceFPSUnactiveWindow = true;
     StandartCharactersAnimationDelay = false;
     StandartItemsAnimationDelay = true;
-    m_UseScaling = false;
     RemoveTextWithBlending = true;
     m_DrawStatusState = DCSS_NO_DRAW;
     DrawStatusConditionState = DCSCS_LOWER;
@@ -277,15 +276,6 @@ void CConfigManager::SetClientFPS(uchar val)
 
         g_OrionWindow.SetRenderTimerDelay(g_FrameDelay[g_OrionWindow.IsActive()]);
     }
-}
-
-void CConfigManager::SetUseScaling(bool val)
-{
-    WISPFUN_DEBUG("c138_f16");
-    m_UseScaling = val;
-
-    if (!val && this == &g_ConfigManager)
-        g_GlobalScale = 1.0;
 }
 
 void CConfigManager::SetDrawStatusState(uchar val)
@@ -712,7 +702,6 @@ int CConfigManager::GetConfigKeyCode(const string &key)
                                              "CombatMusic",
                                              "BackgroundSound",
                                              "ClientFPS",
-                                             "UseScaling",
                                              "RemoveTextWithBlending",
                                              "DrawStatusState",
                                              "DrawStumps",
@@ -888,9 +877,6 @@ bool CConfigManager::Load(const string &path)
 
                 case CMKC_CLIENT_FPS:
                     SetClientFPS(atoi(strings[1].c_str()));
-                    break;
-                case CMKC_USE_SCALING:
-                    m_UseScaling = ToBool(strings[1]);
                     break;
                 case CMKC_REMOVE_TEXT_WITH_BLENDING:
                     RemoveTextWithBlending = ToBool(strings[1]);
@@ -1326,7 +1312,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("BackgroundSound", BackgroundSound);
 
         writter.WriteInt("ClientFPS", m_ClientFPS);
-        writter.WriteBool("UseScaling", m_UseScaling);
         writter.WriteBool("RemoveTextWithBlending", RemoveTextWithBlending);
         writter.WriteInt("DrawStatusState", m_DrawStatusState);
         writter.WriteBool("DrawStumps", m_DrawStumps);
