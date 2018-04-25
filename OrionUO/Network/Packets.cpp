@@ -137,13 +137,7 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
         serverIndex = (uchar)server->Index;
 
     WriteUInt8(serverIndex);
-
-    uchar location = g_SelectTownScreen.m_City->LocationIndex;
-
-    if (g_PacketManager.GetClientVersion() < CV_70130)
-        location--;
-
-    WriteUInt8(location);
+    WriteUInt8(0);
 
     uint slot = 0xFFFFFFFF;
     IFOR (i, 0, g_CharacterList.Count)

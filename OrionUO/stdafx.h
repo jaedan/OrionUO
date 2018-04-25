@@ -205,7 +205,6 @@ class CGump;
 #include "Gumps/GumpScreenGame.h"
 #include "Gumps/GumpScreenMain.h"
 #include "Gumps/GumpScreenSelectProfession.h"
-#include "Gumps/GumpScreenSelectTown.h"
 #include "Gumps/GumpScreenServer.h"
 #include "Gumps/GumpSecureTrading.h"
 #include "Gumps/GumpSelectFont.h"
@@ -258,7 +257,6 @@ class CGump;
 #include "ScreenStages/GameScreen.h"
 #include "ScreenStages/MainScreen.h"
 #include "ScreenStages/SelectProfessionScreen.h"
-#include "ScreenStages/SelectTownScreen.h"
 #include "ScreenStages/ServerScreen.h"
 
 #endif

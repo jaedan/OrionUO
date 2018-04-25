@@ -274,7 +274,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="Gumps\GumpScreenGame.h" />
     <ClInclude Include="Gumps\GumpScreenMain.h" />
     <ClInclude Include="Gumps\GumpScreenSelectProfession.h" />
-    <ClInclude Include="Gumps\GumpScreenSelectTown.h" />
     <ClInclude Include="Gumps\GumpScreenServer.h" />
     <ClInclude Include="Gumps\GumpSecureTrading.h" />
     <ClInclude Include="Gumps\GumpSelectColor.h" />
@@ -347,7 +346,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="ScreenStages\GameScreen.h" />
     <ClInclude Include="ScreenStages\MainScreen.h" />
     <ClInclude Include="ScreenStages\SelectProfessionScreen.h" />
-    <ClInclude Include="ScreenStages\SelectTownScreen.h" />
     <ClInclude Include="ScreenStages\ServerScreen.h" />
     <ClInclude Include="ScreenshotBuilder.h" />
     <ClInclude Include="SelectedObject.h" />
@@ -517,7 +515,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="Gumps\GumpScreenGame.cpp" />
     <ClCompile Include="Gumps\GumpScreenMain.cpp" />
     <ClCompile Include="Gumps\GumpScreenSelectProfession.cpp" />
-    <ClCompile Include="Gumps\GumpScreenSelectTown.cpp" />
     <ClCompile Include="Gumps\GumpScreenServer.cpp" />
     <ClCompile Include="Gumps\GumpSecureTrading.cpp" />
     <ClCompile Include="Gumps\GumpSelectColor.cpp" />
@@ -586,7 +583,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="ScreenStages\GameScreen.cpp" />
     <ClCompile Include="ScreenStages\MainScreen.cpp" />
     <ClCompile Include="ScreenStages\SelectProfessionScreen.cpp" />
-    <ClCompile Include="ScreenStages\SelectTownScreen.cpp" />
     <ClCompile Include="ScreenStages\ServerScreen.cpp" />
     <ClCompile Include="ScreenshotBuilder.cpp" />
     <ClCompile Include="SelectedObject.cpp" />

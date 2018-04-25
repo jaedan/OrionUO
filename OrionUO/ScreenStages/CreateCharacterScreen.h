@@ -30,7 +30,6 @@ public:
     static const uchar ID_SMOOTH_CCS_QUIT = 1;
     static const uchar ID_SMOOTH_CCS_GO_SCREEN_CHARACTER = 2;
     static const uchar ID_SMOOTH_CCS_GO_SCREEN_CONNECT = 3;
-    static const uchar ID_SMOOTH_CCS_GO_SCREEN_SELECT_TOWN = 4;
 
     void Init();
 

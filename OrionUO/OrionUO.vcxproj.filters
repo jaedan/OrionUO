@@ -390,12 +390,6 @@
     <ClInclude Include="GUI\GUIHitBox.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenStages\SelectTownScreen.h">
-      <Filter>Header Files\ScreenStages</Filter>
-    </ClInclude>
-    <ClInclude Include="Gumps\GumpScreenSelectTown.h">
-      <Filter>Header Files\Gumps</Filter>
-    </ClInclude>
     <ClInclude Include="RenderWorldObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1108,12 +1102,6 @@
     </ClCompile>
     <ClCompile Include="GUI\GUIHitBox.cpp">
       <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ScreenStages\SelectTownScreen.cpp">
-      <Filter>Source Files\ScreenStages</Filter>
-    </ClCompile>
-    <ClCompile Include="Gumps\GumpScreenSelectTown.cpp">
-      <Filter>Source Files\Gumps</Filter>
     </ClCompile>
     <ClCompile Include="RenderWorldObject.cpp">
       <Filter>Source Files</Filter>

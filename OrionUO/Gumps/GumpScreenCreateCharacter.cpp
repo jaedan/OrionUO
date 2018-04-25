@@ -479,12 +479,8 @@ void CGumpScreenCreateCharacter::GUMP_BUTTON_EVENT_C
             CCreateCharacterScreen::ID_SMOOTH_CCS_GO_SCREEN_CHARACTER);
     else if (serial == ID_CCS_ARROW_NEXT)
     {
-        if (g_EntryPointer->Length() < 2)
-            g_CreateCharacterScreen.CreateSmoothAction(
-                CCreateCharacterScreen::ID_SMOOTH_CCS_GO_SCREEN_CONNECT);
-        else
-            g_CreateCharacterScreen.CreateSmoothAction(
-                CCreateCharacterScreen::ID_SMOOTH_CCS_GO_SCREEN_SELECT_TOWN);
+        g_CreateCharacterScreen.CreateSmoothAction(
+            CCreateCharacterScreen::ID_SMOOTH_CCS_GO_SCREEN_CONNECT);
     }
     else if (serial == ID_CCS_FEMALE_BUTTON)
     {

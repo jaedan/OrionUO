@@ -53,13 +53,9 @@ void CCreateCharacterScreen::ProcessSmoothAction(uchar action)
         g_Orion.InitScreen(GS_CHARACTER);
     else if (action == ID_SMOOTH_CCS_GO_SCREEN_CONNECT)
     {
+        CPacketCreateCharacter(Name).Send();
         g_Orion.InitScreen(GS_GAME_CONNECT);
-        g_ConnectionScreen.SetType(CST_GAME);
-        g_ConnectionScreen.SetConnectionFailed(true);
-        g_ConnectionScreen.SetErrorCode(1);
     }
-    else if (action == ID_SMOOTH_CCS_GO_SCREEN_SELECT_TOWN)
-        g_Orion.InitScreen(GS_SELECT_TOWN);
 }
 
 void CCreateCharacterScreen::OnLeftMouseButtonDown()

@@ -429,11 +429,6 @@ void COrion::InitScreen(GAME_STATE state)
             g_CurrentScreen = &g_CreateCharacterScreen;
             break;
         }
-        case GS_SELECT_TOWN:
-        {
-            g_CurrentScreen = &g_SelectTownScreen;
-            break;
-        }
         case GS_GAME_CONNECT:
         {
             g_CurrentScreen = &g_ConnectionScreen;
