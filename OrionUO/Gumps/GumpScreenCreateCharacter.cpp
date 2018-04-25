@@ -413,29 +413,6 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         Add(new CGUIButton(ID_CCS_MALE_BUTTON, 0x0710, 0x0711, 0x0712, 445, 435));
         Add(new CGUIButton(ID_CCS_FEMALE_BUTTON, 0x070D, 0x070E, 0x070F, 445, 455));
-
-        Add(new CGUIGroup(2));
-
-        radio = (CGUIRadio *)Add(
-            new CGUIRadio(ID_CCS_HUMAN_RACE_BUTTON, 0x0768, 0x0767, 0x0767, 180, 435));
-        radio->Checked = (g_CreateCharacterManager.GetRace() == RT_HUMAN);
-        radio = (CGUIRadio *)Add(
-            new CGUIRadio(ID_CCS_ELF_RACE_BUTTON, 0x0768, 0x0767, 0x0767, 180, 455));
-        radio->Checked = (g_CreateCharacterManager.GetRace() == RT_ELF);
-
-        Add(new CGUIButton(ID_CCS_HUMAN_RACE_BUTTON, 0x0702, 0x0703, 0x0704, 200, 435));
-        Add(new CGUIButton(ID_CCS_ELF_RACE_BUTTON, 0x0705, 0x0706, 0x0707, 200, 455));
-
-        if (g_PacketManager.GetClientVersion() >= CV_60144)
-        {
-            radio = (CGUIRadio *)Add(
-                new CGUIRadio(ID_CCS_GARGOYLE_RACE_BUTTON, 0x0768, 0x0767, 0x0767, 60, 435));
-            radio->Checked = (g_CreateCharacterManager.GetRace() == RT_GARGOYLE);
-
-            Add(new CGUIButton(ID_CCS_GARGOYLE_RACE_BUTTON, 0x07D3, 0x07D4, 0x07D5, 80, 435));
-        }
-
-        Add(new CGUIGroup(0));
     }
 }
 
@@ -494,24 +471,6 @@ void CGumpScreenCreateCharacter::GUMP_BUTTON_EVENT_C
         WantUpdateContent = true;
         g_CreateCharacterScreen.SetColorSelection(0);
     }
-    else if (serial == ID_CCS_HUMAN_RACE_BUTTON)
-    {
-        g_CreateCharacterManager.SetRace(RT_HUMAN);
-        WantUpdateContent = true;
-        g_CreateCharacterScreen.SetColorSelection(0);
-    }
-    else if (serial == ID_CCS_ELF_RACE_BUTTON)
-    {
-        g_CreateCharacterManager.SetRace(RT_ELF);
-        WantUpdateContent = true;
-        g_CreateCharacterScreen.SetColorSelection(0);
-    }
-    else if (serial == ID_CCS_GARGOYLE_RACE_BUTTON)
-    {
-        g_CreateCharacterManager.SetRace(RT_GARGOYLE);
-        WantUpdateContent = true;
-        g_CreateCharacterScreen.SetColorSelection(0);
-    }
 }
 
 void CGumpScreenCreateCharacter::GUMP_RADIO_EVENT_C
@@ -523,12 +482,6 @@ void CGumpScreenCreateCharacter::GUMP_RADIO_EVENT_C
             g_CreateCharacterManager.SetFemale(false);
         else if (serial == ID_CCS_FEMALE_BUTTON)
             g_CreateCharacterManager.SetFemale(true);
-        else if (serial == ID_CCS_HUMAN_RACE_BUTTON)
-            g_CreateCharacterManager.SetRace(RT_HUMAN);
-        else if (serial == ID_CCS_ELF_RACE_BUTTON)
-            g_CreateCharacterManager.SetRace(RT_ELF);
-        else if (serial == ID_CCS_GARGOYLE_RACE_BUTTON)
-            g_CreateCharacterManager.SetRace(RT_GARGOYLE);
 
         WantUpdateContent = true;
         g_CreateCharacterScreen.SetColorSelection(0);

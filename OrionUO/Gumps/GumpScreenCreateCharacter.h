@@ -12,9 +12,6 @@ private:
     static const int ID_CCS_NAME_FIELD = 4;
     static const int ID_CCS_MALE_BUTTON = 5;
     static const int ID_CCS_FEMALE_BUTTON = 6;
-    static const int ID_CCS_HUMAN_RACE_BUTTON = 7;
-    static const int ID_CCS_ELF_RACE_BUTTON = 8;
-    static const int ID_CCS_GARGOYLE_RACE_BUTTON = 9;
 
     static const int ID_CCS_SKIN_TONE = 10;
     static const int ID_CCS_SHIRT_COLOR = 11;
