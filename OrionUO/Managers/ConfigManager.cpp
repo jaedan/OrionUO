@@ -64,7 +64,7 @@ void CConfigManager::DefaultPage1()
 void CConfigManager::DefaultPage2()
 {
     WISPFUN_DEBUG("c138_f4");
-    m_ClientFPS = 32;
+    m_ClientFPS = 60;
     StandartCharactersAnimationDelay = false;
     StandartItemsAnimationDelay = true;
     AutomaticallyOpenDoors = true;

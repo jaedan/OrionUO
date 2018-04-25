@@ -921,7 +921,7 @@ void CGumpOptions::DrawPage2()
         (CGUIHTMLGump *)Add(new CGUIHTMLGump(0xFFFFFFFF, 0x0BB8, 64, 90, 500, 300, false, true));
 
     text = (CGUIText *)html->Add(new CGUIText(g_OptionsTextColor, 0, 0));
-    text->CreateTextureW(0, L"FPS rate:");
+    text->CreateTextureW(0, L"FPS Limit:");
 
     m_SliderClientFPS = (CGUISlider *)html->Add(new CGUISlider(
         ID_GO_P2_CLIENT_FPS,
@@ -933,7 +933,7 @@ void CGumpOptions::DrawPage2()
         false,
         0,
         21,
-        90,
+        120,
         MIN_FPS_LIMIT,
         MAX_FPS_LIMIT,
         g_OptionsConfig.GetClientFPS()));
