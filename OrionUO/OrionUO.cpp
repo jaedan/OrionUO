@@ -2515,9 +2515,7 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 		case VKI_USE_SCALING_GAME_WINDOW:
 		{
 			if (value == -1)
-				value = g_ConfigManager.GetUseScaling();
-			else
-				g_ConfigManager.SetUseScaling((value != 0));
+				value = 1;
 
 			break;
 		}

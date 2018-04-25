@@ -80,7 +80,6 @@ void CConfigManager::DefaultPage2()
 	m_ClientFPS = 60;
 	StandartCharactersAnimationDelay = false;
 	StandartItemsAnimationDelay = true;
-	m_UseScaling = false;
 	RemoveTextWithBlending = true;
 	m_DrawStatusState = DCSS_NO_DRAW;
 	DrawStatusConditionState = DCSCS_LOWER;
@@ -286,15 +285,6 @@ void CConfigManager::SetClientFPS(uchar val)
 
 		g_OrionWindow.SetRenderTimerDelay(g_FrameDelay);
 	}
-}
-//---------------------------------------------------------------------------
-void CConfigManager::SetUseScaling(bool val)
-{
-	WISPFUN_DEBUG("c138_f16");
-	m_UseScaling = val;
-
-	if (!val && this == &g_ConfigManager)
-		g_GlobalScale = 1.0;
 }
 //---------------------------------------------------------------------------
 void CConfigManager::SetDrawStatusState(uchar val)
@@ -736,7 +726,6 @@ bool CConfigManager::LoadBin(string path)
 		blockSize = file.ReadInt8();
 		next += blockSize;
 
-		m_UseScaling = false;
 		RemoveTextWithBlending = true;
 		m_DrawStatusState = DCSS_NO_DRAW;
 		DrawStatusConditionState = DCSCS_LOWER;
@@ -774,7 +763,7 @@ bool CConfigManager::LoadBin(string path)
 			if (blockSize > 23)
 			{
 				SetClientFPS(file.ReadUInt8());
-				m_UseScaling = file.ReadUInt8();
+				file.ReadUInt8(); // Was use scaling
 				RemoveTextWithBlending = file.ReadUInt8();
 				m_DrawStatusState = file.ReadUInt8();
 				drawStumps = file.ReadUInt8();
@@ -844,7 +833,7 @@ bool CConfigManager::LoadBin(string path)
 
 				if (blockSize > 3)
 				{
-					m_UseScaling = file.ReadUInt8();
+					file.ReadUInt8(); // Was use scaling
 
 					if (blockSize > 4)
 					{
@@ -1220,7 +1209,6 @@ int CConfigManager::GetConfigKeyCode(const string &key)
 		"CombatMusic",
 		"BackgroundSound",
 		"ClientFPS",
-		"UseScaling",
 		"RemoveTextWithBlending",
 		"DrawStatusState",
 		"DrawStumps",
@@ -1398,9 +1386,6 @@ bool CConfigManager::Load(const string &path)
 				//Page 2
 				case CMKC_CLIENT_FPS:
 					SetClientFPS(atoi(strings[1].c_str()));
-					break;
-				case CMKC_USE_SCALING:
-					m_UseScaling = ToBool(strings[1]);
 					break;
 				case CMKC_REMOVE_TEXT_WITH_BLENDING:
 					RemoveTextWithBlending = ToBool(strings[1]);
@@ -1837,7 +1822,6 @@ void CConfigManager::Save(const string &path)
 
 		//Page 2
 		writter.WriteInt("ClientFPS", m_ClientFPS);
-		writter.WriteBool("UseScaling", m_UseScaling);
 		writter.WriteBool("RemoveTextWithBlending", RemoveTextWithBlending);
 		writter.WriteInt("DrawStatusState", m_DrawStatusState);
 		writter.WriteBool("DrawStumps", m_DrawStumps);

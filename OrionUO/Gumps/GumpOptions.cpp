@@ -271,11 +271,6 @@ void CGumpOptions::InitToolTip()
 				g_ToolTip.Set(L"Original items animation frame rate");
 				break;
 			}
-			case ID_GO_P2_ENABLE_SCALING:
-			{
-				g_ToolTip.Set(L"Use middle mouse for scaling the game window");
-				break;
-			}
 			case ID_GO_P2_REMOVE_TEXT_WITH_BLENDING:
 			{
 				g_ToolTip.Set(L"World/container's text removing with using alpha-blending");
@@ -890,8 +885,6 @@ void CGumpOptions::DrawPage2()
 	text = (CGUIText*)Add(new CGUIText(g_OptionsTextColor, 64, 44));
 	text->CreateTextureW(0, L"These settings configure the Orion UO Client.");
 
-
-
 	CGUIRadio *devRadio = (CGUIRadio*)Add(new CGUIRadio(ID_GO_P2_DEV_MODE_1, 0x00D0, 0x00D1, 0x00D2, 64, 64));
 	devRadio->Checked = (g_DeveloperMode == DM_NO_DEBUG);
 	devRadio->SetTextParameters(0, L"No debug", g_OptionsTextColor);
@@ -909,7 +902,7 @@ void CGumpOptions::DrawPage2()
 	text = (CGUIText*)html->Add(new CGUIText(g_OptionsTextColor, 0, 0));
 	text->CreateTextureW(0, L"FPS Limit:");
 
-	m_SliderClientFPS = (CGUISlider*)html->Add(new CGUISlider(ID_GO_P2_CLIENT_FPS, 0x00D8, 0x00D8, 0x00D8, 0x00D5, true, false, 0, 21, 120, MIN_FPS_LIMIT, MAX_FPS_LIMIT, g_OptionsConfig.GetClientFPS()));
+	m_SliderClientFPS = (CGUISlider*)html->Add(new CGUISlider(ID_GO_P2_CLIENT_FPS, 0x00D8, 0x00D8, 0x00D8, 0x00D5, true, false, 0, 20, 120, MIN_FPS_LIMIT, MAX_FPS_LIMIT, g_OptionsConfig.GetClientFPS()));
 	m_SliderClientFPS->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
 
 	CGUICheckbox *checkbox = (CGUICheckbox*)html->Add(new CGUICheckbox(ID_GO_P2_CHARACTERS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 40));
@@ -919,10 +912,6 @@ void CGumpOptions::DrawPage2()
 	checkbox = (CGUICheckbox*)html->Add(new CGUICheckbox(ID_GO_P2_ITEMS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 60));
 	checkbox->Checked = g_OptionsConfig.StandartItemsAnimationDelay;
 	checkbox->SetTextParameters(0, L"Standard items animation delay", g_OptionsTextColor);
-
-	checkbox = (CGUICheckbox*)html->Add(new CGUICheckbox(ID_GO_P2_ENABLE_SCALING, 0x00D2, 0x00D3, 0x00D2, 0, 80));
-	checkbox->Checked = g_OptionsConfig.GetUseScaling();
-	checkbox->SetTextParameters(0, L"Use scaling in game window (BETA VERSION!!!)", g_OptionsTextColor);
 
 	checkbox = (CGUICheckbox*)html->Add(new CGUICheckbox(ID_GO_P2_REMOVE_TEXT_WITH_BLENDING, 0x00D2, 0x00D3, 0x00D2, 0, 100));
 	checkbox->Checked = g_OptionsConfig.RemoveTextWithBlending;
@@ -2426,9 +2415,7 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
 		}
 		case 2: //Orion's configuration
 		{
-			if (serial == ID_GO_P2_ENABLE_SCALING) //Use scaling in game window
-				g_OptionsConfig.SetUseScaling(state);
-			else if (serial == ID_GO_P2_REMOVE_TEXT_WITH_BLENDING) //Remove object's text with alpha-blending
+			if (serial == ID_GO_P2_REMOVE_TEXT_WITH_BLENDING) //Remove object's text with alpha-blending
 				g_OptionsConfig.RemoveTextWithBlending = state;
 			else if (serial == ID_GO_P2_DRAW_STUMPS)
 				g_OptionsConfig.SetDrawStumps(state);
@@ -3051,7 +3038,6 @@ void CGumpOptions::ApplyPageChanges()
 		case 2: //Orion's configuration
 		{
 			g_ConfigManager.SetClientFPS(g_OptionsConfig.GetClientFPS());
-			g_ConfigManager.SetUseScaling(g_OptionsConfig.GetUseScaling());
 			g_ConfigManager.RemoveTextWithBlending = g_OptionsConfig.RemoveTextWithBlending;
 			g_ConfigManager.SetDrawStatusState(g_OptionsConfig.GetDrawStatusState());
 			g_ConfigManager.SetDrawStumps(g_OptionsConfig.GetDrawStumps());
