@@ -221,62 +221,73 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
     switch (message)
     {
         case WM_GETMINMAXINFO:
-        case WM_SIZE:
         {
             if (IsIconic(Handle))
-                return DefWindowProc(hWnd, message, wParam, lParam);
+                break;
 
-            if (message == WM_GETMINMAXINFO)
+            MINMAXINFO *pInfo = (MINMAXINFO *)lParam;
+
+            if (NoResize)
             {
-                MINMAXINFO *pInfo = (MINMAXINFO *)lParam;
+                RECT r = { 0, 0, 0, 0 };
+                r.right = m_Size.Width;
+                r.bottom = m_Size.Height;
+                AdjustWindowRectEx(
+                    &r,
+                    GetWindowLongA(Handle, GWL_STYLE),
+                    FALSE,
+                    GetWindowLongA(Handle, GWL_EXSTYLE));
 
-                if (NoResize)
-                {
-                    RECT r = { 0, 0, 0, 0 };
-                    r.right = m_Size.Width;
-                    r.bottom = m_Size.Height;
-                    AdjustWindowRectEx(
-                        &r,
-                        GetWindowLongA(Handle, GWL_STYLE),
-                        FALSE,
-                        GetWindowLongA(Handle, GWL_EXSTYLE));
+                if (r.left < 0)
+                    r.right -= r.left;
 
-                    if (r.left < 0)
-                        r.right -= r.left;
+                if (r.top < 0)
+                    r.bottom -= r.top;
 
-                    if (r.top < 0)
-                        r.bottom -= r.top;
+                POINT min = { r.right, r.bottom };
+                POINT max = { r.right, r.bottom };
 
-                    POINT min = { r.right, r.bottom };
-                    POINT max = { r.right, r.bottom };
+                pInfo->ptMinTrackSize = min;
+                pInfo->ptMaxTrackSize = max;
+            }
+            else
+            {
+                RECT r = { 0, 0, 0, 0 };
+                r.right = m_Size.Width;
+                r.bottom = m_Size.Height;
+                AdjustWindowRectEx(
+                    &r,
+                    GetWindowLongA(Handle, GWL_STYLE),
+                    FALSE,
+                    GetWindowLongA(Handle, GWL_EXSTYLE));
 
-                    pInfo->ptMinTrackSize = min;
-                    pInfo->ptMaxTrackSize = max;
-                }
-                else
-                {
-                    RECT r = { 0, 0, 0, 0 };
-                    r.right = m_Size.Width;
-                    r.bottom = m_Size.Height;
-                    AdjustWindowRectEx(
-                        &r,
-                        GetWindowLongA(Handle, GWL_STYLE),
-                        FALSE,
-                        GetWindowLongA(Handle, GWL_EXSTYLE));
+                if (r.left < 0)
+                    r.right -= r.left;
 
-                    if (r.left < 0)
-                        r.right -= r.left;
+                if (r.top < 0)
+                    r.bottom -= r.top;
 
-                    if (r.top < 0)
-                        r.bottom -= r.top;
+                POINT min = { m_MinSize.Width, m_MinSize.Height };
+                POINT max = { m_MaxSize.Width, m_MaxSize.Height };
+                pInfo->ptMinTrackSize = min;
+                pInfo->ptMaxTrackSize = max;
+            }
 
-                    POINT min = { m_MinSize.Width, m_MinSize.Height };
-                    POINT max = { m_MaxSize.Width, m_MaxSize.Height };
-                    pInfo->ptMinTrackSize = min;
-                    pInfo->ptMaxTrackSize = max;
-                }
+            return 0;
+        }
+        case WM_SIZE:
+        {
+            if (wParam == SIZE_MINIMIZED)
+            {
+                Minimized = true;
+                OnMinimize();
+                break;
+            }
 
-                return 0;
+            if (Minimized)
+            {
+                Minimized = false;
+                OnMaximize();
             }
 
             WISP_GEOMETRY::CSize newSize(LOWORD(lParam), HIWORD(lParam));

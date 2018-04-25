@@ -9,6 +9,7 @@ class CWindow
 public:
     HWND Handle = 0;
     bool NoResize = false;
+    bool Minimized = false;
 
 protected:
     WISP_GEOMETRY::CSize m_Size = WISP_GEOMETRY::CSize();
@@ -110,6 +111,8 @@ protected:
         return (HRESULT)DefWindowProc(Handle, WM_NCPAINT, wParam, lParam);
     }
     virtual void OnShow(bool show) {}
+    virtual void OnMaximize() {}
+    virtual void OnMinimize() {}
     virtual void OnSetText(const LPARAM &lParam) {}
     virtual void OnTimer(uint id) {}
     virtual void OnThreadedTimer(uint nowTime, WISP_THREADED_TIMER::CThreadedTimer *timer) {}
