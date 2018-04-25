@@ -1455,17 +1455,10 @@ void COrion::LoadStartupConfig(int serial)
 	else
 		sprintf_s(buf, "Desktop\\%s\\0x%08X", g_MainScreen.m_Account->c_str(), serial);
 
-	string orionFilesPath = g_App.ExeFilePath(buf);
-
-	if (!g_ConfigManager.Load(orionFilesPath + "/orion_options.cfg"))
+	if (!g_ConfigManager.Load(g_App.ExeFilePath(buf) + "/orion_options.cfg"))
 	{
-		string uoFilesPath = g_App.UOFilesPath(buf);
-		if (!g_ConfigManager.Load(uoFilesPath + "/orion_options.cfg"))
-			if (!g_ConfigManager.LoadBin(orionFilesPath + "/options_debug.cuo"))
-				g_ConfigManager.LoadBin(uoFilesPath + "/options_debug.cuo");
+		g_ConfigManager.Load(g_App.UOFilesPath(buf) + "/orion_options.cfg");
 	}
-
-
 
 	g_SoundManager.SetMusicVolume(g_ConfigManager.GetMusicVolume());
 
@@ -1587,18 +1580,12 @@ void COrion::LoadLocalConfig(int serial)
 	{
 		if (!g_ConfigManager.Load(g_App.UOFilesPath("orion_options.cfg")))
 		{
-			if (!g_ConfigManager.LoadBin(path + "\\options_debug.cuo"))
-			{
-				if (!g_ConfigManager.LoadBin(g_App.UOFilesPath("options_debug.cuo")))
-				{
-					g_ConfigManager.Init();
+			g_ConfigManager.Init();
 
-					if (g_GameState >= GS_GAME)
-					{
-						SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_RESTORE, 0);
-						SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-					}
-				}
+			if (g_GameState >= GS_GAME)
+			{
+				SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_RESTORE, 0);
+				SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 			}
 		}
 	}
@@ -4618,9 +4605,7 @@ void COrion::LoadClientStartupConfig()
 	WISPFUN_DEBUG("c194_f60");
 	if (!g_ConfigManager.Load(g_App.ExeFilePath("orion_options.cfg")))
 	{
-		if (!g_ConfigManager.Load(g_App.UOFilesPath("orion_options.cfg")))
-			if (!g_ConfigManager.LoadBin(g_App.ExeFilePath("options_debug.cuo")))
-				g_ConfigManager.LoadBin(g_App.UOFilesPath("options_debug.cuo"));
+		g_ConfigManager.Load(g_App.UOFilesPath("orion_options.cfg"));
 	}
 
 

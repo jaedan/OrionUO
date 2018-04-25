@@ -248,13 +248,6 @@ public:
 	*/
 	ushort GetColorByNotoriety(uchar notoriety);
 
-	/*!
-	Загрузка конфига
-	@param [__in] path Путь к файлу с конфигом
-	@return 
-	*/
-	bool LoadBin(string path);
-
 	int GetConfigKeyCode(const string &key);
 
 	enum CONFIG_MANAGER_KEY_CODE
