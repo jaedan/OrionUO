@@ -18,7 +18,7 @@ const int CONTAINERS_RECT_LINESTEP = 800;
 
 const int MIN_FPS_LIMIT = 16;
 
-const int MAX_FPS_LIMIT = 100;
+const int MAX_FPS_LIMIT = 144;
 
 //!Шаг смещения
 const int CONTAINERS_RECT_STEP = 20;

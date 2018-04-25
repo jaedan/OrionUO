@@ -18,7 +18,7 @@ protected:
 	bool m_Music = false;
 	uchar m_SoundVolume = 255;
 	uchar m_MusicVolume = 255;
-	uchar m_ClientFPS = 32;
+	uchar m_ClientFPS = 60;
 	bool m_UseScaling = false;
 	uchar m_DrawStatusState = 0;
 	bool m_DrawStumps = false;
