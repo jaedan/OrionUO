@@ -1342,7 +1342,7 @@ void COrion::Process(bool rendering)
 				g_ProcessRemoveRangedTimer = g_Ticks + 50;
 			}
 
-			if (g_ConfigManager.ObjectHandles && g_CtrlPressed && g_ShiftPressed && (oldCtrl != g_CtrlPressed || oldShift != g_ShiftPressed))
+			if (g_CtrlPressed && g_ShiftPressed && (oldCtrl != g_CtrlPressed || oldShift != g_ShiftPressed))
 				g_World->ResetObjectHandlesState();
 
 			if (rendering)
@@ -2386,10 +2386,7 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 		case VKI_OBJECT_HANDLES:
 		{
 			if (value == -1)
-				value = g_ConfigManager.ObjectHandles;
-			else
-				g_ConfigManager.ObjectHandles = (value != 0);
-
+				value = 1;
 			break;
 		}
 		case VKI_SCALE_SPEECH_DELAY:

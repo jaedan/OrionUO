@@ -164,7 +164,6 @@ void CConfigManager::DefaultPage6()
 	DisableNewTargetSystem = true;
 	m_ItemPropertiesMode = OPM_FOLLOW_MOUSE;
 	m_ItemPropertiesIcon = false;
-	ObjectHandles = false;
 	HoldShiftForContextMenus = false;
 	HoldShiftForEnablePathfind = false;
 	m_CharacterBackpackStyle = CBS_DEFAULT;
@@ -1271,7 +1270,6 @@ int CConfigManager::GetConfigKeyCode(const string &key)
 		"DisableNewTargetSystem",
 		"ItemPropertiesMode",
 		"ItemPropertiesIcon",
-		"ObjectHandles",
 		"HoldShiftForContextMenus",
 		"HoldShiftForEnablePathfind",
 		"ContainerDefaultX",
@@ -1591,9 +1589,6 @@ bool CConfigManager::Load(const string &path)
 				case CMKC_ITEMP_ROPERTIES_ICON:
 					m_ItemPropertiesIcon = ToBool(strings[1]);
 					break;
-				case CMKC_OBJECT_HANDLES:
-					ObjectHandles = ToBool(strings[1]);
-					break;
 				case CMKC_HOLD_SHIFT_FOR_CONTEXT_MENUS:
 					HoldShiftForContextMenus = ToBool(strings[1]);
 					break;
@@ -1894,7 +1889,6 @@ void CConfigManager::Save(const string &path)
 		writter.WriteBool("DisableNewTargetSystem", DisableNewTargetSystem);
 		writter.WriteInt("ItemPropertiesMode", m_ItemPropertiesMode);
 		writter.WriteBool("ItemPropertiesIcon", m_ItemPropertiesIcon);
-		writter.WriteBool("ObjectHandles", ObjectHandles);
 		writter.WriteBool("HoldShiftForContextMenus", HoldShiftForContextMenus);
 		writter.WriteBool("HoldShiftForEnablePathfind", HoldShiftForEnablePathfind);
 		writter.WriteInt("ContainerDefaultX", g_ContainerRect.DefaultX);

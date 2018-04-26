@@ -98,7 +98,6 @@ public:
 	bool DisableMenubar = false;
 	bool GrayOutOfRangeObjects = false;
 	bool DisableNewTargetSystem = false;
-	bool ObjectHandles = false;
 	bool HoldShiftForContextMenus = false;
 	bool HoldShiftForEnablePathfind = false;
 	int GameWindowWidth = 0;
@@ -330,7 +329,6 @@ public:
 		CMKC_DISABLE_NEW_TARGET_SYSTEM,
 		CMKC_ITEMP_ROPERTIES_MODE,
 		CMKC_ITEMP_ROPERTIES_ICON,
-		CMKC_OBJECT_HANDLES,
 		CMKC_HOLD_SHIFT_FOR_CONTEXT_MENUS,
 		CMKC_HOLD_SHIFT_FOR_ENABLE_PATHFIND,
 		CMKC_CONTAINER_DEFAULT_X,
