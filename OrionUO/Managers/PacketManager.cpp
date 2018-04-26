@@ -5889,7 +5889,6 @@ PACKET_HANDLER(BoatMoving)
 {
     WISPFUN_DEBUG("c150_f105");
 
-    return;
     uint boatSerial = ReadUInt32BE();
 
     CGameObject *boat = g_World->FindWorldObject(boatSerial);
