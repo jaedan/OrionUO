@@ -2,9 +2,8 @@
 
 #include "stdafx.h"
 
-CGumpSpell::CGumpSpell(uint serial, short x, short y, ushort graphic, SPELLBOOK_TYPE spellType)
+CGumpSpell::CGumpSpell(uint serial, short x, short y, ushort graphic)
     : CGump(GT_SPELL, serial, x, y)
-    , SpellType(spellType)
 {
     WISPFUN_DEBUG("c126_f1");
     Graphic = graphic;
@@ -52,60 +51,9 @@ void CGumpSpell::InitToolTip()
 void CGumpSpell::GetTooltipSpellInfo(int &tooltipOffset, int &spellIndexOffset)
 {
     WISPFUN_DEBUG("c126_f4");
-    switch (SpellType)
-    {
-        case ST_MAGE:
-        {
-            tooltipOffset = 3002010;
-            spellIndexOffset = 0;
 
-            break;
-        }
-        case ST_NECRO:
-        {
-            tooltipOffset = 1060508;
-            spellIndexOffset = 64;
-
-            break;
-        }
-        case ST_PALADIN:
-        {
-            tooltipOffset = 1060584;
-            spellIndexOffset = 81;
-
-            break;
-        }
-        case ST_BUSHIDO:
-        {
-            tooltipOffset = 1060594;
-            spellIndexOffset = 91;
-
-            break;
-        }
-        case ST_NINJITSU:
-        {
-            tooltipOffset = 1060609;
-            spellIndexOffset = 97;
-
-            break;
-        }
-        case ST_SPELL_WEAVING:
-        {
-            tooltipOffset = 1071025;
-            spellIndexOffset = 105;
-
-            break;
-        }
-        case ST_MYSTICISM:
-        {
-            tooltipOffset = 0;
-            spellIndexOffset = 0;
-
-            break;
-        }
-        default:
-            break;
-    }
+    tooltipOffset = 3002010;
+    spellIndexOffset = 0;
 }
 
 void CGumpSpell::PrepareContent()
@@ -457,7 +405,7 @@ bool CGumpSpell::OnLeftMouseButtonDoubleClick()
 
     GetTooltipSpellInfo(tooltipOffset, spellIndexOffset);
 
-    int spellIndex = Serial - spellIndexOffset + ((int)SpellType * 100);
+    int spellIndex = Serial - spellIndexOffset;
 
     g_Orion.CastSpell(spellIndex);
 

@@ -33,6 +33,11 @@ bool CSkillsManager::Load()
 
             bool haveButton = (mul.ReadUInt8() != 0);
 
+            if (Count >= 48)
+            {
+                break;
+            }
+
             Add(CSkill(haveButton, mul.ReadString(idxBlock->Size - 1)));
         }
     }

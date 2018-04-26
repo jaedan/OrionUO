@@ -165,7 +165,7 @@ public:
 class CPacketOpenSpellbook : public CPacket
 {
 public:
-    CPacketOpenSpellbook(SPELLBOOK_TYPE type);
+    CPacketOpenSpellbook();
 };
 
 class CPacketEmoteAction : public CPacket

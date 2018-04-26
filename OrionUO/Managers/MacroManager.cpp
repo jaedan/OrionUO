@@ -374,52 +374,8 @@ void CMacroManager::ProcessSubMenu()
                     break;
                 }
                 case MSC_G2_MAGE_SPELLBOOK:
-                case MSC_G2_NECRO_SPELLBOOK:
-                case MSC_G2_PALADIN_SPELLBOOK:
-                case MSC_G2_BUSHIDO_SPELLBOOK:
-                case MSC_G2_NINJITSU_SPELLBOOK:
-                case MSC_G2_SPELL_WEAVING_SPELLBOOK:
-                case MSC_G2_MYSTICISM_SPELLBOOK:
                 {
-                    SPELLBOOK_TYPE type = ST_MAGE;
-
-                    switch (g_MacroPointer->SubCode)
-                    {
-                        case MSC_G2_NECRO_SPELLBOOK:
-                        {
-                            type = ST_NECRO;
-                            break;
-                        }
-                        case MSC_G2_PALADIN_SPELLBOOK:
-                        {
-                            type = ST_PALADIN;
-                            break;
-                        }
-                        case MSC_G2_BUSHIDO_SPELLBOOK:
-                        {
-                            type = ST_BUSHIDO;
-                            break;
-                        }
-                        case MSC_G2_NINJITSU_SPELLBOOK:
-                        {
-                            type = ST_NINJITSU;
-                            break;
-                        }
-                        case MSC_G2_SPELL_WEAVING_SPELLBOOK:
-                        {
-                            type = ST_SPELL_WEAVING;
-                            break;
-                        }
-                        case MSC_G2_MYSTICISM_SPELLBOOK:
-                        {
-                            type = ST_MYSTICISM;
-                            break;
-                        }
-                        default:
-                            break;
-                    }
-
-                    CPacketOpenSpellbook(type).Send();
+                    CPacketOpenSpellbook().Send();
 
                     break;
                 }
@@ -461,16 +417,7 @@ void CMacroManager::ProcessSubMenu()
 
                     break;
                 }
-                case MSC_G2_QUEST_LOG:
-                {
-                    CPacketQuestMenuRequest().Send();
-
-                    break;
-                }
                 case MSC_G2_PARTY_CHAT:
-                case MSC_G2_COMBAT_BOOK:
-                case MSC_G2_RACIAL_ABILITIES_BOOK:
-                case MSC_G2_BARD_SPELLBOOK:
                 {
                     break;
                 }
@@ -521,12 +468,6 @@ void CMacroManager::ProcessSubMenu()
                     break;
                 }
                 case MSC_G2_MAGE_SPELLBOOK:
-                case MSC_G2_NECRO_SPELLBOOK:
-                case MSC_G2_PALADIN_SPELLBOOK:
-                case MSC_G2_BUSHIDO_SPELLBOOK:
-                case MSC_G2_NINJITSU_SPELLBOOK:
-                case MSC_G2_SPELL_WEAVING_SPELLBOOK:
-                case MSC_G2_MYSTICISM_SPELLBOOK:
                 {
                     QFOR(item, g_GumpManager.m_Items, CGump *)
                     {
@@ -536,60 +477,8 @@ void CMacroManager::ProcessSubMenu()
 
                             if (gi != NULL)
                             {
-                                switch (g_MacroPointer->SubCode)
-                                {
-                                    case MSC_G2_MAGE_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x0EFA)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_NECRO_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x2253)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_PALADIN_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x2252)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_BUSHIDO_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x238C)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_NINJITSU_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x23A0)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_SPELL_WEAVING_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0x2D50)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    case MSC_G2_MYSTICISM_SPELLBOOK:
-                                    {
-                                        if (gi->Graphic == 0)
-                                            gump = item;
-
-                                        break;
-                                    }
-                                    default:
-                                        break;
-                                }
+                                if (gi->Graphic == 0x0EFA)
+                                    gump = item;
                             }
 
                             if (gump != NULL)
@@ -633,11 +522,7 @@ void CMacroManager::ProcessSubMenu()
                     break;
                 }
                 case MSC_G2_PARTY_CHAT:
-                case MSC_G2_COMBAT_BOOK:
                 case MSC_G2_GUILD:
-                case MSC_G2_QUEST_LOG:
-                case MSC_G2_RACIAL_ABILITIES_BOOK:
-                case MSC_G2_BARD_SPELLBOOK:
                 {
                     break;
                 }
@@ -825,34 +710,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 
             if (spell > 0 && spell <= 151)
             {
-                const int spellsCountTable[7] = { CGumpSpellbook::SPELLBOOK_1_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_2_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_3_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_4_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_5_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_6_SPELLS_COUNT,
-                                                  CGumpSpellbook::SPELLBOOK_7_SPELLS_COUNT };
-
-                int totalCount = 0;
-                int spellType = 0;
-
-                for (spellType = 0; spellType < 7; spellType++)
-                {
-                    totalCount += spellsCountTable[spellType];
-
-                    if (spell < totalCount)
-                        break;
-                }
-
-                if (spellType < 7)
-                {
-                    spell += spellType * 100;
-
-                    if (spellType > 2)
-                        spell += 100;
-
-                    g_Orion.CastSpell(spell);
-                }
+                g_Orion.CastSpell(spell);
             }
 
             break;

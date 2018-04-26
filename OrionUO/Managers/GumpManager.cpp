@@ -1139,12 +1139,10 @@ void CGumpManager::Load(const string &path)
                     {
                         ushort graphic = file.ReadUInt16LE();
 
-                        SPELLBOOK_TYPE spellType = ST_MAGE;
-
                         if (size > 18)
-                            spellType = (SPELLBOOK_TYPE)file.ReadUInt8();
+                            file.ReadUInt8();
 
-                        gump = new CGumpSpell(serial, gumpX, gumpY, graphic, spellType);
+                        gump = new CGumpSpell(serial, gumpX, gumpY, graphic);
                     }
                     else
                     {
@@ -1241,12 +1239,10 @@ void CGumpManager::Load(const string &path)
                 uint serial = file.ReadUInt32LE();
                 ushort graphic = file.ReadUInt16LE();
 
-                SPELLBOOK_TYPE spellType = ST_MAGE;
-
                 if (size > 18)
-                    spellType = (SPELLBOOK_TYPE)file.ReadUInt8();
+                    file.ReadUInt8();
 
-                CGumpSpell *spell = new CGumpSpell(serial, gumpX, gumpY, graphic, spellType);
+                CGumpSpell *spell = new CGumpSpell(serial, gumpX, gumpY, graphic);
                 spell->LockMoving = gumpLockMoving;
 
                 AddGump(spell);
@@ -1478,7 +1474,7 @@ void CGumpManager::Save(const string &path)
 
                 writter.WriteUInt32LE(gump->Serial);
                 writter.WriteUInt16LE(gump->Graphic);
-                writter.WriteUInt8(((CGumpSpell *)gump)->SpellType);
+                writter.WriteUInt8(0);
                 writter.WriteBuffer();
 
                 count++;
@@ -1599,7 +1595,7 @@ void CGumpManager::Save(const string &path)
 
                 writter.WriteUInt32LE(spell->Serial);
                 writter.WriteUInt16LE(spell->Graphic);
-                writter.WriteUInt8(spell->SpellType);
+                writter.WriteUInt8(0);
                 writter.WriteBuffer();
             }
         }

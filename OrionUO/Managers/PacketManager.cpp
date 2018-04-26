@@ -57,7 +57,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSG(ORION_SAVE_PACKET, "Change tile Z (God client)", 0x06),
     BMSG(ORION_SAVE_PACKET, "Follow", 0x09),
     RMSGH(ORION_SAVE_PACKET, "Health status bar update (0x16)", 0x01, NewHealthbarUpdate),
-
     RMSGH(
         ORION_IGNORE_PACKET,
         "Health status bar update (KR)",
@@ -99,7 +98,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSG(ORION_SAVE_PACKET, "Remove group (God client)", 0x09),
     BMSGH(ORION_IGNORE_PACKET, "Update Skills", PACKET_VARIABLE_SIZE, UpdateSkills),
     BMSGH(ORION_IGNORE_PACKET, "Vendor Buy Reply", PACKET_VARIABLE_SIZE, BuyReply),
-
     RMSGH(ORION_SAVE_PACKET, "Update Contained Items", PACKET_VARIABLE_SIZE, UpdateContainedItems),
     BMSG(ORION_SAVE_PACKET, "Ship (God client)", 0x02),
     BMSG(ORION_SAVE_PACKET, "Versions (God client)", 0x25),
@@ -153,7 +151,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     RMSGH(ORION_IGNORE_PACKET, "Character Animation", 0x0e, CharacterAnimation),
     BMSGH(ORION_IGNORE_PACKET, "Secure Trading", PACKET_VARIABLE_SIZE, SecureTrading),
     RMSGH(ORION_IGNORE_PACKET, "Graphic Effect", 0x1c, GraphicEffect),
-
     BMSGH(ORION_IGNORE_PACKET, "Bulletin Board Data", PACKET_VARIABLE_SIZE, BulletinBoardData),
     BMSGH(ORION_IGNORE_PACKET, "War Mode", 0x05, Warmode),
     BMSGH(ORION_IGNORE_PACKET, "Ping", 0x02, Ping),
@@ -174,9 +171,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     RMSGH(ORION_IGNORE_PACKET, "Login Error", 0x02, LoginError),
     SMSG(ORION_IGNORE_PACKET, "Delete Character", 0x27),
     BMSG(ORION_SAVE_PACKET, "Change password", 0x45),
-
     RMSGH(ORION_IGNORE_PACKET, "Character List Notification", 0x02, CharacterListNotification),
-
     RMSGH(ORION_IGNORE_PACKET, "Resend Character List", PACKET_VARIABLE_SIZE, ResendCharacterList),
     BMSG(ORION_SAVE_PACKET, "Send resources (God client)", PACKET_VARIABLE_SIZE),
     RMSGH(ORION_IGNORE_PACKET, "Open Paperdoll", 0x42, OpenPaperdoll),
@@ -227,7 +222,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSGH(ORION_SAVE_PACKET, "Open Chat Window", 0x40, OpenChat),
     SMSG(ORION_SAVE_PACKET, "Popup Help Request", 0x09),
     RMSG(ORION_SAVE_PACKET, "Popup Help Data", PACKET_VARIABLE_SIZE),
-
     BMSGH(ORION_IGNORE_PACKET, "Character Profile", PACKET_VARIABLE_SIZE, CharacterProfile),
     RMSGH(ORION_SAVE_PACKET, "Enable locked client features", 0x03, EnableLockedFeatures),
     RMSGH(ORION_IGNORE_PACKET, "Display Quest Arrow", 0x06, DisplayQuestArrow),
@@ -237,7 +231,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSGH(ORION_SAVE_PACKET, "Assist Version", PACKET_VARIABLE_SIZE, AssistVersion),
     BMSGH(ORION_SAVE_PACKET, "Extended Command", PACKET_VARIABLE_SIZE, ExtendedCommand),
     RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x24, GraphicEffect),
-
     RMSGH(ORION_IGNORE_PACKET, "Display cliloc String", PACKET_VARIABLE_SIZE, DisplayClilocString),
     BMSGH(ORION_SAVE_PACKET, "Unicode prompt", PACKET_VARIABLE_SIZE, UnicodePrompt),
     UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
@@ -249,7 +242,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSG(ORION_SAVE_PACKET, "Trip time", 0x06),
     BMSG(ORION_SAVE_PACKET, "UTrip time", 0x06),
     UMSG(ORION_SAVE_PACKET, 0x07),
-
     RMSGH(
         ORION_IGNORE_PACKET,
         "Localized Text Plus String",
@@ -271,7 +263,6 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     BMSG(ORION_SAVE_PACKET, "Mahjong game command", PACKET_VARIABLE_SIZE),
     RMSG(ORION_SAVE_PACKET, "Character transfer log", PACKET_VARIABLE_SIZE),
     RMSGH(ORION_IGNORE_PACKET, "OPL Info Packet", 9, OPLInfo),
-
     RMSGH(ORION_IGNORE_PACKET, "Compressed Gump", PACKET_VARIABLE_SIZE, OpenCompressedGump),
     RMSG(ORION_SAVE_PACKET, "Update characters combatants", PACKET_VARIABLE_SIZE),
     RMSGH(ORION_SAVE_PACKET, "Buff/Debuff", PACKET_VARIABLE_SIZE, BuffDebuff),
@@ -291,11 +282,8 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     SMSG(ORION_SAVE_PACKET, "Unequip item macro", PACKET_VARIABLE_SIZE),
     UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x15),
-
     BMSGH(ORION_SAVE_PACKET, "Krrios client special", PACKET_VARIABLE_SIZE, KrriosClientSpecial),
-
     SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", PACKET_VARIABLE_SIZE),
-
     RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", PACKET_VARIABLE_SIZE),
     RMSGH(ORION_SAVE_PACKET, "Update Item (SA)", 0x18, UpdateItemSA),
     UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
@@ -2226,9 +2214,6 @@ PACKET_HANDLER(OpenContainer)
             obj->Opened = true;
             if (!obj->IsCorpse())
                 g_World->ClearContainer(obj);
-
-            if (gumpid == 0xFFFF)
-                ((CGumpSpellbook *)gump)->UpdateGraphic(obj->Graphic);
         }
     }
 
@@ -2590,7 +2575,7 @@ PACKET_HANDLER(ExtendedCommand)
             g_World->ClearContainer(spellbook);
 
             ushort graphic = ReadUInt16BE();
-            SPELLBOOK_TYPE bookType = (SPELLBOOK_TYPE)ReadUInt16BE();
+            uint16_t bookType = ReadUInt16BE();
 
             IFOR (j, 0, 2)
             {

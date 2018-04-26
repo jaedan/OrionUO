@@ -7,7 +7,6 @@ class CGumpSpell : public CGump
 {
 public:
     bool BigIcon = false;
-    SPELLBOOK_TYPE SpellType = ST_MAGE;
 
 private:
     static const int ID_GS_LOCK_MOVING = 1;
@@ -18,16 +17,16 @@ private:
 protected:
     virtual void CalculateGumpState();
 
-    CGUIButton *m_SpellUnlocker{ NULL };
+    CGUIButton *m_SpellUnlocker = nullptr;
 
 public:
-    CGumpSpell(uint serial, short x, short y, ushort graphic, SPELLBOOK_TYPE spellType);
+    CGumpSpell(uint serial, short x, short y, ushort graphic);
     virtual ~CGumpSpell();
 
-    CGUIAlphaBlending *m_Blender{ NULL };
+    CGUIAlphaBlending *m_Blender = nullptr;
 
-    CGumpSpell *m_GroupNext{ NULL };
-    CGumpSpell *m_GroupPrev{ NULL };
+    CGumpSpell *m_GroupNext = nullptr;
+    CGumpSpell *m_GroupPrev = nullptr;
 
     CGumpSpell *GetTopSpell();
     CGumpSpell *GetNearSpell(int &x, int &y);

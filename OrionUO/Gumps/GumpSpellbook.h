@@ -9,35 +9,14 @@ struct SPELL_REQURIES
     uchar MinSkill;
 };
 
-struct PALADIN_SPELL_REQURIES
-{
-    uchar ManaCost;
-    uchar MinSkill;
-    uchar TithingPoints;
-};
-
 class CGumpSpellbook : public CGump
 {
-    SPELLBOOK_TYPE BookType = ST_MAGE;
-
 public:
-    static const int SPELLBOOK_1_SPELLS_COUNT = 64;
-    static const int SPELLBOOK_2_SPELLS_COUNT = 17;
-    static const int SPELLBOOK_3_SPELLS_COUNT = 10;
-    static const int SPELLBOOK_4_SPELLS_COUNT = 6;
-    static const int SPELLBOOK_5_SPELLS_COUNT = 8;
-    static const int SPELLBOOK_6_SPELLS_COUNT = 16;
-    static const int SPELLBOOK_7_SPELLS_COUNT = 30;
+    static const int SPELLBOOK_SPELLS_COUNT = 64;
 
-    static string m_SpellName1[SPELLBOOK_1_SPELLS_COUNT][2];
-    static const string m_SpellName2[SPELLBOOK_2_SPELLS_COUNT][2];
-    static const string m_SpellName3[SPELLBOOK_3_SPELLS_COUNT][2];
-    static const string m_SpellName4[SPELLBOOK_4_SPELLS_COUNT];
-    static const string m_SpellName5[SPELLBOOK_5_SPELLS_COUNT];
-    static const string m_SpellName6[SPELLBOOK_6_SPELLS_COUNT][2];
-    static const string m_SpellName7[SPELLBOOK_7_SPELLS_COUNT][2];
+    static string m_SpellName[SPELLBOOK_SPELLS_COUNT][2];
 
-    static string m_SpellReagents1[SPELLBOOK_1_SPELLS_COUNT];
+    static string m_SpellReagents[SPELLBOOK_SPELLS_COUNT];
 
 private:
     static const int ID_GSB_BUTTON_PREV = 1;
@@ -55,26 +34,18 @@ private:
 
     static string m_SpellCircleName[8];
 
-    static const string m_SpellReagents2[SPELLBOOK_2_SPELLS_COUNT];
-
-    static const SPELL_REQURIES m_SpellRequries2[SPELLBOOK_2_SPELLS_COUNT];
-    static const PALADIN_SPELL_REQURIES m_SpellRequries3[SPELLBOOK_3_SPELLS_COUNT];
-    static const SPELL_REQURIES m_SpellRequries4[SPELLBOOK_4_SPELLS_COUNT];
-    static const SPELL_REQURIES m_SpellRequries5[SPELLBOOK_5_SPELLS_COUNT];
-    static const SPELL_REQURIES m_SpellRequries6[SPELLBOOK_6_SPELLS_COUNT];
-
-    int m_SpellCount{ 0 };
+    int m_SpellCount = 0;
     uchar m_Spells[MAX_SPELLS_COUNT];
-    int PageCount{ 8 };
+    int PageCount = 8;
 
-    CGUIGumppic *m_Body{ NULL };
-    CGUIText *m_TithingPointsText{ NULL };
+    CGUIGumppic *m_Body = nullptr;
+    CGUIText *m_TithingPointsText = nullptr;
 
-    CGUIButton *m_PrevPage{ NULL };
-    CGUIButton *m_NextPage{ NULL };
+    CGUIButton *m_PrevPage = nullptr;
+    CGUIButton *m_NextPage = nullptr;
 
-    CGUIGumppic *m_LastSpellPointer{ NULL };
-    CGUIGumppic *m_LastSpellBookmark{ NULL };
+    CGUIGumppic *m_LastSpellPointer = nullptr;
+    CGUIGumppic *m_LastSpellBookmark = nullptr;
 
     void GetTooltipBookInfo(int &dictionaryPagesCount, int &tooltipOffset);
 
@@ -89,15 +60,11 @@ private:
 
     string GetSpellName(int offset, string &abbreviature, string &reagents);
 
-    string GetSpellRequries(int offset, int &y);
-
 public:
     CGumpSpellbook(uint serial, int x, int y);
     virtual ~CGumpSpellbook();
 
     static void InitStaticData();
-
-    void UpdateGraphic(ushort parentGraphic);
 
     virtual void DelayedClick(CRenderObject *obj);
 

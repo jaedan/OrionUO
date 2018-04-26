@@ -471,13 +471,13 @@ CPacketOpenDoor::CPacketOpenDoor()
     WriteUInt8(0x58);
 }
 
-CPacketOpenSpellbook::CPacketOpenSpellbook(SPELLBOOK_TYPE type)
+CPacketOpenSpellbook::CPacketOpenSpellbook()
     : CPacket(6)
 {
     WriteUInt8(0x12);
     WriteUInt16BE(0x0006);
     WriteUInt8(0x43);
-    WriteUInt8(type + 30);
+    WriteUInt8(30);
 }
 
 CPacketEmoteAction::CPacketEmoteAction(const char *action)

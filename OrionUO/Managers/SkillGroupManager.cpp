@@ -66,19 +66,7 @@ void CSkillGroupManager::MakeDefaultCombat()
     group->Add(5);
     group->Add(40);
     group->Add(27);
-
-    if (cnt > 57)
-        group->Add(57);
     group->Add(43);
-
-    if (cnt > 50)
-        group->Add(50);
-    if (cnt > 51)
-        group->Add(51);
-    if (cnt > 52)
-        group->Add(52);
-    if (cnt > 53)
-        group->Add(53);
 
     Add(group);
 }
@@ -110,18 +98,10 @@ void CSkillGroupManager::MakeDefaultMagic()
     CSkillGroupObject *group = new CSkillGroupObject();
     group->Name = "Magic";
     group->Add(16);
-    if (cnt > 56)
-        group->Add(56);
     group->Add(25);
     group->Add(46);
-    if (cnt > 55)
-        group->Add(55);
     group->Add(26);
-    if (cnt > 54)
-        group->Add(54);
     group->Add(32);
-    if (cnt > 49)
-        group->Add(49);
 
     Add(group);
 }
@@ -284,7 +264,7 @@ bool CSkillGroupManager::Load(string path)
             {
                 BYTE skill = file.ReadUInt8();
 
-                if (skill != 0xFF)
+                if (skill <= 48)
                     group->Add(skill);
             }
 

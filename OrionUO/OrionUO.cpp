@@ -141,14 +141,6 @@ bool COrion::Install()
         g_MaxViewRange = MAX_VIEW_RANGE_OLD;
     }
 
-    if (g_PacketManager.GetClientVersion() >= CV_305D)
-    {
-        CGumpSpellbook::m_SpellReagents1[4] = "Sulfurous ash";
-        CGumpSpellbook::m_SpellReagents1[17] = "Black pearl";
-        CGumpSpellbook::m_SpellReagents1[29] = "Mandrake root\nSulfurous ash";
-        CGumpSpellbook::m_SpellReagents1[42] = "Bloodmoss\nMandrake root";
-    }
-
     LoadAutoLoginNames();
 
     LOG("Load files\n");
