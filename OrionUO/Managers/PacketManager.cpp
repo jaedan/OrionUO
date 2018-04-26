@@ -5926,8 +5926,6 @@ PACKET_HANDLER(BoatMoving)
 {
 	WISPFUN_DEBUG("c150_f105");
 
-	//disable BoatMoving for the 0.1.9.6 patch
-	return;
 	uint boatSerial = ReadUInt32BE();
 
 	CGameObject *boat = g_World->FindWorldObject(boatSerial);
