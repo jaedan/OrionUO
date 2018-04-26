@@ -636,11 +636,6 @@ void CGumpOptions::InitToolTip()
             g_ToolTip.Set(L"Disable/enable the new target system");
             break;
         }
-        case ID_GO_P6_OBJECT_HANDLES:
-        {
-            g_ToolTip.Set(L"Use objects handles in game window (pressing Ctrl + Shift)");
-            break;
-        }
         case ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_AT_ICON:
         {
             g_ToolTip.Set(L"Display item properties at icon");
@@ -1887,11 +1882,6 @@ void CGumpOptions::DrawPage6()
     checkbox->Checked = g_OptionsConfig.DisableNewTargetSystem;
     checkbox->SetTextParameters(0, L"Disable New Targeting System", g_OptionsTextColor);
 
-    checkbox = (CGUICheckbox *)html->Add(
-        new CGUICheckbox(ID_GO_P6_OBJECT_HANDLES, 0x00D2, 0x00D3, 0x00D2, 0, 196));
-    checkbox->Checked = g_OptionsConfig.ObjectHandles;
-    checkbox->SetTextParameters(0, L"Object Handles", g_OptionsTextColor);
-
     html->Add(new CGUIGroup(6));
 
     text = (CGUIText *)html->Add(new CGUIText(g_OptionsTextColor, 0, 216));
@@ -2935,8 +2925,6 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.GrayOutOfRangeObjects = state;
             else if (serial == ID_GO_P6_DISABLE_NEW_TARGET_SYSTEM)
                 g_OptionsConfig.DisableNewTargetSystem = state;
-            else if (serial == ID_GO_P6_OBJECT_HANDLES)
-                g_OptionsConfig.ObjectHandles = state;
             else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_ICON)
                 g_OptionsConfig.SetItemPropertiesIcon(state);
             else if (serial == ID_GO_P6_HOLD_SHIFT_FOR_CONTEXT_MENUS)
@@ -3562,7 +3550,6 @@ void CGumpOptions::ApplyPageChanges()
             g_ConfigManager.DisableMenubar = g_OptionsConfig.DisableMenubar;
             g_ConfigManager.GrayOutOfRangeObjects = g_OptionsConfig.GrayOutOfRangeObjects;
             g_ConfigManager.DisableNewTargetSystem = g_OptionsConfig.DisableNewTargetSystem;
-            g_ConfigManager.ObjectHandles = g_OptionsConfig.ObjectHandles;
             g_ConfigManager.SetItemPropertiesIcon(g_OptionsConfig.GetItemPropertiesIcon());
             g_ConfigManager.SetItemPropertiesMode(g_OptionsConfig.GetItemPropertiesMode());
             g_ConfigManager.HoldShiftForContextMenus = g_OptionsConfig.HoldShiftForContextMenus;

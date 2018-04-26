@@ -139,7 +139,6 @@ private:
     static const int ID_GO_P6_DISABLE_MENUBAR = 605;
     static const int ID_GO_P6_GRAY_OUT_OF_RANGE_OBJECTS = 606;
     static const int ID_GO_P6_DISABLE_NEW_TARGET_SYSTEM = 607;
-    static const int ID_GO_P6_OBJECT_HANDLES = 608;
     static const int ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_AT_ICON = 609;
     static const int ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_ALWAYS_UP = 610;
     static const int ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_FOLLOW_MOUSE = 611;

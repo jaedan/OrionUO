@@ -330,8 +330,7 @@ void CGameScreen::CalculateRenderList()
     }
 
     m_ObjectHandlesCount = 0;
-    bool useObjectHandles =
-        (!g_GrayedPixels && g_ConfigManager.ObjectHandles && g_ShiftPressed && g_CtrlPressed);
+    bool useObjectHandles = (!g_GrayedPixels && g_ShiftPressed && g_CtrlPressed);
 
     QFOR(go, g_World->m_Items, CGameObject *)
     {
