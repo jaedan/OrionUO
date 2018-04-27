@@ -466,7 +466,7 @@ void CFileManager::ReadTask()
         animFile->read(signature, 4);
         animFile->read(nextBlock, 8);
 
-        animFile->seekg(*reinterpret_cast<unsigned long long *>(nextBlock), 0);
+        animFile->seekg(*reinterpret_cast<unsigned long long *>(nextBlock), std::ios::beg);
 
         do
         {
@@ -511,7 +511,7 @@ void CFileManager::ReadTask()
                 hashes[hashVal] = dataStruct;
             }
 
-            animFile->seekg(*reinterpret_cast<unsigned long long *>(nextBlock), 0);
+            animFile->seekg(*reinterpret_cast<unsigned long long *>(nextBlock), std::ios::beg);
         } while (*reinterpret_cast<unsigned long long *>(nextBlock) != 0);
     }
 
@@ -565,7 +565,7 @@ bool CFileManager::FileExists(const std::string &filename)
 char *CFileManager::ReadUOPDataFromFileStream(UOPAnimationData &animData)
 {
     animData.fileStream->clear();
-    animData.fileStream->seekg(animData.offset, 0);
+    animData.fileStream->seekg(animData.offset, std::ios::beg);
 
     char *buf = new char[animData.compressedLength];
     animData.fileStream->read(buf, animData.compressedLength);
@@ -706,6 +706,6 @@ void CFileManager::ReadAnimMulDataFromFileStream(
 {
     std::fstream *fileStream = &m_AnimMul[direction.FileIndex];
     fileStream->clear();
-    fileStream->seekg(direction.Address, 0);
+    fileStream->seekg(direction.Address, std::ios::beg);
     fileStream->read(static_cast<char *>(animData.data()), direction.Size);
 }
