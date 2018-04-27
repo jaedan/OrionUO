@@ -356,7 +356,7 @@ void CAnimationManager::InitIndexReplaces(puint verdata)
         g_App.UOFilesPath("Corpse.def").c_str(), " \t", "#;//", "{}");
 
     WISP_FILE::CTextFileParser equipConvParser(
-        g_App.UOFilesPath("EquipConv.def"), " \t", "#;//", "");
+        g_App.UOFilesPath("Equipconv.def"), " \t", "#;//", "");
 
     while (!equipConvParser.IsEOF())
     {
