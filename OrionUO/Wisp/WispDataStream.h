@@ -15,7 +15,7 @@ protected:
 
 public:
     CDataWritter();
-    CDataWritter(const size_t &size, bool autoResize = true);
+    CDataWritter(size_t size, bool autoResize = true);
 
     virtual ~CDataWritter();
 
@@ -23,13 +23,13 @@ public:
     puchar DataPtr() { return &m_Data[0]; }
     size_t Size() { return m_Data.size(); }
 
-    void Resize(const size_t &newSize, bool resetPtr = false);
+    void Resize(size_t newSize, bool resetPtr = false);
     void ResetPtr() { Ptr = &m_Data[0]; }
 
     void Move(const intptr_t &offset);
 
-    void WriteDataBE(const puchar data, const size_t &size, const intptr_t &offset = 0);
-    void WriteDataLE(const puchar data, const size_t &size, const intptr_t &offset = 0);
+    void WriteDataBE(const puchar data, size_t size, const intptr_t &offset = 0);
+    void WriteDataLE(const puchar data, size_t size, const intptr_t &offset = 0);
 
     void WriteUInt8(uchar val, const intptr_t &offset = 0)
     {
@@ -86,13 +86,13 @@ public:
         WriteDataLE((puchar)&val, sizeof(int), offset);
     }
 
-    void WriteInt64BE(const __int64 &val, const intptr_t &offset = 0)
+    void WriteInt64BE(int64_t val, const intptr_t &offset = 0)
     {
-        WriteDataBE((puchar)&val, sizeof(__int64), offset);
+        WriteDataBE((puchar)&val, sizeof(int64_t), offset);
     }
-    void WriteInt64LE(const __int64 &val, const intptr_t &offset = 0)
+    void WriteInt64LE(int64_t val, const intptr_t &offset = 0)
     {
-        WriteDataLE((puchar)&val, sizeof(__int64), offset);
+        WriteDataLE((puchar)&val, sizeof(int64_t), offset);
     }
 
     void WriteFloatBE(float val, const intptr_t &offset = 0)
@@ -135,19 +135,19 @@ public:
     puchar Ptr = 0;
 
     CDataReader();
-    CDataReader(puchar start, const size_t &size);
+    CDataReader(puchar start, size_t size);
 
     virtual ~CDataReader();
 
-    void SetData(puchar start, const size_t &size, const intptr_t &offset = 0);
+    void SetData(puchar start, size_t size, const intptr_t &offset = 0);
     void ResetPtr() { Ptr = Start; }
 
     bool IsEOF() { return Ptr >= End; }
 
     void Move(const intptr_t &offset) { Ptr += offset; }
 
-    void ReadDataBE(puchar data, const size_t &size, const intptr_t &offset = 0);
-    void ReadDataLE(puchar data, const size_t &size, const intptr_t &offset = 0);
+    void ReadDataBE(puchar data, size_t size, const intptr_t &offset = 0);
+    void ReadDataLE(puchar data, size_t size, const intptr_t &offset = 0);
 
     uchar ReadUInt8(const intptr_t &offset = 0)
     {
@@ -215,16 +215,16 @@ public:
         return val;
     }
 
-    __int64 ReadInt64BE(const intptr_t &offset = 0)
+    int64_t ReadInt64BE(const intptr_t &offset = 0)
     {
-        __int64 val = 0;
-        ReadDataBE((puchar)&val, sizeof(__int64), offset);
+        int64_t val = 0;
+        ReadDataBE((puchar)&val, sizeof(int64_t), offset);
         return val;
     }
-    __int64 ReadInt64LE(const intptr_t &offset = 0)
+    int64_t ReadInt64LE(const intptr_t &offset = 0)
     {
-        __int64 val = 0;
-        ReadDataLE((puchar)&val, sizeof(__int64), offset);
+        int64_t val = 0;
+        ReadDataLE((puchar)&val, sizeof(int64_t), offset);
         return val;
     }
 

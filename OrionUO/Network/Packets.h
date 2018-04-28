@@ -6,7 +6,7 @@
 class CPacket : public WISP_DATASTREAM::CDataWritter
 {
 public:
-    CPacket(const size_t &size, bool autoResize = false);
+    CPacket(size_t size, bool autoResize = false);
 
     void Send();
 };

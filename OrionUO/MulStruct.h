@@ -99,7 +99,7 @@ typedef struct STATIC_GROUP_OLD
 
 struct LAND_TILES_NEW
 {
-    unsigned __int64 Flags;
+    uint64_t Flags;
     unsigned short TexID;
     char Name[20];
 };
@@ -112,7 +112,7 @@ typedef struct LAND_GROUP_NEW
 
 struct STATIC_TILES_NEW
 {
-    unsigned __int64 Flags;
+    uint64_t Flags;
     unsigned char Weight;
     unsigned char Layer;
     unsigned int Count;
@@ -131,7 +131,7 @@ typedef struct STATIC_GROUP_NEW
 
 struct LAND_TILES
 {
-    unsigned __int64 Flags;
+    uint64_t Flags;
     unsigned short TexID;
     string Name;
 };
@@ -144,7 +144,7 @@ typedef struct LAND_GROUP
 
 struct STATIC_TILES
 {
-    unsigned __int64 Flags;
+    uint64_t Flags;
     unsigned char Weight;
     unsigned char Layer;
     unsigned int Count;

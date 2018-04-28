@@ -65,7 +65,7 @@ private:
     void ReadMulIndexFile(
         size_t indexMaxCount,
         std::function<CIndexObject *(int index)> getIdxObj,
-        const size_t &address,
+        size_t address,
         PBASE_IDX_BLOCK ptr,
         std::function<PBASE_IDX_BLOCK()> getNewPtrValue);
     void ReadUOPIndexFile(

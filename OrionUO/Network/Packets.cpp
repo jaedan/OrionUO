@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-CPacket::CPacket(const size_t &size, bool autoResize)
+CPacket::CPacket(size_t size, bool autoResize)
     : WISP_DATASTREAM::CDataWritter(size, autoResize)
 {
 }

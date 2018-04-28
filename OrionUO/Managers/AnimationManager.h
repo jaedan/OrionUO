@@ -151,7 +151,7 @@ public:
 
     CIndexAnimation m_DataIndex[MAX_ANIMATIONS_DATA_INDEX_COUNT];
 
-    void Init(int graphic, const size_t &addressIdx, const size_t &sizeIdx)
+    void Init(int graphic, size_t addressIdx, size_t sizeIdx)
     {
         m_AddressIdx[graphic] = addressIdx;
         m_SizeIdx[graphic] = sizeIdx;

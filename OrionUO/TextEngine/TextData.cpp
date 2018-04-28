@@ -75,7 +75,7 @@ void CTextData::GenerateTexture(
         else
         {
             uint delay =
-                ((__int64)((__int64)5497558140000 * g_ConfigManager.SpeechDelay) >> 32) >> 5;
+                ((int64_t)((int64_t)5497558140000 * g_ConfigManager.SpeechDelay) >> 32) >> 5;
             Timer += (uint)((delay >> 31) + delay);
         }
     }
