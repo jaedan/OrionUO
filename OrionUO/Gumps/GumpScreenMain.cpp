@@ -72,9 +72,11 @@ void CGumpScreenMain::UpdateContent()
 
 	g_MainScreen.m_SavePassword = (CGUICheckbox*)Add(new CGUICheckbox(ID_MS_SAVEPASSWORD, 0x00D2, 0x00D3, 0x00D2, 328, 417));
 	g_MainScreen.m_SavePassword->SetTextParameters(9, "Save Password", 0x0386, STP_RIGHT_CENTER);
+	g_MainScreen.m_SavePassword->Checked = g_Orion.Config.RememberPassword;
 
 	g_MainScreen.m_AutoLogin = (CGUICheckbox*)Add(new CGUICheckbox(ID_MS_AUTOLOGIN, 0x00D2, 0x00D3, 0x00D2, 183, 417));
 	g_MainScreen.m_AutoLogin->SetTextParameters(9, "Auto Login", 0x0386, STP_RIGHT_CENTER);
+	g_MainScreen.m_AutoLogin->Checked = g_Orion.Config.AutoLogin;
 
 	CGUIText *text = (CGUIText*)Add(new CGUIText(0x0386, 253, 305));
 	text->CreateTextureA(2, "Log in to Ultima Online");
@@ -94,10 +96,12 @@ void CGumpScreenMain::UpdateContent()
 	CGUITextEntry *entry = (CGUITextEntry*)Add(new CGUITextEntry(ID_MS_ACCOUNT, 0x034F, 0x03E3, 0x0021, 335, 343, 190, false, 5, TS_LEFT, 0, 32));
 	entry->CheckOnSerial = true;
 	g_MainScreen.m_Account = &entry->m_Entry;
+	g_MainScreen.SetAccountName(g_Orion.Config.AccountName);
 
 	entry = (CGUITextEntry*)Add(new CGUITextEntry(ID_MS_PASSWORD, 0x034F, 0x03E3, 0x0021, 335, 385, 190, false, 5, TS_LEFT, 0, 32));
 	entry->CheckOnSerial = true;
 	m_PasswordFake = &entry->m_Entry;
+	g_MainScreen.SetEncryptedPassword(g_Orion.Config.Password);
 }
 //----------------------------------------------------------------------------------
 void CGumpScreenMain::InitToolTip()

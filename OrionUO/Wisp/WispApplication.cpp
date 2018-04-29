@@ -23,7 +23,6 @@ CApplication::CApplication()
 	ExePathW = ExePathW.c_str();
 	UOFilesPathA = ExePathA;
 	UOFilesPathW = ExePathW;
-	g_MainScreen.LoadCustomPath();
 }
 //----------------------------------------------------------------------------------
 CApplication::~CApplication()

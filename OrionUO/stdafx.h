@@ -29,6 +29,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <functional>
+#include <string>
 
 #include "Dependencies/include/glew.h"
 #include "Dependencies/include/wglew.h"

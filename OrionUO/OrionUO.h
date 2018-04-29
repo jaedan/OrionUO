@@ -9,15 +9,26 @@
 //----------------------------------------------------------------------------------
 #ifndef ORIONUO_H
 #define ORIONUO_H
+
+struct ClientConfiguration
+{
+	std::string HostName = "";
+	int Port = 0;
+	std::string AccountName = "";
+	std::string Password = "";
+	bool RememberPassword = false;
+	bool AutoLogin = false;
+};
+
 //----------------------------------------------------------------------------------
 class COrion
 {
 public:
 	string ClientVersionText = "2.0.3";
 	int TexturesDataCount = 0;
-	string DefaultLogin = "";
-	int DefaultPort = 0;
 	uint OrionVersionNumeric = 0;
+
+	ClientConfiguration Config;
 
 private:
 	uint m_CRC_Table[256];
@@ -41,6 +52,8 @@ private:
 	string m_GameServerIP = "";
 
 	void LoadClientConfig();
+	void SaveClientConfig();
+
 	void LoadAutoLoginNames();
 
 	void LoadTiledata(int landSize, int staticsSize);
