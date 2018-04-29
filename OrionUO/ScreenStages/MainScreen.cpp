@@ -68,10 +68,14 @@ void CMainScreen::ProcessSmoothAction(uchar action)
         g_OrionWindow.Destroy();
 }
 
-void CMainScreen::SetAccounting(const string &account, const string &password)
+void CMainScreen::SetAccountName(const string &account)
 {
-    WISPFUN_DEBUG("c165_f5");
     m_Account->SetText(account);
+    m_Account->SetPos((int)account.length());
+}
+
+void CMainScreen::SetPassword(const string &password)
+{
     m_Password->SetText(password);
 
     size_t len = password.length();
@@ -79,6 +83,28 @@ void CMainScreen::SetAccounting(const string &account, const string &password)
 
     IFOR (i, 0, len)
         m_MainGump.m_PasswordFake->Insert(L'*');
+
+    m_Password->SetPos((int)len);
+}
+
+void CMainScreen::SetEncryptedPassword(const string &password)
+{
+    size_t len = password.length();
+
+    if (len)
+    {
+        m_Password->SetText(DecryptPW(password.c_str(), (int)len));
+
+        IFOR (zv, 0, len)
+            m_MainGump.m_PasswordFake->Insert(L'*');
+
+        m_Password->SetPos((int)len);
+    }
+}
+
+string CMainScreen::GetEncryptedPassword()
+{
+    return CryptPW(m_Password->c_str(), (int)m_Password->Length());
 }
 
 void CMainScreen::Paste()
@@ -155,201 +181,6 @@ void CMainScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     }
 
     m_Gump.WantRedraw = true;
-}
-
-int CMainScreen::GetConfigKeyCode(const string &key)
-{
-    WISPFUN_DEBUG("c165_f9");
-    const int keyCount = MSCC_COUNT - 1;
-
-    static const string m_Keys[keyCount] = { "acctid",    "acctpassword",  "rememberacctpw",
-                                             "autologin", "smoothmonitor", "theabyss",
-                                             "asmut",     "custompath" };
-
-    string str = ToLowerA(key);
-    int result = 0;
-
-    IFOR (i, 0, keyCount && !result)
-    {
-        if (str == m_Keys[i])
-            result = (int)i + 1;
-    }
-
-    return result;
-}
-
-void CMainScreen::LoadCustomPath()
-{
-    WISPFUN_DEBUG("c165_f14");
-
-    WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
-
-    while (!file.IsEOF())
-    {
-        std::vector<std::string> strings = file.ReadTokens(false);
-
-        if (strings.size() >= 2)
-        {
-            int code = GetConfigKeyCode(strings[0]);
-
-            switch (code)
-            {
-                case MSCC_CUSTOM_PATH:
-                {
-                    g_App.UOFilesPathA = strings[1];
-                    g_App.UOFilesPathW = ToWString(strings[1]);
-                }
-            }
-        }
-    }
-}
-
-void CMainScreen::LoadGlobalConfig()
-{
-    WISPFUN_DEBUG("c165_f10");
-    m_AutoLogin->Checked = false;
-    g_ScreenEffectManager.Enabled = false;
-
-    WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
-
-    while (!file.IsEOF())
-    {
-        std::vector<std::string> strings = file.ReadTokens();
-
-        if (strings.size() >= 2)
-        {
-            int code = GetConfigKeyCode(strings[0]);
-
-            switch (code)
-            {
-                case MSCC_ACTID:
-                {
-                    m_Account->SetText(strings[1]);
-                    m_Account->SetPos((int)strings[1].length());
-
-                    break;
-                }
-                case MSCC_ACTPWD:
-                {
-                    string password = file.RawLine;
-                    size_t pos = password.find_first_of("=");
-                    password = password.substr(pos + 1, password.length() - (pos + 1));
-
-                    size_t len = password.length();
-
-                    if (len)
-                    {
-                        m_Password->SetText(DecryptPW(password.c_str(), (int)len));
-
-                        IFOR (zv, 0, len)
-                            m_MainGump.m_PasswordFake->Insert(L'*');
-
-                        m_Password->SetPos((int)len);
-                    }
-                    else
-                    {
-                        m_MainGump.m_PasswordFake->SetText("");
-                        m_MainGump.m_PasswordFake->SetPos(0);
-                        m_Password->SetText("");
-                        m_Password->SetPos(0);
-                    }
-
-                    break;
-                }
-                case MSCC_REMEMBERPWD:
-                {
-                    m_SavePassword->Checked = ToBool(strings[1]);
-
-                    if (!m_SavePassword->Checked)
-                    {
-                        m_MainGump.m_PasswordFake->SetText("");
-                        m_MainGump.m_PasswordFake->SetPos(0);
-                        m_Password->SetText("");
-                        m_Password->SetPos(0);
-                    }
-
-                    break;
-                }
-                case MSCC_AUTOLOGIN:
-                {
-                    m_AutoLogin->Checked = ToBool(strings[1]);
-
-                    break;
-                }
-                case MSCC_SMOOTHMONITOR:
-                {
-                    g_ScreenEffectManager.Enabled = ToBool(strings[1]);
-
-                    break;
-                }
-                case MSCC_THE_ABYSS:
-                {
-                    g_TheAbyss = ToBool(strings[1]);
-
-                    break;
-                }
-                case MSCC_ASMUT:
-                {
-                    g_Asmut = ToBool(strings[1]);
-
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    }
-}
-
-void CMainScreen::SaveGlobalConfig()
-{
-    WISPFUN_DEBUG("c165_f11");
-    FILE *uo_cfg = NULL;
-    fopen_s(&uo_cfg, g_App.ExeFilePath("client.cfg").c_str(), "w");
-
-    if (uo_cfg == NULL)
-        return;
-
-    char buf[128] = { 0 };
-
-    sprintf_s(buf, "AcctID=%s\n", m_Account->c_str());
-    fputs(buf, uo_cfg);
-
-    if (m_SavePassword->Checked)
-    {
-        sprintf_s(
-            buf,
-            "AcctPassword=%s\n",
-            CryptPW(m_Password->c_str(), (int)m_Password->Length()).c_str());
-        fputs(buf, uo_cfg);
-        sprintf_s(buf, "RememberAcctPW=yes\n");
-        fputs(buf, uo_cfg);
-    }
-    else
-    {
-        fputs("AcctPassword=\n", uo_cfg);
-        sprintf_s(buf, "RememberAcctPW=no\n");
-        fputs(buf, uo_cfg);
-    }
-
-    sprintf_s(buf, "AutoLogin=%s\n", (m_AutoLogin->Checked ? "yes" : "no"));
-    fputs(buf, uo_cfg);
-
-    sprintf_s(buf, "SmoothMonitor=%s\n", (g_ScreenEffectManager.Enabled ? "yes" : "no"));
-    fputs(buf, uo_cfg);
-
-    sprintf_s(buf, "TheAbyss=%s\n", (g_TheAbyss ? "yes" : "no"));
-    fputs(buf, uo_cfg);
-
-    sprintf_s(buf, "Asmut=%s\n", (g_Asmut ? "yes" : "no"));
-    fputs(buf, uo_cfg);
-
-    if (g_App.UOFilesPathA != g_App.ExePathA)
-    {
-        sprintf_s(buf, "CustomPath=%s\n", g_App.UOFilesPathA.c_str());
-        fputs(buf, uo_cfg);
-    }
-    fclose(uo_cfg);
 }
 
 string CMainScreen::CryptPW(const char *buf, int len)

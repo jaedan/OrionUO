@@ -6,24 +6,9 @@
 class CMainScreen : public CBaseScreen
 {
 private:
-    enum
-    {
-        MSCC_ACTID = 1,
-        MSCC_ACTPWD,
-        MSCC_REMEMBERPWD,
-        MSCC_AUTOLOGIN,
-        MSCC_SMOOTHMONITOR,
-        MSCC_THE_ABYSS,
-        MSCC_ASMUT,
-        MSCC_CUSTOM_PATH,
-        MSCC_COUNT,
-    };
-
     string CryptPW(const char *buf, int len);
 
     string DecryptPW(const char *buf, int len);
-
-    int GetConfigKeyCode(const string &key);
 
     CGumpScreenMain m_MainGump;
 
@@ -34,22 +19,20 @@ public:
     static const uchar ID_SMOOTH_MS_QUIT = 1;
     static const uchar ID_SMOOTH_MS_CONNECT = 2;
 
-    CEntryText *m_Account{ NULL };
-    CEntryText *m_Password{ NULL };
-    CGUICheckbox *m_SavePassword{ NULL };
-    CGUICheckbox *m_AutoLogin{ NULL };
+    CEntryText *m_Account = nullptr;
+    CEntryText *m_Password = nullptr;
+    CGUICheckbox *m_SavePassword = nullptr;
+    CGUICheckbox *m_AutoLogin = nullptr;
 
-    void SetAccounting(const string &account, const string &password);
+    void SetAccountName(const string &account);
+    void SetPassword(const string &password);
+    void SetEncryptedPassword(const string &password);
+
+    string GetEncryptedPassword();
 
     void Paste();
 
     void ProcessSmoothAction(uchar action = 0xFF);
-
-    void LoadGlobalConfig();
-
-    void LoadCustomPath();
-
-    void SaveGlobalConfig();
 
     void Init();
 

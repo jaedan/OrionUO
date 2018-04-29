@@ -112,8 +112,8 @@ void COrion::ParseCommandLine()
         {
             if (str == "login")
             {
-                DefaultLogin = strings[1];
-                DefaultPort = atoi(strings[2].c_str());
+                Config.HostName = strings[1];
+                Config.Port = atoi(strings[2].c_str());
             }
             else if (str == "proxyhost")
             {
@@ -130,9 +130,12 @@ void COrion::ParseCommandLine()
                     DecodeArgumentString(strings[2].c_str(), (int)strings[2].length()));
             }
             else if (str == "account")
-                g_MainScreen.SetAccounting(
-                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length()),
+            {
+                g_MainScreen.SetAccountName(
+                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length()));
+                g_MainScreen.SetPassword(
                     DecodeArgumentString(strings[2].c_str(), (int)strings[2].length()));
+            }
             else if (str == "plugin")
             {
                 strings = WISP_FILE::CTextFileParser("", ",:", "", "")
@@ -224,6 +227,11 @@ bool COrion::Install()
     WISPFUN_DEBUG("c194_f5");
     LOG("COrion::Install()\n");
     SetUnhandledExceptionFilter(OrionUnhandledExceptionFilter);
+
+    LOG("Load client config.\n");
+    LoadClientConfig();
+    LOG("Client config loaded!\n");
+
     string orionVersionStr = g_App.GetFileVersion(&OrionVersionNumeric);
     LOG("Orion version is: %s (build %s)\n",
         orionVersionStr.c_str(),
@@ -263,10 +271,6 @@ bool COrion::Install()
     }
 
     CreateDirectoryA(g_App.ExeFilePath("snapshots").c_str(), NULL);
-
-    LOG("Load client config.\n");
-    LoadClientConfig();
-    LOG("Client config loaded!\n");
 
     if (g_PacketManager.GetClientVersion() >= CV_305D)
     {
@@ -466,7 +470,6 @@ bool COrion::Install()
 
     LOG("Update main screen content\n");
     g_MainScreen.UpdateContent();
-    g_MainScreen.LoadGlobalConfig();
 
     LOG("Init screen...\n");
 
@@ -489,7 +492,7 @@ void COrion::Uninstall()
     WISPFUN_DEBUG("c194_f6");
     LOG("COrion::Uninstall()\n");
     SaveLocalConfig(g_PacketManager.ConfigSerial);
-    g_MainScreen.SaveGlobalConfig();
+    SaveClientConfig();
     g_GumpManager.OnDelete();
 
     Disconnect();
@@ -973,6 +976,56 @@ void COrion::LoadContaierOffsets()
 void COrion::LoadClientConfig()
 {
     WISPFUN_DEBUG("c194_f11");
+
+    WISP_FILE::CTextFileParser file(g_App.ExeFilePath("client.cfg"), "=", "#;", "");
+
+    while (!file.IsEOF())
+    {
+        std::vector<std::string> strings = file.ReadTokens(false);
+
+        if (strings.size() <= 1)
+        {
+            continue;
+        }
+
+        if (_stricmp("acctid", strings[0].c_str()) == 0)
+        {
+            Config.AccountName = strings[1];
+        }
+        else if (_stricmp("acctpassword", strings[0].c_str()) == 0)
+        {
+            string password = file.RawLine;
+            size_t pos = password.find_first_of("=");
+            password = password.substr(pos + 1, password.length() - (pos + 1));
+            Config.Password = password;
+        }
+        else if (_stricmp("rememberacctpw", strings[0].c_str()) == 0)
+        {
+            Config.RememberPassword = ToBool(strings[1]);
+        }
+        else if (_stricmp("autologin", strings[0].c_str()) == 0)
+        {
+            Config.AutoLogin = ToBool(strings[1]);
+        }
+        else if (_stricmp("smoothmonitor", strings[0].c_str()) == 0)
+        {
+            g_ScreenEffectManager.Enabled = ToBool(strings[1]);
+        }
+        else if (_stricmp("theabyss", strings[0].c_str()) == 0)
+        {
+            g_TheAbyss = ToBool(strings[1]);
+        }
+        else if (_stricmp("asmut", strings[0].c_str()) == 0)
+        {
+            g_Asmut = ToBool(strings[1]);
+        }
+        else if (_stricmp("custompath", strings[0].c_str()) == 0)
+        {
+            g_App.UOFilesPathA = strings[1];
+            g_App.UOFilesPathW = ToWString(strings[1]);
+        }
+    }
+
     string path = g_App.ExeFilePath("Orion.dll");
     HMODULE orionDll = LoadLibraryA(path.c_str());
 
@@ -1096,6 +1149,54 @@ void COrion::LoadClientConfig()
         g_CharacterList.ClientFlag = file.ReadInt8();
         g_FileManager.UseVerdata = (file.ReadInt8() != 0);
     }
+}
+
+void COrion::SaveClientConfig()
+{
+    WISPFUN_DEBUG("c165_f11");
+    FILE *uo_cfg = NULL;
+    fopen_s(&uo_cfg, g_App.ExeFilePath("client.cfg").c_str(), "w");
+
+    if (uo_cfg == NULL)
+        return;
+
+    char buf[128] = { 0 };
+
+    sprintf_s(buf, "AcctID=%s\n", g_MainScreen.m_Account->c_str());
+    fputs(buf, uo_cfg);
+
+    if (g_MainScreen.m_SavePassword->Checked)
+    {
+        sprintf_s(buf, "AcctPassword=%s\n", g_MainScreen.GetEncryptedPassword().c_str());
+        fputs(buf, uo_cfg);
+        sprintf_s(buf, "RememberAcctPW=yes\n");
+        fputs(buf, uo_cfg);
+    }
+    else
+    {
+        fputs("AcctPassword=\n", uo_cfg);
+        sprintf_s(buf, "RememberAcctPW=no\n");
+        fputs(buf, uo_cfg);
+    }
+
+    sprintf_s(buf, "AutoLogin=%s\n", (g_MainScreen.m_AutoLogin->Checked ? "yes" : "no"));
+    fputs(buf, uo_cfg);
+
+    sprintf_s(buf, "SmoothMonitor=%s\n", (g_ScreenEffectManager.Enabled ? "yes" : "no"));
+    fputs(buf, uo_cfg);
+
+    sprintf_s(buf, "TheAbyss=%s\n", (g_TheAbyss ? "yes" : "no"));
+    fputs(buf, uo_cfg);
+
+    sprintf_s(buf, "Asmut=%s\n", (g_Asmut ? "yes" : "no"));
+    fputs(buf, uo_cfg);
+
+    if (g_App.UOFilesPathA != g_App.ExePathA)
+    {
+        sprintf_s(buf, "CustomPath=%s\n", g_App.UOFilesPathA.c_str());
+        fputs(buf, uo_cfg);
+    }
+    fclose(uo_cfg);
 }
 
 void COrion::LoadAutoLoginNames()
@@ -3143,10 +3244,10 @@ bool COrion::IsVegetation(ushort graphic)
 void COrion::LoadLogin(string &login, int &port)
 {
     WISPFUN_DEBUG("c194_f45");
-    if (DefaultPort)
+    if (Config.Port)
     {
-        login = DefaultLogin;
-        port = DefaultPort;
+        login = Config.HostName;
+        port = Config.Port;
 
         return;
     }
