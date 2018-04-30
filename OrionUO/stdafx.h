@@ -30,6 +30,8 @@
 #include <sys/stat.h>
 #include <functional>
 #include <string>
+#include <list>
+#include <tuple>
 
 #include "Dependencies/include/glew.h"
 #include "Dependencies/include/wglew.h"
