@@ -1155,6 +1155,15 @@ void COrion::LoadClientConfig()
                 return;
             }
         }
+        else if (_stricmp("plugin", strings[0].c_str()) == 0)
+        {
+            uint32_t flags = ~0;
+            if (strings.size() == 4)
+            {
+                flags = std::stoi(strings[3]);
+            }
+            m_Plugins.push_back({ strings[1], strings[2], flags });
+        }
     }
 
     string path = g_App.ExeFilePath("Orion.dll");
@@ -1335,6 +1344,17 @@ void COrion::SaveClientConfig()
     for (int i = 0; i < MAX_MAPS_COUNT; i++)
     {
         sprintf_s(buf, "Map%dSize=%dx%d\n", i, g_MapSize[i].Width, g_MapSize[i].Height);
+        fputs(buf, uo_cfg);
+    }
+
+    for (auto &plugin : m_Plugins)
+    {
+        sprintf_s(
+            buf,
+            "plugin=%s,%s,%x\n",
+            std::get<0>(plugin),
+            std::get<1>(plugin),
+            std::get<2>(plugin));
         fputs(buf, uo_cfg);
     }
 
@@ -1696,31 +1716,13 @@ void COrion::LoadPluginConfig()
     g_PluginClientInterface.PathFinder = &g_Interface_PathFinder;
     g_PluginClientInterface.FileManager = &g_Interface_FileManager;
 
-    STRING_LIST libName;
-    STRING_LIST functions;
-    UINT_LIST flags;
-
-    if (g_PluginInitOld != NULL)
-        g_PluginInitOld(libName, functions, flags);
-    else
+    for (auto &plugin : m_Plugins)
     {
-        size_t pluginsInfoCount = g_PluginGetCount();
-
-        PLUGIN_INFO *pluginsInfo = new PLUGIN_INFO[pluginsInfoCount];
-        g_PluginInitNew(pluginsInfo);
-
-        IFOR (i, 0, pluginsInfoCount)
-        {
-            libName.push_back(pluginsInfo[i].FileName);
-            functions.push_back(pluginsInfo[i].FunctionName);
-            flags.push_back((uint)pluginsInfo[i].Flags);
-        }
-
-        delete[] pluginsInfo;
+        LoadPlugin(
+            g_App.ExeFilePath(std::get<0>(plugin).c_str()),
+            std::get<1>(plugin),
+            std::get<2>(plugin));
     }
-
-    IFOR (i, 0, (int)libName.size())
-        LoadPlugin(g_App.ExeFilePath(libName[i].c_str()), functions[i], flags[i]);
 
     ParseCommandLine();
 
