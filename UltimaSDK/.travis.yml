@@ -1,0 +1,5 @@
+language: csharp
+solution: Ultima.csproj
+before_install:
+    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' Ultima.csproj
+    - sed -i 's/<AssemblyOriginatorKeyFile>UltimaSDK.snk<\/AssemblyOriginatorKeyFile>//' Ultima.csproj

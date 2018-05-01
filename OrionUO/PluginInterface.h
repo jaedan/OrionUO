@@ -2,6 +2,7 @@
 #define PLUGININTERFACE_H
 
 #include <Windows.h>
+#include <string>
 
 #ifdef cplusplus
 extern "C"
@@ -112,8 +113,8 @@ extern "C"
         size_t size;
 
         HWND WindowHandle;
-        int ClientVersion;
-        int ClientFlags;
+        std::string ClientVersionText;
+        std::string ClientPath;
 
         struct
         {

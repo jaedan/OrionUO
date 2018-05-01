@@ -43,6 +43,9 @@
 /OrionUO.VC.VC.opendb
 /Desktop
 /OrionUO/music
+/Crypt/Debug
+/Crypt/Release
+/Razor/obj
 !/bin/*.dll
 !/bin/*.exe
 !/bin/*.pdb
