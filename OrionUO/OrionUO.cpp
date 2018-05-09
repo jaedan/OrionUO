@@ -1360,53 +1360,54 @@ void COrion::LoadStartupConfig(int serial)
 //----------------------------------------------------------------------------------
 void COrion::LoadPlugin(const string &libpath, const string &function, int flags)
 {
-	LOG("Trying to load %s into memory...\n", libpath);
 	WISPFUN_DEBUG("c194_f16");
+
+	LOG("Loading %s...\n", libpath);
+
 	HMODULE dll = LoadLibraryA(libpath.c_str());
 
-	if (dll != NULL)
-	{
-		typedef void __cdecl dllFunc(PPLUGIN_INTERFACE);
-
-		dllFunc *initFunc = (dllFunc*)GetProcAddress(dll, function.c_str());
-		CPlugin *plugin = NULL;
-
-		if (initFunc != NULL)
-		{
-			plugin = new CPlugin(flags);
-
-			initFunc(plugin->m_PPS);
-		}
-
-		if (plugin == NULL)
-			FreeLibrary(dll);
-		else
-		{
-			CRASHLOG("Plugin['%s'] loaded at: 0x%08X\n", libpath.c_str(), dll);
-
-			plugin->m_PPS->Owner = plugin;
-
-			if (plugin->CanClientAccess())
-				plugin->m_PPS->Client = &g_PluginClientInterface;
-
-			if (plugin->CanParseRecv())
-				plugin->m_PPS->Recv = PluginRecvFunction;
-
-			if (plugin->CanParseSend())
-				plugin->m_PPS->Send = PluginSendFunction;
-
-			initFunc(plugin->m_PPS);
-
-			g_PluginManager.Add(plugin);
-		}
-	}
-	else
-	{
+	if (dll == nullptr) {
 		auto errorCode = GetLastError();
-		LOG("Failed to LoadLibrary\n", libpath);
+		LOG("Failed to load %s\n", libpath);
 		LOG("Error code: %i\n", errorCode);
+		return;
 	}
 
+	typedef void __cdecl dllFunc(PPLUGIN_INTERFACE);
+	dllFunc *initFunc = (dllFunc*)GetProcAddress(dll, function.c_str());
+
+	if (initFunc == nullptr) {
+		auto errorCode = GetLastError();
+		LOG("Failed to find function %s\n", function);
+		LOG("Error code: %i\n", errorCode);
+		FreeLibrary(dll);
+		return;
+	}
+
+	CPlugin *plugin = new CPlugin(flags);
+	if (plugin == nullptr) {
+		auto errorCode = GetLastError();
+		LOG("Failed to allocate memory for plugin %s\n", libpath);
+		FreeLibrary(dll);
+		return;
+	}
+
+	CRASHLOG("Plugin['%s'] loaded at: 0x%08X\n", libpath.c_str(), dll);
+
+	plugin->m_PPS->Owner = plugin;
+
+	if (plugin->CanClientAccess())
+		plugin->m_PPS->Client = &g_PluginClientInterface;
+
+	if (plugin->CanParseRecv())
+		plugin->m_PPS->Recv = PluginRecvFunction;
+
+	if (plugin->CanParseSend())
+		plugin->m_PPS->Send = PluginSendFunction;
+
+	initFunc(plugin->m_PPS);
+
+	g_PluginManager.Add(plugin);
 }
 //----------------------------------------------------------------------------------
 void COrion::LoadPluginConfig()
