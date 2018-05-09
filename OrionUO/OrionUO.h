@@ -102,8 +102,6 @@ private:
 
     string DecodeArgumentString(const char *text, int length);
 
-    void ParseCommandLine();
-
     void LoadPlugin(const string &libpath, const string &function, int flags);
 
     void LoadContaierOffsets();

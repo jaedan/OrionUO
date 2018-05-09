@@ -79,129 +79,6 @@ string COrion::DecodeArgumentString(const char *text, int length)
     return result;
 }
 
-void COrion::ParseCommandLine()
-{
-    WISPFUN_DEBUG("c194_f3");
-    bool fastLogin = false;
-    int argc = 0;
-    LPWSTR *args = CommandLineToArgvW(GetCommandLineW(), &argc);
-
-    string defaultPluginPath = g_App.ExeFilePath("OA/OrionAssistant.dll");
-    string defaultPluginFunction = "Install";
-    uint defaultPluginFlags = 0xFFFFFFFF;
-
-    IFOR (i, 0, argc)
-    {
-        if (!args[i] || *args[i] != L'-')
-            continue;
-
-        string str = ToString(args[i] + 1);
-
-        WISP_FILE::CTextFileParser parser("", " ,:", "", "''");
-
-        STRING_LIST strings = parser.GetTokens(str.c_str());
-
-        if (!strings.size())
-            continue;
-
-        str = ToLowerA(strings[0]);
-        bool haveParam = (strings.size() > 1);
-        bool have2Param = (strings.size() > 2);
-
-        if (have2Param)
-        {
-            if (str == "login")
-            {
-                Config.HostName = strings[1];
-                Config.Port = atoi(strings[2].c_str());
-            }
-            else if (str == "proxyhost")
-            {
-                g_ConnectionManager.SetUseProxy(true);
-                g_ConnectionManager.SetProxyAddress(strings[1]);
-                g_ConnectionManager.SetProxyPort(atoi(strings[2].c_str()));
-            }
-            else if (str == "proxyaccount")
-            {
-                g_ConnectionManager.SetProxySocks5(true);
-                g_ConnectionManager.SetProxyAccount(
-                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length()));
-                g_ConnectionManager.SetProxyPassword(
-                    DecodeArgumentString(strings[2].c_str(), (int)strings[2].length()));
-            }
-            else if (str == "account")
-            {
-                g_MainScreen.SetAccountName(
-                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length()));
-                g_MainScreen.SetPassword(
-                    DecodeArgumentString(strings[2].c_str(), (int)strings[2].length()));
-            }
-            else if (str == "plugin")
-            {
-                strings = WISP_FILE::CTextFileParser("", ",:", "", "")
-                              .GetTokens(ToString(args[i] + 1).c_str(), false);
-
-                if (strings.size() > 4)
-                {
-                    defaultPluginFlags = 0;
-
-                    if (ToLowerA(strings[4]).find("0x") == 0)
-                    {
-                        char *end = NULL;
-                        defaultPluginFlags = strtoul(strings[4].c_str(), &end, 16);
-                    }
-                    else
-                        defaultPluginFlags = atoi(strings[4].c_str());
-
-                    defaultPluginPath = strings[1] + ":" + strings[2];
-                    defaultPluginFunction = strings[3];
-                }
-            }
-        }
-        else if (str == "autologin")
-        {
-            bool enabled = true;
-
-            if (haveParam)
-                enabled = atoi(strings[1].c_str());
-
-            g_MainScreen.m_AutoLogin->Checked = enabled;
-        }
-        else if (str == "savepassword")
-        {
-            bool enabled = true;
-
-            if (haveParam)
-                enabled = atoi(strings[1].c_str());
-
-            g_MainScreen.m_SavePassword->Checked = enabled;
-        }
-        else if (str == "fastlogin")
-            fastLogin = true;
-        else if (str == "autologinname")
-        {
-            if (g_PacketManager.AutoLoginNames.length())
-                g_PacketManager.AutoLoginNames =
-                    string("|") +
-                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length()) +
-                    g_PacketManager.AutoLoginNames;
-            else
-                g_PacketManager.AutoLoginNames =
-                    string("|") +
-                    DecodeArgumentString(strings[1].c_str(), (int)strings[1].length());
-        }
-        else if (str == "nowarnings")
-            g_ShowWarnings = false;
-    }
-
-    LocalFree(args);
-
-    LoadPlugin(defaultPluginPath, defaultPluginFunction, defaultPluginFlags);
-
-    if (fastLogin)
-        g_OrionWindow.CreateTimer(COrionWindow::FASTLOGIN_TIMER_ID, 50);
-}
-
 UINT_LIST COrion::FindPattern(puchar ptr, int size, const UCHAR_LIST &pattern)
 {
     WISPFUN_DEBUG("c194_f4");
@@ -1584,8 +1461,6 @@ void COrion::LoadPluginConfig()
             std::get<1>(plugin),
             std::get<2>(plugin));
     }
-
-    ParseCommandLine();
 
     if (g_PluginManager.m_Items != NULL)
     {
