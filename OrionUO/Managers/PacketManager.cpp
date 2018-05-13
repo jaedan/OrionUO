@@ -2702,7 +2702,7 @@ PACKET_HANDLER(DenyWalk)
 	uchar direction = ReadUInt8();
 	char z = ReadUInt8();
 
-	g_Walker.DenyWalk(sequence, x, y, z);
+	g_Player->DenyWalk(sequence, x, y, z);
 
 	g_Player->Direction = direction;
 
@@ -2726,7 +2726,7 @@ PACKET_HANDLER(ConfirmWalk)
 
 	g_Player->Notoriety = newnoto;
 
-	g_Walker.ConfirmWalk(sequence);
+	g_Player->ConfirmWalk(sequence);
 
 	g_World->MoveToTop(g_Player);
 }

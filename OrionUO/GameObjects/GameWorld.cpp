@@ -997,7 +997,7 @@ void CGameWorld::UpdatePlayer(int serial, ushort graphic, uchar graphicIncrement
 	{
 		g_Player->CloseBank();
 
-		g_Walker.WalkingFailed = false;
+		g_Player->WalkingFailed = false;
 
 		g_Player->SetX(x);
 		g_Player->SetY(y);
@@ -1024,7 +1024,7 @@ void CGameWorld::UpdatePlayer(int serial, ushort graphic, uchar graphicIncrement
 
 		g_Player->SetFlags(flags);
 
-		g_Walker.DenyWalk(-1, -1, -1, -1);
+		g_Player->DenyWalk(-1, -1, -1, -1);
 		g_Weather.Reset();
 
 		if (oldGraphic && oldGraphic != g_Player->Graphic)
@@ -1041,7 +1041,7 @@ void CGameWorld::UpdatePlayer(int serial, ushort graphic, uchar graphicIncrement
 				g_Orion.ChangeSeason(g_OldSeason, g_OldSeasonMusic);
 		}
 
-		g_Walker.ResendPacketSended = false;
+		g_Player->ResendPacketSended = false;
 
 		g_GumpManager.RemoveRangedGumps();
 

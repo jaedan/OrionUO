@@ -5861,7 +5861,6 @@ void COrion::RemoveRangedObjects()
 void COrion::ClearWorld()
 {
 	g_CorpseManager.Clear();
-	g_Walker.Reset();
 	g_ObjectInHand.Clear();
 	g_UseItemActions.Clear();
 

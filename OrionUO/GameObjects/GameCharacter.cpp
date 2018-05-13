@@ -855,22 +855,22 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
                         //play sound (5) ?
                     }
 
-                    if (g_Walker.m_Step[g_Walker.CurrentWalkSequence].Accepted) {
-                        int sequencePtr = g_Walker.CurrentWalkSequence + 1;
+                    if (g_Player->m_Step[g_Player->CurrentWalkSequence].Accepted) {
+                        int sequencePtr = g_Player->CurrentWalkSequence + 1;
 
-                        if (sequencePtr < g_Walker.StepsCount) {
-                            int count = g_Walker.StepsCount - sequencePtr;
+                        if (sequencePtr < g_Player->StepsCount) {
+                            int count = g_Player->StepsCount - sequencePtr;
 
                             IFOR(i, 0, count)
                             {
-                                g_Walker.m_Step[sequencePtr - 1] = g_Walker.m_Step[sequencePtr];
+                                g_Player->m_Step[sequencePtr - 1] = g_Player->m_Step[sequencePtr];
                                 sequencePtr++;
                             }
                         }
 
-                        g_Walker.StepsCount--;
+                        g_Player->StepsCount--;
                     } else
-                        g_Walker.CurrentWalkSequence++;
+                        g_Player->CurrentWalkSequence++;
                 }
 
                 m_X = wd.X;
