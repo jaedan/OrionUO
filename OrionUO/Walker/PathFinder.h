@@ -35,8 +35,6 @@ public:
 	//Автоматической передвижение (не сложными махинациями с мышкой)
 	bool AutoWalking = false;
 	bool PathFindidngCanBeCancelled = false;
-	bool BlockMoving = false;
-	bool FastRotation = false;
 	bool IgnoreStaminaCheck = false;
 
 protected:
@@ -96,9 +94,6 @@ public:
 	//Проверка на возможность сделать шаг в указанные координаты
 	bool CanWalk(uchar &direction, int &x, int &y, char &z);
 
-	//Пойти в указанные координаты
-	bool Walk(bool run, uchar direction);
-
 	//Переместиться в указанные координаты
 	bool WalkTo(int x, int y, int z, int distance);
 
@@ -107,8 +102,6 @@ public:
 
 	//Остановить автоматическую ходилку
 	void StopAutoWalk();
-
-	int GetWalkSpeed(bool run, bool onMount);
 };
 //----------------------------------------------------------------------------------
 extern CPathFinder g_PathFinder;

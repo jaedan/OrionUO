@@ -2320,7 +2320,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//walk N (0)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 0);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 0);
 
 			break;
 		}
@@ -2328,7 +2328,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//walk E (2)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 2);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 2);
 
 			break;
 		}
@@ -2336,7 +2336,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//walk W (6)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 6);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 6);
 
 			break;
 		}
@@ -2344,7 +2344,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//walk S (4)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 4);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 4);
 
 			break;
 		}
@@ -2352,7 +2352,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//Walk NW (7)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 7);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 7);
 
 			break;
 		}
@@ -2360,7 +2360,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//Walk SW (5)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 5);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 5);
 
 			break;
 		}
@@ -2368,7 +2368,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//Walk SE (3)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 3);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 3);
 
 			break;
 		}
@@ -2376,7 +2376,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 		{
 			//Walk NE (1)
 			if (!g_PathFinder.AutoWalking)
-				g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 1);
+				g_Player->Walk(g_ConfigManager.AlwaysRun, 1);
 
 			break;
 		}

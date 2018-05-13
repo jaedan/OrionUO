@@ -25,6 +25,149 @@ CPlayer::~CPlayer()
     WISPFUN_DEBUG("c21_f2");
 }
 //---------------------------------------------------------------------------
+int CPlayer::GetWalkSpeed(bool run, bool onMount)
+{
+    WISPFUN_DEBUG("c177_f6");
+    bool mounted = (onMount || (g_SpeedMode == CST_FAST_UNMOUNT || g_SpeedMode == CST_FAST_UNMOUNT_AND_CANT_RUN) || Flying());
+
+    return CHARACTER_ANIMATION_DELAY_TABLE[mounted][run];
+}
+//----------------------------------------------------------------------------------
+bool CPlayer::Walk(bool run, uchar direction)
+{
+    WISPFUN_DEBUG("c177_f7");
+    if (g_Walker.WalkingFailed || g_Walker.LastStepRequestTime > g_Ticks || g_Walker.StepsCount >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
+        return false;
+
+    if (g_SpeedMode >= CST_CANT_RUN)
+        run = false;
+    else if (!run)
+        run = g_ConfigManager.AlwaysRun;
+
+    int x, y;
+    char z;
+    uchar oldDirection;
+
+    GetEndPosition(x, y, z, oldDirection);
+
+    bool onMount = (FindLayer(OL_MOUNT) != NULL);
+
+    char oldZ = z;
+    ushort walkTime = TURN_DELAY;
+
+    if ((oldDirection & 7) == (direction & 7)) //Повернуты куда надо
+    {
+        uchar newDir = direction;
+        int newX = x;
+        int newY = y;
+        char newZ = z;
+
+        if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ))
+            return false;
+
+        if ((direction & 7) != newDir)
+            direction = newDir;
+        else {
+            direction = newDir;
+            x = newX;
+            y = newY;
+            z = newZ;
+
+            walkTime = GetWalkSpeed(run, onMount);
+        }
+    } else {
+        uchar newDir = direction;
+        int newX = x;
+        int newY = y;
+        char newZ = z;
+
+        if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
+            if ((oldDirection & 7) == newDir)
+                return false;
+        }
+
+        if ((oldDirection & 7) == newDir) {
+            x = newX;
+            y = newY;
+            z = newZ;
+
+            walkTime = GetWalkSpeed(run, onMount);
+        }
+
+        direction = newDir;
+    }
+
+    CloseBank();
+
+    if (!IsMoving()) {
+        if (!Walking())
+            SetAnimation(0xFF);
+
+        LastStepTime = g_Ticks;
+    }
+
+    CStepInfo& step = g_Walker.m_Step[g_Walker.StepsCount];
+    step.Sequence = g_Walker.WalkSequence;
+    step.Accepted = false;
+    step.Running = run;
+    step.OldDirection = oldDirection & 7;
+    step.Direction = direction;
+    step.Timer = g_Ticks;
+    step.X = x;
+    step.Y = y;
+    step.Z = z;
+    step.NoRotation = ((step.OldDirection == direction) && ((oldZ - z) >= 11));
+
+    g_Walker.StepsCount++;
+
+    if (run)
+        direction += 0x80;
+
+    m_Steps.push_back(CWalkData(x, y, z, direction, Graphic, GetFlags()));
+
+    CPacketWalkRequest(direction, g_Walker.WalkSequence, m_FastWalkStack.GetValue()).Send();
+
+    if (g_Walker.WalkSequence == 0xFF)
+        g_Walker.WalkSequence = 1;
+    else
+        g_Walker.WalkSequence++;
+
+    g_Walker.UnacceptedPacketsCount++;
+
+    g_World->MoveToTop(this);
+
+    static bool lastRun = false;
+    static bool lastMount = false;
+    static int lastDir = -1;
+    static int lastDelta = 0;
+    static int lastStepTime = 0;
+
+    //Высчитываем актуальную дельту с помощью разници во времени между прошлым и текущим шагом.
+    int nowDelta = 0;
+
+    if (lastDir == direction && lastMount == onMount && lastRun == run) {
+        nowDelta = (g_Ticks - lastStepTime) - walkTime + lastDelta;
+
+        if (abs(nowDelta) > 70)
+            nowDelta = 0;
+
+        lastDelta = nowDelta;
+    } else
+        lastDelta = 0;
+
+    lastStepTime = g_Ticks;
+
+    lastRun = run;
+    lastMount = onMount;
+
+    lastDir = direction;
+
+    g_Walker.LastStepRequestTime = g_Ticks + walkTime - nowDelta;
+    GetAnimationGroup();
+
+    return true;
+}
+//---------------------------------------------------------------------------
 void CPlayer::CloseBank()
 {
     CGameItem* bank = FindLayer(OL_BANK);
@@ -57,12 +200,12 @@ void CPlayer::UpdateAbilities()
     WISPFUN_DEBUG("c21_f12");
     ushort equippedGraphic = 0;
 
-    CGameItem* layerObject = g_Player->FindLayer(OL_1_HAND);
+    CGameItem* layerObject = FindLayer(OL_1_HAND);
 
     if (layerObject != NULL) {
         equippedGraphic = layerObject->Graphic;
     } else {
-        layerObject = g_Player->FindLayer(OL_2_HAND);
+        layerObject = FindLayer(OL_2_HAND);
 
         if (layerObject != NULL)
             equippedGraphic = layerObject->Graphic;

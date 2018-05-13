@@ -2620,8 +2620,6 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 		}
 		case VKI_BLOCK_MOVING:
 		{
-			g_PathFinder.BlockMoving = (value != 0);
-
 			break;
 		}
 		case VKI_SET_PLAYER_GRAPHIC:
@@ -2636,8 +2634,6 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 		}
 		case VKI_FAST_ROTATION:
 		{
-			g_PathFinder.FastRotation = (value != 0);
-
 			break;
 		}
 		case VKI_IGNORE_STAMINA_CHECK:
@@ -5877,7 +5873,6 @@ void COrion::ClearWorld()
 	g_Season = ST_SUMMER;
 	g_OldSeason = ST_SUMMER;
 	g_GlobalScale = 1.0;
-	g_PathFinder.BlockMoving = false;
 	g_SkillsManager.SkillsTotal = 0.0f;
 	g_SkillsManager.SkillsRequested = false;
 

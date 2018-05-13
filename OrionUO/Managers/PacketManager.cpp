@@ -5880,7 +5880,7 @@ PACKET_HANDLER(MovePlayer)
 		return;
 
 	uchar direction = ReadUInt8();
-	g_PathFinder.Walk(direction & 0x80, direction & 7);
+	g_Player->Walk(direction & 0x80, direction & 7);
 }
 //----------------------------------------------------------------------------------
 PACKET_HANDLER(Pathfinding)

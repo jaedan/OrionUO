@@ -170,7 +170,7 @@ void CMouseManager::ProcessWalking()
 		bool run = ((mouse_range >= 190.0f) ? true : false);
 
 		if (!g_PathFinder.AutoWalking)
-			g_PathFinder.Walk(run, dir - 1);
+			g_Player->Walk(run, dir - 1);
 	}
 }
 //----------------------------------------------------------------------------------

@@ -130,7 +130,7 @@ public:
     deque<CWalkData> m_Steps;
 
     void GetEndPosition(int& x, int& y, char& z, uchar& dir);
-	bool IsMoving() { return !m_Steps.empty(); }
+    bool IsMoving() { return !m_Steps.empty(); }
 
     //!Texture for hurrent hitpoints value
     CGLTextTexture m_HitsTexture{ CGLTextTexture() };
@@ -251,7 +251,7 @@ public:
 	Character walking state
 	@return true if walking
 	*/
-	virtual bool Walking() { return (LastStepTime > (uint)(g_Ticks - WALKING_DELAY)); }
+    virtual bool Walking() { return (LastStepTime > (uint)(g_Ticks - WALKING_DELAY)); }
 
     /*!
 	Check for animation frame changing

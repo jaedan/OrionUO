@@ -72,7 +72,12 @@ public:
 	//!Fast Walk Stack
 	CFastWalkStack m_FastWalkStack;
 
-	/*!
+    //Пойти в указанные координаты
+    bool Walk(bool run, uchar direction);
+
+    int GetWalkSpeed(bool run, bool onMount);
+
+    /*!
 	Close bank gump
 	@return
 	*/
