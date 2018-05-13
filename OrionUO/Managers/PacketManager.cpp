@@ -1109,7 +1109,14 @@ PACKET_HANDLER(CharacterStatus)
 
 	if (flag > 0)
 	{
-		obj->Female = (ReadUInt8() != 0); //buf[43];
+		if (ReadUInt8() == 0)
+		{
+			obj->Gender = GENDER_MALE;;
+		}
+		else
+		{
+			obj->Gender = GENDER_FEMALE;
+		}
 
 		if (serial == g_PlayerSerial)
 		{

@@ -133,6 +133,12 @@ enum CONNECTION_SCREEN_TYPE
 	CST_GAME_LOGIN,
 	CST_GAME
 };
+
+enum GENDER
+{
+	GENDER_MALE = 0,
+	GENDER_FEMALE
+};
 //----------------------------------------------------------------------------------
 //!Рассы
 enum RACE_TYPE

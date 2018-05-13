@@ -39,8 +39,8 @@ public:
     //!Max stamina
     short MaxStam = 0;
 
-    //!Is female
-    bool Female = false;
+    //!Gender
+	GENDER Gender = GENDER_MALE;
 
     //!Character's race
     RACE_TYPE Race = RT_HUMAN;

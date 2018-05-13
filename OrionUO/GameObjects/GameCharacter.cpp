@@ -443,33 +443,33 @@ void CGameCharacter::OnGraphicChange(int direction)
     switch (Graphic) {
     case 0x0190:
     case 0x0192: {
-        Female = false;
+		Gender = GENDER_MALE;
         Race = RT_HUMAN;
         break;
     }
     case 0x0191:
     case 0x0193: {
-        Female = true;
+		Gender = GENDER_FEMALE;
         Race = RT_HUMAN;
         break;
     }
     case 0x025D: {
-        Female = false;
+		Gender = GENDER_MALE;
         Race = RT_ELF;
         break;
     }
     case 0x025E: {
-        Female = true;
+		Gender = GENDER_FEMALE;
         Race = RT_ELF;
         break;
     }
     case 0x029A: {
-        Female = false;
+		Gender = GENDER_MALE;
         Race = RT_GARGOYLE;
         break;
     }
     case 0x029B: {
-        Female = true;
+		Gender = GENDER_FEMALE;
         Race = RT_GARGOYLE;
         break;
     }
