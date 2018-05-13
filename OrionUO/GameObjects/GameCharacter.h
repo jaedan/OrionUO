@@ -18,7 +18,7 @@ public:
 
     short MaxStam = 0;
 
-    bool Female = false;
+    GENDER Gender = GENDER_MALE;
 
     RACE_TYPE Race = RT_HUMAN;
 

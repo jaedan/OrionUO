@@ -396,7 +396,7 @@ void CGumpPaperdoll::UpdateContent()
         bodyGumppic->Color = color;
     }
 
-    int gumpOffset = (obj->Female ? FEMALE_GUMP_OFFSET : MALE_GUMP_OFFSET);
+    int gumpOffset = ((obj->Gender == GENDER_FEMALE) ? FEMALE_GUMP_OFFSET : MALE_GUMP_OFFSET);
 
     CGameItem *equipment = NULL;
 
@@ -471,7 +471,7 @@ void CGumpPaperdoll::UpdateContent()
                 {
                     int cOfs = gumpOffset;
 
-                    if (obj->Female && g_Orion.ExecuteGump(id + cOfs) == NULL)
+                    if ((obj->Gender == GENDER_FEMALE) && g_Orion.ExecuteGump(id + cOfs) == NULL)
                         cOfs = MALE_GUMP_OFFSET;
 
                     bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(id + cOfs, 8, 19));
@@ -501,7 +501,7 @@ void CGumpPaperdoll::UpdateContent()
 
                     int cOfs = gumpOffset;
 
-                    if (obj->Female && !g_Orion.ExecuteGump(id + cOfs))
+                    if ((obj->Gender == GENDER_FEMALE) && !g_Orion.ExecuteGump(id + cOfs))
                         cOfs = MALE_GUMP_OFFSET;
 
                     m_DataBox->Add(new CGUIAlphaBlending(true, 0.7f));
