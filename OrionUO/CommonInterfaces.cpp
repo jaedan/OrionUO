@@ -194,7 +194,7 @@ void __cdecl FUNCBODY_SendCastSpell(int index)
         g_LastSpellIndex = index;
 
         CPacketCastSpell packet(index);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -206,7 +206,7 @@ void __cdecl FUNCBODY_SendUseSkill(int index)
         g_LastSkillIndex = index;
 
         CPacketUseSkill packet(index);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -217,7 +217,7 @@ void __cdecl FUNCBODY_SendAsciiSpeech(const char *text, unsigned short color)
         color = g_ConfigManager.SpeechColor;
 
     CPacketASCIISpeechRequest packet(text, ST_NORMAL, 3, color);
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
@@ -227,21 +227,21 @@ void __cdecl FUNCBODY_SendUnicodeSpeech(const wchar_t *text, unsigned short colo
         color = g_ConfigManager.SpeechColor;
 
     CPacketUnicodeSpeechRequest packet(text, ST_NORMAL, 3, color, (puchar)g_Language.c_str());
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
 void __cdecl FUNCBODY_SendRenameMount(uint serial, const char *text)
 {
     CPacketRenameRequest packet(serial, text);
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
 void __cdecl FUNCBODY_SendMenuResponse(unsigned int serial, unsigned int id, int code)
 {
     UOI_MENU_RESPONSE data = { serial, id, code };
-    SendMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
+    SendNotifyMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
 }
 
 void __cdecl FUNCBODY_DisplayStatusbarGump(unsigned int serial, int x, int y)
@@ -268,7 +268,7 @@ void __cdecl FUNCBODY_SecureTradingCheckState(unsigned int id1, bool state)
         gump->StateMy = state;
 
         CPacketTradeResponse packet(gump, 2);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -282,7 +282,7 @@ void __cdecl FUNCBODY_SecureTradingClose(unsigned int id1)
         gump->RemoveMark = true;
 
         CPacketTradeResponse packet(gump, 1);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -352,15 +352,13 @@ bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
     if (g_Player == NULL)
         return false;
 
-    WISP_GEOMETRY::CPoint2Di startPoint(g_Player->GetX(), g_Player->GetY());
+    int startX, startY;
+    char startZ;
+    uchar startDir;
 
-    if (!g_Player->m_Steps.empty())
-    {
-        CWalkData &wd = g_Player->m_Steps.back();
+    g_Player->GetEndPosition(startX, startY, startZ, startDir);
 
-        startPoint.X = wd.X;
-        startPoint.Y = wd.Y;
-    }
+    WISP_GEOMETRY::CPoint2Di startPoint(startX, startY);
 
     if (GetDistance(startPoint, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance)
         return true;
@@ -379,15 +377,9 @@ bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
         if (g_Player == NULL)
             return false;
 
-        WISP_GEOMETRY::CPoint2Di p(g_Player->GetX(), g_Player->GetY());
+        g_Player->GetEndPosition(startX, startY, startZ, startDir);
 
-        if (!g_Player->m_Steps.empty())
-        {
-            CWalkData &wd = g_Player->m_Steps.back();
-
-            p.X = wd.X;
-            p.Y = wd.Y;
-        }
+        WISP_GEOMETRY::CPoint2Di p(startX, startY);
 
         result = (GetDistance(p, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance);
     }

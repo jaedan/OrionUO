@@ -820,7 +820,7 @@ void CGameScreen::AddOffsetCharacterTileToRenderList(CGameObject *obj, bool useO
 
     if (character != NULL)
     {
-        if (!character->m_Steps.empty() && (character->m_Steps.back().Direction & 7) == 2)
+        if (character->IsMoving() && (character->m_Steps.back().Direction & 7) == 2)
         {
             fullDrawLastItem = true;
             dropMaxZIndex = 0;
@@ -2305,56 +2305,56 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         case VK_PRIOR:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 0);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 0);
 
             break;
         }
         case VK_NEXT:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 2);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 2);
 
             break;
         }
         case VK_HOME:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 6);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 6);
 
             break;
         }
         case VK_END:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 4);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 4);
 
             break;
         }
         case VK_UP:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 7);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 7);
 
             break;
         }
         case VK_LEFT:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 5);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 5);
 
             break;
         }
         case VK_DOWN:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 3);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 3);
 
             break;
         }
         case VK_RIGHT:
         {
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(g_ConfigManager.AlwaysRun, 1);
+                g_Player->Walk(g_ConfigManager.AlwaysRun, 1);
 
             break;
         }

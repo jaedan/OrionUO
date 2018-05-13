@@ -245,7 +245,9 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     int stepState = PSS_NORMAL;
 
     if (g_Player->Dead() || g_Player->Graphic == 0x03DB)
+    {
         stepState = PSS_DEAD_OR_GM;
+    }
     else
     {
         if (g_Player->Flying())
@@ -437,233 +439,57 @@ void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
 bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
 {
     WISPFUN_DEBUG("c177_f5");
-    int newX = x;
-    int newY = y;
-    char newZ = z;
-    uchar newDirection = direction;
 
-    GetNewXY(direction, newX, newY);
+    const uchar directions[3] = { 0, 1, -1 };
+    bool allowed = false;
 
-    bool passed = CalculateNewZ(newX, newY, newZ, direction);
-
-    if ((char)direction % 2)
+    for (int i = 0; i < 3; i++)
     {
-        const char dirOffset[2] = { 1, -1 };
+        int newX = x;
+        int newY = y;
+        char newZ = z;
+        uchar newDirection = (direction + directions[i]) % 8;
 
-        if (passed)
+        GetNewXY(newDirection, newX, newY);
+        allowed = CalculateNewZ(newX, newY, newZ, newDirection);
+
+        if (!allowed)
         {
-            IFOR (i, 0, 2 && passed)
+            continue;
+        }
+
+        if (newDirection % 2)
+        {
+            const uchar adjacents[2] = { -1, 1 };
+
+            for (int j = 0; j < 2; j++)
             {
                 int testX = x;
                 int testY = y;
                 char testZ = z;
+                uchar testDirection = (newDirection + adjacents[j]) % 8;
 
-                uchar testDir = (direction + dirOffset[i]) % 8;
-                GetNewXY(testDir, testX, testY);
+                GetNewXY(testDirection, testX, testY);
+                allowed = CalculateNewZ(testX, testY, testZ, testDirection);
 
-                passed = CalculateNewZ(testX, testY, testZ, testDir);
+                if (!allowed)
+                {
+                    break;
+                }
             }
         }
 
-        if (!passed)
-        {
-            IFOR (i, 0, 2 && !passed)
-            {
-                newX = x;
-                newY = y;
-                newZ = z;
-
-                newDirection = (direction + dirOffset[i]) % 8;
-                GetNewXY(newDirection, newX, newY);
-
-                passed = CalculateNewZ(newX, newY, newZ, newDirection);
-            }
-        }
-    }
-
-    if (passed)
-    {
-        x = newX;
-        y = newY;
-        z = newZ;
-        direction = newDirection;
-    }
-
-    return passed;
-}
-
-int CPathFinder::GetWalkSpeed(bool run, bool onMount)
-{
-    WISPFUN_DEBUG("c177_f6");
-    bool mounted =
-        (onMount ||
-         (g_SpeedMode == CST_FAST_UNMOUNT || g_SpeedMode == CST_FAST_UNMOUNT_AND_CANT_RUN) ||
-         g_Player->Flying());
-
-    return CHARACTER_ANIMATION_DELAY_TABLE[mounted][run];
-}
-
-bool CPathFinder::Walk(bool run, uchar direction)
-{
-    WISPFUN_DEBUG("c177_f7");
-    if (BlockMoving || g_Walker.WalkingFailed || g_Walker.LastStepRequestTime > g_Ticks ||
-        g_Walker.StepsCount >= MAX_STEPS_COUNT || g_Player == NULL || g_DeathScreenTimer ||
-        g_GameState != GS_GAME)
-        return false;
-
-    if (g_SpeedMode >= CST_CANT_RUN)
-        run = false;
-    else if (!run)
-        run = g_ConfigManager.AlwaysRun;
-
-    int x = g_Player->GetX();
-    int y = g_Player->GetY();
-    char z = g_Player->GetZ();
-    uchar oldDirection = g_Player->Direction;
-
-    bool onMount = (g_Player->FindLayer(OL_MOUNT) != NULL);
-
-    bool emptyStack = g_Player->m_Steps.empty();
-
-    if (!emptyStack)
-    {
-        CWalkData &walker = g_Player->m_Steps.back();
-
-        x = walker.X;
-        y = walker.Y;
-        z = walker.Z;
-        oldDirection = walker.Direction;
-    }
-
-    char oldZ = z;
-    ushort walkTime = TURN_DELAY;
-
-    if (FastRotation)
-        walkTime = TURN_DELAY_FAST;
-
-    if ((oldDirection & 7) == (direction & 7))
-    {
-        uchar newDir = direction;
-        int newX = x;
-        int newY = y;
-        char newZ = z;
-
-        if (!CanWalk(newDir, newX, newY, newZ))
-            return false;
-
-        if ((direction & 7) != newDir)
-            direction = newDir;
-        else
-        {
-            direction = newDir;
-            x = newX;
-            y = newY;
-            z = newZ;
-
-            walkTime = GetWalkSpeed(run, onMount);
-        }
-    }
-    else
-    {
-        uchar newDir = direction;
-        int newX = x;
-        int newY = y;
-        char newZ = z;
-
-        if (!CanWalk(newDir, newX, newY, newZ))
-        {
-            if ((oldDirection & 7) == newDir)
-                return false;
-        }
-
-        if ((oldDirection & 7) == newDir)
+        if (allowed)
         {
             x = newX;
             y = newY;
             z = newZ;
-
-            walkTime = GetWalkSpeed(run, onMount);
+            direction = newDirection;
+            break;
         }
-
-        direction = newDir;
     }
 
-    g_Player->CloseBank();
-
-    if (emptyStack)
-    {
-        if (!g_Player->Walking())
-            g_Player->SetAnimation(0xFF);
-
-        g_Player->LastStepTime = g_Ticks;
-    }
-
-    CStepInfo &step = g_Walker.m_Step[g_Walker.StepsCount];
-    step.Sequence = g_Walker.WalkSequence;
-    step.Accepted = false;
-    step.Running = run;
-    step.OldDirection = oldDirection & 7;
-    step.Direction = direction;
-    step.Timer = g_Ticks;
-    step.X = x;
-    step.Y = y;
-    step.Z = z;
-    step.NoRotation = ((step.OldDirection == direction) && ((oldZ - z) >= 11));
-
-    g_Walker.StepsCount++;
-
-    if (run)
-        direction += 0x80;
-
-    g_Player->m_Steps.push_back(
-        CWalkData(x, y, z, direction, g_Player->Graphic, g_Player->GetFlags()));
-
-    CPacketWalkRequest(direction, g_Walker.WalkSequence, g_Player->m_FastWalkStack.GetValue())
-        .Send();
-
-    if (g_Walker.WalkSequence == 0xFF)
-        g_Walker.WalkSequence = 1;
-    else
-        g_Walker.WalkSequence++;
-
-    g_Walker.UnacceptedPacketsCount++;
-
-    g_World->MoveToTop(g_Player);
-
-    static bool lastRun = false;
-    static bool lastMount = false;
-    static int lastDir = -1;
-    static int lastDelta = 0;
-    static int lastStepTime = 0;
-
-    int nowDelta = 0;
-
-    if (lastDir == direction && lastMount == onMount && lastRun == run)
-    {
-        nowDelta = (g_Ticks - lastStepTime) - walkTime + lastDelta;
-
-        if (abs(nowDelta) > 70)
-            nowDelta = 0;
-
-        lastDelta = nowDelta;
-    }
-    else
-        lastDelta = 0;
-
-    lastStepTime = g_Ticks;
-
-    lastRun = run;
-    lastMount = onMount;
-
-    if (walkTime == TURN_DELAY_FAST)
-        lastDir = -1;
-    else
-        lastDir = direction;
-
-    g_Walker.LastStepRequestTime = g_Ticks + walkTime - nowDelta;
-    g_Player->GetAnimationGroup();
-
-    return true;
+    return allowed;
 }
 
 int CPathFinder::GetGoalDistCost(const WISP_GEOMETRY::CPoint2Di &p, int cost)
@@ -979,21 +805,23 @@ void CPathFinder::ProcessAutowalk()
 {
     WISPFUN_DEBUG("c177_f16");
     if (AutoWalking && g_Player != NULL && !g_DeathScreenTimer &&
-        g_Walker.StepsCount < MAX_STEPS_COUNT && g_Walker.LastStepRequestTime <= g_Ticks)
+        g_Player->m_RequestedSteps.size() < MAX_STEPS_COUNT &&
+        g_Player->LastStepRequestTime <= g_Ticks)
     {
         if (m_PointIndex >= 0 && m_PointIndex < m_PathSize)
         {
             CPathNode *p = m_Path[m_PointIndex];
 
-            uchar olddir = g_Player->Direction;
+            int x, y;
+            char z;
+            uchar olddir;
 
-            if (!g_Player->m_Steps.empty())
-                olddir = g_Player->m_Steps.back().Direction;
+            g_Player->GetEndPosition(x, y, z, olddir);
 
             if ((olddir & 7) == p->Direction)
                 m_PointIndex++;
 
-            if (!Walk(g_ConfigManager.AlwaysRun, p->Direction))
+            if (!g_Player->Walk(g_ConfigManager.AlwaysRun, p->Direction))
                 StopAutoWalk();
         }
         else

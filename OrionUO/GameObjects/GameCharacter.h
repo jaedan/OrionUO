@@ -3,6 +3,15 @@
 #ifndef GAMECHARACTER_H
 #define GAMECHARACTER_H
 
+struct Step
+{
+    int X = 0;
+    int Y = 0;
+    char Z = 0;
+    uchar Direction = 0;
+    uchar SequenceNumber = 0;
+};
+
 class CGameCharacter : public CGameObject
 {
 public:
@@ -72,7 +81,16 @@ public:
 
     CTextContainer m_DamageTextControl{ CTextContainer(10) };
 
-    deque<CWalkData> m_Steps;
+    deque<Step> m_Steps;
+
+    uchar CalculateDirection(int curX, int curY, int newX, int newY);
+
+    bool QueueStep(int x, int y, char z, uchar dir);
+
+    int GetWalkSpeed(bool run, bool onMount);
+
+    void GetEndPosition(int &x, int &y, char &z, uchar &dir);
+    bool IsMoving() { return !m_Steps.empty(); }
 
     CGLTextTexture m_HitsTexture{ CGLTextTexture() };
 
@@ -102,6 +120,10 @@ public:
         bool repeat = false,
         bool frameDirection = false);
 
+    void ProcessAnimation();
+
+    uchar GetAnimationDirection();
+
     ushort GetMountAnimation();
 
     uchar GetAnimationGroup(ushort checkGraphic = 0);
@@ -118,8 +140,6 @@ public:
     {
         return ((LastStepTime > (uint)(g_Ticks - WALKING_DELAY)) && m_Steps.empty());
     }
-
-    void UpdateAnimationInfo(uchar &dir, bool canChange = false);
 
     bool IsHuman()
     {

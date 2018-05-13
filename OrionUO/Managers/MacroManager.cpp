@@ -753,7 +753,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
             }
 
             if (!g_PathFinder.AutoWalking)
-                g_PathFinder.Walk(false, dt);
+                g_Player->Walk(false, dt);
 
             break;
         }

@@ -1468,8 +1468,7 @@ void CAnimationManager::DrawCharacter(CGameCharacter *obj, int x, int y)
             Color = targetColor;
     }
 
-    Direction = 0;
-    obj->UpdateAnimationInfo(Direction);
+    Direction = obj->GetAnimationDirection();
 
     bool mirror = false;
     uchar layerDir = Direction;
@@ -1517,7 +1516,7 @@ void CAnimationManager::DrawCharacter(CGameCharacter *obj, int x, int y)
             animGroup = PAG_STAND;
             animIndex = 0;
 
-            obj->UpdateAnimationInfo(Direction);
+            Direction = obj->GetAnimationDirection();
 
             FixSittingDirection(layerDir, mirror, drawX, drawY);
 
@@ -1724,8 +1723,7 @@ bool CAnimationManager::CharacterPixelsInXY(CGameCharacter *obj, int x, int y)
     WISPFUN_DEBUG("c133_f17");
     y -= 3;
     m_Sitting = obj->IsSitting();
-    Direction = 0;
-    obj->UpdateAnimationInfo(Direction);
+    Direction = obj->GetAnimationDirection();
 
     bool mirror = false;
     uchar layerDir = Direction;
@@ -1757,7 +1755,7 @@ bool CAnimationManager::CharacterPixelsInXY(CGameCharacter *obj, int x, int y)
         animGroup = PAG_STAND;
         animIndex = 0;
 
-        obj->UpdateAnimationInfo(Direction);
+        Direction = obj->GetAnimationDirection();
 
         FixSittingDirection(layerDir, mirror, drawX, drawY);
 
@@ -1963,7 +1961,7 @@ ANIMATION_DIMENSIONS CAnimationManager::GetAnimationDimensions(
     if (obj->NPC)
     {
         CGameCharacter *gc = obj->GameCharacterPtr();
-        gc->UpdateAnimationInfo(dir);
+        dir = gc->GetAnimationDirection();
         animGroup = gc->GetAnimationGroup();
         GetAnimDirection(dir, mirror);
     }
@@ -2146,7 +2144,7 @@ CAnimationManager::CollectFrameInformation(CGameObject *gameObject, bool checkLa
     if (gameObject->NPC)
     {
         CGameCharacter *obj = (CGameCharacter *)gameObject;
-        obj->UpdateAnimationInfo(Direction);
+        Direction = obj->GetAnimationDirection();
 
         bool mirror = false;
         uchar layerDir = Direction;

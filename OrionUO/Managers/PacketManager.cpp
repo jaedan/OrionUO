@@ -312,6 +312,9 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE)
 };
 
+#define IS_MOBILE(serial) (!(serial & 0x40000000))
+#define IS_PLAYER(serial) (serial == g_PlayerSerial)
+
 CPacketManager::CPacketManager()
     : WISP_NETWORK::CPacketReader()
 {
@@ -1106,8 +1109,7 @@ PACKET_HANDLER(UpdatePlayer)
         serverID,
         direction,
         z);
-    g_World->UpdatePlayer(
-        serial, graphic, graphicIncrement, color, flags, x, y, serverID, direction, z);
+    g_World->UpdatePlayer(serial, graphic, graphicIncrement, 0, x, y, z, direction, color, flags);
 }
 
 PACKET_HANDLER(CharacterStatus)
@@ -1274,7 +1276,6 @@ PACKET_HANDLER(UpdateItem)
     if (serial == g_PlayerSerial)
         return;
 
-    UPDATE_GAME_OBJECT_TYPE updateType = UGOT_ITEM;
     ushort count = 0;
     uchar graphicIncrement = 0;
     uchar direction = 0;
@@ -1336,25 +1337,28 @@ PACKET_HANDLER(UpdateItem)
     if (flags)
         flags = ReadUInt8();
 
-    if (graphic >= 0x4000)
+    if (IS_PLAYER(serial))
     {
-        updateType = UGOT_MULTI;
+        LOG("Error: Received packet 0x1A with the player's serial!\n");
+        g_World->UpdatePlayer(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
     }
-
-    g_World->UpdateGameObject(
-        serial,
-        graphic,
-        graphicIncrement,
-        count,
-        x,
-        y,
-        z,
-        direction,
-        color,
-        flags,
-        count,
-        updateType,
-        1);
+    else if (IS_MOBILE(serial))
+    {
+        LOG("Error: Received packet 0x1A with a serial matching a mobile!\n");
+        g_World->UpdateMobile(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
+    else if (graphic >= 0x4000)
+    {
+        g_World->UpdateMulti(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
+    else
+    {
+        g_World->UpdateItem(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
 }
 
 PACKET_HANDLER(UpdateItemSA)
@@ -1364,7 +1368,7 @@ PACKET_HANDLER(UpdateItemSA)
         return;
 
     Move(2);
-    UPDATE_GAME_OBJECT_TYPE updateType = (UPDATE_GAME_OBJECT_TYPE)ReadUInt8();
+    uint8_t dataType = ReadUInt8();
     uint serial = ReadUInt32BE();
     ushort graphic = ReadUInt16BE();
     uchar graphicIncrement = ReadUInt8();
@@ -1378,24 +1382,31 @@ PACKET_HANDLER(UpdateItemSA)
     uchar flags = ReadUInt8();
     ushort unknown2 = ReadUInt16BE();
 
-    if (serial != g_PlayerSerial)
-        g_World->UpdateGameObject(
-            serial,
-            graphic,
-            graphicIncrement,
-            count,
-            x,
-            y,
-            z,
-            direction,
-            color,
-            flags,
-            unknown,
-            updateType,
-            unknown2);
-    else if (*Start == 0xF7)
+    if (IS_PLAYER(serial))
+    {
+        if (*Start != 0xF7)
+        {
+            LOG("Error: Received packet 0xF3 with the player's serial!\n");
+        }
         g_World->UpdatePlayer(
-            serial, graphic, graphicIncrement, color, flags, x, y, 0, direction, z);
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
+    else if (IS_MOBILE(serial))
+    {
+        LOG("Error: Received packet 0xF3 with a serial matching a mobile!\n");
+        g_World->UpdateMobile(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
+    else if (dataType == 2)
+    {
+        g_World->UpdateMulti(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
+    else
+    {
+        g_World->UpdateItem(
+            serial, graphic, graphicIncrement, count, x, y, z, direction, color, flags);
+    }
 }
 
 PACKET_HANDLER(UpdateObject)
@@ -1415,28 +1426,21 @@ PACKET_HANDLER(UpdateObject)
     uchar notoriety = ReadUInt8();
     bool oldDead = false;
 
-    bool isAlreadyExists = (g_World->FindWorldObject(serial) != NULL);
-
-    if (serial == g_PlayerSerial)
+    if (IS_PLAYER(serial))
     {
-        if (g_Player != NULL)
-        {
-            bool updateStatusbar = (g_Player->GetFlags() != flags);
-
-            oldDead = g_Player->Dead();
-            g_Player->Graphic = graphic;
-            g_Player->OnGraphicChange(1000);
-            g_Player->Color = g_ColorManager.FixColor(color);
-            g_Player->SetFlags(flags);
-
-            if (updateStatusbar)
-                g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
-        }
+        g_World->UpdatePlayer(serial, graphic, 0, 0, x, y, z, direction, color, flags);
+    }
+    else if (IS_MOBILE(serial))
+    {
+        g_World->UpdateMobile(serial, graphic, 0, 0, x, y, z, direction, color, flags);
+    }
+    else if (graphic >= 0x4000)
+    {
+        g_World->UpdateMulti(serial, graphic, 0, 0, x, y, z, direction, color, flags);
     }
     else
     {
-        g_World->UpdateGameObject(
-            serial, graphic, 0, 0, x, y, z, direction, color, flags, 0, UGOT_ITEM, 1);
+        g_World->UpdateItem(serial, graphic, 0, 0, x, y, z, direction, color, flags);
     }
 
     CGameObject *obj = g_World->FindWorldObject(serial);
@@ -1853,20 +1857,7 @@ PACKET_HANDLER(UpdateCharacter)
     }
     else
     {
-        if (!obj->m_Steps.empty() && obj->Direction == obj->m_Steps.back().Direction)
-        {
-            CWalkData &wd = obj->m_Steps.back();
-
-            obj->SetX(wd.X);
-            obj->SetY(wd.Y);
-            obj->SetZ(wd.Z);
-            obj->Direction = wd.Direction;
-
-            obj->m_Steps.clear();
-        }
-
-        g_World->UpdateGameObject(
-            serial, graphic, 0, 0, x, y, z, direction, color, flags, 0, UGOT_ITEM, 1);
+        g_World->UpdateMobile(serial, graphic, 0, 0, x, y, z, direction, color, flags);
     }
 
     g_World->MoveToTop(obj);
@@ -2356,15 +2347,10 @@ PACKET_HANDLER(ExtendedCommand)
             break;
         case 1:
         {
-            IFOR (i, 0, 6)
-                g_Player->m_FastWalkStack.SetValue((int)i, ReadUInt32BE());
-
             break;
         }
         case 2:
         {
-            g_Player->m_FastWalkStack.AddValue(ReadUInt32BE());
-
             break;
         }
         case 4:
@@ -2770,7 +2756,7 @@ PACKET_HANDLER(DenyWalk)
     uchar direction = ReadUInt8();
     char z = ReadUInt8();
 
-    g_Walker.DenyWalk(sequence, x, y, z);
+    g_Player->DenyWalk(sequence, x, y, z);
 
     g_Player->Direction = direction;
 
@@ -2792,7 +2778,7 @@ PACKET_HANDLER(ConfirmWalk)
 
     g_Player->Notoriety = newnoto;
 
-    g_Walker.ConfirmWalk(sequence);
+    g_Player->ConfirmWalk(sequence);
 
     g_World->MoveToTop(g_Player);
 }
@@ -2807,6 +2793,12 @@ PACKET_HANDLER(Target)
 {
     WISPFUN_DEBUG("c150_f51");
     g_Target.SetData(*this);
+
+    if (g_Player->m_CastingSpell)
+    {
+        g_Player->m_HoldingSpellTarget = true;
+        g_Player->m_CastingSpell = false;
+    }
 
     if (g_PartyHelperTimer > g_Ticks && g_PartyHelperTarget)
     {
@@ -5855,7 +5847,7 @@ PACKET_HANDLER(MovePlayer)
         return;
 
     uchar direction = ReadUInt8();
-    g_PathFinder.Walk(direction & 0x80, direction & 7);
+    g_Player->Walk(direction & 0x80, direction & 7);
 }
 
 PACKET_HANDLER(Pathfinding)
@@ -5903,7 +5895,7 @@ PACKET_HANDLER(BoatMoving)
     ushort boatZ = ReadUInt16BE();
     ushort boatObjectsCount = ReadUInt16BE();
 
-    g_World->UpdateGameObject(
+    g_World->UpdateMulti(
         boatSerial,
         boat->Graphic,
         0,
@@ -5913,10 +5905,7 @@ PACKET_HANDLER(BoatMoving)
         boatZ,
         facingDirection,
         boat->Color,
-        boat->GetFlags(),
-        0,
-        UGOT_MULTI,
-        1);
+        boat->GetFlags());
 
     for (ushort i = 0; i < boatObjectsCount; i++)
     {
@@ -5925,24 +5914,6 @@ PACKET_HANDLER(BoatMoving)
         ushort boatObjectY = ReadUInt16BE();
         ushort boatObjectZ = ReadUInt16BE();
 
-        CGameObject *boatObject = g_World->FindWorldObject(boatObjectSerial);
-        if (boatObject == NULL)
-            continue;
-
-        uchar direction = boatObject->NPC ? ((CGameCharacter *)boatObject)->Direction : 0;
-        g_World->UpdateGameObject(
-            boatObjectSerial,
-            boatObject->Graphic,
-            0,
-            0,
-            boatObjectX,
-            boatObjectY,
-            boatObjectZ,
-            direction,
-            boatObject->Color,
-            boatObject->GetFlags(),
-            0,
-            UGOT_ITEM,
-            1);
+        g_World->MoveObject(boatObjectSerial, boatObjectX, boatObjectY, boatObjectZ);
     }
 }

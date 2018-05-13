@@ -78,6 +78,8 @@ public:
     CGameObject *SearchWorldObject(
         int serialStart, int scanDistance, SCAN_TYPE_OBJECT scanType, SCAN_MODE_OBJECT scanMode);
 
+    void MoveObject(int serial, int x, int y, char z);
+
     void UpdateContainedItem(
         int serial,
         ushort graphic,
@@ -90,7 +92,7 @@ public:
 
     void UpdateItemInContainer(CGameObject *obj, CGameObject *container, int x, int y);
 
-    void UpdateGameObject(
+    void UpdateItem(
         int serial,
         ushort graphic,
         uchar graphicIncrement,
@@ -100,22 +102,40 @@ public:
         char z,
         uchar direction,
         ushort color,
-        uchar flags,
-        int a11,
-        UPDATE_GAME_OBJECT_TYPE updateType,
-        ushort a13);
-
+        uchar flags);
+    void UpdateMulti(
+        int serial,
+        ushort graphic,
+        uchar graphicIncrement,
+        int count,
+        int x,
+        int y,
+        char z,
+        uchar direction,
+        ushort color,
+        uchar flags);
+    void UpdateMobile(
+        int serial,
+        ushort graphic,
+        uchar graphicIncrement,
+        int count,
+        int x,
+        int y,
+        char z,
+        uchar direction,
+        ushort color,
+        uchar flags);
     void UpdatePlayer(
         int serial,
         ushort graphic,
         uchar graphicIncrement,
-        ushort color,
-        uchar flags,
+        int count,
         int x,
         int y,
-        ushort serverID,
+        char z,
         uchar direction,
-        char z);
+        ushort color,
+        uchar flags);
 };
 
 extern CGameWorld *g_World;

@@ -40,7 +40,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
     WISPFUN_DEBUG("c22_f3");
     if (g_ConfigManager.FootstepsSound && gc->IsHuman() && !gc->Hidden())
     {
-        if (!gc->m_Steps.empty() && gc->LastStepSoundTime < ticks)
+        if (gc->IsMoving() && gc->LastStepSoundTime < ticks)
         {
             int incID = gc->StepSoundOffset;
             int soundID = 0x012B;
@@ -75,8 +75,6 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 void CGameWorld::ProcessAnimation()
 {
     WISPFUN_DEBUG("c22_f4");
-    int delay = CHARACTER_ANIMATION_DELAY;
-    g_AnimCharactersDelayValue = (float)delay;
     deque<CGameObject *> toRemove;
 
     QFOR(obj, m_Items, CGameObject *)
@@ -84,8 +82,8 @@ void CGameWorld::ProcessAnimation()
         if (obj->NPC)
         {
             CGameCharacter *gc = obj->GameCharacterPtr();
-            uchar dir = 0;
-            gc->UpdateAnimationInfo(dir, true);
+            uchar dir = gc->GetAnimationDirection();
+            gc->ProcessAnimation();
 
             ProcessSound(g_Ticks, gc);
 
@@ -124,7 +122,7 @@ void CGameWorld::ProcessAnimation()
 
                 g_AnimationManager.GetAnimDirection(dir, mirror);
 
-                int currentDelay = delay;
+                int currentDelay = CHARACTER_ANIMATION_DELAY;
 
                 if (id < MAX_ANIMATIONS_DATA_INDEX_COUNT && dir < 5)
                 {
@@ -261,7 +259,7 @@ void CGameWorld::ProcessAnimation()
                     }
                 }
 
-                obj->LastAnimationChangeTime = g_Ticks + delay;
+                obj->LastAnimationChangeTime = g_Ticks + CHARACTER_ANIMATION_DELAY;
             }
         }
 
@@ -722,7 +720,33 @@ CGameObject *CGameWorld::SearchWorldObject(
     return result;
 }
 
-void CGameWorld::UpdateGameObject(
+void CGameWorld::MoveObject(int serial, int x, int y, char z)
+{
+    CGameObject *obj = FindWorldObject(serial);
+
+    if (obj == nullptr)
+    {
+        return;
+    }
+
+    obj->SetX(x);
+    obj->SetY(y);
+    obj->SetZ(z);
+
+    if (!obj->NPC)
+    {
+        obj->OnGraphicChange(0);
+    }
+    else if (obj == g_Player)
+    {
+        g_RemoveRangeXY.X = x;
+        g_RemoveRangeXY.Y = y;
+    }
+
+    MoveToTop(obj);
+}
+
+void CGameWorld::UpdateItem(
     int serial,
     ushort graphic,
     uchar graphicIncrement,
@@ -732,12 +756,9 @@ void CGameWorld::UpdateGameObject(
     char z,
     uchar direction,
     ushort color,
-    uchar flags,
-    int a11,
-    UPDATE_GAME_OBJECT_TYPE updateType,
-    ushort a13)
+    uchar flags)
 {
-    LOG("UpdateGameObject 0x%08lX:0x%04X 0x%04X (%i) %d:%d:%d %i\n",
+    LOG("UpdateItem 0x%08lX:0x%04X 0x%04X (%i) %d:%d:%d %i\n",
         serial,
         graphic,
         color,
@@ -747,7 +768,6 @@ void CGameWorld::UpdateGameObject(
         z,
         direction);
 
-    CGameCharacter *character = NULL;
     CGameItem *item = NULL;
     CGameObject *obj = FindWorldObject(serial);
 
@@ -768,41 +788,18 @@ void CGameWorld::UpdateGameObject(
 
     if (obj == NULL)
     {
-        created = true;
         LOG("created ");
+        created = true;
 
-        if (!(serial & 0x40000000) && updateType != 3)
+        item = GetWorldItem(serial);
+
+        if (item == NULL)
         {
-            character = GetWorldCharacter(serial);
-
-            if (character == NULL)
-            {
-                LOG("No memory?\n");
-                return;
-            }
-
-            obj = character;
-            character->Graphic = graphic + graphicIncrement;
-            character->OnGraphicChange(1000);
-            character->Direction = direction;
-            character->Color = g_ColorManager.FixColor(color, (color & 0x8000));
-            character->SetX(x);
-            character->SetY(y);
-            character->SetZ(z);
-            character->SetFlags(flags);
+            LOG("No memory?\n");
+            return;
         }
-        else
-        {
-            item = GetWorldItem(serial);
 
-            if (item == NULL)
-            {
-                LOG("No memory?\n");
-                return;
-            }
-
-            obj = item;
-        }
+        obj = item;
     }
     else
     {
@@ -815,10 +812,7 @@ void CGameWorld::UpdateGameObject(
             m_Items->AddObject(obj);
         }
 
-        if (obj->NPC)
-            character = (CGameCharacter *)obj;
-        else
-            item = (CGameItem *)obj;
+        item = (CGameItem *)obj;
     }
 
     if (obj == NULL)
@@ -826,132 +820,270 @@ void CGameWorld::UpdateGameObject(
 
     obj->MapIndex = g_CurrentMap;
 
-    if (!obj->NPC)
-    {
-        if (graphic != 0x2006)
-            graphic += graphicIncrement;
-
-        if (updateType == UGOT_MULTI)
-        {
-            item->MultiBody = true;
-            item->WantUpdateMulti = ((graphic & 0x3FFF) != obj->Graphic) || (obj->GetX() != x) ||
-                                    (obj->GetY() != y) || (obj->GetZ() != z);
-
-            item->Graphic = graphic & 0x3FFF;
-        }
-        else
-        {
-            item->MultiBody = false;
-
-            item->Graphic = graphic;
-        }
-
-        if (item->Dragged)
-        {
-            g_GumpManager.CloseGump(serial, 0, GT_DRAG);
-            item->Dragged = false;
-        }
-
-        item->SetX(x);
-        item->SetY(y);
-        item->SetZ(z);
-        item->LightID = direction;
-
-        if (graphic == 0x2006)
-            item->Layer = direction;
-
-        item->Color = g_ColorManager.FixColor(color, (color & 0x8000));
-
-        if (!count)
-            count = 1;
-
-        item->Count = count;
-        item->SetFlags(flags);
-
-        item->OnGraphicChange(direction);
-
-        LOG("serial:0x%08X graphic:0x%04X color:0x%04X count:%i xyz:%d,%d,%d light:%i flags:0x%02X\n",
-            obj->Serial,
-            obj->Graphic,
-            obj->Color,
-            item->Count,
-            obj->GetX(),
-            obj->GetY(),
-            obj->GetZ(),
-            direction,
-            obj->GetFlags());
-    }
-    else
-    {
+    if (graphic != 0x2006)
         graphic += graphicIncrement;
 
-        bool found = false;
+    item->MultiBody = false;
+    item->Graphic = graphic;
 
-        if (character->m_Steps.size() != MAX_STEPS_COUNT)
-        {
-            {
-                if (!character->m_Steps.empty())
-                {
-                    CWalkData &wd = character->m_Steps.back();
-
-                    if (wd.X == x && wd.Y == y && wd.Z == z && wd.Direction == direction)
-                    {
-                        found = true;
-                    }
-                }
-                else if (
-                    character->GetX() == x && character->GetY() == y && character->GetZ() == z &&
-                    character->Direction == direction)
-                {
-                    found = true;
-                }
-            }
-
-            if (!found)
-            {
-                if (character->m_Steps.empty())
-                    character->LastStepTime = g_Ticks;
-
-                character->m_Steps.push_back(
-                    CWalkData(x, y, z, direction, graphic & 0x3FFF, flags));
-                found = true;
-            }
-        }
-
-        if (!found)
-        {
-            character->SetX(x);
-            character->SetY(y);
-            character->SetZ(z);
-            character->Direction = direction;
-
-            character->m_Steps.clear();
-
-            character->OffsetX = 0;
-            character->OffsetY = 0;
-            character->OffsetZ = 0;
-        }
-
-        character->Graphic = graphic & 0x3FFF;
-        character->Color = g_ColorManager.FixColor(color, (color & 0x8000));
-        character->SetFlags(flags);
-
-        LOG("NPC serial:0x%08X graphic:0x%04X color:0x%04X xyz:%d,%d,%d flags:0x%02X direction:%d notoriety:%d\n",
-            obj->Serial,
-            obj->Graphic,
-            obj->Color,
-            obj->GetX(),
-            obj->GetY(),
-            obj->GetZ(),
-            obj->GetFlags(),
-            character->Direction,
-            character->Notoriety);
+    if (item->Dragged)
+    {
+        g_GumpManager.CloseGump(serial, 0, GT_DRAG);
+        item->Dragged = false;
     }
+
+    item->SetX(x);
+    item->SetY(y);
+    item->SetZ(z);
+    item->LightID = direction;
+
+    if (graphic == 0x2006)
+        item->Layer = direction;
+
+    item->Color = g_ColorManager.FixColor(color, (color & 0x8000));
+
+    if (!count)
+        count = 1;
+
+    item->Count = count;
+    item->SetFlags(flags);
+
+    item->OnGraphicChange(direction);
+
+    LOG("serial:0x%08X graphic:0x%04X color:0x%04X count:%i xyz:%d,%d,%d light:%i flags:0x%02X\n",
+        obj->Serial,
+        obj->Graphic,
+        obj->Color,
+        item->Count,
+        obj->GetX(),
+        obj->GetY(),
+        obj->GetZ(),
+        direction,
+        obj->GetFlags());
 
     if (created && g_ConfigManager.ShowIncomingNames && !obj->Clicked && !obj->GetName().length())
     {
-        if (obj->NPC || obj->IsCorpse())
+        if (obj->IsCorpse())
             g_Orion.Click(obj->Serial);
+    }
+
+    MoveToTop(obj);
+}
+
+void CGameWorld::UpdateMulti(
+    int serial,
+    ushort graphic,
+    uchar graphicIncrement,
+    int count,
+    int x,
+    int y,
+    char z,
+    uchar direction,
+    ushort color,
+    uchar flags)
+{
+    LOG("UpdateMulti 0x%08lX:0x%04X 0x%04X (%i) %d:%d:%d %i\n",
+        serial,
+        graphic,
+        color,
+        count,
+        x,
+        y,
+        z,
+        direction);
+
+    CGameItem *item = NULL;
+    CGameObject *obj = FindWorldObject(serial);
+
+    if (g_ObjectInHand.Enabled && g_ObjectInHand.Serial == serial)
+    {
+        if (g_ObjectInHand.Container && g_ObjectInHand.Container != 0xFFFFFFFF)
+        {
+            if (!g_ObjectInHand.Layer)
+                g_GumpManager.UpdateContent(g_ObjectInHand.Container, 0, GT_CONTAINER);
+            else
+                g_GumpManager.UpdateContent(g_ObjectInHand.Container, 0, GT_PAPERDOLL);
+        }
+
+        g_ObjectInHand.UpdatedInWorld = true;
+    }
+
+    if (obj == NULL)
+    {
+        LOG("created ");
+
+        item = GetWorldItem(serial);
+
+        if (item == NULL)
+        {
+            LOG("No memory?\n");
+            return;
+        }
+
+        obj = item;
+    }
+    else
+    {
+        LOG("updated ");
+
+        if (obj->Container != 0xFFFFFFFF)
+        {
+            RemoveFromContainer(obj);
+            obj->Container = 0xFFFFFFFF;
+            m_Items->AddObject(obj);
+        }
+
+        item = (CGameItem *)obj;
+    }
+
+    if (obj == NULL)
+        return;
+
+    obj->MapIndex = g_CurrentMap;
+
+    if (graphic != 0x2006)
+        graphic += graphicIncrement;
+
+    item->MultiBody = true;
+    item->WantUpdateMulti = ((graphic & 0x3FFF) != obj->Graphic) || (obj->GetX() != x) ||
+                            (obj->GetY() != y) || (obj->GetZ() != z);
+    item->Graphic = graphic & 0x3FFF;
+
+    if (item->Dragged)
+    {
+        g_GumpManager.CloseGump(serial, 0, GT_DRAG);
+        item->Dragged = false;
+    }
+
+    item->SetX(x);
+    item->SetY(y);
+    item->SetZ(z);
+    item->LightID = direction;
+
+    if (graphic == 0x2006)
+        item->Layer = direction;
+
+    item->Color = g_ColorManager.FixColor(color, (color & 0x8000));
+
+    if (!count)
+        count = 1;
+
+    item->Count = count;
+    item->SetFlags(flags);
+
+    item->OnGraphicChange(direction);
+
+    LOG("serial:0x%08X graphic:0x%04X color:0x%04X count:%i xyz:%d,%d,%d light:%i flags:0x%02X\n",
+        obj->Serial,
+        obj->Graphic,
+        obj->Color,
+        item->Count,
+        obj->GetX(),
+        obj->GetY(),
+        obj->GetZ(),
+        direction,
+        obj->GetFlags());
+
+    MoveToTop(obj);
+}
+
+void CGameWorld::UpdateMobile(
+    int serial,
+    ushort graphic,
+    uchar graphicIncrement,
+    int count,
+    int x,
+    int y,
+    char z,
+    uchar direction,
+    ushort color,
+    uchar flags)
+{
+    LOG("UpdateMobile 0x%08lX:0x%04X 0x%04X (%i) %d:%d:%d %i\n",
+        serial,
+        graphic,
+        color,
+        count,
+        x,
+        y,
+        z,
+        direction);
+
+    CGameCharacter *character = NULL;
+    CGameObject *obj = FindWorldObject(serial);
+
+    bool created = false;
+
+    if (obj == NULL)
+    {
+        created = true;
+        LOG("created ");
+
+        character = GetWorldCharacter(serial);
+
+        if (character == NULL)
+        {
+            LOG("No memory?\n");
+            return;
+        }
+
+        obj = character;
+        character->Graphic = graphic + graphicIncrement;
+        character->OnGraphicChange(1000);
+        character->Direction = direction;
+        character->Color = g_ColorManager.FixColor(color, (color & 0x8000));
+        character->SetX(x);
+        character->SetY(y);
+        character->SetZ(z);
+        character->SetFlags(flags);
+    }
+    else
+    {
+        LOG("updated ");
+        character = (CGameCharacter *)obj;
+    }
+
+    if (obj == NULL)
+        return;
+
+    obj->MapIndex = g_CurrentMap;
+
+    graphic += graphicIncrement;
+
+    bool found = character->QueueStep(x, y, z, direction);
+
+    if (!found)
+    {
+        character->SetX(x);
+        character->SetY(y);
+        character->SetZ(z);
+        character->Direction = direction;
+
+        character->m_Steps.clear();
+
+        character->OffsetX = 0;
+        character->OffsetY = 0;
+        character->OffsetZ = 0;
+    }
+
+    character->Graphic = graphic & 0x3FFF;
+    character->Color = g_ColorManager.FixColor(color, (color & 0x8000));
+    character->SetFlags(flags);
+
+    LOG("NPC serial:0x%08X graphic:0x%04X color:0x%04X xyz:%d,%d,%d flags:0x%02X direction:%d notoriety:%d\n",
+        obj->Serial,
+        obj->Graphic,
+        obj->Color,
+        obj->GetX(),
+        obj->GetY(),
+        obj->GetZ(),
+        obj->GetFlags(),
+        character->Direction,
+        character->Notoriety);
+
+    if (created && g_ConfigManager.ShowIncomingNames && !obj->Clicked && !obj->GetName().length())
+    {
+        g_Orion.Click(obj->Serial);
     }
 
     MoveToTop(obj);
@@ -961,67 +1093,89 @@ void CGameWorld::UpdatePlayer(
     int serial,
     ushort graphic,
     uchar graphicIncrement,
-    ushort color,
-    uchar flags,
+    int count,
     int x,
     int y,
-    ushort serverID,
+    char z,
     uchar direction,
-    char z)
+    ushort color,
+    uchar flags)
 {
-    if (serial == g_PlayerSerial)
+    if (serial != g_PlayerSerial || g_Player == nullptr)
     {
-        g_Player->CloseBank();
+        return;
+    }
 
-        g_Walker.WalkingFailed = false;
+    int endX;
+    int endY;
+    char endZ;
+    uchar endDir;
 
+    g_Player->GetEndPosition(endX, endY, endZ, endDir);
+
+    LOG("Update Player - New Position: (%d, %d, %d, %x)\n", x, y, z, direction);
+    LOG("Update Player - Previous Target Position: (%d, %d, %d, %x)\n", endX, endY, endZ, endDir);
+
+    g_Player->SequenceNumber = 0;
+
+    if (endX != x || endY != y || endZ != z)
+    {
+        LOG("Positions do not match. Forcing new position.\n");
+        g_Player->ResetSteps();
         g_Player->SetX(x);
         g_Player->SetY(y);
         g_Player->SetZ(z);
-
-        g_RemoveRangeXY.X = x;
-        g_RemoveRangeXY.Y = y;
-
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-
-        g_GameScreen.UpdateDrawPos = true;
-
-        bool oldDead = g_Player->Dead();
-        ushort oldGraphic = g_Player->Graphic;
-
-        g_Player->Graphic = graphic;
-        g_Player->OnGraphicChange();
-
         g_Player->Direction = direction;
-        g_Player->Color = g_ColorManager.FixColor(color);
-
-        g_Player->SetFlags(flags);
-
-        g_Walker.DenyWalk(-1, -1, -1, -1);
-        g_Weather.Reset();
-
-        if (oldGraphic && oldGraphic != g_Player->Graphic)
-        {
-            if (g_Player->Dead())
-                g_Target.Reset();
-        }
-
-        if (oldDead != g_Player->Dead())
-        {
-            if (g_Player->Dead())
-                g_Orion.ChangeSeason(ST_DESOLATION, DEATH_MUSIC_INDEX);
-            else
-                g_Orion.ChangeSeason(g_OldSeason, g_OldSeasonMusic);
-        }
-
-        g_Walker.ResendPacketSended = false;
-
-        g_GumpManager.RemoveRangedGumps();
-
-        MoveToTop(g_Player);
     }
+    else if ((endDir & 7) != (direction & 7))
+    {
+        LOG("Position matches but direction does not.\n");
+        LOG("Queueing Step to (%d, %d, %d, %x)\n", endX, endY, endZ, endDir);
+        g_Player->QueueStep(endX, endY, endZ, direction);
+    }
+
+    g_Player->CloseBank();
+
+    bool updateStatusbar = (g_Player->GetFlags() != flags);
+
+    g_RemoveRangeXY.X = x;
+    g_RemoveRangeXY.Y = y;
+
+    UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+
+    g_GameScreen.UpdateDrawPos = true;
+
+    bool oldDead = g_Player->Dead();
+    ushort oldGraphic = g_Player->Graphic;
+
+    g_Player->Graphic = graphic;
+    g_Player->OnGraphicChange();
+    g_Player->Color = g_ColorManager.FixColor(color);
+    g_Player->SetFlags(flags);
+
+    g_Weather.Reset();
+
+    if (oldGraphic && oldGraphic != g_Player->Graphic)
+    {
+        if (g_Player->Dead())
+            g_Target.Reset();
+    }
+
+    if (oldDead != g_Player->Dead())
+    {
+        if (g_Player->Dead())
+            g_Orion.ChangeSeason(ST_DESOLATION, DEATH_MUSIC_INDEX);
+        else
+            g_Orion.ChangeSeason(g_OldSeason, g_OldSeasonMusic);
+    }
+
+    if (updateStatusbar)
+        g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
+
+    g_GumpManager.RemoveRangedGumps();
+
+    MoveToTop(g_Player);
 }
 
 void CGameWorld::UpdateItemInContainer(CGameObject *obj, CGameObject *container, int x, int y)

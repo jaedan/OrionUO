@@ -48,11 +48,24 @@ public:
     short OldY = 0;
     char OldZ = 0;
 
+    uint LastStepRequestTime = 0;
+    uint8_t SequenceNumber = 0;
+    std::deque<Step> m_RequestedSteps;
+    bool m_AnimateImmediately = true;
+    bool m_CastingSpell = false;
+    bool m_HoldingSpellTarget = false;
+
     CPlayer(int serial);
 
     virtual ~CPlayer();
 
-    CFastWalkStack m_FastWalkStack;
+    bool Walk(bool run, uchar direction);
+
+    void ResetSteps();
+
+    void DenyWalk(uchar direction, int x, int y, char z);
+
+    void ConfirmWalk(uchar sequence);
 
     void CloseBank();
 

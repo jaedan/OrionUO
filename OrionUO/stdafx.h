@@ -150,11 +150,8 @@ class CGump;
 #include "TextEngine/TextContainer.h"
 #include "TextEngine/TextRenderer.h"
 
-#include "Walker/FastWalk.h"
 #include "Walker/PathNode.h"
 #include "Walker/PathFinder.h"
-#include "Walker/WalkData.h"
-#include "Walker/Walker.h"
 
 #include "GUI/GUI.h"
 
