@@ -57,7 +57,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 
 			if (gc->FindLayer(OL_MOUNT) != NULL)
 			{			
-				if (gc->m_Steps.back().Run())
+				if (gc->m_Steps.back().Direction & 0x80)
 				{		
 					soundID = 0x0129;
 					delaySound = 150;

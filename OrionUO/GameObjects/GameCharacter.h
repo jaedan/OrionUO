@@ -9,6 +9,14 @@
 //----------------------------------------------------------------------------------
 #ifndef GAMECHARACTER_H
 #define GAMECHARACTER_H
+
+struct Step {
+    int X = 0;
+    int Y = 0;
+    char Z = 0;
+    uchar Direction = 0;
+};
+
 //----------------------------------------------------------------------------------
 //!Game character class
 class CGameCharacter : public CGameObject {
@@ -127,7 +135,7 @@ public:
     CTextContainer m_DamageTextControl{ CTextContainer(10) };
 
     //!Steps stack
-    deque<CWalkData> m_Steps;
+    deque<Step> m_Steps;
 
     bool QueueStep(int x, int y, char z, uchar dir);
 

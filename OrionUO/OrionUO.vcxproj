@@ -482,7 +482,6 @@ xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
     <ClInclude Include="VMQuery.h" />
     <ClInclude Include="Walker\PathFinder.h" />
     <ClInclude Include="Walker\PathNode.h" />
-    <ClInclude Include="Walker\WalkData.h" />
     <ClInclude Include="Weather.h" />
     <ClInclude Include="WeatherEffect.h" />
     <ClInclude Include="Wisp\WispApplication.h" />
@@ -728,7 +727,6 @@ xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
     <ClCompile Include="VMQuery.cpp" />
     <ClCompile Include="Walker\PathFinder.cpp" />
     <ClCompile Include="Walker\PathNode.cpp" />
-    <ClCompile Include="Walker\WalkData.cpp" />
     <ClCompile Include="Weather.cpp" />
     <ClCompile Include="WeatherEffeect.cpp" />
     <ClCompile Include="Wisp\WispApplication.cpp" />

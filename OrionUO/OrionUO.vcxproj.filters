@@ -528,9 +528,6 @@
     <ClInclude Include="Walker\PathNode.h">
       <Filter>Header Files\Walker</Filter>
     </ClInclude>
-    <ClInclude Include="Walker\WalkData.h">
-      <Filter>Header Files\Walker</Filter>
-    </ClInclude>
     <ClInclude Include="Gumps\GumpConsoleType.h">
       <Filter>Header Files\Gumps</Filter>
     </ClInclude>
@@ -1257,9 +1254,6 @@
       <Filter>Source Files\Walker</Filter>
     </ClCompile>
     <ClCompile Include="Walker\PathNode.cpp">
-      <Filter>Source Files\Walker</Filter>
-    </ClCompile>
-    <ClCompile Include="Walker\WalkData.cpp">
       <Filter>Source Files\Walker</Filter>
     </ClCompile>
     <ClCompile Include="Gumps\GumpConsoleType.cpp">

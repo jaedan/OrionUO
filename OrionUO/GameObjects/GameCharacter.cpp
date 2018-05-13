@@ -10,6 +10,92 @@
 */
 //----------------------------------------------------------------------------------
 #include "stdafx.h"
+
+static void GetPixelOffset(uchar dir, float& x, float& y, float& steps)
+{
+    WISPFUN_DEBUG("c178_f1");
+    float step_NESW_D = 44.0f / steps; //NW NE SW SE
+    float step_NESW = 22.0f / steps; //N E S W
+
+    int checkX = 22;
+    int checkY = 22;
+
+    switch (dir & 7) {
+    case 0: //W
+    {
+        x *= step_NESW;
+        y *= -step_NESW;
+        break;
+    }
+    case 1: //NW
+    {
+        x *= step_NESW_D;
+        checkX = 44;
+        y = 0.0f;
+        break;
+    }
+    case 2: //N
+    {
+        x *= step_NESW;
+        y *= step_NESW;
+        break;
+    }
+    case 3: //NE
+    {
+        x = 0.0f;
+        y *= step_NESW_D;
+        checkY = 44;
+        break;
+    }
+    case 4: //E
+    {
+        x *= -step_NESW;
+        y *= step_NESW;
+        break;
+    }
+    case 5: //SE
+    {
+        x *= -step_NESW_D;
+        checkX = 44;
+        y = 0.0f;
+        break;
+    }
+    case 6: //S
+    {
+        x *= -step_NESW;
+        y *= -step_NESW;
+        break;
+    }
+    case 7: //SW
+    {
+        x = 0.0f;
+        y *= -step_NESW_D;
+        checkY = 44;
+        break;
+    }
+    default:
+        break;
+    }
+
+    int valueX = (int)x;
+
+    if (abs(valueX) > checkX) {
+        if (valueX < 0)
+            x = -(float)checkX;
+        else
+            x = (float)checkX;
+    }
+
+    int valueY = (int)y;
+
+    if (abs(valueY) > checkY) {
+        if (valueY < 0)
+            y = -(float)checkY;
+        else
+            y = (float)checkY;
+    }
+}
+
 //----------------------------------------------------------------------------------
 CGameCharacter::CGameCharacter(int serial)
     : CGameObject(serial)
@@ -91,7 +177,7 @@ bool CGameCharacter::QueueStep(int x, int y, char z, uchar dir)
         LastStepTime = g_Ticks;
     }
 
-    m_Steps.push_back(CWalkData(x, y, z, dir));
+    m_Steps.push_back(Step{ x, y, z, dir });
 
     return true;
 }
@@ -106,12 +192,12 @@ void CGameCharacter::GetEndPosition(int& x, int& y, char& z, uchar& dir)
         return;
     }
 
-    CWalkData& wd = m_Steps.back();
+    Step& step = m_Steps.back();
 
-    x = wd.X;
-    y = wd.Y;
-    z = wd.Z;
-    dir = wd.Direction;
+    x = step.X;
+    y = step.Y;
+    z = step.Z;
+    dir = step.Direction;
 }
 
 //----------------------------------------------------------------------------------
@@ -645,7 +731,7 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
 
     if (!m_Steps.empty()) {
         isWalking = true;
-        isRun = m_Steps.front().Run();
+        isRun = m_Steps.front().Direction & 0x80;
     }
 
     if (groupIndex == AG_LOW) {
@@ -807,9 +893,9 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
     dir = Direction & 7;
 
     if (!m_Steps.empty()) {
-        CWalkData& wd = m_Steps.front();
+        Step& step = m_Steps.front();
 
-        dir = wd.Direction;
+        dir = step.Direction;
         int run = 0;
 
         if (dir & 0x80) {
@@ -827,12 +913,12 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
             bool removeStep = (delay >= maxDelay);
             bool directionChange = false;
 
-            if (m_X != wd.X || m_Y != wd.Y) {
+            if (m_X != step.X || m_Y != step.Y) {
                 bool badStep = false;
 
                 if (!OffsetX && !OffsetY) {
-                    int absX = abs(m_X - wd.X);
-                    int absY = abs(m_Y - wd.Y);
+                    int absX = abs(m_X - step.X);
+                    int absY = abs(m_Y - step.Y);
 
                     badStep = (absX > 1 || absY > 1 || !(absX + absY));
 
@@ -840,9 +926,9 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
                         absX = m_X;
                         absY = m_Y;
 
-                        g_PathFinder.GetNewXY(wd.Direction & 7, absX, absY);
+                        g_PathFinder.GetNewXY(step.Direction & 7, absX, absY);
 
-                        badStep = (absX != wd.X || absY != wd.Y);
+                        badStep = (absX != step.X || absY != step.Y);
                     }
                 }
 
@@ -853,9 +939,9 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
 
                     float x = delay / g_AnimCharactersDelayValue;
                     float y = x;
-                    OffsetZ = (char)(((wd.Z - m_Z) * x) * (4.0f / steps));
+                    OffsetZ = (char)(((step.Z - m_Z) * x) * (4.0f / steps));
 
-                    wd.GetOffset(x, y, steps);
+                    GetPixelOffset(Direction, x, y, steps);
 
                     OffsetX = (char)x;
                     OffsetY = (char)y;
@@ -868,15 +954,15 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
 
             if (removeStep) {
                 if (IsPlayer()) {
-                    if (m_X != wd.X || m_Y != wd.Y || m_Z != wd.Z) {
-                        UOI_PLAYER_XYZ_DATA xyzData = { wd.X, wd.Y, wd.Z };
+                    if (m_X != step.X || m_Y != step.Y || m_Z != step.Z) {
+                        UOI_PLAYER_XYZ_DATA xyzData = { step.X, step.Y, step.Z };
                         g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_XYZ, (WPARAM)&xyzData, 0);
                     }
 
-                    if (Direction != wd.Direction)
-                        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_DIR, (WPARAM)wd.Direction, 0);
+                    if (Direction != step.Direction)
+                        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_DIR, (WPARAM)step.Direction, 0);
 
-                    if (m_Z - wd.Z >= 22) {
+                    if (m_Z - step.Z >= 22) {
                         g_Orion.CreateTextMessage(TT_OBJECT, g_PlayerSerial, 3, 0, "Ouch!");
                         //play sound (5) ?
                     }
@@ -899,16 +985,16 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
                         g_Player->CurrentWalkSequence++;
                 }
 
-                m_X = wd.X;
-                m_Y = wd.Y;
-                m_Z = wd.Z;
+                m_X = step.X;
+                m_Y = step.Y;
+                m_Z = step.Z;
 
                 if (IsPlayer())
                     g_GumpManager.RemoveRangedGumps();
 
                 UpdateRealDrawCoordinates();
 
-                Direction = wd.Direction;
+                Direction = step.Direction;
 
                 OffsetX = 0;
                 OffsetY = 0;

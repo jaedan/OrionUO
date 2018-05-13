@@ -159,7 +159,6 @@ class CGump;
 
 #include "Walker/PathNode.h"
 #include "Walker/PathFinder.h"
-#include "Walker/WalkData.h"
 
 #include "GUI/GUI.h"
 
