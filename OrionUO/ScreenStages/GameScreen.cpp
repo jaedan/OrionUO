@@ -841,7 +841,7 @@ void CGameScreen::AddOffsetCharacterTileToRenderList(CGameObject *obj, bool useO
 	{
 		//g_GL.DrawPolygone(drawX - dfInfo.OffsetX, drawY, dfInfo.Width, dfInfo.Height - dfInfo.OffsetY);
 
-		if (!character->m_Steps.empty() && (character->m_Steps.back().Direction & 7) == 2)
+		if (character->IsMoving() && (character->m_Steps.back().Direction & 7) == 2)
 		{
 			fullDrawLastItem = true;
 			dropMaxZIndex = 0; //X + 1, Y - 1 : wall

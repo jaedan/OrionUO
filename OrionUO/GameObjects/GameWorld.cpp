@@ -49,7 +49,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 	WISPFUN_DEBUG("c22_f3");
 	if (g_ConfigManager.FootstepsSound && gc->IsHuman() && !gc->Hidden())
 	{
-		if (!gc->m_Steps.empty() && gc->LastStepSoundTime < ticks)
+		if (gc->IsMoving() && gc->LastStepSoundTime < ticks)
 		{
 			int incID = gc->StepSoundOffset;
 			int soundID = 0x012B;
@@ -57,7 +57,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 
 			if (gc->FindLayer(OL_MOUNT) != NULL)
 			{			
-				if (gc->m_Steps.back().Direction & 0x80)
+				if (gc->m_Steps.back().Run())
 				{		
 					soundID = 0x0129;
 					delaySound = 150;
@@ -941,26 +941,19 @@ void CGameWorld::UpdateGameObject(int serial, ushort graphic, uchar graphicIncre
 
 		if (character->m_Steps.size() != MAX_STEPS_COUNT)
 		{
-			//if (character->Graphic == graphic && character->Flags == flags)
-			{
-				if (!character->m_Steps.empty())
-				{
-					CWalkData &wd = character->m_Steps.back();
+			int endX, endY;
+			char endZ;
+			uchar endDir;
 
-					if (wd.X == x && wd.Y == y && wd.Z == z && wd.Direction == direction)
-					{
-						found = true;
-					}
-				}
-				else if (character->GetX() == x && character->GetY() == y && character->GetZ() == z && character->Direction == direction)
-				{
-					found = true;
-				}
+			character->GetEndPosition(endX, endY, endZ, endDir);
+
+			if (endX == x && endY == y && endZ == z && endDir == direction) {
+				found = true;
 			}
 
 			if (!found)
 			{
-				if (character->m_Steps.empty())
+				if (!character->IsMoving())
 					character->LastStepTime = g_Ticks;
 
 				character->m_Steps.push_back(CWalkData(x, y, z, direction, graphic & 0x3FFF, flags));

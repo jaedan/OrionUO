@@ -344,15 +344,13 @@ bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
 	if (g_Player == NULL)
 		return false;
 
-	WISP_GEOMETRY::CPoint2Di startPoint(g_Player->GetX(), g_Player->GetY());
+	int startX, startY;
+	char startZ;
+	uchar startDir;
 
-	if (!g_Player->m_Steps.empty())
-	{
-		CWalkData &wd = g_Player->m_Steps.back();
+	g_Player->GetEndPosition(startX, startY, startZ, startDir);
 
-		startPoint.X = wd.X;
-		startPoint.Y = wd.Y;
-	}
+	WISP_GEOMETRY::CPoint2Di startPoint(startX, startY);
 
 	if (GetDistance(startPoint, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance)
 		return true;
@@ -367,15 +365,9 @@ bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
 		if (g_Player == NULL)
 			return false;
 
-		WISP_GEOMETRY::CPoint2Di p(g_Player->GetX(), g_Player->GetY());
+		g_Player->GetEndPosition(startX, startY, startZ, startDir);
 
-		if (!g_Player->m_Steps.empty())
-		{
-			CWalkData &wd = g_Player->m_Steps.back();
-
-			p.X = wd.X;
-			p.Y = wd.Y;
-		}
+		WISP_GEOMETRY::CPoint2Di p(startX, startY);
 
 		result = (GetDistance(p, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance);
 	}

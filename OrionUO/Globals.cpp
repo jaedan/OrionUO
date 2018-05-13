@@ -329,11 +329,14 @@ int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *targ
 	{
 		WISP_GEOMETRY::CPoint2Di targetPoint(target->GetX(), target->GetY());
 
-		if (target->NPC && !((CGameCharacter*)target)->m_Steps.empty())
+		if (target->NPC)
 		{
-			CWalkData &wd = ((CGameCharacter*)target)->m_Steps.back();
+			int x, y;
+			char z;
+			uchar dir;
 
-			targetPoint = WISP_GEOMETRY::CPoint2Di(wd.X, wd.Y);
+			((CGameCharacter*)target)->GetEndPosition(x, y, z, dir);
+			targetPoint = WISP_GEOMETRY::CPoint2Di(x, y);
 		}
 
 		int distx = abs(targetPoint.X - current.X);

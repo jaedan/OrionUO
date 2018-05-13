@@ -69,6 +69,25 @@ CGameCharacter::~CGameCharacter()
         }
     }
 }
+
+void CGameCharacter::GetEndPosition(int& x, int& y, char& z, uchar& dir)
+{
+    if (m_Steps.empty()) {
+        x = m_X;
+        y = m_Y;
+        z = m_Z;
+        dir = Direction;
+        return;
+    }
+
+    CWalkData& wd = m_Steps.back();
+
+    x = wd.X;
+    y = wd.Y;
+    z = wd.Z;
+    dir = wd.Direction;
+}
+
 //----------------------------------------------------------------------------------
 void CGameCharacter::UpdateTextCoordinates()
 {

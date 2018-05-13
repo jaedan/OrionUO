@@ -495,24 +495,13 @@ bool CPathFinder::Walk(bool run, uchar direction)
 	else if (!run)
 		run = g_ConfigManager.AlwaysRun;
 
-	int x = g_Player->GetX();
-	int y = g_Player->GetY();
-	char z = g_Player->GetZ();
-	uchar oldDirection = g_Player->Direction;
+	int x, y;
+	char z;
+	uchar oldDirection;
+
+	g_Player->GetEndPosition(x, y, z, oldDirection);
 
 	bool onMount = (g_Player->FindLayer(OL_MOUNT) != NULL);
-
-	bool emptyStack = g_Player->m_Steps.empty();
-
-	if (!emptyStack)
-	{
-		CWalkData &walker = g_Player->m_Steps.back();
-
-		x = walker.X;
-		y = walker.Y;
-		z = walker.Z;
-		oldDirection = walker.Direction;
-	}
 
 	char oldZ = z;
 	ushort walkTime = TURN_DELAY;
@@ -569,7 +558,7 @@ bool CPathFinder::Walk(bool run, uchar direction)
 
 	g_Player->CloseBank();
 
-	if (emptyStack)
+	if (!g_Player->IsMoving())
 	{
 		if (!g_Player->Walking())
 			g_Player->SetAnimation(0xFF);
@@ -962,10 +951,11 @@ void CPathFinder::ProcessAutowalk()
 		{
 			CPathNode *p = m_Path[m_PointIndex];
 
-			uchar olddir = g_Player->Direction;
+			int x, y;
+			char z;
+			uchar olddir;
 
-			if (!g_Player->m_Steps.empty())
-				olddir = g_Player->m_Steps.back().Direction;
+			g_Player->GetEndPosition(x, y, z, olddir);
 
 			if ((olddir & 7) == p->Direction)
 				m_PointIndex++;

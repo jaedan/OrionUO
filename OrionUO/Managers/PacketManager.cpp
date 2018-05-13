@@ -1802,18 +1802,6 @@ PACKET_HANDLER(UpdateCharacter)
 	}
 	else
 	{
-		if (!obj->m_Steps.empty() && obj->Direction == obj->m_Steps.back().Direction)
-		{
-			CWalkData &wd = obj->m_Steps.back();
-
-			obj->SetX(wd.X);
-			obj->SetY(wd.Y);
-			obj->SetZ(wd.Z);
-			obj->Direction = wd.Direction;
-
-			obj->m_Steps.clear();
-		}
-
 		g_World->UpdateGameObject(serial, graphic, 0, 0, x, y, z, direction, color, flags, 0, UGOT_ITEM, 1);
 	}
 
