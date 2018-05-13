@@ -1338,13 +1338,13 @@ CPacketResend::CPacketResend()
 	WriteUInt8(0x22);
 }
 //----------------------------------------------------------------------------------
-CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence, int fastWalkKey)
+CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence)
 : CPacket(7)
 {
 	WriteUInt8(0x02);
 	WriteUInt8(direction);
 	WriteUInt8(sequence);
-	WriteUInt32BE(fastWalkKey);
+	WriteUInt32BE(0);
 }
 //---------------------------------------------------------------------------
 CPacketCustomHouseBackup::CPacketCustomHouseBackup()

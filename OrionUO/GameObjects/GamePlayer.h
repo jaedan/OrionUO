@@ -98,9 +98,6 @@ public:
 	*/
 	virtual ~CPlayer();
 
-	//!Fast Walk Stack
-	CFastWalkStack m_FastWalkStack;
-
     //Пойти в указанные координаты
     bool Walk(bool run, uchar direction);
 

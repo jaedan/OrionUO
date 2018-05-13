@@ -507,7 +507,7 @@ public:
 class CPacketWalkRequest : public CPacket
 {
 public:
-	CPacketWalkRequest(uchar direction, uchar sequence, int fastWalkKey);
+	CPacketWalkRequest(uchar direction, uchar sequence);
 };
 //----------------------------------------------------------------------------------
 class CPacketCustomHouseBackup : public CPacket

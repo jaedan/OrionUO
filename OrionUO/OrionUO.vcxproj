@@ -480,7 +480,6 @@ xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
     <ClInclude Include="Utility\AutoResetEvent.h" />
     <ClInclude Include="Utility\PingThread.h" />
     <ClInclude Include="VMQuery.h" />
-    <ClInclude Include="Walker\FastWalk.h" />
     <ClInclude Include="Walker\PathFinder.h" />
     <ClInclude Include="Walker\PathNode.h" />
     <ClInclude Include="Walker\WalkData.h" />
@@ -727,7 +726,6 @@ xcopy /y /d  "$(SolutionDir)bin64\Freeimage.dll" "$(OutDir)"
     <ClCompile Include="Utility\AutoResetEvent.cpp" />
     <ClCompile Include="Utility\PingThread.cpp" />
     <ClCompile Include="VMQuery.cpp" />
-    <ClCompile Include="Walker\FastWalk.cpp" />
     <ClCompile Include="Walker\PathFinder.cpp" />
     <ClCompile Include="Walker\PathNode.cpp" />
     <ClCompile Include="Walker\WalkData.cpp" />

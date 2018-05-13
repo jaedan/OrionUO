@@ -522,9 +522,6 @@
     <ClInclude Include="TextEngine\GameConsole.h">
       <Filter>Header Files\TextEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Walker\FastWalk.h">
-      <Filter>Header Files\Walker</Filter>
-    </ClInclude>
     <ClInclude Include="Walker\PathFinder.h">
       <Filter>Header Files\Walker</Filter>
     </ClInclude>
@@ -1255,9 +1252,6 @@
     </ClCompile>
     <ClCompile Include="TextEngine\GameConsole.cpp">
       <Filter>Source Files\TextEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Walker\FastWalk.cpp">
-      <Filter>Source Files\Walker</Filter>
     </ClCompile>
     <ClCompile Include="Walker\PathFinder.cpp">
       <Filter>Source Files\Walker</Filter>

@@ -2284,15 +2284,10 @@ PACKET_HANDLER(ExtendedCommand)
 			break;
 		case 1: //Initialize Fast Walk Prevention
 		{
-			IFOR(i, 0, 6)
-				g_Player->m_FastWalkStack.SetValue((int)i, ReadUInt32BE());
-
 			break;
 		}
 		case 2: //Add key to Fast Walk Stack
 		{
-			g_Player->m_FastWalkStack.AddValue(ReadUInt32BE());
-
 			break;
 		}
 		case 4: //Close generic gump
