@@ -937,29 +937,7 @@ void CGameWorld::UpdateGameObject(int serial, ushort graphic, uchar graphicIncre
 	{
 		graphic += graphicIncrement;
 
-		bool found = false;
-
-		if (character->m_Steps.size() != MAX_STEPS_COUNT)
-		{
-			int endX, endY;
-			char endZ;
-			uchar endDir;
-
-			character->GetEndPosition(endX, endY, endZ, endDir);
-
-			if (endX == x && endY == y && endZ == z && endDir == direction) {
-				found = true;
-			}
-
-			if (!found)
-			{
-				if (!character->IsMoving())
-					character->LastStepTime = g_Ticks;
-
-				character->m_Steps.push_back(CWalkData(x, y, z, direction));
-				found = true;
-			}
-		}
+		bool found = character->QueueStep(x, y, z, direction);
 
 		if (!found)
 		{

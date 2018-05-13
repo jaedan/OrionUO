@@ -129,6 +129,8 @@ public:
     //!Steps stack
     deque<CWalkData> m_Steps;
 
+    bool QueueStep(int x, int y, char z, uchar dir);
+
     void GetEndPosition(int& x, int& y, char& z, uchar& dir);
     bool IsMoving() { return !m_Steps.empty(); }
 

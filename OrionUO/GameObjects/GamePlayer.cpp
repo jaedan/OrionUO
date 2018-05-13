@@ -99,11 +99,8 @@ bool CPlayer::Walk(bool run, uchar direction)
 
     CloseBank();
 
-    if (!IsMoving()) {
-        if (!Walking())
-            SetAnimation(0xFF);
-
-        LastStepTime = g_Ticks;
+    if (!IsMoving() && !Walking()) {
+        SetAnimation(0xFF);
     }
 
     CStepInfo& step = m_Step[StepsCount];
@@ -123,7 +120,7 @@ bool CPlayer::Walk(bool run, uchar direction)
     if (run)
         direction += 0x80;
 
-    m_Steps.push_back(CWalkData(x, y, z, direction));
+    QueueStep(x, y, z, direction);
 
     CPacketWalkRequest(direction, WalkSequence).Send();
 

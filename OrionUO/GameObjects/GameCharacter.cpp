@@ -70,6 +70,32 @@ CGameCharacter::~CGameCharacter()
     }
 }
 
+bool CGameCharacter::QueueStep(int x, int y, char z, uchar dir)
+{
+    if (m_Steps.size() >= MAX_STEPS_COUNT) {
+        return false;
+    }
+
+    int endX, endY;
+    char endZ;
+    uchar endDir;
+
+    GetEndPosition(endX, endY, endZ, endDir);
+
+    if (endX == x && endY == y && endZ == z && endDir == dir) {
+        /* Already heading to this location */
+        return true;
+    }
+
+    if (!IsMoving()) {
+        LastStepTime = g_Ticks;
+    }
+
+    m_Steps.push_back(CWalkData(x, y, z, dir));
+
+    return true;
+}
+
 void CGameCharacter::GetEndPosition(int& x, int& y, char& z, uchar& dir)
 {
     if (m_Steps.empty()) {
