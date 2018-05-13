@@ -123,7 +123,7 @@ bool CPlayer::Walk(bool run, uchar direction)
     if (run)
         direction += 0x80;
 
-    m_Steps.push_back(CWalkData(x, y, z, direction, Graphic, GetFlags()));
+    m_Steps.push_back(CWalkData(x, y, z, direction));
 
     CPacketWalkRequest(direction, WalkSequence).Send();
 

@@ -18,12 +18,10 @@ public:
 	short Y = 0;
 	char Z = 0;
 	uchar Direction = 0;
-	ushort Graphic = 0;
-	uchar Flags = 0;
 
 	CWalkData() {}
-	CWalkData(short x, short y, char z, uchar direction, ushort graphic, uchar flags)
-		: X(x), Y(y), Z(z), Direction(direction), Graphic(graphic), Flags(flags) {}
+	CWalkData(short x, short y, char z, uchar direction)
+		: X(x), Y(y), Z(z), Direction(direction) {}
 	~CWalkData() {}
 
 	//Бег или хотьба

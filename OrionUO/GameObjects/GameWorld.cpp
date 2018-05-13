@@ -956,7 +956,7 @@ void CGameWorld::UpdateGameObject(int serial, ushort graphic, uchar graphicIncre
 				if (!character->IsMoving())
 					character->LastStepTime = g_Ticks;
 
-				character->m_Steps.push_back(CWalkData(x, y, z, direction, graphic & 0x3FFF, flags));
+				character->m_Steps.push_back(CWalkData(x, y, z, direction));
 				found = true;
 			}
 		}
