@@ -15,5 +15,6 @@ void CPathNode::Reset()
 {
     m_Parent = NULL;
     Used = false;
-    X = Y = Z = Direction = Cost = DistFromStartCost = DistFromGoalCost = 0;
+    X = Y = Z = Cost = DistFromStartCost = DistFromGoalCost = 0;
+    Dir = DIR_NORTH;
 }

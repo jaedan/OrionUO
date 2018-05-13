@@ -1456,7 +1456,6 @@ void COrion::LoadPluginConfig()
     g_PluginClientInterface.UO = &g_Interface_UO;
     g_PluginClientInterface.ClilocManager = &g_Interface_ClilocManager;
     g_PluginClientInterface.ColorManager = &g_Interface_ColorManager;
-    g_PluginClientInterface.PathFinder = &g_Interface_PathFinder;
     g_PluginClientInterface.FileManager = &g_Interface_FileManager;
 
     for (auto &plugin : m_Plugins)
@@ -2667,8 +2666,6 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
         }
         case VKI_BLOCK_MOVING:
         {
-            g_PathFinder.BlockMoving = (value != 0);
-
             break;
         }
         case VKI_SET_PLAYER_GRAPHIC:
@@ -2683,8 +2680,6 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
         }
         case VKI_FAST_ROTATION:
         {
-            g_PathFinder.FastRotation = (value != 0);
-
             break;
         }
         case VKI_IGNORE_STAMINA_CHECK:
@@ -5735,6 +5730,8 @@ void COrion::CastSpell(int index)
     {
         g_LastSpellIndex = index;
 
+        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
+        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
         CPacketCastSpell(index).Send();
     }
 }
@@ -5746,6 +5743,8 @@ void COrion::CastSpellFromBook(int index, uint serial)
     {
         g_LastSpellIndex = index;
 
+        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
+        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
         CPacketCastSpellFromBook(index, serial).Send();
     }
 }
@@ -5834,7 +5833,6 @@ void COrion::RemoveRangedObjects()
 void COrion::ClearWorld()
 {
     g_CorpseManager.Clear();
-    g_Walker.Reset();
     g_ObjectInHand.Clear();
     g_UseItemActions.Clear();
 
@@ -5846,7 +5844,6 @@ void COrion::ClearWorld()
     g_Season = ST_SUMMER;
     g_OldSeason = ST_SUMMER;
     g_GlobalScale = 1.0;
-    g_PathFinder.BlockMoving = false;
     g_SkillsManager.SkillsTotal = 0.0f;
     g_SkillsManager.SkillsRequested = false;
 

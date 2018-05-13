@@ -3,6 +3,32 @@
 #ifndef GAMECHARACTER_H
 #define GAMECHARACTER_H
 
+enum Direction
+{
+    DIR_NORTH = 0,
+    DIR_NORTHEAST,
+    DIR_EAST,
+    DIR_SOUTHEAST,
+    DIR_SOUTH,
+    DIR_SOUTHWEST,
+    DIR_WEST,
+    DIR_NORTHWEST,
+    DIR_INVALID,
+};
+
+struct Step
+{
+    int x;
+    int y;
+    char z;
+
+    uint8_t dir : 6;
+    uint8_t anim : 1;
+    uint8_t run : 1;
+
+    uint8_t seq;
+};
+
 class CGameCharacter : public CGameObject
 {
 public:
@@ -22,7 +48,8 @@ public:
 
     RACE_TYPE Race = RT_HUMAN;
 
-    uchar Direction = 0;
+    Direction Dir = DIR_NORTH;
+    bool Run = false;
 
     uchar Notoriety = 0;
 
@@ -72,7 +99,16 @@ public:
 
     CTextContainer m_DamageTextControl{ CTextContainer(10) };
 
-    deque<CWalkData> m_Steps;
+    deque<Step> m_Steps;
+
+    Direction CalculateDirection(int curX, int curY, int newX, int newY);
+
+    bool QueueStep(int x, int y, char z, Direction dir, bool run);
+
+    int GetWalkSpeed(bool run, bool onMount);
+
+    void GetEndPosition(int &x, int &y, char &z, Direction &dir);
+    bool IsMoving() { return !m_Steps.empty(); }
 
     CGLTextTexture m_HitsTexture{ CGLTextTexture() };
 
@@ -102,6 +138,10 @@ public:
         bool repeat = false,
         bool frameDirection = false);
 
+    void ProcessAnimation();
+
+    Direction GetAnimationDirection();
+
     ushort GetMountAnimation();
 
     uchar GetAnimationGroup(ushort checkGraphic = 0);
@@ -118,8 +158,6 @@ public:
     {
         return ((LastStepTime > (uint)(g_Ticks - WALKING_DELAY)) && m_Steps.empty());
     }
-
-    void UpdateAnimationInfo(uchar &dir, bool canChange = false);
 
     bool IsHuman()
     {

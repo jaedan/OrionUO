@@ -202,7 +202,7 @@ void CTarget::Plugin_SendTargetObject(int serial)
         if (obj != NULL && obj->NPC && ((CGameCharacter *)obj)->MaxHits == 0)
         {
             CPacketStatusRequest packet(serial);
-            SendMessage(
+            SendNotifyMessage(
                 g_OrionWindow.Handle,
                 UOMSG_SEND,
                 (WPARAM)packet.Data().data(),
@@ -265,6 +265,12 @@ void CTarget::SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
 
+    if (g_Player->m_MovementState == PlayerMovementState::HOLDING_SPELL_TARGET)
+    {
+        LOG("Selected target. State transition to AWAITING_NEXT_CONFIRMATION.\n");
+        g_Player->m_MovementState = PlayerMovementState::AWAITING_NEXT_CONFIRMATION;
+    }
+
     if (Type != 2)
         g_Orion.Send(m_Data, sizeof(m_Data));
 
@@ -278,7 +284,7 @@ void CTarget::SendTarget()
 void CTarget::Plugin_SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
-    SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)m_Data, sizeof(m_Data));
+    SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)m_Data, sizeof(m_Data));
 
     memset(m_Data, 0, sizeof(m_Data));
     Targeting = false;

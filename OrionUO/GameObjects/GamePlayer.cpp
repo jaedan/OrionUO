@@ -16,6 +16,241 @@ CPlayer::~CPlayer()
     WISPFUN_DEBUG("c21_f2");
 }
 
+bool CPlayer::Walk(Direction direction, bool run)
+{
+    WISPFUN_DEBUG("c177_f7");
+    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT ||
+        g_DeathScreenTimer || g_GameState != GS_GAME)
+        return false;
+
+    if (g_SpeedMode >= CST_CANT_RUN)
+        run = false;
+    else if (!run)
+        run = g_ConfigManager.AlwaysRun;
+
+    int x, y;
+    char z;
+    Direction oldDirection;
+
+    if (m_RequestedSteps.empty())
+    {
+        GetEndPosition(x, y, z, oldDirection);
+    }
+    else
+    {
+        Step &step = m_RequestedSteps.back();
+
+        x = step.x;
+        y = step.y;
+        z = step.z;
+        oldDirection = (Direction)step.dir;
+    }
+
+    bool onMount = (FindLayer(OL_MOUNT) != NULL);
+    ushort walkTime;
+
+    Direction newDirection = direction;
+    int newX = x;
+    int newY = y;
+    char newZ = z;
+
+    if (oldDirection == newDirection)
+    {
+        if (!g_PathFinder.CanWalk(newDirection, newX, newY, newZ))
+        {
+            return false;
+        }
+
+        if (newDirection != direction)
+        {
+            direction = newDirection;
+            walkTime = TURN_DELAY;
+        }
+        else
+        {
+            direction = newDirection;
+            x = newX;
+            y = newY;
+            z = newZ;
+            walkTime = GetWalkSpeed(run, onMount);
+        }
+    }
+    else
+    {
+        if (!g_PathFinder.CanWalk(newDirection, newX, newY, newZ))
+        {
+            if (newDirection == oldDirection)
+            {
+                return false;
+            }
+        }
+
+        if (oldDirection == newDirection)
+        {
+            direction = newDirection;
+            x = newX;
+            y = newY;
+            z = newZ;
+            walkTime = GetWalkSpeed(run, onMount);
+        }
+        else
+        {
+            direction = newDirection;
+            walkTime = TURN_DELAY;
+        }
+    }
+
+    CloseBank();
+
+    Step step = {};
+    step.x = x;
+    step.y = y;
+    step.z = z;
+    step.dir = direction;
+    step.run = run;
+    step.seq = SequenceNumber;
+
+    if (g_Player->m_MovementState == PlayerMovementState::ANIMATE_IMMEDIATELY)
+    {
+        for (auto &s : m_RequestedSteps)
+        {
+            if (s.anim == false)
+            {
+                LOG("Animating catch-up step\n");
+                s.anim = true;
+                QueueStep(s.x, s.y, s.z, (Direction)s.dir, s.run);
+            }
+        }
+
+        g_RemoveRangeXY.X = step.x;
+        g_RemoveRangeXY.Y = step.y;
+
+        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+        g_PluginManager.WindowProc(
+            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+
+        step.anim = true;
+
+        LOG("Step immediately animated\n");
+        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
+    }
+
+    m_RequestedSteps.push_back(step);
+
+    CPacketWalkRequest(direction, SequenceNumber, run).Send();
+
+    if (SequenceNumber == 0xFF)
+        SequenceNumber = 1;
+    else
+        SequenceNumber++;
+
+    g_World->MoveToTop(this);
+
+    LastStepRequestTime = g_Ticks + walkTime;
+
+    GetAnimationGroup();
+
+    return true;
+}
+
+void CPlayer::ResetSteps()
+{
+    m_RequestedSteps.clear();
+    m_Steps.clear();
+
+    SequenceNumber = 0;
+    LastStepRequestTime = 0;
+
+    OffsetX = 0;
+    OffsetY = 0;
+    OffsetZ = 0;
+}
+
+void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, uint8_t z)
+{
+    for (const auto &step : m_RequestedSteps)
+    {
+        if (step.seq == sequence)
+        {
+            /* Found the step. Reset the player's movement. */
+            ResetSteps();
+
+            SetX(x);
+            SetY(y);
+            SetZ(z);
+            Dir = dir;
+            Run = false;
+
+            g_RemoveRangeXY.X = x;
+            g_RemoveRangeXY.Y = y;
+
+            UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+            g_PluginManager.WindowProc(
+                g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+            return;
+        }
+    }
+
+    LOG("Ignoring errneous DenyWalk\n");
+}
+
+void CPlayer::ConfirmWalk(uchar sequence)
+{
+    if (m_RequestedSteps.empty())
+    {
+        LOG("Received Walk Confirmation, but no steps pending.\n");
+        /* TODO: Resynchronize */
+        return;
+    }
+
+    Step &step = m_RequestedSteps.front();
+
+    if (step.seq != sequence)
+    {
+        LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
+            sequence);
+        /* TODO: Resynchronize */
+        return;
+    }
+
+    m_RequestedSteps.pop_front();
+
+    if (!step.anim)
+    {
+        LOG("Step was not previously animated. Animating now.\n");
+
+        int endX, endY;
+        char endZ;
+        Direction endDir;
+
+        GetEndPosition(endX, endY, endZ, endDir);
+
+        if (step.dir == endDir)
+        {
+            if (m_MovementState == PlayerMovementState::CASTING_SPELL)
+            {
+                LOG("Successful movement after casting. State transition to ANIMATE_IMMEDIATELY.\n");
+                m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+            }
+        }
+
+        if (m_MovementState == PlayerMovementState::AWAITING_NEXT_CONFIRMATION)
+        {
+            LOG("Received next walk confirmation. State transition to ANIMATE_IMMEDIATELY.\n");
+            m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+        }
+
+        g_RemoveRangeXY.X = step.x;
+        g_RemoveRangeXY.Y = step.y;
+
+        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+        g_PluginManager.WindowProc(
+            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+
+        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
+    }
+}
+
 void CPlayer::CloseBank()
 {
     CGameItem *bank = FindLayer(OL_BANK);
@@ -45,7 +280,7 @@ void CPlayer::UpdateAbilities()
     WISPFUN_DEBUG("c21_f12");
     ushort equippedGraphic = 0;
 
-    CGameItem *layerObject = g_Player->FindLayer(OL_1_HAND);
+    CGameItem *layerObject = FindLayer(OL_1_HAND);
 
     if (layerObject != NULL)
     {
@@ -53,7 +288,7 @@ void CPlayer::UpdateAbilities()
     }
     else
     {
-        layerObject = g_Player->FindLayer(OL_2_HAND);
+        layerObject = FindLayer(OL_2_HAND);
 
         if (layerObject != NULL)
             equippedGraphic = layerObject->Graphic;

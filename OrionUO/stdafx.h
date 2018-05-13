@@ -150,12 +150,6 @@ class CGump;
 #include "TextEngine/TextContainer.h"
 #include "TextEngine/TextRenderer.h"
 
-#include "Walker/FastWalk.h"
-#include "Walker/PathNode.h"
-#include "Walker/PathFinder.h"
-#include "Walker/WalkData.h"
-#include "Walker/Walker.h"
-
 #include "GUI/GUI.h"
 
 #include "Gumps/Gump.h"
@@ -176,6 +170,9 @@ class CGump;
 #include "GameObjects/GameWorld.h"
 #include "GameObjects/MapBlock.h"
 #include "GameObjects/ObjectOnCursor.h"
+
+#include "Walker/PathNode.h"
+#include "Walker/PathFinder.h"
 
 #include "Target.h"
 #include "Managers/CustomHousesManager.h"

@@ -109,8 +109,6 @@ CHARACTER_SPEED_TYPE g_SpeedMode = CST_NORMAL;
 
 uint g_DeathScreenTimer = 0;
 
-float g_AnimCharactersDelayValue = 80.0f;
-
 WISP_GEOMETRY::CPoint2Di g_RemoveRangeXY;
 
 int g_GrayMenuCount = 0;
@@ -290,11 +288,14 @@ int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *targ
     {
         WISP_GEOMETRY::CPoint2Di targetPoint(target->GetX(), target->GetY());
 
-        if (target->NPC && !((CGameCharacter *)target)->m_Steps.empty())
+        if (target->NPC)
         {
-            CWalkData &wd = ((CGameCharacter *)target)->m_Steps.back();
+            int x, y;
+            char z;
+            Direction dir;
 
-            targetPoint = WISP_GEOMETRY::CPoint2Di(wd.X, wd.Y);
+            ((CGameCharacter *)target)->GetEndPosition(x, y, z, dir);
+            targetPoint = WISP_GEOMETRY::CPoint2Di(x, y);
         }
 
         int distx = abs(targetPoint.X - current.X);

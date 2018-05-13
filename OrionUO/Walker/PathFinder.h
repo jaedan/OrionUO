@@ -26,8 +26,6 @@ class CPathFinder
 public:
     bool AutoWalking = false;
     bool PathFindidngCanBeCancelled = false;
-    bool BlockMoving = false;
-    bool FastRotation = false;
     bool IgnoreStaminaCheck = false;
 
 protected:
@@ -77,19 +75,15 @@ public:
     CPathFinder();
     virtual ~CPathFinder();
 
-    void GetNewXY(uchar direction, int &x, int &y);
+    void GetNewXY(Direction direction, int &x, int &y);
 
-    bool CanWalk(uchar &direction, int &x, int &y, char &z);
-
-    bool Walk(bool run, uchar direction);
+    bool CanWalk(Direction &direction, int &x, int &y, char &z);
 
     bool WalkTo(int x, int y, int z, int distance);
 
     void ProcessAutowalk();
 
     void StopAutoWalk();
-
-    int GetWalkSpeed(bool run, bool onMount);
 };
 
 extern CPathFinder g_PathFinder;

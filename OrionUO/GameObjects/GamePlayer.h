@@ -3,6 +3,14 @@
 #ifndef GAMEPLAYER_H
 #define GAMEPLAYER_H
 
+enum class PlayerMovementState
+{
+    ANIMATE_IMMEDIATELY = 0,
+    CASTING_SPELL,
+    HOLDING_SPELL_TARGET,
+    AWAITING_NEXT_CONFIRMATION,
+};
+
 class CPlayer : public CGameCharacter
 {
 public:
@@ -48,11 +56,22 @@ public:
     short OldY = 0;
     char OldZ = 0;
 
+    uint LastStepRequestTime = 0;
+    uint8_t SequenceNumber = 0;
+    std::deque<Step> m_RequestedSteps;
+    PlayerMovementState m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+
     CPlayer(int serial);
 
     virtual ~CPlayer();
 
-    CFastWalkStack m_FastWalkStack;
+    bool Walk(Direction direction, bool run);
+
+    void ResetSteps();
+
+    void DenyWalk(uint8_t sequence, Direction direction, uint32_t x, uint32_t y, uint8_t z);
+
+    void ConfirmWalk(uchar sequence);
 
     void CloseBank();
 

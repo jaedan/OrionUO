@@ -71,15 +71,13 @@ static const int DEATH_MUSIC_INDEX = 42;
 
 static const int ITEM_ANIMATION_DELAY = 80;
 
-static const int CHARACTER_ANIMATION_DELAY = 80;
+static const float CHARACTER_ANIMATION_DELAY = 80;
 
 static const ushort FIELD_REPLACE_GRAPHIC = 0x1826;
 
 const int MAX_LIGHT_SOURCES = 100;
 
 const int MAX_OBJECT_HANDLES = 200;
-
-const int MAX_FAST_WALK_STACK_SIZE = 5;
 
 const int MAX_FILE_BUFFER_SIZE = 0x1000;
 
@@ -146,8 +144,6 @@ const int STEP_DELAY_RUN = 200;
 const int STEP_DELAY_WALK = 400;
 
 const int TURN_DELAY = 100;
-
-const int TURN_DELAY_FAST = 45;
 
 const int WALKING_DELAY = 750;
 

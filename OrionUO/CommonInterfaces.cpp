@@ -194,7 +194,7 @@ void __cdecl FUNCBODY_SendCastSpell(int index)
         g_LastSpellIndex = index;
 
         CPacketCastSpell packet(index);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -206,7 +206,7 @@ void __cdecl FUNCBODY_SendUseSkill(int index)
         g_LastSkillIndex = index;
 
         CPacketUseSkill packet(index);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -217,7 +217,7 @@ void __cdecl FUNCBODY_SendAsciiSpeech(const char *text, unsigned short color)
         color = g_ConfigManager.SpeechColor;
 
     CPacketASCIISpeechRequest packet(text, ST_NORMAL, 3, color);
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
@@ -227,21 +227,21 @@ void __cdecl FUNCBODY_SendUnicodeSpeech(const wchar_t *text, unsigned short colo
         color = g_ConfigManager.SpeechColor;
 
     CPacketUnicodeSpeechRequest packet(text, ST_NORMAL, 3, color, (puchar)g_Language.c_str());
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
 void __cdecl FUNCBODY_SendRenameMount(uint serial, const char *text)
 {
     CPacketRenameRequest packet(serial, text);
-    SendMessage(
+    SendNotifyMessage(
         g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 
 void __cdecl FUNCBODY_SendMenuResponse(unsigned int serial, unsigned int id, int code)
 {
     UOI_MENU_RESPONSE data = { serial, id, code };
-    SendMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
+    SendNotifyMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
 }
 
 void __cdecl FUNCBODY_DisplayStatusbarGump(unsigned int serial, int x, int y)
@@ -268,7 +268,7 @@ void __cdecl FUNCBODY_SecureTradingCheckState(unsigned int id1, bool state)
         gump->StateMy = state;
 
         CPacketTradeResponse packet(gump, 2);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -282,7 +282,7 @@ void __cdecl FUNCBODY_SecureTradingClose(unsigned int id1)
         gump->RemoveMark = true;
 
         CPacketTradeResponse packet(gump, 1);
-        SendMessage(
+        SendNotifyMessage(
             g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
     }
 }
@@ -335,75 +335,6 @@ unsigned int __cdecl FUNCBODY_GetColor(unsigned short &c, unsigned short color)
 unsigned int __cdecl FUNCBODY_GetPartialHueColor(unsigned short &c, unsigned short color)
 {
     return g_ColorManager.GetPartialHueColor(c, color);
-}
-
-bool __cdecl FUNCBODY_GetCanWalk(unsigned char &direction, int &x, int &y, char &z)
-{
-    return g_PathFinder.CanWalk(direction, x, y, z);
-}
-
-bool __cdecl FUNCBODY_GetWalk(bool run, unsigned char direction)
-{
-    return SendMessage(g_OrionWindow.Handle, UOMSG_WALK, run, direction);
-}
-
-bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
-{
-    if (g_Player == NULL)
-        return false;
-
-    WISP_GEOMETRY::CPoint2Di startPoint(g_Player->GetX(), g_Player->GetY());
-
-    if (!g_Player->m_Steps.empty())
-    {
-        CWalkData &wd = g_Player->m_Steps.back();
-
-        startPoint.X = wd.X;
-        startPoint.Y = wd.Y;
-    }
-
-    if (GetDistance(startPoint, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance)
-        return true;
-
-    bool result = SendMessage(
-        g_OrionWindow.Handle,
-        UOMSG_PATHFINDING,
-        ((x << 16) & 0xFFFF0000) | (y & 0xFFFF),
-        ((x << 16) & 0xFFFF0000) | (distance & 0xFFFF));
-
-    if (result)
-    {
-        while (g_PathFinder.AutoWalking)
-            Sleep(100);
-
-        if (g_Player == NULL)
-            return false;
-
-        WISP_GEOMETRY::CPoint2Di p(g_Player->GetX(), g_Player->GetY());
-
-        if (!g_Player->m_Steps.empty())
-        {
-            CWalkData &wd = g_Player->m_Steps.back();
-
-            p.X = wd.X;
-            p.Y = wd.Y;
-        }
-
-        result = (GetDistance(p, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance);
-    }
-
-    return result;
-}
-
-void __cdecl FUNCBODY_GetStopAutowalk()
-{
-    if (g_PathFinder.PathFindidngCanBeCancelled)
-        g_PathFinder.StopAutoWalk();
-}
-
-bool __cdecl FUNCBODY_GetAutowalking()
-{
-    return g_PathFinder.AutoWalking;
 }
 
 void __cdecl FUNCBODY_GetFileInfo(unsigned int index, ORION_RAW_FILE_INFO &info)
@@ -711,14 +642,6 @@ IColorManager g_Interface_ColorManager = { 0,
                                            FUNCBODY_GetPolygoneColor,
                                            FUNCBODY_GetColor,
                                            FUNCBODY_GetPartialHueColor };
-
-IPathFinder g_Interface_PathFinder = { 0,
-                                       sizeof(IPathFinder),
-                                       FUNCBODY_GetCanWalk,
-                                       FUNCBODY_GetWalk,
-                                       FUNCBODY_GetWalkTo,
-                                       FUNCBODY_GetStopAutowalk,
-                                       FUNCBODY_GetAutowalking };
 
 IFileManager g_Interface_FileManager = { 0,
                                          sizeof(IFileManager),

@@ -522,19 +522,10 @@
     <ClInclude Include="TextEngine\GameConsole.h">
       <Filter>Header Files\TextEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Walker\FastWalk.h">
-      <Filter>Header Files\Walker</Filter>
-    </ClInclude>
     <ClInclude Include="Walker\PathFinder.h">
       <Filter>Header Files\Walker</Filter>
     </ClInclude>
     <ClInclude Include="Walker\PathNode.h">
-      <Filter>Header Files\Walker</Filter>
-    </ClInclude>
-    <ClInclude Include="Walker\WalkData.h">
-      <Filter>Header Files\Walker</Filter>
-    </ClInclude>
-    <ClInclude Include="Walker\Walker.h">
       <Filter>Header Files\Walker</Filter>
     </ClInclude>
     <ClInclude Include="Gumps\GumpConsoleType.h">
@@ -1259,19 +1250,10 @@
     <ClCompile Include="TextEngine\GameConsole.cpp">
       <Filter>Source Files\TextEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Walker\FastWalk.cpp">
-      <Filter>Source Files\Walker</Filter>
-    </ClCompile>
     <ClCompile Include="Walker\PathFinder.cpp">
       <Filter>Source Files\Walker</Filter>
     </ClCompile>
     <ClCompile Include="Walker\PathNode.cpp">
-      <Filter>Source Files\Walker</Filter>
-    </ClCompile>
-    <ClCompile Include="Walker\WalkData.cpp">
-      <Filter>Source Files\Walker</Filter>
-    </ClCompile>
-    <ClCompile Include="Walker\Walker.cpp">
       <Filter>Source Files\Walker</Filter>
     </ClCompile>
     <ClCompile Include="Gumps\GumpConsoleType.cpp">

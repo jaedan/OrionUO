@@ -166,8 +166,6 @@ extern CHARACTER_SPEED_TYPE g_SpeedMode;
 
 extern uint g_DeathScreenTimer;
 
-extern float g_AnimCharactersDelayValue;
-
 typedef vector<pair<uint, uint>> UINTS_PAIR_LIST;
 
 extern WISP_GEOMETRY::CPoint2Di g_RemoveRangeXY;
