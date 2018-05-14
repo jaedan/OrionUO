@@ -36,7 +36,7 @@ int CPlayer::GetWalkSpeed(bool run, bool onMount)
 bool CPlayer::Walk(bool run, uchar direction)
 {
     WISPFUN_DEBUG("c177_f7");
-    if (WalkingFailed || LastStepRequestTime > g_Ticks || StepsCount >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
+    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
         return false;
 
     if (g_SpeedMode >= CST_CANT_RUN)
@@ -103,33 +103,25 @@ bool CPlayer::Walk(bool run, uchar direction)
         SetAnimation(0xFF);
     }
 
-    CStepInfo& step = m_Step[StepsCount];
-    step.Sequence = WalkSequence;
-    step.Accepted = false;
-    step.Running = run;
-    step.OldDirection = oldDirection & 7;
+	if (run)
+		direction += 0x80;
+
+	Step step;
     step.Direction = direction;
-    step.Timer = g_Ticks;
     step.X = x;
     step.Y = y;
     step.Z = z;
-    step.NoRotation = ((step.OldDirection == direction) && ((oldZ - z) >= 11));
 
-    StepsCount++;
-
-    if (run)
-        direction += 0x80;
+	m_RequestedSteps.push_back(step);
 
     QueueStep(x, y, z, direction);
 
-    CPacketWalkRequest(direction, WalkSequence).Send();
+    CPacketWalkRequest(direction, SequenceNumber).Send();
 
-    if (WalkSequence == 0xFF)
-        WalkSequence = 1;
+    if (SequenceNumber == 0xFF)
+        SequenceNumber = 1;
     else
-        WalkSequence++;
-
-    UnacceptedPacketsCount++;
+        SequenceNumber++;
 
     g_World->MoveToTop(this);
 
@@ -167,12 +159,7 @@ bool CPlayer::Walk(bool run, uchar direction)
 //---------------------------------------------------------------------------
 void CPlayer::ResetSteps()
 {
-    UnacceptedPacketsCount = 0;
-    StepsCount = 0;
-    WalkSequence = 0;
-    CurrentWalkSequence = 0;
-    WalkingFailed = false;
-    ResendPacketSended = false;
+    SequenceNumber = 0;
     LastStepRequestTime = 0;
 }
 //----------------------------------------------------------------------------------
@@ -201,54 +188,15 @@ void CPlayer::DenyWalk(uchar sequence, int x, int y, char z)
 //----------------------------------------------------------------------------------
 void CPlayer::ConfirmWalk(uchar sequence)
 {
-    if (UnacceptedPacketsCount)
-        UnacceptedPacketsCount--;
+	Step& step = m_RequestedSteps.front();
 
-    int stepIndex = 0;
+	g_RemoveRangeXY.X = step.X;
+	g_RemoveRangeXY.Y = step.Y;
 
-    IFOR(i, 0, StepsCount)
-    {
-        if (m_Step[i].Sequence == sequence)
-            break;
+	m_RequestedSteps.pop_front();
 
-        stepIndex++;
-    }
-
-    bool isBadStep = (stepIndex == StepsCount);
-
-    if (!isBadStep) {
-        if (stepIndex >= CurrentWalkSequence) {
-            m_Step[stepIndex].Accepted = true;
-            g_RemoveRangeXY.X = m_Step[stepIndex].X;
-            g_RemoveRangeXY.Y = m_Step[stepIndex].Y;
-        } else if (!stepIndex) {
-            g_RemoveRangeXY.X = m_Step[0].X;
-            g_RemoveRangeXY.Y = m_Step[0].Y;
-
-            IFOR(i, 1, StepsCount)
-            {
-                m_Step[i - 1] = m_Step[i];
-            }
-
-            StepsCount--;
-            CurrentWalkSequence--;
-        } else //if (stepIndex)
-            isBadStep = true;
-    }
-
-    if (isBadStep) {
-        if (!ResendPacketSended) {
-            CPacketResend().Send();
-            ResendPacketSended = true;
-        }
-
-        WalkingFailed = true;
-        StepsCount = 0;
-        CurrentWalkSequence = 0;
-    } else {
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-    }
+	UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
 }
 //---------------------------------------------------------------------------
 void CPlayer::CloseBank()

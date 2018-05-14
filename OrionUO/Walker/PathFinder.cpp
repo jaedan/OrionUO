@@ -788,7 +788,7 @@ bool CPathFinder::WalkTo(int x, int y, int z, int distance)
 void CPathFinder::ProcessAutowalk()
 {
 	WISPFUN_DEBUG("c177_f16");
-	if (AutoWalking && g_Player != NULL && !g_DeathScreenTimer && g_Player->StepsCount < MAX_STEPS_COUNT && g_Player->LastStepRequestTime <= g_Ticks)
+	if (AutoWalking && g_Player != NULL && !g_DeathScreenTimer && g_Player->m_RequestedSteps.size() < MAX_STEPS_COUNT && g_Player->LastStepRequestTime <= g_Ticks)
 	{
 		if (m_PointIndex >= 0 && m_PointIndex < m_PathSize)
 		{
