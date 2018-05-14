@@ -953,37 +953,20 @@ void CGameCharacter::UpdateAnimationInfo(BYTE& dir, bool canChange)
             }
 
             if (removeStep) {
-                if (IsPlayer()) {
-                    if (m_X != step.X || m_Y != step.Y || m_Z != step.Z) {
-                        UOI_PLAYER_XYZ_DATA xyzData = { step.X, step.Y, step.Z };
-                        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_XYZ, (WPARAM)&xyzData, 0);
-                    }
+				if (IsPlayer()) {
+					if (m_X != step.X || m_Y != step.Y || m_Z != step.Z) {
+						UOI_PLAYER_XYZ_DATA xyzData = { step.X, step.Y, step.Z };
+						g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_XYZ, (WPARAM)&xyzData, 0);
+					}
 
-                    if (Direction != step.Direction)
-                        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_DIR, (WPARAM)step.Direction, 0);
+					if (Direction != step.Direction)
+						g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_DIR, (WPARAM)step.Direction, 0);
 
-                    if (m_Z - step.Z >= 22) {
-                        g_Orion.CreateTextMessage(TT_OBJECT, g_PlayerSerial, 3, 0, "Ouch!");
-                        //play sound (5) ?
-                    }
-
-                    if (g_Player->m_Step[g_Player->CurrentWalkSequence].Accepted) {
-                        int sequencePtr = g_Player->CurrentWalkSequence + 1;
-
-                        if (sequencePtr < g_Player->StepsCount) {
-                            int count = g_Player->StepsCount - sequencePtr;
-
-                            IFOR(i, 0, count)
-                            {
-                                g_Player->m_Step[sequencePtr - 1] = g_Player->m_Step[sequencePtr];
-                                sequencePtr++;
-                            }
-                        }
-
-                        g_Player->StepsCount--;
-                    } else
-                        g_Player->CurrentWalkSequence++;
-                }
+					if (m_Z - step.Z >= 22) {
+						g_Orion.CreateTextMessage(TT_OBJECT, g_PlayerSerial, 3, 0, "Ouch!");
+						//play sound (5) ?
+					}
+				}
 
                 m_X = step.X;
                 m_Y = step.Y;

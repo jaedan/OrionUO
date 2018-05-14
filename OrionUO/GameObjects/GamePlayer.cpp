@@ -36,7 +36,7 @@ int CPlayer::GetWalkSpeed(bool run, bool onMount)
 bool CPlayer::Walk(bool run, uchar direction)
 {
     WISPFUN_DEBUG("c177_f7");
-    if (WalkingFailed || LastStepRequestTime > g_Ticks || StepsCount >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
+    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
         return false;
 
     if (g_SpeedMode >= CST_CANT_RUN)
@@ -48,88 +48,62 @@ bool CPlayer::Walk(bool run, uchar direction)
     char z;
     uchar oldDirection;
 
-    GetEndPosition(x, y, z, oldDirection);
+	if (m_RequestedSteps.empty()) {
+		GetEndPosition(x, y, z, oldDirection);
+	} else {
+		Step& step = m_RequestedSteps.back();
+
+		x = step.X;
+		y = step.Y;
+		z = step.Z;
+		oldDirection = step.Direction;
+	}
+
+	oldDirection = oldDirection & 0x7;
+	direction = direction & 0x7;
 
     bool onMount = (FindLayer(OL_MOUNT) != NULL);
+    ushort walkTime;
+    uchar newDir = direction;
+    int newX = x;
+    int newY = y;
+    char newZ = z;
 
-    char oldZ = z;
-    ushort walkTime = TURN_DELAY;
+	if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
+		return false;
+	}
 
-    if ((oldDirection & 7) == (direction & 7)) //Повернуты куда надо
-    {
-        uchar newDir = direction;
-        int newX = x;
-        int newY = y;
-        char newZ = z;
+	direction = newDir;
 
-        if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ))
-            return false;
+	if (oldDirection == direction) {
+		x = newX;
+		y = newY;
+		z = newZ;
 
-        if ((direction & 7) != newDir)
-            direction = newDir;
-        else {
-            direction = newDir;
-            x = newX;
-            y = newY;
-            z = newZ;
-
-            walkTime = GetWalkSpeed(run, onMount);
-        }
-    } else {
-        uchar newDir = direction;
-        int newX = x;
-        int newY = y;
-        char newZ = z;
-
-        if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
-            if ((oldDirection & 7) == newDir)
-                return false;
-        }
-
-        if ((oldDirection & 7) == newDir) {
-            x = newX;
-            y = newY;
-            z = newZ;
-
-            walkTime = GetWalkSpeed(run, onMount);
-        }
-
-        direction = newDir;
+		walkTime = GetWalkSpeed(run, onMount);
+	} else {
+		walkTime = TURN_DELAY;
     }
 
     CloseBank();
 
-    if (!IsMoving() && !Walking()) {
-        SetAnimation(0xFF);
-    }
+	if (run)
+		direction |= 0x80;
 
-    CStepInfo& step = m_Step[StepsCount];
-    step.Sequence = WalkSequence;
-    step.Accepted = false;
-    step.Running = run;
-    step.OldDirection = oldDirection & 7;
+	Step step;
     step.Direction = direction;
-    step.Timer = g_Ticks;
     step.X = x;
     step.Y = y;
     step.Z = z;
-    step.NoRotation = ((step.OldDirection == direction) && ((oldZ - z) >= 11));
 
-    StepsCount++;
+	m_RequestedSteps.push_back(step);
 
-    if (run)
-        direction += 0x80;
+    CPacketWalkRequest(direction, SequenceNumber).Send();
 
-    QueueStep(x, y, z, direction);
-
-    CPacketWalkRequest(direction, WalkSequence).Send();
-
-    if (WalkSequence == 0xFF)
-        WalkSequence = 1;
+    if (SequenceNumber == 0xFF)
+        SequenceNumber = 1;
     else
-        WalkSequence++;
-
-    UnacceptedPacketsCount++;
+        SequenceNumber++;
 
     g_World->MoveToTop(this);
 
@@ -167,88 +141,50 @@ bool CPlayer::Walk(bool run, uchar direction)
 //---------------------------------------------------------------------------
 void CPlayer::ResetSteps()
 {
-    UnacceptedPacketsCount = 0;
-    StepsCount = 0;
-    WalkSequence = 0;
-    CurrentWalkSequence = 0;
-    WalkingFailed = false;
-    ResendPacketSended = false;
+    SequenceNumber = 0;
     LastStepRequestTime = 0;
 }
 //----------------------------------------------------------------------------------
 void CPlayer::DenyWalk(uchar sequence, int x, int y, char z)
 {
-    g_Player->m_Steps.clear();
+    m_Steps.clear();
+	m_RequestedSteps.clear();
 
-    g_Player->OffsetX = 0;
-    g_Player->OffsetY = 0;
-    g_Player->OffsetZ = 0;
+    OffsetX = 0;
+    OffsetY = 0;
+    OffsetZ = 0;
 
     ResetSteps();
 
-    if (x != -1) {
-        g_Player->SetX(x);
-        g_Player->SetY(y);
-        g_Player->SetZ(z);
+    SetX(x);
+    SetY(y);
+    SetZ(z);
 
-        g_RemoveRangeXY.X = x;
-        g_RemoveRangeXY.Y = y;
+    g_RemoveRangeXY.X = x;
+    g_RemoveRangeXY.Y = y;
 
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-    }
+    UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
 }
 //----------------------------------------------------------------------------------
 void CPlayer::ConfirmWalk(uchar sequence)
 {
-    if (UnacceptedPacketsCount)
-        UnacceptedPacketsCount--;
+	if (m_RequestedSteps.empty()) {
+		/* Out of sync somehow. */
+		return;
+	}
 
-    int stepIndex = 0;
+	Step& step = m_RequestedSteps.front();
 
-    IFOR(i, 0, StepsCount)
-    {
-        if (m_Step[i].Sequence == sequence)
-            break;
+	g_RemoveRangeXY.X = step.X;
+	g_RemoveRangeXY.Y = step.Y;
 
-        stepIndex++;
-    }
+	m_RequestedSteps.pop_front();
 
-    bool isBadStep = (stepIndex == StepsCount);
+	QueueStep(step.X, step.Y, step.Z, step.Direction);
 
-    if (!isBadStep) {
-        if (stepIndex >= CurrentWalkSequence) {
-            m_Step[stepIndex].Accepted = true;
-            g_RemoveRangeXY.X = m_Step[stepIndex].X;
-            g_RemoveRangeXY.Y = m_Step[stepIndex].Y;
-        } else if (!stepIndex) {
-            g_RemoveRangeXY.X = m_Step[0].X;
-            g_RemoveRangeXY.Y = m_Step[0].Y;
-
-            IFOR(i, 1, StepsCount)
-            {
-                m_Step[i - 1] = m_Step[i];
-            }
-
-            StepsCount--;
-            CurrentWalkSequence--;
-        } else //if (stepIndex)
-            isBadStep = true;
-    }
-
-    if (isBadStep) {
-        if (!ResendPacketSended) {
-            CPacketResend().Send();
-            ResendPacketSended = true;
-        }
-
-        WalkingFailed = true;
-        StepsCount = 0;
-        CurrentWalkSequence = 0;
-    } else {
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-    }
+	UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
 }
 //---------------------------------------------------------------------------
 void CPlayer::CloseBank()

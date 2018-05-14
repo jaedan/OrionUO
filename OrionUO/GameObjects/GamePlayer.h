@@ -10,22 +10,6 @@
 #ifndef GAMEPLAYER_H
 #define GAMEPLAYER_H
 
-class CStepInfo {
-public:
-    uchar Direction = 0;
-    uchar OldDirection = 0;
-    uchar Sequence = 0;
-    bool Accepted = false;
-    bool Running = false;
-    bool NoRotation = false;
-    uint Timer = 0;
-    ushort X = 0;
-    ushort Y = 0;
-    uchar Z = 0;
-
-    CStepInfo() {}
-    ~CStepInfo() {}
-};
 //----------------------------------------------------------------------------------
 //!Класс игрока
 class CPlayer: public CGameCharacter
@@ -74,16 +58,8 @@ public:
 	char OldZ = 0;
 
     uint LastStepRequestTime = 0;
-    int UnacceptedPacketsCount = 0;
-    int StepsCount = 0;
-    uchar WalkSequence = 0;
-    uchar CurrentWalkSequence = 0;
-    bool ResendPacketSended = false;
-    bool WantChangeCoordinates = false;
-    bool WalkingFailed = false;
-    ushort CurrentPlayerZ = 0;
-    ushort NewPlayerZ = 0;
-    CStepInfo m_Step[MAX_STEPS_COUNT];
+    uint8_t SequenceNumber = 0;
+	std::deque<Step> m_RequestedSteps;
 
     /*!
 	Constructor
@@ -105,7 +81,7 @@ public:
 
     void ResetSteps();
 
-    void DenyWalk(uchar sequence, int x, int y, char z);
+    void DenyWalk(uchar direction, int x, int y, char z);
 
     void ConfirmWalk(uchar sequence);
 
