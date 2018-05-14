@@ -71,7 +71,7 @@ static const int DEATH_MUSIC_INDEX = 42;
 
 static const int ITEM_ANIMATION_DELAY = 80;
 
-static const int CHARACTER_ANIMATION_DELAY = 100;
+static const int CHARACTER_ANIMATION_DELAY = 80;
 
 static const ushort FIELD_REPLACE_GRAPHIC = 0x1826;
 
