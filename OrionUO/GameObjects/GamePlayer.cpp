@@ -36,7 +36,7 @@ int CPlayer::GetWalkSpeed(bool run, bool onMount)
 bool CPlayer::Walk(bool run, uchar direction)
 {
     WISPFUN_DEBUG("c177_f7");
-    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME)
+    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT || g_DeathScreenTimer || g_GameState != GS_GAME || AnimationFromServer)
         return false;
 
     if (g_SpeedMode >= CST_CANT_RUN)
@@ -165,18 +165,19 @@ void CPlayer::ResetSteps()
 //----------------------------------------------------------------------------------
 void CPlayer::DenyWalk(uchar sequence, int x, int y, char z)
 {
-    g_Player->m_Steps.clear();
+    m_Steps.clear();
+	m_RequestedSteps.clear();
 
-    g_Player->OffsetX = 0;
-    g_Player->OffsetY = 0;
-    g_Player->OffsetZ = 0;
+    OffsetX = 0;
+    OffsetY = 0;
+    OffsetZ = 0;
 
     ResetSteps();
 
     if (x != -1) {
-        g_Player->SetX(x);
-        g_Player->SetY(y);
-        g_Player->SetZ(z);
+        SetX(x);
+        SetY(y);
+        SetZ(z);
 
         g_RemoveRangeXY.X = x;
         g_RemoveRangeXY.Y = y;
