@@ -114,8 +114,6 @@ bool CPlayer::Walk(bool run, uchar direction)
 
 	m_RequestedSteps.push_back(step);
 
-    QueueStep(x, y, z, direction);
-
     CPacketWalkRequest(direction, SequenceNumber).Send();
 
     if (SequenceNumber == 0xFF)
@@ -195,6 +193,8 @@ void CPlayer::ConfirmWalk(uchar sequence)
 	g_RemoveRangeXY.Y = step.Y;
 
 	m_RequestedSteps.pop_front();
+
+	QueueStep(step.X, step.Y, step.Z, step.Direction);
 
 	UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
     g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
