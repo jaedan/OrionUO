@@ -1329,7 +1329,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 			{
 				const char *resultNames[5] = {"Hostiles", "Party Members", "Followers", "Objects", "Mobiles"};
 
-				g_Orion.CreateUnicodeTextMessageF(0, 0x038A, "There are no %s on the screen to select.", resultNames[scanType]);
+				g_Orion.CreateUnicodeTextMessageF(g_ConfigManager.ChatFont, 0x038A, "There are no %s on the screen to select.", resultNames[scanType]);
 			}
 
 			break;
