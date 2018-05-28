@@ -1055,7 +1055,8 @@ enum MACRO_CODE
 	MC_TOGGLE_BUICON_WINDOW,
 	MC_BANDAGE_SELF,
 	MC_BANDAGE_TARGET,
-	MC_TOGGLE_GARGOYLE_FLYING
+	MC_TOGGLE_GARGOYLE_FLYING,
+	MC_RESYNCHRONIZE,
 };
 //----------------------------------------------------------------------------------
 enum MACRO_SUB_CODE

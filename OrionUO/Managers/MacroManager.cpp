@@ -1378,6 +1378,11 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 
 			break;
 		}
+		case MC_RESYNCHRONIZE:
+		{
+			CPacketResend().Send();
+			break;
+		}
 		default:
 			break;
 	}
