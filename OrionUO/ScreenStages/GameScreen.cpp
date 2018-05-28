@@ -2045,7 +2045,7 @@ void CGameScreen::OnLeftMouseButtonUp()
 							if (str.length())
 							{
 								if (g_PacketManager.GetClientVersion() >= CV_6000)
-									g_Orion.CreateUnicodeTextMessage(TT_CLIENT, 0, 1, 0x03B2, str, rwo);
+									g_Orion.CreateUnicodeTextMessage(TT_CLIENT, 0, 3, 0x03B2, str, rwo);
 								else
 									g_Orion.CreateTextMessage(TT_CLIENT, 0, 3, 0x03B2, ToString(str), rwo);
 							}
