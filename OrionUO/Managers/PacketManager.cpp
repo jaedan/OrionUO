@@ -2425,7 +2425,8 @@ PACKET_HANDLER(ExtendedCommand)
                     item->SetName(ToString(str));
                 }
 
-                g_Orion.CreateUnicodeTextMessage(TT_OBJECT, serial, 0x03, 0x3B2, str);
+                g_Orion.CreateUnicodeTextMessage(
+                    TT_OBJECT, serial, g_ConfigManager.ChatFont, 0x3B2, str);
             }
 
             str = L"";
@@ -2479,7 +2480,8 @@ PACKET_HANDLER(ExtendedCommand)
                 str += L"]";
 
             if (str.length())
-                g_Orion.CreateUnicodeTextMessage(TT_OBJECT, serial, 0x03, 0x3B2, str);
+                g_Orion.CreateUnicodeTextMessage(
+                    TT_OBJECT, serial, g_ConfigManager.ChatFont, 0x3B2, str);
             CPacketMegaClilocRequestOld(serial).Send();
             break;
         }
@@ -3570,9 +3572,6 @@ PACKET_HANDLER(DisplayClilocString)
     ushort font = ReadUInt16BE();
     uint cliloc = ReadUInt32BE();
 
-    if (!g_FontManager.UnicodeFontExists((uchar)font))
-        font = 0;
-
     uchar flags = 0;
 
     if (*Start == 0xCC)
@@ -3591,7 +3590,8 @@ PACKET_HANDLER(DisplayClilocString)
     CGameObject *obj = g_World->FindWorldObject(serial);
 
     if (serial == 0xFFFFFFFF || !serial || (ToLowerA(name) == "system" && obj == NULL))
-        g_Orion.CreateUnicodeTextMessage(TT_SYSTEM, serial, (uchar)font, color, message);
+        g_Orion.CreateUnicodeTextMessage(
+            TT_SYSTEM, serial, g_ConfigManager.ChatFont, color, message);
     else
     {
         if (obj != NULL)
@@ -3610,7 +3610,8 @@ PACKET_HANDLER(DisplayClilocString)
             }
         }
 
-        g_Orion.CreateUnicodeTextMessage(TT_OBJECT, serial, (uchar)font, color, message);
+        g_Orion.CreateUnicodeTextMessage(
+            TT_OBJECT, serial, g_ConfigManager.ChatFont, color, message);
     }
 }
 
