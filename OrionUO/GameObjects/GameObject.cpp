@@ -183,10 +183,7 @@ void CGameObject::GenerateObjectHandlesTexture(wstring text)
 
     if (NPC)
     {
-        if (IsPlayer())
-            color = 0x0386;
-        else
-            color = g_ConfigManager.GetColorByNotoriety(GameCharacterPtr()->Notoriety);
+        color = g_ConfigManager.GetColorByNotoriety(GameCharacterPtr()->Notoriety);
 
         if (color)
         {
