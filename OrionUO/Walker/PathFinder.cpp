@@ -239,10 +239,9 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 	WISPFUN_DEBUG("c177_f3");
 	int stepState = PSS_NORMAL;
 
-	if (g_Player->Dead() || g_Player->Graphic == 0x03DB)
+	if (g_Player->Dead() || g_Player->Graphic == 0x03DB) {
 		stepState = PSS_DEAD_OR_GM;
-	else
-	{
+	} else {
 		if (g_Player->Flying()) // && no mount?
 			stepState = PSS_FLYING;
 		else
@@ -351,13 +350,15 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 				}
 			}
 
-			int averageZ = obj.AverageZ;
 
-			if (minZ < averageZ)
-				minZ = averageZ;
+			if (obj.m_Object != NULL && !obj.m_Object->IsDoor()) {
+				int averageZ = obj.AverageZ;
+				if (minZ < averageZ)
+					minZ = averageZ;
 
-			if (currentZ < averageZ)
-				currentZ = averageZ;
+				if (currentZ < averageZ)
+					currentZ = averageZ;
+			}
 		}
 	}
 

@@ -69,13 +69,13 @@ bool CPlayer::Walk(bool run, uchar direction)
     int newY = y;
     char newZ = z;
 
-	if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
-		return false;
-	}
-
 	direction = newDir;
 
 	if (oldDirection == direction) {
+		if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
+			return false;
+		}
+
 		x = newX;
 		y = newY;
 		z = newZ;

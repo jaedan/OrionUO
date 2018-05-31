@@ -35,6 +35,7 @@ bool __cdecl PluginSendFunction(puchar buf, const int &size)
 
 	LOG("--- ^(%d) s(+%d => %d) Plugin->Server:: %s\n", ticks - g_LastPacketTime, size, g_TotalSendSize, type.Name);
 
+	// TODO: This is not thread safe.
 	g_LastPacketTime = ticks;
 	g_LastSendTime = ticks;
 

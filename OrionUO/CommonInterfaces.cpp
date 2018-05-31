@@ -187,7 +187,7 @@ void __cdecl FUNCBODY_SendCastSpell(int index)
 		g_LastSpellIndex = index;
 
 		CPacketCastSpell packet(index);
-		SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+		SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 	}
 }
 //----------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ void __cdecl FUNCBODY_SendUseSkill(int index)
 		g_LastSkillIndex = index;
 
 		CPacketUseSkill packet(index);
-		SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+		SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 	}
 }
 //----------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ void __cdecl FUNCBODY_SendAsciiSpeech(const char *text, unsigned short color)
 		color = g_ConfigManager.SpeechColor;
 
 	CPacketASCIISpeechRequest packet(text, ST_NORMAL, 3, color);
-	SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+	SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 //----------------------------------------------------------------------------------
 void __cdecl FUNCBODY_SendUnicodeSpeech(const wchar_t *text, unsigned short color)
@@ -217,19 +217,19 @@ void __cdecl FUNCBODY_SendUnicodeSpeech(const wchar_t *text, unsigned short colo
 		color = g_ConfigManager.SpeechColor;
 
 	CPacketUnicodeSpeechRequest packet(text, ST_NORMAL, 3, color, (puchar)g_Language.c_str());
-	SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+	SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 //----------------------------------------------------------------------------------
 void __cdecl FUNCBODY_SendRenameMount(uint serial, const char *text)
 {
 	CPacketRenameRequest packet(serial, text);
-	SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+	SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 }
 //----------------------------------------------------------------------------------
 void __cdecl FUNCBODY_SendMenuResponse(unsigned int serial, unsigned int id, int code)
 {
 	UOI_MENU_RESPONSE data = { serial, id, code };
-	SendMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
+	SendNotifyMessage(g_OrionWindow.Handle, UOMSG_MENU_RESPONSE, (WPARAM)&data, 0);
 }
 //----------------------------------------------------------------------------------
 void __cdecl FUNCBODY_DisplayStatusbarGump(unsigned int serial, int x, int y)
@@ -256,7 +256,7 @@ void __cdecl FUNCBODY_SecureTradingCheckState(unsigned int id1, bool state)
 		gump->StateMy = state;
 
 		CPacketTradeResponse packet(gump, 2);
-		SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+		SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 	}
 }
 //----------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ void __cdecl FUNCBODY_SecureTradingClose(unsigned int id1)
 		gump->RemoveMark = true;
 
 		CPacketTradeResponse packet(gump, 1);
-		SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
+		SendNotifyMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)packet.Data().data(), packet.Data().size());
 	}
 }
 //----------------------------------------------------------------------------------
