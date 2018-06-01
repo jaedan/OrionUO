@@ -946,8 +946,8 @@ PACKET_HANDLER(UpdateHitpoints)
     if (obj == NULL)
         return;
 
-    obj->MaxHits = ReadInt16BE();
-    obj->Hits = ReadInt16BE();
+    obj->MaxHits = ReadUInt16BE();
+    obj->Hits = ReadUInt16BE();
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
@@ -966,8 +966,8 @@ PACKET_HANDLER(UpdateMana)
     if (obj == NULL)
         return;
 
-    obj->MaxMana = ReadInt16BE();
-    obj->Mana = ReadInt16BE();
+    obj->MaxMana = ReadUInt16BE();
+    obj->Mana = ReadUInt16BE();
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
 }
@@ -985,8 +985,8 @@ PACKET_HANDLER(UpdateStamina)
     if (obj == NULL)
         return;
 
-    obj->MaxStam = ReadInt16BE();
-    obj->Stam = ReadInt16BE();
+    obj->MaxStam = ReadUInt16BE();
+    obj->Stam = ReadUInt16BE();
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
 }
@@ -1004,14 +1004,14 @@ PACKET_HANDLER(MobileAttributes)
     if (obj == NULL)
         return;
 
-    obj->MaxHits = ReadInt16BE();
-    obj->Hits = ReadInt16BE();
+    obj->MaxHits = ReadUInt16BE();
+    obj->Hits = ReadUInt16BE();
 
-    obj->MaxMana = ReadInt16BE();
-    obj->Mana = ReadInt16BE();
+    obj->MaxMana = ReadUInt16BE();
+    obj->Mana = ReadUInt16BE();
 
-    obj->MaxStam = ReadInt16BE();
-    obj->Stam = ReadInt16BE();
+    obj->MaxStam = ReadUInt16BE();
+    obj->Stam = ReadUInt16BE();
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
@@ -1125,8 +1125,8 @@ PACKET_HANDLER(CharacterStatus)
     string name = ReadString(30);
     obj->SetName(name);
 
-    obj->Hits = ReadInt16BE();
-    obj->MaxHits = ReadInt16BE();
+    obj->Hits = ReadUInt16BE();
+    obj->MaxHits = ReadUInt16BE();
 
     obj->CanChangeName = (ReadUInt8() != 0);
 
@@ -1190,10 +1190,10 @@ PACKET_HANDLER(CharacterStatus)
             g_Player->Dex = newDex;
             g_Player->Int = newInt;
 
-            g_Player->Stam = ReadInt16BE();
-            g_Player->MaxStam = ReadInt16BE();
-            g_Player->Mana = ReadInt16BE();
-            g_Player->MaxMana = ReadInt16BE();
+            g_Player->Stam = ReadUInt16BE();
+            g_Player->MaxStam = ReadUInt16BE();
+            g_Player->Mana = ReadUInt16BE();
+            g_Player->MaxMana = ReadUInt16BE();
             g_Player->Gold = ReadUInt32BE();
             g_Player->Armor = ReadInt16BE();
             g_Player->Weight = ReadInt16BE();
