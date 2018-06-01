@@ -22,22 +22,22 @@ struct Step {
 class CGameCharacter : public CGameObject {
 public:
     //!Hitpoints
-    short Hits = 0;
+    uint16_t Hits = 0;
 
     //!Max hitpoints
-    short MaxHits = 0;
+    uint16_t MaxHits = 0;
 
     //!Mana
-    short Mana = 0;
+    uint16_t Mana = 0;
 
     //!Max mana
-    short MaxMana = 0;
+    uint16_t MaxMana = 0;
 
     //!Stamina
-    short Stam = 0;
+    uint16_t Stam = 0;
 
     //!Max stamina
-    short MaxStam = 0;
+    uint16_t MaxStam = 0;
 
     //!Gender
 	GENDER Gender = GENDER_MALE;
