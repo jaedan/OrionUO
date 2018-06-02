@@ -4555,7 +4555,7 @@ PACKET_HANDLER(OpenGump)
 						gump->Add(new CGUIShader(&g_ColorizerShader, true));
 
 					go = new CGUIGumppic(graphic, x, y);
-					go->Color = color;
+					go->Color = color + 1;
 					go->DrawOnly = true;
 				}
 			}
