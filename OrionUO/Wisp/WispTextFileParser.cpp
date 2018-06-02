@@ -6,7 +6,10 @@ CTextFileParser::CTextFileParser(
     const string &path, const char *delimiters, const char *comentaries, const char *quotes)
 {
     WISPFUN_DEBUG("c11_f1");
-    m_File.Load(path);
+    if (path.size() > 0)
+    {
+        m_File.Load(path);
+    }
 
     StartupInitalize(delimiters, comentaries, quotes);
 }
@@ -15,7 +18,10 @@ CTextFileParser::CTextFileParser(
     const wstring &path, const char *delimiters, const char *comentaries, const char *quotes)
 {
     WISPFUN_DEBUG("c11_f2");
-    m_File.Load(path);
+    if (path.size() > 0)
+    {
+        m_File.Load(path);
+    }
 
     StartupInitalize(delimiters, comentaries, quotes);
 }
