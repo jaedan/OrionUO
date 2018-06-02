@@ -4570,8 +4570,10 @@ PACKET_HANDLER(OpenGump)
 				int height = ToInt(list[4]);
 				int graphic = ToInt(list[5]);
 
-				go = new CGUIGumppicTiled(graphic, x, y, width, height);
-				go->DrawOnly = true;
+				if (width > 0 && height > 0) {
+					go = new CGUIGumppicTiled(graphic, x, y, width, height);
+					go->DrawOnly = true;
+				}
 			}
 		}
 		else if (cmd == "htmlgump" || cmd == "xmfhtmlgump" || cmd == "xmfhtmlgumpcolor")
