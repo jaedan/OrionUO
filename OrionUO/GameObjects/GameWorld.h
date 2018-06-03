@@ -197,9 +197,10 @@ public:
 
 	void UpdateItemInContainer(CGameObject *obj, CGameObject *container, int x, int y);
 
-	void UpdateGameObject(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags, int a11, UPDATE_GAME_OBJECT_TYPE updateType, ushort a13);
-
-	void UpdatePlayer(int serial, ushort graphic, uchar graphicIncrement, ushort color, uchar flags, int x, int y, ushort serverID, uchar direction, char z);
+	void UpdateItem(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags);
+	void UpdateMulti(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags);
+	void UpdateMobile(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags);
+	void UpdatePlayer(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags);
  };
 //---------------------------------------------------------------------------
 //!Указатель на мир
