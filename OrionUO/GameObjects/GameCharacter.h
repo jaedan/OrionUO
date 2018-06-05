@@ -223,6 +223,10 @@ public:
 	*/
     void SetAnimation(uchar id, uchar interval = 0, uchar frameCount = 0, uchar repeatCount = 0, bool repeat = false, bool frameDirection = false);
 
+	void ProcessAnimation();
+
+	uchar GetAnimationDirection();
+
     /*!
 	Get mount animation index
 	@return Graphic
@@ -268,14 +272,6 @@ public:
 	@return true if don't need iterate frames
 	*/
     virtual bool NoIterateAnimIndex() { return ((LastStepTime > (uint)(g_Ticks - WALKING_DELAY)) && m_Steps.empty()); }
-
-    /*!
-	Update character animation state and world position
-	@param [__out] dir Direction
-	@param [__in_opt] canChange Can change private fields/stacks
-	@return
-	*/
-    void UpdateAnimationInfo(uchar& dir, bool canChange = false);
 
     /*!
 	Check on humanoid

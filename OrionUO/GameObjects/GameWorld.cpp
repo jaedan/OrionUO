@@ -97,8 +97,8 @@ void CGameWorld::ProcessAnimation()
 		if (obj->NPC)
 		{
 			CGameCharacter *gc = obj->GameCharacterPtr();
-			uchar dir = 0;
-			gc->UpdateAnimationInfo(dir, true);
+			uchar dir = gc->GetAnimationDirection();
+			gc->ProcessAnimation();
 
 			ProcessSound(g_Ticks, gc);
 
