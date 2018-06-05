@@ -5935,15 +5935,7 @@ PACKET_HANDLER(BoatMoving)
 		ushort boatObjectY = ReadUInt16BE();
 		ushort boatObjectZ = ReadUInt16BE();
 
-		CGameObject *boatObject = g_World->FindWorldObject(boatObjectSerial);
-		if (boatObject == NULL) continue;
-
-		if (boatObject->NPC) {
-			CGameCharacter *boatMobile = (CGameCharacter*)boatObject;
-			g_World->UpdateMobile(boatObjectSerial, boatMobile->Graphic, 0, 0, boatObjectX, boatObjectY, boatObjectZ, boatMobile->Direction, boatMobile->Color, boatMobile->GetFlags());
-		} else {
-			g_World->UpdateItem(boatObjectSerial, boatObject->Graphic, 0, 0, boatObjectX, boatObjectY, boatObjectZ, 0, boatObject->Color, boatObject->GetFlags());
-		}
+		g_World->MoveObject(boatObjectSerial, boatObjectX, boatObjectY, boatObjectZ);
 	}
 }
 //----------------------------------------------------------------------------------

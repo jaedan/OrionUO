@@ -193,6 +193,9 @@ public:
 	*/
 	CGameObject *SearchWorldObject(int serialStart, int scanDistance, SCAN_TYPE_OBJECT scanType, SCAN_MODE_OBJECT scanMode);
 
+	/* Move an object without animating it. */
+	void MoveObject(int serial, int x, int y, char z);
+
 	void UpdateContainedItem(int serial, ushort graphic, uchar graphicIncrement, ushort count, int x, int y, int containerSerial, ushort color);
 
 	void UpdateItemInContainer(CGameObject *obj, CGameObject *container, int x, int y);

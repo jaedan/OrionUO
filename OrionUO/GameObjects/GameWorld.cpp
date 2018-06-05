@@ -487,6 +487,7 @@ void CGameWorld::RemoveObject(CGameObject *obj)
 	uint serial = obj->Serial;
 	m_Map[serial] = NULL;
 	m_Map.erase(serial);
+
 	delete obj;
 }
 //---------------------------------------------------------------------------
@@ -803,6 +804,28 @@ CGameObject *CGameWorld::SearchWorldObject(int serialStart, int scanDistance, SC
 	}
 
 	return result;
+}
+
+void CGameWorld::MoveObject(int serial, int x, int y, char z)
+{
+	CGameObject *obj = FindWorldObject(serial);
+
+	if (obj == nullptr) {
+		return;
+	}
+
+	obj->SetX(x);
+	obj->SetY(y);
+	obj->SetZ(z);
+
+	if (!obj->NPC) {
+		obj->OnGraphicChange(0);
+	} else if (obj == g_Player) {
+		g_RemoveRangeXY.X = x;
+		g_RemoveRangeXY.Y = y;
+	}
+
+	MoveToTop(obj);
 }
 
 void CGameWorld::UpdateItem(int serial, ushort graphic, uchar graphicIncrement, int count, int x, int y, char z, uchar direction, ushort color, uchar flags)
