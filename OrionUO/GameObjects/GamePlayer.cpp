@@ -64,18 +64,19 @@ bool CPlayer::Walk(bool run, uchar direction)
 
     bool onMount = (FindLayer(OL_MOUNT) != NULL);
     ushort walkTime;
-    uchar newDir = direction;
+
+	/* Figure out which direction to travel to pathfind around obstacles. */
+    uchar newDirection = direction;
     int newX = x;
     int newY = y;
     char newZ = z;
+	if (!g_PathFinder.CanWalk(newDirection, newX, newY, newZ)) {
+		return false;
+	}
 
-	direction = newDir;
+	direction = newDirection;
 
-	if (oldDirection == direction) {
-		if (!g_PathFinder.CanWalk(newDir, newX, newY, newZ)) {
-			return false;
-		}
-
+	if (oldDirection == newDirection) {
 		x = newX;
 		y = newY;
 		z = newZ;

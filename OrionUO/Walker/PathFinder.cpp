@@ -422,59 +422,56 @@ void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
 bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
 {
 	WISPFUN_DEBUG("c177_f5");
-	int newX = x;
-	int newY = y;
-	char newZ = z;
-	uchar newDirection = direction;
 
-	GetNewXY(direction, newX, newY);
+	const uchar directions[3] = { 0, 1, -1 };
+	bool allowed = false;
 
-	bool passed = CalculateNewZ(newX, newY, newZ, direction);
+	/* The player requested to move in the given direction. Attempt to move in
+	 * that direction first. If that isn't allowed, attempt to move in the nearest
+	 * direction clockwise, repeat counter-clockwise. */
+	for (int i = 0; i < 3; i++) {
+		int newX = x;
+		int newY = y;
+		char newZ = z;
+		uchar newDirection = (direction + directions[i]) % 8;
 
-	if ((char)direction % 2) //diagonal
-	{
-		const char dirOffset[2] = { 1, -1 };
+		GetNewXY(newDirection, newX, newY);
+		allowed = CalculateNewZ(newX, newY, newZ, newDirection);
 
-		if (passed) //test angleowner tiles
-		{
-			IFOR(i, 0, 2 && passed)
-			{
+		if (!allowed) {
+			continue;
+		}
+
+		/* In order to move on a diagonal, both of the adjacent non-diagonal tiles
+		 * must be clear. */
+		if (newDirection % 2) { // Even directions are diagonals
+			const uchar adjacents[2] = { -1, 1 };
+
+			for (int j = 0; j < 2; j++) {
 				int testX = x;
 				int testY = y;
 				char testZ = z;
+				uchar testDirection = (newDirection + adjacents[j]) % 8;
 
-				uchar testDir = (direction + dirOffset[i]) % 8;
-				GetNewXY(testDir, testX, testY);
+				GetNewXY(testDirection, testX, testY);
+				allowed = CalculateNewZ(testX, testY, testZ, testDirection);
 
-				passed = CalculateNewZ(testX, testY, testZ, testDir);
+				if (!allowed) {
+					break;
+				}
 			}
 		}
 
-		if (!passed) //test neary tiles
-		{
-			IFOR(i, 0, 2 && !passed)
-			{
-				newX = x;
-				newY = y;
-				newZ = z;
-
-				newDirection = (direction + dirOffset[i]) % 8;
-				GetNewXY(newDirection, newX, newY);
-
-				passed = CalculateNewZ(newX, newY, newZ, newDirection);
-			}
+		if (allowed) {
+			x = newX;
+			y = newY;
+			z = newZ;
+			direction = newDirection;
+			break;
 		}
 	}
 
-	if (passed)
-	{
-		x = newX;
-		y = newY;
-		z = newZ;
-		direction = newDirection;
-	}
-
-	return passed;
+	return allowed;
 }
 //----------------------------------------------------------------------------------
 int CPathFinder::GetGoalDistCost(const WISP_GEOMETRY::CPoint2Di &p, int cost)
