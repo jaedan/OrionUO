@@ -108,33 +108,8 @@ bool CPlayer::Walk(bool run, uchar direction)
 
     g_World->MoveToTop(this);
 
-    static bool lastRun = false;
-    static bool lastMount = false;
-    static int lastDir = -1;
-    static int lastDelta = 0;
-    static int lastStepTime = 0;
+    LastStepRequestTime = g_Ticks + walkTime;
 
-    //Высчитываем актуальную дельту с помощью разници во времени между прошлым и текущим шагом.
-    int nowDelta = 0;
-
-    if (lastDir == direction && lastMount == onMount && lastRun == run) {
-        nowDelta = (g_Ticks - lastStepTime) - walkTime + lastDelta;
-
-        if (abs(nowDelta) > 70)
-            nowDelta = 0;
-
-        lastDelta = nowDelta;
-    } else
-        lastDelta = 0;
-
-    lastStepTime = g_Ticks;
-
-    lastRun = run;
-    lastMount = onMount;
-
-    lastDir = direction;
-
-    LastStepRequestTime = g_Ticks + walkTime - nowDelta;
     GetAnimationGroup();
 
     return true;
