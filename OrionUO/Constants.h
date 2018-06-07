@@ -49,7 +49,7 @@ const int CONTEXT_MENU_FONT = 1;
 
 const int KEEP_CHARACTERS_IN_REMOVE_LIST_DELAY = 100;
 
-const int MAX_STEPS_COUNT = 5;
+const int MAX_STEPS_COUNT = 2;
 
 //!Задержка между кадрами для активного окна приложения
 const int FRAME_DELAY_ACTIVE_WINDOW = 30;
