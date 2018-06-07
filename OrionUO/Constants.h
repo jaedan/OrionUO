@@ -16,7 +16,7 @@ const int CONTAINERS_RECT_DEFAULT_POS = 40;
 //!Смещение при заполнении линии
 const int CONTAINERS_RECT_LINESTEP = 800;
 
-const int MIN_FPS_LIMIT = 16;
+const int MIN_FPS_LIMIT = 12;
 
 const int MAX_FPS_LIMIT = 144;
 
