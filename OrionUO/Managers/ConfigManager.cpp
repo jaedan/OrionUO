@@ -268,7 +268,14 @@ void CConfigManager::SetClientFPS(uchar val)
         else if (m_ClientFPS > MAX_FPS_LIMIT)
             m_ClientFPS = MAX_FPS_LIMIT;
 
-        g_FrameDelay = 1000 / m_ClientFPS;
+        if (m_ClientFPS == MIN_FPS_LIMIT)
+        {
+            g_FrameDelay = 80;
+        }
+        else
+        {
+            g_FrameDelay = 1000 / m_ClientFPS;
+        }
 
         g_OrionWindow.SetRenderTimerDelay(g_FrameDelay);
     }
