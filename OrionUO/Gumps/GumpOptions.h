@@ -91,7 +91,7 @@ private:
     static const int ID_GO_P2_SCREENSHOT_FORMAT_TIFF = 240;
     static const int ID_GO_P2_SCREENSHOT_FORMAT_JPEG = 241;
     static const int ID_GO_P2_SCALE_IMAGES_IN_PAPERDOLL_SLOTS = 242;
-    static const int ID_GO_P2_REMOVE_OR_CREATE_OBJECTS_WITH_BLENDING = 243;
+    static const int ID_GO_P2_OBJECT_FADE_IN_OUT = 243;
     static const int ID_GO_P2_DRAW_HELMETS_ON_SHROUD = 244;
     static const int ID_GO_P2_USE_GLOBAL_MAP_LAYER = 245;
     static const int ID_GO_P2_NO_DRAW_ROOFS = 246;

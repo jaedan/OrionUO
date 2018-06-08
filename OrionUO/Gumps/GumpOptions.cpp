@@ -449,9 +449,9 @@ void CGumpOptions::InitToolTip()
             g_ToolTip.Set(L"Scale images in paperdoll slots");
             break;
         }
-        case ID_GO_P2_REMOVE_OR_CREATE_OBJECTS_WITH_BLENDING:
+        case ID_GO_P2_OBJECT_FADE_IN_OUT:
         {
-            g_ToolTip.Set(L"Remove or new draw objects (static/game) displaying with blending");
+            g_ToolTip.Set(L"Fade in/out objects");
             break;
         }
         case ID_GO_P2_DRAW_HELMETS_ON_SHROUD:
@@ -1220,11 +1220,10 @@ void CGumpOptions::DrawPage2()
     radio->Checked = (g_OptionsConfig.ScreenshotFormat == SF_JPEG);
     radio->SetTextParameters(0, L"JPEG (maybe crashes)", g_OptionsTextColor);
 
-    checkbox = (CGUICheckbox *)html->Add(new CGUICheckbox(
-        ID_GO_P2_REMOVE_OR_CREATE_OBJECTS_WITH_BLENDING, 0x00D2, 0x00D3, 0x00D2, 0, 760));
+    checkbox = (CGUICheckbox *)html->Add(
+        new CGUICheckbox(ID_GO_P2_OBJECT_FADE_IN_OUT, 0x00D2, 0x00D3, 0x00D2, 0, 760));
     checkbox->Checked = g_OptionsConfig.RemoveOrCreateObjectsWithBlending;
-    checkbox->SetTextParameters(
-        0, L"Remove or new draw objects displaying with use blending", g_OptionsTextColor);
+    checkbox->SetTextParameters(0, L"Fade in/out objects", g_OptionsTextColor);
 
     checkbox = (CGUICheckbox *)html->Add(
         new CGUICheckbox(ID_GO_P2_DRAW_HELMETS_ON_SHROUD, 0x00D2, 0x00D3, 0x00D2, 0, 780));
@@ -2868,7 +2867,7 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.DrawAuraWithCtrlPressed = state;
             else if (serial == ID_GO_P2_SCALE_IMAGES_IN_PAPERDOLL_SLOTS)
                 g_OptionsConfig.SetScaleImagesInPaperdollSlots(state);
-            else if (serial == ID_GO_P2_REMOVE_OR_CREATE_OBJECTS_WITH_BLENDING)
+            else if (serial == ID_GO_P2_OBJECT_FADE_IN_OUT)
                 g_OptionsConfig.RemoveOrCreateObjectsWithBlending = state;
             else if (serial == ID_GO_P2_DRAW_HELMETS_ON_SHROUD)
                 g_OptionsConfig.DrawHelmetsOnShroud = state;
