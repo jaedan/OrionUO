@@ -254,6 +254,11 @@ void CGumpOptions::InitToolTip()
             g_ToolTip.Set(L"Original items animation frame rate");
             break;
         }
+        case ID_GO_P2_AUTOMATICALLY_OPEN_DOORS:
+        {
+            g_ToolTip.Set(L"Automatically Open Doors");
+            break;
+        }
         case ID_GO_P2_REMOVE_TEXT_WITH_BLENDING:
         {
             g_ToolTip.Set(L"World/container's text removing with using alpha-blending");
@@ -958,6 +963,11 @@ void CGumpOptions::DrawPage2()
         new CGUICheckbox(ID_GO_P2_ITEMS_ANIMATION_DELAY, 0x00D2, 0x00D3, 0x00D2, 0, 60));
     checkbox->Checked = g_OptionsConfig.StandartItemsAnimationDelay;
     checkbox->SetTextParameters(0, L"Standard items animation delay", g_OptionsTextColor);
+
+    checkbox = (CGUICheckbox *)html->Add(
+        new CGUICheckbox(ID_GO_P2_AUTOMATICALLY_OPEN_DOORS, 0x00D2, 0x00D3, 0x00D2, 0, 80));
+    checkbox->Checked = g_OptionsConfig.AutomaticallyOpenDoors;
+    checkbox->SetTextParameters(0, L"Automatically Open Doors", g_OptionsTextColor);
 
     checkbox = (CGUICheckbox *)html->Add(
         new CGUICheckbox(ID_GO_P2_REMOVE_TEXT_WITH_BLENDING, 0x00D2, 0x00D3, 0x00D2, 0, 100));
@@ -2812,7 +2822,9 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
         }
         case 2:
         {
-            if (serial == ID_GO_P2_REMOVE_TEXT_WITH_BLENDING)
+            if (serial == ID_GO_P2_AUTOMATICALLY_OPEN_DOORS)
+                g_OptionsConfig.AutomaticallyOpenDoors = state;
+            else if (serial == ID_GO_P2_REMOVE_TEXT_WITH_BLENDING)
                 g_OptionsConfig.RemoveTextWithBlending = state;
             else if (serial == ID_GO_P2_DRAW_STUMPS)
                 g_OptionsConfig.SetDrawStumps(state);
@@ -3442,6 +3454,7 @@ void CGumpOptions::ApplyPageChanges()
         case 2:
         {
             g_ConfigManager.SetClientFPS(g_OptionsConfig.GetClientFPS());
+            g_ConfigManager.AutomaticallyOpenDoors = g_OptionsConfig.AutomaticallyOpenDoors;
             g_ConfigManager.RemoveTextWithBlending = g_OptionsConfig.RemoveTextWithBlending;
             g_ConfigManager.SetDrawStatusState(g_OptionsConfig.GetDrawStatusState());
             g_ConfigManager.SetDrawStumps(g_OptionsConfig.GetDrawStumps());

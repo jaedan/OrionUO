@@ -68,6 +68,7 @@ void CConfigManager::DefaultPage2()
     m_ReduceFPSUnactiveWindow = true;
     StandartCharactersAnimationDelay = false;
     StandartItemsAnimationDelay = true;
+    AutomaticallyOpenDoors = true;
     RemoveTextWithBlending = true;
     m_DrawStatusState = DCSS_NO_DRAW;
     DrawStatusConditionState = DCSCS_LOWER;
@@ -878,6 +879,9 @@ bool CConfigManager::Load(const string &path)
                 case CMKC_CLIENT_FPS:
                     SetClientFPS(atoi(strings[1].c_str()));
                     break;
+                case CMKC_AUTOMATICALLY_OPEN_DOORS:
+                    AutomaticallyOpenDoors = ToBool(strings[1]);
+                    break;
                 case CMKC_REMOVE_TEXT_WITH_BLENDING:
                     RemoveTextWithBlending = ToBool(strings[1]);
                     break;
@@ -1312,6 +1316,7 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("BackgroundSound", BackgroundSound);
 
         writter.WriteInt("ClientFPS", m_ClientFPS);
+        writter.WriteInt("AutomaticallyOpenDoors", AutomaticallyOpenDoors);
         writter.WriteBool("RemoveTextWithBlending", RemoveTextWithBlending);
         writter.WriteInt("DrawStatusState", m_DrawStatusState);
         writter.WriteBool("DrawStumps", m_DrawStumps);

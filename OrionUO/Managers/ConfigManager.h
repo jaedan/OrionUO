@@ -38,6 +38,7 @@ public:
     bool FootstepsSound = true;
     bool CombatMusic = true;
     bool BackgroundSound = true;
+    bool AutomaticallyOpenDoors = true;
     bool RemoveTextWithBlending = false;
     uchar DrawStatusConditionState = 0;
     uchar DrawStatusConditionValue = 0;
@@ -361,6 +362,7 @@ public:
         CMKC_PING_TIMER,
         CMKC_CANCEL_NEW_TARGET_SYSTEM_ON_SHIFT_ESC,
         CMKC_DRAW_STATUS_FOR_HUMANOIDS,
+        CMKC_AUTOMATICALLY_OPEN_DOORS,
         CMKC_COUNT
     };
 

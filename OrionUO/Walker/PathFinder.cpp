@@ -361,6 +361,12 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
                 }
             }
 
+            if (g_ConfigManager.AutomaticallyOpenDoors && obj.m_Object != NULL &&
+                obj.m_Object->IsDoor())
+            {
+                g_Orion.OpenDoor();
+            }
+
             int averageZ = obj.AverageZ;
 
             if (minZ < averageZ)
