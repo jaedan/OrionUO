@@ -71,12 +71,12 @@ void CTextData::GenerateTexture(
     if (!m_Texture.Empty())
     {
         if (g_ConfigManager.ScaleSpeechDelay)
-            Timer += (((4000 * m_Texture.LinesCount) * g_ConfigManager.SpeechDelay) / 100);
+        {
+            Timer += (g_ConfigManager.SpeechDelay * m_Texture.LinesCount) * 100;
+        }
         else
         {
-            uint delay =
-                ((int64_t)((int64_t)5497558140000 * g_ConfigManager.SpeechDelay) >> 32) >> 5;
-            Timer += (uint)((delay >> 31) + delay);
+            Timer += g_ConfigManager.SpeechDelay * 100;
         }
     }
 }

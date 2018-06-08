@@ -164,7 +164,7 @@ void CConfigManager::DefaultPage7()
     WISPFUN_DEBUG("c138_f8");
     GameWindowWidth = 800;
     GameWindowHeight = 600;
-    SpeechDelay = 500;
+    SpeechDelay = 40;
     ScaleSpeechDelay = true;
     SpeechColor = 0x02B2;
     EmoteColor = 0x0021;
@@ -1120,6 +1120,10 @@ bool CConfigManager::Load(const string &path)
                     break;
                 case CMKC_SPEECH_DELAY:
                     SpeechDelay = atoi(strings[1].c_str());
+                    if (SpeechDelay > 100)
+                    {
+                        SpeechDelay = 40;
+                    }
                     break;
                 case CMKC_SCALE_SPEECH_DELAY:
                     ScaleSpeechDelay = ToBool(strings[1]);
