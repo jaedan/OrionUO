@@ -40,4 +40,16 @@ else
 fi
 rm -f comment.log
 
+echo -n "Checking for PVS-Studio comments..."
+git grep --line-number -e '// PVS-Studio' -- '*.cpp' '*.h' > pvs.log || true
+git grep --line-number -e '// This is an open source non-commercial' -- '*.cpp' '*.h' > pvs.log || true
+if [ -s pvs.log ]; then
+	echo " PVS Studio comments detected."
+	cat pvs.log
+	rc=1
+else
+	echo " OK"
+fi
+rm -f pvs.log
+
 exit $rc
