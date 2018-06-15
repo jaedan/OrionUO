@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenServer::CGumpScreenServer()
     : CGump(GT_NONE, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenServer::~CGumpScreenServer()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenServer::UpdateContent()
 {
     WISPFUN_DEBUG("c119_f1");
@@ -138,7 +138,7 @@ void CGumpScreenServer::UpdateContent()
             text->CreateTextureA(9, g_ServerList.GetServer(0)->Name);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenServer::InitToolTip()
 {
     WISPFUN_DEBUG("c119_f2");
@@ -181,7 +181,7 @@ void CGumpScreenServer::InitToolTip()
         g_ToolTip.Set(ToWString(cstr), 100);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenServer::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c119_f3");
@@ -195,7 +195,7 @@ void CGumpScreenServer::GUMP_BUTTON_EVENT_C
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_SELECT_SERVER);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenServer::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c119_f4");
@@ -205,4 +205,3 @@ void CGumpScreenServer::GUMP_TEXT_ENTRY_EVENT_C
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_SELECT_SERVER);
     }
 }
-//----------------------------------------------------------------------------------

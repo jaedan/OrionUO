@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIScrollBackground::CGUIScrollBackground(int serial, ushort graphic, int x, int y, int height)
     : CBaseGUI(GOT_SCROLLBACKGROUND, serial, graphic, 0, x, y)
     , Height(height)
@@ -45,11 +45,11 @@ CGUIScrollBackground::CGUIScrollBackground(int serial, ushort graphic, int x, in
 
     UpdateHeight(Height);
 }
-//----------------------------------------------------------------------------------
+
 CGUIScrollBackground::~CGUIScrollBackground()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIScrollBackground::UpdateHeight(int height)
 {
     WISPFUN_DEBUG("c71_f2");
@@ -68,13 +68,13 @@ void CGUIScrollBackground::UpdateHeight(int height)
     WorkSpace = WISP_GEOMETRY::CRect(
         OffsetX + 10, th[0]->Height, th[1]->Width - 20, Height - (th[0]->Height + th[3]->Height));
 }
-//----------------------------------------------------------------------------------
+
 void CGUIScrollBackground::PrepareTextures()
 {
     WISPFUN_DEBUG("c71_f3");
     g_Orion.ExecuteGumpPart(Graphic, 4);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIScrollBackground::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c71_f4");
@@ -120,7 +120,7 @@ void CGUIScrollBackground::Draw(bool checktrans)
 
     th[3]->Draw(m_X + BottomOffsetX, m_Y + Height - th[3]->Height, checktrans); //Bottom scroll
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIScrollBackground::Select()
 {
     WISPFUN_DEBUG("c71_f5");
@@ -179,4 +179,3 @@ bool CGUIScrollBackground::Select()
 
     return select;
 }
-//----------------------------------------------------------------------------------

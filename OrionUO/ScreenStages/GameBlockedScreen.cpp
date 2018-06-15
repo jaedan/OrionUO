@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameBlockedScreen g_GameBlockedScreen;
-//----------------------------------------------------------------------------------
+
 CGameBlockedScreen::CGameBlockedScreen()
     : CBaseScreen(m_GameBlockedScreenGump)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGameBlockedScreen::~CGameBlockedScreen()
 {
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -28,7 +28,7 @@ void CGameBlockedScreen::Init()
 {
     Code = 0;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовка/выбор объектов
 @param [__in] mode true - отрисовка, false - выбор
@@ -63,7 +63,7 @@ void CGameBlockedScreen::Render(bool mode)
         g_LastSelectedObject.Init(g_SelectedObject);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие левой кнопки мыши
 @return 
@@ -74,7 +74,7 @@ void CGameBlockedScreen::OnLeftMouseButtonDown()
     if (g_SelectedObject.Gump != NULL)
         g_GumpManager.OnLeftMouseButtonDown(true);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отпускание левой кнопки мыши
 @return 
@@ -85,7 +85,7 @@ void CGameBlockedScreen::OnLeftMouseButtonUp()
     if (g_PressedObject.LeftGump != NULL)
         g_GumpManager.OnLeftMouseButtonUp(true);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -100,7 +100,7 @@ void CGameBlockedScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 
     g_GumpManager.OnCharPress(wParam, lParam, true);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -127,4 +127,3 @@ void CGameBlockedScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             notify->OnKeyDown(wParam, lParam);
     }
 }
-//----------------------------------------------------------------------------------

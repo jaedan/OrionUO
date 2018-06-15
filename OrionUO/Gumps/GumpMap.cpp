@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpMap::CGumpMap(
     uint serial, ushort graphic, int startX, int startY, int endX, int endY, int width, int height)
     : CGump(GT_MAP, serial, 0, 0)
@@ -42,7 +42,7 @@ CGumpMap::CGumpMap(
     m_DataBox = (CGUIDataBox *)Add(new CGUIDataBox());
     m_DataBox->Visible = false;
 }
-//----------------------------------------------------------------------------------
+
 CGumpMap::~CGumpMap()
 {
     for (CGUIText *text : m_Labels)
@@ -52,7 +52,7 @@ CGumpMap::~CGumpMap()
 
     m_Labels.clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMap::SetPlotState(int val)
 {
     WISPFUN_DEBUG("c99_f2");
@@ -63,7 +63,7 @@ void CGumpMap::SetPlotState(int val)
 
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 int CGumpMap::LineUnderMouse(int &x1, int &y1, int x2, int y2)
 {
     WISPFUN_DEBUG("c99_f3");
@@ -138,7 +138,7 @@ int CGumpMap::LineUnderMouse(int &x1, int &y1, int x2, int y2)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMap::PrepareContent()
 {
     WISPFUN_DEBUG("c99_f4");
@@ -180,7 +180,7 @@ void CGumpMap::PrepareContent()
         NoMove = (m_PinOnCursor != NULL);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMap::GenerateFrame(bool stop)
 {
     WISPFUN_DEBUG("c99_f5");
@@ -270,7 +270,7 @@ void CGumpMap::GenerateFrame(bool stop)
     if (g_ConfigManager.GetUseGLListsForInterface())
         glEndList();
 }
-//----------------------------------------------------------------------------------
+
 CRenderObject *CGumpMap::Select()
 {
     WISPFUN_DEBUG("c99_f6");
@@ -316,7 +316,7 @@ CRenderObject *CGumpMap::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------
+
 void CGumpMap::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c99_f7");
@@ -336,7 +336,7 @@ void CGumpMap::GUMP_BUTTON_EVENT_C
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpMap::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c99_f8");
@@ -344,7 +344,7 @@ void CGumpMap::OnLeftMouseButtonDown()
 
     m_PinTimer = g_Ticks + 300;
 }
-//----------------------------------------------------------------------------
+
 void CGumpMap::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c99_f9");
@@ -438,4 +438,3 @@ void CGumpMap::OnLeftMouseButtonUp()
         m_PinOnCursor = NULL;
     }
 }
-//----------------------------------------------------------------------------

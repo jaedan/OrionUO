@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CWalker g_Walker;
-//----------------------------------------------------------------------------------
+
 CWalker::CWalker()
 {
 }
-//---------------------------------------------------------------------------
+
 void CWalker::Reset()
 {
     UnacceptedPacketsCount = 0;
@@ -25,7 +25,7 @@ void CWalker::Reset()
     ResendPacketSended = false;
     LastStepRequestTime = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CWalker::DenyWalk(uchar sequence, int x, int y, char z)
 {
     g_Player->m_Steps.clear();
@@ -62,7 +62,7 @@ void CWalker::DenyWalk(uchar sequence, int x, int y, char z)
             g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CWalker::ConfirmWalk(uchar sequence)
 {
     if (UnacceptedPacketsCount)
@@ -124,4 +124,3 @@ void CWalker::ConfirmWalk(uchar sequence)
             g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
     }
 }
-//----------------------------------------------------------------------------------

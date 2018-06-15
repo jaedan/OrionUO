@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CRenderStaticObject::CRenderStaticObject(
     RENDER_OBJECT_TYPE renderType,
     int serial,
@@ -52,7 +52,7 @@ CRenderStaticObject::CRenderStaticObject(
             CanBeTransparent |= 0x10;
     }
 }
-//---------------------------------------------------------------------------
+
 CRenderStaticObject::~CRenderStaticObject()
 {
     WISPFUN_DEBUG("c27_f2");
@@ -62,7 +62,7 @@ CRenderStaticObject::~CRenderStaticObject()
         m_TextControl = NULL;
     }
 }
-//---------------------------------------------------------------------------
+
 void CRenderStaticObject::UpdateTextCoordinates()
 {
     int offset = 0;
@@ -102,7 +102,7 @@ void CRenderStaticObject::UpdateTextCoordinates()
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CRenderStaticObject::FixTextCoordinates()
 {
     if (IsGameObject() && ((CGameObject *)this)->Container != 0xFFFFFFFF)
@@ -142,7 +142,7 @@ void CRenderStaticObject::FixTextCoordinates()
             text.RealDrawY += offsetY;
     }
 }
-//---------------------------------------------------------------------------
+
 bool CRenderStaticObject::IsNoDrawTile(ushort graphic)
 {
     switch (graphic)
@@ -172,7 +172,7 @@ bool CRenderStaticObject::IsNoDrawTile(ushort graphic)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 void CRenderStaticObject::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c27_f3");
@@ -207,7 +207,7 @@ void CRenderStaticObject::Draw(int x, int y)
     if (IsLightSource() && g_GameScreen.UseLight)
         g_GameScreen.AddLight(this, this, x, y);
 }
-//----------------------------------------------------------------------------------
+
 void CRenderStaticObject::Select(int x, int y)
 {
     WISPFUN_DEBUG("c27_f4");
@@ -220,7 +220,7 @@ void CRenderStaticObject::Select(int x, int y)
     if (!g_UseCircleTrans && g_Orion.StaticPixelsInXYAnimated(RenderGraphic, x, y))
         g_SelectedObject.Init(this);
 }
-//---------------------------------------------------------------------------
+
 void CRenderStaticObject::AddText(CTextData *msg)
 {
     WISPFUN_DEBUG("c27_f5");
@@ -233,7 +233,7 @@ void CRenderStaticObject::AddText(CTextData *msg)
         g_Orion.AddJournalMessage(msg, "You see: ");
     }
 }
-//---------------------------------------------------------------------------
+
 bool CRenderStaticObject::TextCanBeTransparent(CRenderTextObject *text)
 {
     WISPFUN_DEBUG("c27_f8");
@@ -250,7 +250,7 @@ bool CRenderStaticObject::TextCanBeTransparent(CRenderTextObject *text)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 bool CRenderStaticObject::TranparentTest(int playerZPlus5)
 {
     WISPFUN_DEBUG("c27_f9");
@@ -263,7 +263,7 @@ bool CRenderStaticObject::TranparentTest(int playerZPlus5)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 bool CRenderStaticObject::CheckDrawFoliage()
 {
     if (IsFoliage())
@@ -281,7 +281,7 @@ bool CRenderStaticObject::CheckDrawFoliage()
 
     return true;
 }
-//---------------------------------------------------------------------------
+
 bool CRenderStaticObject::CheckDrawVegetation()
 {
     if (g_ConfigManager.GetNoVegetation() && Vegetation)
@@ -289,4 +289,3 @@ bool CRenderStaticObject::CheckDrawVegetation()
 
     return true;
 }
-//----------------------------------------------------------------------------------

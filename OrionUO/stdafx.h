@@ -6,13 +6,13 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef stdafxH
 #define stdafxH
-//----------------------------------------------------------------------------------
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NON_CONFORMING_SWPRINTFS
-//----------------------------------------------------------------------------------
+
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -41,7 +41,7 @@
 #pragma comment(lib, "Shlwapi.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "Glu32.lib")
-//----------------------------------------------------------------------------------
+
 #if defined(_M_IX86)
 #pragma comment(lib, "Dependencies/lib/Win32/glew32.lib")
 #pragma comment(lib, "Dependencies/lib/Win32/bass.lib")
@@ -49,7 +49,7 @@
 #pragma comment(lib, "Dependencies/lib/Win32/FreeImage.lib")
 #pragma comment(lib, "Dependencies/lib/Win32/Psapi.lib")
 #pragma comment(lib, "Dependencies/lib/Win32/zlib.lib")
-//----------------------------------------------------------------------------------
+
 #else
 #pragma comment(lib, "Dependencies/lib/x64/glew32.lib")
 #pragma comment(lib, "Dependencies/lib/x64/bass.lib")
@@ -58,7 +58,7 @@
 #pragma comment(lib, "Dependencies/lib/x64/Psapi.lib")
 #pragma comment(lib, "Dependencies/lib/x64/zdll.lib")
 #endif
-//----------------------------------------------------------------------------------
+
 #include "targetver.h"
 
 #include "Wisp/WispDefinitions.h"
@@ -275,6 +275,4 @@ class CGump;
 #include "ScreenStages/SelectTownScreen.h"
 #include "ScreenStages/ServerScreen.h"
 
-//----------------------------------------------------------------------------------
 #endif
-//----------------------------------------------------------------------------------

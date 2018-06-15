@@ -2,13 +2,10 @@
 
 namespace WISP_DATASTREAM
 {
-//----------------------------------------------------------------------------------
-//------------------------------------CDataWritter----------------------------------
-//----------------------------------------------------------------------------------
 CDataWritter::CDataWritter()
 {
 }
-//----------------------------------------------------------------------------------
+
 CDataWritter::CDataWritter(const size_t &size, bool autoResize)
     : AutoResize(autoResize)
 {
@@ -16,14 +13,14 @@ CDataWritter::CDataWritter(const size_t &size, bool autoResize)
     m_Data.resize(size, 0);
     Ptr = &m_Data[0];
 }
-//----------------------------------------------------------------------------------
+
 CDataWritter::~CDataWritter()
 {
     WISPFUN_DEBUG("c4_f2");
     m_Data.clear();
     Ptr = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::Resize(const size_t &newSize, bool resetPtr)
 {
     WISPFUN_DEBUG("c4_f3");
@@ -32,7 +29,7 @@ void CDataWritter::Resize(const size_t &newSize, bool resetPtr)
     if (resetPtr)
         Ptr = &m_Data[0];
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::Move(const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f4");
@@ -44,7 +41,7 @@ void CDataWritter::Move(const intptr_t &offset)
     else if (Ptr != NULL)
         Ptr += offset;
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::WriteDataBE(const puchar data, const size_t &size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f5");
@@ -63,7 +60,7 @@ void CDataWritter::WriteDataBE(const puchar data, const size_t &size, const intp
         Ptr += size;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::WriteDataLE(const puchar data, const size_t &size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f6");
@@ -82,7 +79,7 @@ void CDataWritter::WriteDataLE(const puchar data, const size_t &size, const intp
         Ptr += size;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::WriteString(
     const string &val, size_t length, bool nullTerminated, const intptr_t &offset)
 {
@@ -104,7 +101,7 @@ void CDataWritter::WriteString(
         WriteDataBE((puchar)&nullTerminator, sizeof(uchar), offset);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CDataWritter::WriteWString(
     const wstring &val, size_t length, bool bigEndian, bool nullTerminated, const intptr_t &offset)
 {
@@ -152,13 +149,11 @@ void CDataWritter::WriteWString(
 
     Ptr -= offset;
 }
-//----------------------------------------------------------------------------------
-//------------------------------------CDataReader-----------------------------------
-//----------------------------------------------------------------------------------
+
 CDataReader::CDataReader()
 {
 }
-//----------------------------------------------------------------------------------
+
 CDataReader::CDataReader(puchar start, const size_t &size)
     : Start(start)
     , Size(size)
@@ -167,7 +162,7 @@ CDataReader::CDataReader(puchar start, const size_t &size)
     WISPFUN_DEBUG("c5_f1");
     Ptr = Start;
 }
-//----------------------------------------------------------------------------------
+
 CDataReader::~CDataReader()
 {
     WISPFUN_DEBUG("c5_f2");
@@ -176,7 +171,7 @@ CDataReader::~CDataReader()
     End = NULL;
     Ptr = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CDataReader::SetData(puchar start, const size_t &size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c5_f3");
@@ -185,7 +180,7 @@ void CDataReader::SetData(puchar start, const size_t &size, const intptr_t &offs
     End = Start + size;
     Ptr = Start + offset;
 }
-//----------------------------------------------------------------------------------
+
 void CDataReader::ReadDataBE(puchar data, const size_t &size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c5_f4");
@@ -202,7 +197,7 @@ void CDataReader::ReadDataBE(puchar data, const size_t &size, const intptr_t &of
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CDataReader::ReadDataLE(puchar data, const size_t &size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c5_f5");
@@ -219,7 +214,7 @@ void CDataReader::ReadDataLE(puchar data, const size_t &size, const intptr_t &of
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 string CDataReader::ReadString(size_t size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c5_f6");
@@ -248,7 +243,7 @@ string CDataReader::ReadString(size_t size, const intptr_t &offset)
 
     return result.c_str();
 }
-//----------------------------------------------------------------------------------
+
 wstring CDataReader::ReadWString(size_t size, bool bigEndian, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c5_f7");
@@ -294,6 +289,5 @@ wstring CDataReader::ReadWString(size_t size, bool bigEndian, const intptr_t &of
 
     return result.c_str();
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_DATASTREAM
-//----------------------------------------------------------------------------------

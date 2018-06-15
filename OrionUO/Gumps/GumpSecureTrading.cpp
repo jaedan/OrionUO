@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpSecureTrading::CGumpSecureTrading(uint serial, short x, short y, uint id, uint id2)
     : CGump(GT_TRADE, serial, x, y)
     , ID2(id2)
 {
     ID = id;
 }
-//----------------------------------------------------------------------------------
+
 CGumpSecureTrading::~CGumpSecureTrading()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::CalculateGumpState()
 {
     WISPFUN_DEBUG("c120_f1");
@@ -36,7 +36,7 @@ void CGumpSecureTrading::CalculateGumpState()
     if (g_GumpTranslate.X || g_GumpTranslate.Y)
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::PrepareContent()
 {
     WISPFUN_DEBUG("c120_f3");
@@ -81,7 +81,7 @@ void CGumpSecureTrading::PrepareContent()
     if (m_TextRenderer.CalculatePositions(false))
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::UpdateContent()
 {
     WISPFUN_DEBUG("c120_f4");
@@ -196,7 +196,7 @@ void CGumpSecureTrading::UpdateContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::Draw()
 {
     WISPFUN_DEBUG("c120_f5");
@@ -220,7 +220,7 @@ void CGumpSecureTrading::Draw()
 
     glTranslatef(-g_GumpTranslate.X, -g_GumpTranslate.Y, 0.0f);
 }
-//----------------------------------------------------------------------------------
+
 CRenderObject *CGumpSecureTrading::Select()
 {
     WISPFUN_DEBUG("c120_f6");
@@ -241,7 +241,7 @@ CRenderObject *CGumpSecureTrading::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c120_f7");
@@ -267,7 +267,7 @@ void CGumpSecureTrading::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c120_f8");
@@ -323,7 +323,7 @@ void CGumpSecureTrading::OnLeftMouseButtonUp()
         g_MouseManager.CancelDoubleClick = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSecureTrading::SendTradingResponse(int code)
 {
     WISPFUN_DEBUG("c120_f9");
@@ -333,4 +333,3 @@ void CGumpSecureTrading::SendTradingResponse(int code)
     if (code == 1) //Закрываем окно
         RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

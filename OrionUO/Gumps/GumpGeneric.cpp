@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpGeneric::CGumpGeneric(uint serial, short x, short y, uint id)
     : CGump(GT_GENERIC, serial, x, y)
 {
     Page = 1;
     ID = id;
 }
-//----------------------------------------------------------------------------------
+
 CGumpGeneric::~CGumpGeneric()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::InitToolTip()
 {
     WISPFUN_DEBUG("c128_f3");
@@ -68,7 +68,7 @@ void CGumpGeneric::InitToolTip()
             g_ToolTip.Set(obj->ClilocID, "");
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::AddText(
     int index, const wstring &text, CBaseGUI *start, bool backbroundCanBeColored)
 {
@@ -127,7 +127,7 @@ void CGumpGeneric::AddText(
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::SendGumpResponse(int index)
 {
     WISPFUN_DEBUG("c96_f2");
@@ -137,19 +137,19 @@ void CGumpGeneric::SendGumpResponse(int index)
     //Удаляем использованный гамп
     RemoveMark = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c96_f3");
     SendGumpResponse(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::GUMP_DIRECT_HTML_LINK_EVENT_C
 {
     WISPFUN_DEBUG("c96_f4");
     g_FontManager.GoToWebLink(link);
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpGeneric::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c96_f5");
@@ -170,14 +170,14 @@ bool CGumpGeneric::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c96_f6");
     g_EntryPointer->Insert((wchar_t)wParam);
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGeneric::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c96_f7");
@@ -193,4 +193,3 @@ void CGumpGeneric::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     else
         g_EntryPointer->OnKey(this, wParam);
 }
-//----------------------------------------------------------------------------------

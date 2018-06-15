@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpConsoleType *g_GumpConsoleType = NULL;
-//----------------------------------------------------------------------------------
+
 CGumpConsoleType::CGumpConsoleType(bool minimized, bool showFullText)
     : CGump(GT_CONSOLE_TYPE, 0, 0, 0)
     , m_ShowFullText(showFullText)
@@ -20,26 +20,26 @@ CGumpConsoleType::CGumpConsoleType(bool minimized, bool showFullText)
     NoMove = true;
     g_GumpConsoleType = this;
 }
-//----------------------------------------------------------------------------------
+
 CGumpConsoleType::~CGumpConsoleType()
 {
     WISPFUN_DEBUG("c92_f2");
     g_GumpConsoleType = NULL;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpConsoleType::CanBeDisplayed()
 {
     WISPFUN_DEBUG("c92_f3");
     return g_ConfigManager.ShowDefaultConsoleEntryMode;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::SetShowFullText(bool val)
 {
     WISPFUN_DEBUG("c92_f4");
     m_ShowFullText = val;
     WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpConsoleType::ConsoleIsEmpty()
 {
     WISPFUN_DEBUG("c92_f5");
@@ -63,7 +63,7 @@ bool CGumpConsoleType::ConsoleIsEmpty()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::DeleteConsolePrefix()
 {
     WISPFUN_DEBUG("c92_f6");
@@ -92,7 +92,7 @@ void CGumpConsoleType::DeleteConsolePrefix()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::SetConsolePrefix()
 {
     WISPFUN_DEBUG("c92_f7");
@@ -115,7 +115,7 @@ void CGumpConsoleType::SetConsolePrefix()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::InitToolTip()
 {
     WISPFUN_DEBUG("c92_f7");
@@ -172,7 +172,7 @@ void CGumpConsoleType::InitToolTip()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::UpdateContent()
 {
     WISPFUN_DEBUG("c92_f9");
@@ -247,7 +247,7 @@ void CGumpConsoleType::UpdateContent()
         obj->CreateTextureA(3, "Show full mode name");
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::CalculateGumpState()
 {
     WISPFUN_DEBUG("c92_f10");
@@ -260,7 +260,7 @@ void CGumpConsoleType::CalculateGumpState()
     g_GumpTranslate.Y =
         (float)(g_RenderBounds.GameWindowPosY + g_RenderBounds.GameWindowHeight + 2);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c92_f11");
@@ -275,7 +275,7 @@ void CGumpConsoleType::GUMP_BUTTON_EVENT_C
         WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c92_f12");
@@ -285,7 +285,7 @@ void CGumpConsoleType::GUMP_CHECKBOX_EVENT_C
         WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpConsoleType::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c92_f13");
@@ -306,4 +306,3 @@ void CGumpConsoleType::GUMP_TEXT_ENTRY_EVENT_C
 
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

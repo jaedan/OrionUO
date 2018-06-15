@@ -6,14 +6,14 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "GUIButton.h"
 #include "../OrionUO.h"
 #include "../Managers/ColorManager.h"
 #include "../Managers/MouseManager.h"
 #include "../Managers/MulReader.h"
 #include "../SelectedObject.h"
-//----------------------------------------------------------------------------------
+
 CGUIButton::CGUIButton(
     const uint &serial,
     const ushort &graphic,
@@ -27,11 +27,11 @@ CGUIButton::CGUIButton(
     , m_ToPage(-1)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIButton::~CGUIButton()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIButton::PrepareTextures()
 {
     WISPFUN_DEBUG("c39_f1");
@@ -39,7 +39,7 @@ void CGUIButton::PrepareTextures()
     g_Orion.ExecuteGump(m_GraphicSelected);
     g_Orion.ExecuteGump(m_GraphicPressed);
 }
-//----------------------------------------------------------------------------------
+
 ushort CGUIButton::GetDrawGraphic()
 {
     WISPFUN_DEBUG("c39_f2");
@@ -52,18 +52,17 @@ ushort CGUIButton::GetDrawGraphic()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIButton::OnMouseEnter()
 {
     WISPFUN_DEBUG("c39_f3");
     if (g_SelectedObject.Gump() != NULL)
         g_SelectedObject.Gump()->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIButton::OnMouseExit()
 {
     WISPFUN_DEBUG("c39_f4");
     if (g_LastSelectedObject.Gump() != NULL)
         g_LastSelectedObject.Gump()->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

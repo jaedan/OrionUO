@@ -6,10 +6,10 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef ORIONWINDOW_H
 #define ORIONWINDOW_H
-//----------------------------------------------------------------------------------
+
 class COrionWindow : public WISP_WINDOW::CWindow
 {
     //int RenderTimerDelay = FRAME_DELAY_ACTIVE_WINDOW;
@@ -55,8 +55,7 @@ protected:
     virtual void OnThreadedTimer(uint nowTime, WISP_THREADED_TIMER::CThreadedTimer *timer);
     virtual LRESULT OnUserMessages(int message, const WPARAM &wParam, const LPARAM &lParam);
 };
-//----------------------------------------------------------------------------------
+
 extern COrionWindow g_OrionWindow;
-//----------------------------------------------------------------------------------
+
 #endif
-//----------------------------------------------------------------------------------

@@ -2,19 +2,18 @@
 
 namespace WISP_FILE
 {
-//----------------------------------------------------------------------------------
 string g_WispMappedFileError = "";
-//----------------------------------------------------------------------------------
+
 CMappedFile::CMappedFile()
     : WISP_DATASTREAM::CDataReader()
 {
 }
-//----------------------------------------------------------------------------------
+
 CMappedFile::~CMappedFile()
 {
     Unload();
 }
-//----------------------------------------------------------------------------------
+
 bool CMappedFile::Load()
 {
     WISPFUN_DEBUG("c7_f1");
@@ -56,7 +55,7 @@ bool CMappedFile::Load()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CMappedFile::Load(const string &path)
 {
     WISPFUN_DEBUG("c7_f2");
@@ -87,7 +86,7 @@ bool CMappedFile::Load(const string &path)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CMappedFile::Load(const wstring &path)
 {
     WISPFUN_DEBUG("c7_f3");
@@ -109,7 +108,7 @@ bool CMappedFile::Load(const wstring &path)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CMappedFile::Unload()
 {
     WISPFUN_DEBUG("c7_f4");
@@ -130,6 +129,5 @@ void CMappedFile::Unload()
 
     SetData(NULL, 0);
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_FILE
-//----------------------------------------------------------------------------------

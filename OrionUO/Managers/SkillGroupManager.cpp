@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSkillGroupManager g_SkillGroupManager;
-//----------------------------------------------------------------------------------
+
 CSkillGroupManager::CSkillGroupManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 CSkillGroupManager::~CSkillGroupManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Выставить группы по-умолчанию
 @return 
@@ -45,7 +45,7 @@ void CSkillGroupManager::MakeDefault()
         group = group->m_Next;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultMiscellaneous()
 {
     WISPFUN_DEBUG("c155_f2");
@@ -61,7 +61,7 @@ void CSkillGroupManager::MakeDefaultMiscellaneous()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultCombat()
 {
     WISPFUN_DEBUG("c155_f3");
@@ -93,7 +93,7 @@ void CSkillGroupManager::MakeDefaultCombat()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultTradeSkills()
 {
     WISPFUN_DEBUG("c155_f4");
@@ -112,7 +112,7 @@ void CSkillGroupManager::MakeDefaultTradeSkills()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultMagic()
 {
     WISPFUN_DEBUG("c155_f5");
@@ -136,7 +136,7 @@ void CSkillGroupManager::MakeDefaultMagic()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultWilderness()
 {
     WISPFUN_DEBUG("c155_f6");
@@ -151,7 +151,7 @@ void CSkillGroupManager::MakeDefaultWilderness()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultThieving()
 {
     WISPFUN_DEBUG("c155_f7");
@@ -168,7 +168,7 @@ void CSkillGroupManager::MakeDefaultThieving()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupManager::MakeDefaultBard()
 {
     WISPFUN_DEBUG("c155_f8");
@@ -181,7 +181,7 @@ void CSkillGroupManager::MakeDefaultBard()
 
     Add(group);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Очистить список групп
 @return 
@@ -203,7 +203,7 @@ void CSkillGroupManager::Clear()
     Count = 0;
     m_Groups = NULL;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить группу
 @param [__in] group Ссылка на группу
@@ -233,7 +233,7 @@ void CSkillGroupManager::Add(CSkillGroupObject *group)
 
     Count++;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Удалить группу
 @param [__in] group Ссылка на группу
@@ -275,7 +275,7 @@ bool CSkillGroupManager::Remove(CSkillGroupObject *group)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка групп из файла конфига
 @param [__in] path Путь к файлу конфига
@@ -334,7 +334,7 @@ bool CSkillGroupManager::Load(string path)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сохранение групп в файл конфиг
 @param [__in] path Путьк  файлу конфига
@@ -389,4 +389,3 @@ void CSkillGroupManager::Save(string path)
 
     writter.Close();
 }
-//----------------------------------------------------------------------------------

@@ -6,10 +6,10 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef GAMEBLOCKEDSCREEN_H
 #define GAMEBLOCKEDSCREEN_H
-//----------------------------------------------------------------------------------
+
 class CGameBlockedScreen : public CBaseScreen
 {
 public:
@@ -39,8 +39,7 @@ public:
     virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam);
     virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
 };
-//----------------------------------------------------------------------------------
+
 extern CGameBlockedScreen g_GameBlockedScreen;
-//----------------------------------------------------------------------------------
+
 #endif
-//----------------------------------------------------------------------------------

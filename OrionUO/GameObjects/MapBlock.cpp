@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMapBlock::CMapBlock(int index)
     : CBaseQueueItem()
     , Index(index)
@@ -22,7 +22,7 @@ CMapBlock::CMapBlock(int index)
             Block[i][j] = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 CMapBlock::~CMapBlock()
 {
     WISPFUN_DEBUG("c24_f2");
@@ -53,7 +53,7 @@ CMapBlock::~CMapBlock()
 
     m_Items = NULL;
 }
-//----------------------------------------------------------------------------------
+
 bool CMapBlock::HasNoExternalData()
 {
     WISPFUN_DEBUG("c24_f3");
@@ -72,7 +72,7 @@ bool CMapBlock::HasNoExternalData()
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 ushort CMapBlock::GetRadarColor(int x, int y)
 {
     WISPFUN_DEBUG("c24_f4");
@@ -103,7 +103,7 @@ ushort CMapBlock::GetRadarColor(int x, int y)
     //Вернем входящий цвет, если не нашлось ничего подходящего
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 void CMapBlock::CreateLandTextureRect()
 {
     WISPFUN_DEBUG("c24_f5");
@@ -276,7 +276,7 @@ void CMapBlock::CreateLandTextureRect()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CMapBlock::TestStretched(int x, int y, char z, int map, bool recurse)
 {
     WISPFUN_DEBUG("c24_f6");
@@ -299,7 +299,7 @@ bool CMapBlock::TestStretched(int x, int y, char z, int map, bool recurse)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 char CMapBlock::GetLandZ(int x, int y, int map)
 {
     WISPFUN_DEBUG("c24_f7");
@@ -318,7 +318,7 @@ char CMapBlock::GetLandZ(int x, int y, int map)
 
     return ((PMAP_BLOCK)blockIndex->MapAddress)->Cells[mY * 8 + mX].Z;
 }
-//----------------------------------------------------------------------------------
+
 CLandObject *CMapBlock::GetLand(int x, int y)
 {
     WISPFUN_DEBUG("c24_f8");
@@ -336,7 +336,7 @@ CLandObject *CMapBlock::GetLand(int x, int y)
 
     return (CLandObject *)obj;
 }
-//----------------------------------------------------------------------------------
+
 void CMapBlock::AddRender(CRenderWorldObject *item, int x, int y)
 {
     WISPFUN_DEBUG("c24_f10");
@@ -426,7 +426,7 @@ void CMapBlock::AddRender(CRenderWorldObject *item, int x, int y)
         item->m_PrevXY = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 CRenderWorldObject *CMapBlock::GetRender(int x, int y)
 {
     WISPFUN_DEBUG("c24_f11");
@@ -438,7 +438,7 @@ CRenderWorldObject *CMapBlock::GetRender(int x, int y)
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 CMapObject *CMapBlock::AddObject(CMapObject *obj, int x, int y)
 {
     WISPFUN_DEBUG("c24_f12");
@@ -493,4 +493,3 @@ CMapObject *CMapBlock::AddObject(CMapObject *obj, int x, int y)
 
     return obj;
 }
-//----------------------------------------------------------------------------------

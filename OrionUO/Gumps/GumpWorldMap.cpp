@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 const int m_Scales[7] = { 1, 1, 1, 2, 4, 6, 10 };
-//----------------------------------------------------------------------------------
+
 CGumpWorldMap::CGumpWorldMap(short x, short y)
     : CGump(GT_WORLD_MAP, 0, x, y)
 {
@@ -84,11 +84,11 @@ CGumpWorldMap::CGumpWorldMap(short x, short y)
     IFOR (i, 0, 7)
         m_ComboboxMap->Add(new CGUIComboboxText(0, 6, mapNames[i], 98, TS_CENTER, UOFONT_FIXED));
 }
-//----------------------------------------------------------------------------------
+
 CGumpWorldMap::~CGumpWorldMap()
 {
 }
-//----------------------------------------------------------------------------------
+
 int CGumpWorldMap::GetCurrentMap()
 {
     WISPFUN_DEBUG("c132_f2");
@@ -101,7 +101,7 @@ int CGumpWorldMap::GetCurrentMap()
 
     return map;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::SetLinkWithPlayer(bool val)
 {
     WISPFUN_DEBUG("c132_f3");
@@ -110,7 +110,7 @@ void CGumpWorldMap::SetLinkWithPlayer(bool val)
     m_MapData->MoveOnDrag = (m_LinkWithPlayer || g_CurrentMap == GetCurrentMap());
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::SetScale(int val)
 {
     WISPFUN_DEBUG("c132_f4");
@@ -118,7 +118,7 @@ void CGumpWorldMap::SetScale(int val)
     m_ComboboxScale->SelectedIndex = val;
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::SetMap(int val)
 {
     WISPFUN_DEBUG("c132_f5");
@@ -126,7 +126,7 @@ void CGumpWorldMap::SetMap(int val)
     m_ComboboxMap->SelectedIndex = val;
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::CalculateGumpState()
 {
     WISPFUN_DEBUG("c132_f6");
@@ -154,7 +154,7 @@ void CGumpWorldMap::CalculateGumpState()
             WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GetCurrentCenter(int &x, int &y, int &mouseX, int &mouseY)
 {
     WISPFUN_DEBUG("c132_f7");
@@ -181,7 +181,7 @@ void CGumpWorldMap::GetCurrentCenter(int &x, int &y, int &mouseX, int &mouseY)
         y *= scale;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::ScaleOffsets(int newScale, int mouseX, int mouseY)
 {
     WISPFUN_DEBUG("c132_f8");
@@ -210,7 +210,7 @@ void CGumpWorldMap::ScaleOffsets(int newScale, int mouseX, int mouseY)
 
     FixOffsets(OffsetX, OffsetY, Width, Height);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GetScaledDimensions(int &width, int &height, int &playerX, int &playerY)
 {
     WISPFUN_DEBUG("c132_f9");
@@ -245,7 +245,7 @@ void CGumpWorldMap::GetScaledDimensions(int &width, int &height, int &playerX, i
         playerY /= scale;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::FixOffsets(int &offsetX, int &offsetY, int &width, int &height)
 {
     WISPFUN_DEBUG("c132_f10");
@@ -268,7 +268,7 @@ void CGumpWorldMap::FixOffsets(int &offsetX, int &offsetY, int &width, int &heig
     if (offsetY > 0)
         offsetY = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::LoadMap(int map)
 {
     WISPFUN_DEBUG("c132_f11");
@@ -479,7 +479,7 @@ void CGumpWorldMap::LoadMap(int map)
                 g_MapSize[map].Width * g_MapSize[map].Height);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GenerateFrame(bool stop)
 {
     WISPFUN_DEBUG("c132_f12");
@@ -513,7 +513,7 @@ void CGumpWorldMap::GenerateFrame(bool stop)
         glEndList();
 }
 //g_PluginManager.WorldMapDraw();
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::PrepareContent()
 {
     WISPFUN_DEBUG("c132_f13");
@@ -587,7 +587,7 @@ void CGumpWorldMap::PrepareContent()
     if (oldX != CurrentOffsetX || oldY != CurrentOffsetY)
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c132_f14");
@@ -602,7 +602,7 @@ void CGumpWorldMap::OnLeftMouseButtonDown()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c132_f15");
@@ -621,7 +621,7 @@ void CGumpWorldMap::OnLeftMouseButtonUp()
         m_MapMoving = false;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c132_f16");
@@ -632,7 +632,7 @@ void CGumpWorldMap::GUMP_BUTTON_EVENT_C
         WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c132_f17");
@@ -642,7 +642,7 @@ void CGumpWorldMap::GUMP_CHECKBOX_EVENT_C
         m_MapData->MoveOnDrag = (m_LinkWithPlayer || g_CurrentMap == GetCurrentMap());
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_COMBOBOX_SELECTION_EVENT_C
 {
     WISPFUN_DEBUG("c132_f18");
@@ -694,7 +694,7 @@ void CGumpWorldMap::GUMP_COMBOBOX_SELECTION_EVENT_C
     m_MapData->Width = width;
     m_MapData->Height = height;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpWorldMap::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c132_f19");
@@ -711,7 +711,7 @@ bool CGumpWorldMap::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::OnMidMouseButtonScroll(bool up)
 {
     WISPFUN_DEBUG("c132_f20");
@@ -747,7 +747,7 @@ void CGumpWorldMap::OnMidMouseButtonScroll(bool up)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::UpdateSize()
 {
     WISPFUN_DEBUG("c132_f21");
@@ -780,14 +780,14 @@ void CGumpWorldMap::UpdateSize()
     WantRedraw = true;
     WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_RESIZE_START_EVENT_C
 {
     WISPFUN_DEBUG("c132_f22");
     m_StartResizeWidth = Width;
     m_StartResizeHeight = Height;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_RESIZE_EVENT_C
 {
     WISPFUN_DEBUG("c132_f23");
@@ -802,10 +802,9 @@ void CGumpWorldMap::GUMP_RESIZE_EVENT_C
         UpdateSize();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpWorldMap::GUMP_RESIZE_END_EVENT_C
 {
     m_StartResizeWidth = 0;
     m_StartResizeHeight = 0;
 }
-//----------------------------------------------------------------------------------

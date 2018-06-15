@@ -6,18 +6,18 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CFontsManager g_FontManager;
-//----------------------------------------------------------------------------------
+
 CFontsManager::CFontsManager()
 {
     WISPFUN_DEBUG("c143_f1");
     memset(m_UnicodeFontAddress, 0, sizeof(m_UnicodeFontAddress));
     memset(m_UnicodeFontSize, 0, sizeof(m_UnicodeFontSize));
 }
-//----------------------------------------------------------------------------------
+
 CFontsManager::~CFontsManager()
 {
     WISPFUN_DEBUG("c143_f2");
@@ -25,7 +25,7 @@ CFontsManager::~CFontsManager()
     FontCount = 0;
     m_WebLink.clear();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка ASCII шрифтов
 @return true при успешной загрузке
@@ -119,7 +119,7 @@ bool CFontsManager::LoadFonts()
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CFontsManager::UnicodeFontExists(uchar font)
 {
     WISPFUN_DEBUG("c143_f4");
@@ -128,7 +128,7 @@ bool CFontsManager::UnicodeFontExists(uchar font)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Переход по ссылке по индексу
 @param [__in] link Индекс ссылки
@@ -145,9 +145,7 @@ void CFontsManager::GoToWebLink(ushort link)
         g_Orion.GoToWebLink(it->second.WebLink);
     }
 }
-//----------------------------------------------------------------------------------
-//----------------------------------------ASCII-------------------------------------
-//----------------------------------------------------------------------------------
+
 /*!
 Получить смещение символа ширифта
 @param [__in] font Шрифт
@@ -182,7 +180,7 @@ int CFontsManager::GetFontOffsetY(uchar font, uchar index)
 
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить позицию каретки в тексте
 @param [__in] font Шрифт
@@ -251,7 +249,7 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
 
     return p;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Вычислить положение каретки
 @param [__in] font Шрифт
@@ -334,7 +332,7 @@ int CFontsManager::CalculateCaretPosA(
 
     return pos;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ширину текста
 @param [__in] font Шрифт
@@ -358,7 +356,7 @@ int CFontsManager::GetWidthA(uchar font, const string &str)
 
     return textLength;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ширину текста (с учетом параметров отрисовки)
 @param [__in] font Шрифт
@@ -395,7 +393,7 @@ int CFontsManager::GetWidthExA(
 
     return textWidth;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить высоту текста
 @param [__in] font Шрифт
@@ -433,7 +431,7 @@ int CFontsManager::GetHeightA(
 
     return textHeight;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить высоту текста по списку строк
 @param [__in] info Ссылка на мультистрочный текст
@@ -453,7 +451,7 @@ int CFontsManager::GetHeightA(PMULTILINES_FONT_INFO info)
 
     return textHeight;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить текст указанной ширины
 @param [__in] font Шрифт
@@ -494,7 +492,7 @@ string CFontsManager::GetTextByWidthA(uchar font, const string &str, int width, 
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить информацию о тексте (в мультистрочном виде)
 @param [__in] font Шрифт
@@ -710,7 +708,7 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoA(
 
     return info;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сгенерировать текстуру текста
 @param [__in] font Шрифт
@@ -750,7 +748,7 @@ bool CFontsManager::GenerateA(
 
     return GenerateABase(font, th, str, color, width, align, flags);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сгенерировать пиксели текстуры текста
 @param [__in] font Шрифт
@@ -910,7 +908,7 @@ UINT_LIST CFontsManager::GeneratePixelsA(
 
     return pData;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Создание ASCII текстуры
 @param [__in] font Шрифт
@@ -944,7 +942,7 @@ bool CFontsManager::GenerateABase(
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать текст
 @param [__in] font Шрифт
@@ -974,9 +972,6 @@ void CFontsManager::DrawA(
         th.Draw(x, y);
 }
 
-//----------------------------------------------------------------------------------
-//--------------------------------------Unicode-------------------------------------
-//----------------------------------------------------------------------------------
 /*!
 Получить позицию каретки в тексте
 @param [__in] font Шрифт
@@ -1050,7 +1045,7 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
 
     return p;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Вычислить положение каретки
 @param [__in] font Шрифт
@@ -1138,7 +1133,7 @@ int CFontsManager::CalculateCaretPosW(
 
     return pos;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ширину текста
 @param [__in] font Шрифт
@@ -1176,7 +1171,7 @@ int CFontsManager::GetWidthW(uchar font, const wstring &str)
 
     return max(maxTextLength, textLength);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ширину текста (с учетом параметров отрисовки)
 @param [__in] font Шрифт
@@ -1214,7 +1209,7 @@ int CFontsManager::GetWidthExW(
 
     return textWidth;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить высоту текста
 @param [__in] font Шрифт
@@ -1256,7 +1251,7 @@ int CFontsManager::GetHeightW(
 
     return textHeight;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить высоту текста по списку строк
 @param [__in] info Ссылка на мультистрочный текст
@@ -1278,7 +1273,7 @@ int CFontsManager::GetHeightW(PMULTILINES_FONT_INFO info)
 
     return textHeight;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить текст указанной ширины
 @param [__in] font Шрифт
@@ -1336,13 +1331,13 @@ wstring CFontsManager::GetTextByWidthW(uchar font, const wstring &str, int width
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 ushort CFontsManager::GetWebLinkID(const wstring &link, uint &color)
 {
     WISPFUN_DEBUG("c143_f26");
     return GetWebLinkID(ToString(link), color);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить индекс ссылки
 @param [__in] link Ссылка
@@ -1378,7 +1373,7 @@ ushort CFontsManager::GetWebLinkID(const string &link, uint &color)
 
     return linkID;
 }
-//----------------------------------------------------------------------------------
+
 HTMLCHAR_LIST CFontsManager::GetHTMLData(
     uchar font, const wchar_t *str, int &len, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -1500,7 +1495,7 @@ HTMLCHAR_LIST CFontsManager::GetHTMLData(
 
     return data;
 }
-//----------------------------------------------------------------------------------
+
 HTML_DATA_INFO CFontsManager::GetHTMLInfoFromTag(const HTML_TAG_TYPE &tag)
 {
     WISPFUN_DEBUG("c143_f29");
@@ -1567,7 +1562,7 @@ HTML_DATA_INFO CFontsManager::GetHTMLInfoFromTag(const HTML_TAG_TYPE &tag)
 
     return info;
 }
-//----------------------------------------------------------------------------------
+
 HTML_DATA_INFO CFontsManager::GetCurrentHTMLInfo(const HTMLINFO_LIST &list)
 {
     WISPFUN_DEBUG("c143_f30");
@@ -1640,7 +1635,7 @@ HTML_DATA_INFO CFontsManager::GetCurrentHTMLInfo(const HTMLINFO_LIST &list)
 
     return info;
 }
-//----------------------------------------------------------------------------------
+
 void CFontsManager::TrimHTMLString(string &str)
 {
     WISPFUN_DEBUG("c143_f31");
@@ -1650,7 +1645,7 @@ void CFontsManager::TrimHTMLString(string &str)
         str.erase(str.begin());
     }
 }
-//----------------------------------------------------------------------------------
+
 uint CFontsManager::GetHTMLColorFromText(string &str)
 {
     WISPFUN_DEBUG("c143_f32");
@@ -1711,7 +1706,7 @@ uint CFontsManager::GetHTMLColorFromText(string &str)
 
     return color;
 }
-//----------------------------------------------------------------------------------
+
 void CFontsManager::GetHTMLInfoFromContent(HTML_DATA_INFO &info, const string &content)
 {
     WISPFUN_DEBUG("c143_f33");
@@ -1805,7 +1800,7 @@ void CFontsManager::GetHTMLInfoFromContent(HTML_DATA_INFO &info, const string &c
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 HTML_TAG_TYPE CFontsManager::ParseHTMLTag(
     const wchar_t *str, int len, intptr_t &i, bool &endTag, HTML_DATA_INFO &info)
 {
@@ -1924,7 +1919,7 @@ HTML_TAG_TYPE CFontsManager::ParseHTMLTag(
 
     return tag;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получение данных многострочного текста HTML
 @param [__in] font Шрифт
@@ -2153,7 +2148,7 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
 
     return info;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить информацию о тексте (в мультистрочном виде)
 @param [__in] font Шрифт
@@ -2394,7 +2389,7 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoW(
 
     return info;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сгенерировать текстуру текста
 @param [__in] font Шрифт
@@ -2436,7 +2431,7 @@ bool CFontsManager::GenerateW(
 
     return GenerateWBase(font, th, str, color, cell, width, align, flags);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сгенерировать пиксели текстуры текста
 @param [__in] font Шрифт
@@ -2963,7 +2958,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
 
     return pData;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Создание Unicode текстуры
 @param [__in] font Шрифт
@@ -2999,7 +2994,7 @@ bool CFontsManager::GenerateWBase(
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать текст
 @param [__in] font Шрифт
@@ -3030,7 +3025,7 @@ void CFontsManager::DrawW(
     if (GenerateW(font, th, str, color, cell, width, align, flags))
         th.Draw(x, y);
 }
-//----------------------------------------------------------------------------------
+
 //!Таблица ассоциации ASCII шрифтов
 uchar CFontsManager::m_FontIndex[256] = {
     0xFF, //0
@@ -3290,4 +3285,3 @@ uchar CFontsManager::m_FontIndex[256] = {
     222,  //254
     223   //255
 };
-//----------------------------------------------------------------------------------

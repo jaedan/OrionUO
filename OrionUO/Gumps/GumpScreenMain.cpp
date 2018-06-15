@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenMain::CGumpScreenMain()
     : CGump(GT_NONE, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenMain::~CGumpScreenMain()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenMain::PrepareContent()
 {
     WISPFUN_DEBUG("c116_f1");
@@ -40,7 +40,7 @@ void CGumpScreenMain::PrepareContent()
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenMain::UpdateContent()
 {
     WISPFUN_DEBUG("c116_f2");
@@ -101,7 +101,7 @@ void CGumpScreenMain::UpdateContent()
     entry->CheckOnSerial = true;
     m_PasswordFake = &entry->m_Entry;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenMain::InitToolTip()
 {
     WISPFUN_DEBUG("c116_f3");
@@ -146,7 +146,7 @@ void CGumpScreenMain::InitToolTip()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenMain::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c116_f4");
@@ -155,11 +155,10 @@ void CGumpScreenMain::GUMP_BUTTON_EVENT_C
     else if (serial == ID_MS_ARROW_NEXT) //> button
         g_MainScreen.CreateSmoothAction(CMainScreen::ID_SMOOTH_MS_CONNECT);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenMain::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c116_f5");
     if (serial == ID_MS_PASSWORD)
         g_MainScreen.m_Password->SetPos(m_PasswordFake->Pos());
 }
-//----------------------------------------------------------------------------------

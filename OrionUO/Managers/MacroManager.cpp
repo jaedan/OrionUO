@@ -6,25 +6,25 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMacroManager g_MacroManager;
-//----------------------------------------------------------------------------------
+
 uchar CMacroManager::m_SkillIndexTable[24] = { 1,  2,  35, 4,  6,  12,
                                                14, 15, 16, 19, 21, 0xFF /*imbuing*/,
                                                23, 3,  46, 9,  30, 22,
                                                48, 32, 33, 47, 36, 38 };
-//----------------------------------------------------------------------------------
+
 CMacroManager::CMacroManager()
     : CBaseQueue()
 {
 }
-//----------------------------------------------------------------------------------
+
 CMacroManager::~CMacroManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Конвертирование строки в виртуальный код клавиши
 @param [__in] strings Исходные строки, при склейке получим входную строку
@@ -124,7 +124,7 @@ ushort CMacroManager::ConvertStringToKeyCode(const STRING_LIST &strings)
 
     return key;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сконвертировать файл макросов оригинального клиента
 @param [__in] path Путь к файлу с макросами
@@ -256,7 +256,7 @@ bool CMacroManager::Convert(const string &path)
 
     return PathFileExistsA(path.c_str());
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузить макросы из конфига
 @param [__in] path Путь к файлу конфига
@@ -288,7 +288,7 @@ bool CMacroManager::Load(const string &path, const string &originalPath)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сохранить макросы в конфиг
 @param [__in] path Путь к файлу конфига
@@ -315,7 +315,7 @@ void CMacroManager::Save(const string &path)
 
     writter.Close();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Поиск макроса
 @param [__in] key Индекс кнопки
@@ -339,7 +339,7 @@ CMacro *CMacroManager::FindMacro(ushort key, bool alt, bool ctrl, bool shift)
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузить макросы из опций
 @return 
@@ -353,7 +353,7 @@ void CMacroManager::LoadFromOptions()
     QFOR(obj, g_OptionsMacroManager.m_Items, CMacro *)
     Add(obj->GetCopy());
 }
-//----------------------------------------------------------------------------------
+
 void CMacroManager::ChangePointer(CMacroObject *macro)
 {
     g_MacroPointer = macro;
@@ -364,7 +364,7 @@ void CMacroManager::ChangePointer(CMacroObject *macro)
         g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_END_MACRO_PAYING, 0, 0);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Начать выполнение макроса
 @return 
@@ -393,7 +393,7 @@ void CMacroManager::Execute()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Выполнить команды подменю
 @return 
@@ -729,7 +729,7 @@ void CMacroManager::ProcessSubMenu()
             break;
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Выполнить действие макроса (или набор действий)
 @return Код выполнения
@@ -747,7 +747,7 @@ MACRO_RETURN_CODE CMacroManager::Process()
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 {
     WISPFUN_DEBUG("c145_f9");
@@ -1410,4 +1410,3 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 
     return result;
 }
-//----------------------------------------------------------------------------------

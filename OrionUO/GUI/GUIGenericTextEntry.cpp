@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIGenericTextEntry::CGUIGenericTextEntry(
     int serial, int index, ushort color, int x, int y, int maxWidth, int maxLength)
     : CGUITextEntry(
@@ -27,8 +27,7 @@ CGUIGenericTextEntry::CGUIGenericTextEntry(
     , TextID(index)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIGenericTextEntry::~CGUIGenericTextEntry()
 {
 }
-//----------------------------------------------------------------------------------

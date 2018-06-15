@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameCharacter::CGameCharacter(int serial)
     : CGameObject(serial)
     , Hits(0)
@@ -36,7 +36,7 @@ CGameCharacter::CGameCharacter(int serial)
     if (wantStatusRequest)
         CPacketStatusRequest(Serial).Send();
 }
-//----------------------------------------------------------------------------------
+
 CGameCharacter::~CGameCharacter()
 {
     WISPFUN_DEBUG("c15_f2");
@@ -75,7 +75,7 @@ CGameCharacter::~CGameCharacter()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameCharacter::UpdateTextCoordinates()
 {
     CTextData *text = (CTextData *)m_TextControl->Last();
@@ -100,7 +100,7 @@ void CGameCharacter::UpdateTextCoordinates()
         text->RealDrawY = y - offset;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameCharacter::UpdateHitsTexture(uchar hits)
 {
     WISPFUN_DEBUG("c15_f3");
@@ -123,7 +123,7 @@ void CGameCharacter::UpdateHitsTexture(uchar hits)
         g_FontManager.GenerateA(3, m_HitsTexture, hitsText, color);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сидит ли персонаж
 @return Индекс объекта из таблицы, на котором он восседает
@@ -278,7 +278,7 @@ int CGameCharacter::IsSitting()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать персонажа
 @param [__in] mode Режим рисования. true - рисование, false - выбор объектов
@@ -308,14 +308,14 @@ void CGameCharacter::Draw(int x, int y)
 
     DrawEffects(x, y);
 }
-//----------------------------------------------------------------------------------
+
 void CGameCharacter::Select(int x, int y)
 {
     WISPFUN_DEBUG("c15_f6");
     if (g_AnimationManager.CharacterPixelsInXY(this, x, y))
         g_SelectedObject.Init(this);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обновить информацию о поле персонажа, обновление гампов
 @param [__in_opt] direction Направление персонажа
@@ -379,7 +379,7 @@ void CGameCharacter::OnGraphicChange(int direction)
             CPacketStatusRequest(Serial).Send();
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Установка анимации от сервера
 @param [__in] id Группа анимаци
@@ -406,7 +406,7 @@ void CGameCharacter::SetAnimation(
     LastAnimationChangeTime = g_Ticks;
     TimeToRandomFidget = g_Ticks + RANDOM_FIDGET_ANIMATION_DELAY;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Установка группы анимации
 @param [__in] val Новое значение группы анимации
@@ -424,7 +424,7 @@ void CGameCharacter::ResetAnimationGroup(uchar val)
 
     AnimationGroup = val;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Установка случайной анимации (при длительном простое)
 @return 
@@ -453,7 +453,7 @@ void CGameCharacter::SetRandomFidgetAnimation()
         AnimationGroup = fidgetAnimTable[groupIndex - 1][RandomInt(3)];
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Скорректировать отношение анимаций
 @param [__in] group Группа анимации
@@ -504,7 +504,7 @@ void CGameCharacter::GetAnimationGroup(ANIMATION_GROUPS group, uchar &animation)
     if (group && animation < PAG_ANIMATION_COUNT)
         animation = animAssociateTable[animation][group - 1];
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Скорректировать отношение индексов групп анимаций
 @param [__in] graphic Индекс картинки
@@ -570,7 +570,7 @@ void CGameCharacter::CorrectAnimationGroup(ushort graphic, ANIMATION_GROUPS grou
             animation = HAG_STAND;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Проверка на возможность изменения направления персонажа при движении в сидячем положении
 @param [__in] group Индекс группы анимации
@@ -605,7 +605,7 @@ bool CGameCharacter::TestStepNoChangeDirection(uchar group)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить текущую группу анимации
 @param [__in_opt] graphic Индекс картинки персонажа
@@ -792,7 +792,7 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
     }
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGameCharacter::ProcessGargoyleAnims(int &animGroup)
 {
     if (animGroup == 64 || animGroup == 65)
@@ -801,7 +801,7 @@ void CGameCharacter::ProcessGargoyleAnims(int &animGroup)
         AnimationGroup = animGroup;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить индекс картинки для вычисления картинки анимации
 @return Индекс картинки персонажа
@@ -826,7 +826,7 @@ ushort CGameCharacter::GetMountAnimation()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 не подписанная функция
 @param [__inout] dir не подписанный параметр
@@ -990,7 +990,7 @@ void CGameCharacter::UpdateAnimationInfo(BYTE &dir, bool canChange)
         OffsetZ = 0;
     }
 }
-//----------------------------------------------------------------------------------
+
 CGameItem *CGameCharacter::FindSecureTradeBox()
 {
     WISPFUN_DEBUG("c20_f25");
@@ -1002,9 +1002,8 @@ CGameItem *CGameCharacter::FindSecureTradeBox()
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGameCharacter::SetDead(bool &dead)
 {
     m_Dead = dead;
 }
-//----------------------------------------------------------------------------------

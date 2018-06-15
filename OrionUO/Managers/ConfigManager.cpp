@@ -6,18 +6,18 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CConfigManager g_ConfigManager;
 CConfigManager g_OptionsConfig;
-//----------------------------------------------------------------------------------
+
 CConfigManager::CConfigManager()
 {
     WISPFUN_DEBUG("c138_f1");
     Init();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -59,7 +59,7 @@ void CConfigManager::Init()
 
     UpdateRange = g_MaxViewRange;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage1()
 {
     WISPFUN_DEBUG("c138_f3");
@@ -71,7 +71,7 @@ void CConfigManager::DefaultPage1()
     m_MusicVolume = 255;
     BackgroundSound = false;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage2()
 {
     WISPFUN_DEBUG("c138_f4");
@@ -118,7 +118,7 @@ void CConfigManager::DefaultPage2()
     CancelNewTargetSystemOnShiftEsc = false;
     DrawStatusForHumanoids = true;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage3()
 {
     WISPFUN_DEBUG("c138_f5");
@@ -127,7 +127,7 @@ void CConfigManager::DefaultPage3()
     ToolTipsTextFont = 0;
     ToolTipsDelay = 200;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage4()
 {
     WISPFUN_DEBUG("c138_f6");
@@ -150,7 +150,7 @@ void CConfigManager::DefaultPage4()
 
     ChatFont = 0;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage6()
 {
     WISPFUN_DEBUG("c138_f7");
@@ -169,7 +169,7 @@ void CConfigManager::DefaultPage6()
     HoldShiftForEnablePathfind = false;
     m_CharacterBackpackStyle = CBS_DEFAULT;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage7()
 {
     WISPFUN_DEBUG("c138_f8");
@@ -188,7 +188,7 @@ void CConfigManager::DefaultPage7()
     ColoredLighting = true;
     LockResizingGameWindow = false;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage8()
 {
     WISPFUN_DEBUG("c138_f9");
@@ -200,7 +200,7 @@ void CConfigManager::DefaultPage8()
     MurdererColor = 0x0023;
     CriminalActionsQuery = true;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::DefaultPage9()
 {
     WISPFUN_DEBUG("c138_f10");
@@ -211,7 +211,7 @@ void CConfigManager::DefaultPage9()
     SkillReport = 1;
     SpeechFont = 0;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::UpdateFeatures()
 {
     SetDrawStatusState(m_DrawStatusState);
@@ -224,7 +224,7 @@ void CConfigManager::UpdateFeatures()
     SetDrawAuraState(m_DrawAuraState);
     SetNoDrawRoofs(m_NoDrawRoofs);
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetSound(bool val)
 {
     WISPFUN_DEBUG("c138_f11");
@@ -234,7 +234,7 @@ void CConfigManager::SetSound(bool val)
     if (this == &g_ConfigManager && !val)
         g_Orion.AdjustSoundEffects(g_Ticks + 100000);
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetMusic(bool val)
 {
     WISPFUN_DEBUG("c138_f12");
@@ -246,7 +246,7 @@ void CConfigManager::SetMusic(bool val)
         g_SoundManager.StopMusic();
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetSoundVolume(uchar val)
 {
     WISPFUN_DEBUG("c138_f13");
@@ -255,7 +255,7 @@ void CConfigManager::SetSoundVolume(uchar val)
 
     m_SoundVolume = val;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetMusicVolume(uchar val)
 {
     WISPFUN_DEBUG("c138_f14");
@@ -268,7 +268,7 @@ void CConfigManager::SetMusicVolume(uchar val)
     else
         m_MusicVolume = val;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetClientFPS(uchar val)
 {
     WISPFUN_DEBUG("c138_f15");
@@ -289,7 +289,7 @@ void CConfigManager::SetClientFPS(uchar val)
         g_OrionWindow.SetRenderTimerDelay(g_FrameDelay[g_OrionWindow.IsActive()]);
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetUseScaling(bool val)
 {
     WISPFUN_DEBUG("c138_f16");
@@ -298,7 +298,7 @@ void CConfigManager::SetUseScaling(bool val)
     if (!val && this == &g_ConfigManager)
         g_GlobalScale = 1.0;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetDrawStatusState(uchar val)
 {
     WISPFUN_DEBUG("c138_f17");
@@ -321,7 +321,7 @@ void CConfigManager::SetDrawStatusState(uchar val)
 
     m_DrawStatusState = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetDrawStumps(bool val)
 {
     WISPFUN_DEBUG("c138_f18");
@@ -335,7 +335,7 @@ void CConfigManager::SetDrawStumps(bool val)
 
     m_DrawStumps = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetMarkingCaves(bool val)
 {
     WISPFUN_DEBUG("c138_f19");
@@ -349,7 +349,7 @@ void CConfigManager::SetMarkingCaves(bool val)
 
     m_MarkingCaves = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetNoVegetation(bool val)
 {
     WISPFUN_DEBUG("c138_f19");
@@ -360,7 +360,7 @@ void CConfigManager::SetNoVegetation(bool val)
 
     m_NoVegetation = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetNoAnimateFields(bool val)
 {
     WISPFUN_DEBUG("c138_f19");
@@ -371,7 +371,7 @@ void CConfigManager::SetNoAnimateFields(bool val)
 
     m_NoAnimateFields = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetApplyStateColorOnCharacters(bool val)
 {
     WISPFUN_DEBUG("c138_f19");
@@ -382,7 +382,7 @@ void CConfigManager::SetApplyStateColorOnCharacters(bool val)
 
     m_ApplyStateColorOnCharacters = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetDrawAuraState(uchar val)
 {
     WISPFUN_DEBUG("c138_f19");
@@ -393,7 +393,7 @@ void CConfigManager::SetDrawAuraState(uchar val)
 
     m_DrawAuraState = state;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetReduceFPSUnactiveWindow(bool val)
 {
     WISPFUN_DEBUG("c138_f20");
@@ -409,7 +409,7 @@ void CConfigManager::SetReduceFPSUnactiveWindow(bool val)
 
     m_ReduceFPSUnactiveWindow = val;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetConsoleNeedEnter(bool val)
 {
     WISPFUN_DEBUG("c138_f21");
@@ -418,7 +418,7 @@ void CConfigManager::SetConsoleNeedEnter(bool val)
 
     m_ConsoleNeedEnter = val;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetSpellIconAlpha(uchar val)
 {
     WISPFUN_DEBUG("c138_f22");
@@ -441,7 +441,7 @@ void CConfigManager::SetSpellIconAlpha(uchar val)
 
     m_SpellIconAlpha = val;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetOldStyleStatusbar(bool val)
 {
     WISPFUN_DEBUG("c138_f23");
@@ -456,7 +456,7 @@ void CConfigManager::SetOldStyleStatusbar(bool val)
             gump->WantUpdateContent = true;
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetOriginalPartyStatusbar(bool val)
 {
     WISPFUN_DEBUG("c138_f24");
@@ -478,7 +478,7 @@ void CConfigManager::SetOriginalPartyStatusbar(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetChangeFieldsGraphic(bool val)
 {
     WISPFUN_DEBUG("c138_f25");
@@ -496,7 +496,7 @@ void CConfigManager::SetChangeFieldsGraphic(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetPaperdollSlots(bool val)
 {
     WISPFUN_DEBUG("c138_f26");
@@ -515,7 +515,7 @@ void CConfigManager::SetPaperdollSlots(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetScaleImagesInPaperdollSlots(bool val)
 {
     WISPFUN_DEBUG("c138_f27");
@@ -534,7 +534,7 @@ void CConfigManager::SetScaleImagesInPaperdollSlots(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetUseGlobalMapLayer(bool val)
 {
     WISPFUN_DEBUG("c138_f28");
@@ -550,7 +550,7 @@ void CConfigManager::SetUseGlobalMapLayer(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetNoDrawRoofs(bool val)
 {
     WISPFUN_DEBUG("c138_f28");
@@ -565,7 +565,7 @@ void CConfigManager::SetNoDrawRoofs(bool val)
         g_Player->OldY = 0;
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetUseGLListsForInterface(bool val)
 {
     WISPFUN_DEBUG("c138_f26");
@@ -582,7 +582,7 @@ void CConfigManager::SetUseGLListsForInterface(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetPingTimer(uchar val)
 {
     WISPFUN_DEBUG("c138_f26");
@@ -590,7 +590,7 @@ void CConfigManager::SetPingTimer(uchar val)
     m_PingTimer = max(min(val, 120), 10);
     g_PingTimer = 0;
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetItemPropertiesMode(uchar val)
 {
     WISPFUN_DEBUG("c138_f26_1");
@@ -608,7 +608,7 @@ void CConfigManager::SetItemPropertiesMode(uchar val)
         g_ObjectPropertiesManager.Reset();
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetItemPropertiesIcon(bool val)
 {
     WISPFUN_DEBUG("c138_f26_2");
@@ -644,7 +644,7 @@ void CConfigManager::SetItemPropertiesIcon(bool val)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::SetCharacterBackpackStyle(uchar val)
 {
     WISPFUN_DEBUG("c138_f26_3");
@@ -661,7 +661,7 @@ void CConfigManager::SetCharacterBackpackStyle(uchar val)
             g_GumpManager.UpdateContent(backpack->Serial, 0, GT_CONTAINER);
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Получить цвет исходя из "злобности"
 @param [__in] notoriety Злобность
@@ -715,7 +715,7 @@ ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
 
     return color;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Загрузка конфига
 @param [__in] path Путь к файлу с конфигом
@@ -1229,7 +1229,7 @@ bool CConfigManager::LoadBin(string path)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 int CConfigManager::GetConfigKeyCode(const string &key)
 {
     WISPFUN_DEBUG("");
@@ -1369,7 +1369,7 @@ int CConfigManager::GetConfigKeyCode(const string &key)
 
     return -1;
 }
-//---------------------------------------------------------------------------
+
 bool CConfigManager::Load(const string &path)
 {
     WISP_FILE::CTextFileParser file(path, "=", "#;", "");
@@ -1844,7 +1844,7 @@ bool CConfigManager::Load(const string &path)
 
     return PathFileExistsA(path.c_str());
 }
-//---------------------------------------------------------------------------
+
 void CConfigManager::Save(const string &path)
 {
     WISPFUN_DEBUG("");
@@ -2004,4 +2004,3 @@ void CConfigManager::Save(const string &path)
         writter.Close();
     }
 }
-//---------------------------------------------------------------------------

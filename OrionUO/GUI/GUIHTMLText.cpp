@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIHTMLText::CGUIHTMLText(
     int index,
     uchar font,
@@ -29,13 +29,13 @@ CGUIHTMLText::CGUIHTMLText(
     , Width(width)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIHTMLText::~CGUIHTMLText()
 {
     WISPFUN_DEBUG("c64_f1");
     m_Texture.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLText::CreateTexture(bool backgroundCanBeColored)
 {
     WISPFUN_DEBUG("c64_f2");
@@ -45,13 +45,13 @@ void CGUIHTMLText::CreateTexture(bool backgroundCanBeColored)
 
     g_FontManager.SetUseHTML(false);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLText::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c64_f3");
     m_Texture.Draw(m_X, m_Y, checktrans);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIHTMLText::Select()
 {
     WISPFUN_DEBUG("c64_f4");
@@ -60,4 +60,3 @@ bool CGUIHTMLText::Select()
 
     return (x >= 0 && y >= 0 && x < m_Texture.Width && y < m_Texture.Height);
 }
-//----------------------------------------------------------------------------------

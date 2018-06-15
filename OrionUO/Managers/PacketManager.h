@@ -6,13 +6,13 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef PACKETMANAGER_H
 #define PACKETMANAGER_H
-//----------------------------------------------------------------------------------
+
 class CPacketManager;
 typedef void (CPacketManager::*PACKET_FUNCTION)();
-//----------------------------------------------------------------------------------
+
 #define ORION_SAVE_ALL_PACKETS 1
 
 #define ORION_SAVE_PACKET 1
@@ -22,7 +22,7 @@ typedef void (CPacketManager::*PACKET_FUNCTION)();
 #else
 #define ORION_IGNORE_PACKET 0
 #endif
-//----------------------------------------------------------------------------------
+
 //!Направление пакета
 enum PACKET_DIRECTION
 {
@@ -30,7 +30,7 @@ enum PACKET_DIRECTION
     DIR_RECV,     //!От сервера клиенту
     DIR_BOTH      //!В обе стороны
 };
-//----------------------------------------------------------------------------------
+
 //!Класс для хранения информации о пакетах
 class CPacketInfo
 {
@@ -50,13 +50,13 @@ public:
     //!Обработчик пакета
     PACKET_FUNCTION Handler;
 };
-//----------------------------------------------------------------------------------
+
 struct GumpCoords
 {
     int X;
     int Y;
 };
-//----------------------------------------------------------------------------------
+
 struct HTMLGumpDataInfo
 {
     GumpCoords *GumpCoords;
@@ -68,9 +68,9 @@ struct HTMLGumpDataInfo
     int Color;
     bool IsXMF;
 };
-//----------------------------------------------------------------------------------
+
 #define HANDLER_PACKET(name) void Handle##name()
-//----------------------------------------------------------------------------------
+
 class CPacketManager : public WISP_NETWORK::CPacketReader
 {
 protected:
@@ -234,7 +234,7 @@ public:
 
     void SetCachedGumpCoords(uint id, int x, int y);
 };
-//---------------------------------------------------------------------------
+
 extern CPacketManager g_PacketManager;
-//---------------------------------------------------------------------------
+
 #endif

@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CCharacterListScreen g_CharacterListScreen;
-//----------------------------------------------------------------------------------
+
 CCharacterListScreen::CCharacterListScreen()
     : CBaseScreen(m_CharacterListGump)
 {
 }
-//----------------------------------------------------------------------------------
+
 CCharacterListScreen::~CCharacterListScreen()
 {
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -45,7 +45,7 @@ void CCharacterListScreen::Init()
     m_Gump.PrepareTextures();
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка события после перехода
 @param [__in_opt] action Идентификатор действия
@@ -79,7 +79,7 @@ void CCharacterListScreen::ProcessSmoothAction(uchar action)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -94,4 +94,3 @@ void CCharacterListScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     if (wParam == VK_RETURN)
         CreateSmoothAction(ID_SMOOTH_CLS_SELECT_CHARACTER);
 }
-//----------------------------------------------------------------------------------

@@ -6,25 +6,25 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
 
 CScreenshotBuilder g_ScreenshotBuilder;
-//---------------------------------------------------------------------------
+
 CScreenshotBuilder::CScreenshotBuilder()
 {
 }
-//---------------------------------------------------------------------------
+
 CScreenshotBuilder::~CScreenshotBuilder()
 {
 }
-//---------------------------------------------------------------------------
+
 void CScreenshotBuilder::SaveScreen()
 {
     WISPFUN_DEBUG("c204_f1");
     SaveScreen(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
 }
-//---------------------------------------------------------------------------
+
 void CScreenshotBuilder::SaveScreen(int x, int y, int width, int height)
 {
     WISPFUN_DEBUG("c204_f2");
@@ -91,7 +91,7 @@ void CScreenshotBuilder::SaveScreen(int x, int y, int width, int height)
     if (g_GameState >= GS_GAME)
         g_Orion.CreateTextMessageF(3, 0, "Screenshot saved to: %s", path.c_str());
 }
-//---------------------------------------------------------------------------
+
 UINT_LIST CScreenshotBuilder::GetScenePixels(int x, int y, int width, int height)
 {
     WISPFUN_DEBUG("c204_f3");
@@ -111,4 +111,3 @@ UINT_LIST CScreenshotBuilder::GetScenePixels(int x, int y, int width, int height
 
     return pixels;
 }
-//---------------------------------------------------------------------------

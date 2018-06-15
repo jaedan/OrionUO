@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpBaseScroll::CGumpBaseScroll(
     GUMP_TYPE type,
     uint serial,
@@ -109,11 +109,11 @@ CGumpBaseScroll::CGumpBaseScroll(
     else
         m_Resizer->SetX(170);
 }
-//----------------------------------------------------------------------------------
+
 CGumpBaseScroll::~CGumpBaseScroll()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBaseScroll::UpdateHeight()
 {
     WISPFUN_DEBUG("c86_f2");
@@ -146,13 +146,13 @@ void CGumpBaseScroll::UpdateHeight()
 
     m_Resizer->SetY(offsetY + Height - 3);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBaseScroll::GUMP_RESIZE_START_EVENT_C
 {
     WISPFUN_DEBUG("c86_f3");
     StartResizeHeight = Height;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBaseScroll::GUMP_RESIZE_EVENT_C
 {
     WISPFUN_DEBUG("c86_f4");
@@ -162,11 +162,10 @@ void CGumpBaseScroll::GUMP_RESIZE_EVENT_C
         RecalculateSize();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBaseScroll::GUMP_RESIZE_END_EVENT_C
 {
     WISPFUN_DEBUG("c86_f5");
     if (StartResizeHeight)
         StartResizeHeight = 0;
 }
-//----------------------------------------------------------------------------------

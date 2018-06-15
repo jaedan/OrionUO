@@ -6,13 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMacroObject *g_MacroPointer = NULL;
-//----------------------------------------------------------------------------------
-//-----------------------------------CMacroObject-----------------------------------
-//----------------------------------------------------------------------------------
+
 CMacroObject::CMacroObject(const MACRO_CODE &code, const MACRO_SUB_CODE &subCode)
     : CBaseQueueItem()
     , Code(code)
@@ -68,26 +66,22 @@ CMacroObject::CMacroObject(const MACRO_CODE &code, const MACRO_SUB_CODE &subCode
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CMacroObject::~CMacroObject()
 {
 }
-//----------------------------------------------------------------------------------
-//----------------------------------CMacroObjectString------------------------------
-//----------------------------------------------------------------------------------
+
 CMacroObjectString::CMacroObjectString(
     const MACRO_CODE &code, const MACRO_SUB_CODE &subCode, const string &str)
     : CMacroObject(code, subCode)
     , String(str)
 {
 }
-//----------------------------------------------------------------------------------
+
 CMacroObjectString::~CMacroObjectString()
 {
 }
-//----------------------------------------------------------------------------------
-//----------------------------------------CMacro------------------------------------
-//----------------------------------------------------------------------------------
+
 CMacro::CMacro(ushort key, bool alt, bool ctrl, bool shift)
     : CBaseQueueItem()
     , Key(key)
@@ -96,11 +90,11 @@ CMacro::CMacro(ushort key, bool alt, bool ctrl, bool shift)
     , Shift(shift)
 {
 }
-//----------------------------------------------------------------------------------
+
 CMacro::~CMacro()
 {
 }
-//----------------------------------------------------------------------------------
+
 CMacro *CMacro::CreateBlankMacro()
 {
     WISPFUN_DEBUG("c191_f1");
@@ -110,7 +104,7 @@ CMacro *CMacro::CreateBlankMacro()
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 CMacroObject *CMacro::CreateMacro(const MACRO_CODE &code)
 {
     WISPFUN_DEBUG("c191_f2");
@@ -141,7 +135,7 @@ CMacroObject *CMacro::CreateMacro(const MACRO_CODE &code)
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 void CMacro::ChangeObject(CMacroObject *source, CMacroObject *obj)
 {
     WISPFUN_DEBUG("c191_f3");
@@ -160,7 +154,7 @@ void CMacro::ChangeObject(CMacroObject *source, CMacroObject *obj)
     source->m_Next = NULL;
     delete source;
 }
-//----------------------------------------------------------------------------------
+
 CMacro *CMacro::Load(WISP_FILE::CMappedFile &file)
 {
     WISPFUN_DEBUG("c191_f4");
@@ -237,7 +231,7 @@ CMacro *CMacro::Load(WISP_FILE::CMappedFile &file)
 
     return macro;
 }
-//----------------------------------------------------------------------------------
+
 void CMacro::Save(WISP_FILE::CBinaryFileWritter &writter)
 {
     WISPFUN_DEBUG("c191_f5");
@@ -299,7 +293,7 @@ void CMacro::Save(WISP_FILE::CBinaryFileWritter &writter)
     writter.WriteUInt32LE(0); //EOM
     writter.WriteBuffer();
 }
-//----------------------------------------------------------------------------------
+
 CMacro *CMacro::GetCopy()
 {
     WISPFUN_DEBUG("c191_f6");
@@ -322,7 +316,7 @@ CMacro *CMacro::GetCopy()
 
     return macro;
 }
-//----------------------------------------------------------------------------------
+
 void CMacro::GetBoundByCode(const MACRO_CODE &code, int &count, int &offset)
 {
     WISPFUN_DEBUG("c191_f7");
@@ -379,7 +373,7 @@ void CMacro::GetBoundByCode(const MACRO_CODE &code, int &count, int &offset)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 const char *CMacro::m_MacroActionName[MACRO_ACTION_NAME_COUNT] = { "(NONE)",
                                                                    "Say",
                                                                    "Emote",
@@ -440,7 +434,7 @@ const char *CMacro::m_MacroActionName[MACRO_ACTION_NAME_COUNT] = { "(NONE)",
                                                                    "BandageSelf",
                                                                    "BandageTarget",
                                                                    "ToggleGargoyleFlying" };
-//----------------------------------------------------------------------------------
+
 const char *CMacro::m_MacroAction[MACRO_ACTION_COUNT] = {
     "?",
     "NW (top)", //Walk group
@@ -653,4 +647,3 @@ const char *CMacro::m_MacroAction[MACRO_ACTION_COUNT] = {
     "Object",
     "Mobile"
 };
-//----------------------------------------------------------------------------------

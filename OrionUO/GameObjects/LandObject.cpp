@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CLandObject::CLandObject(int serial, ushort graphic, ushort color, short x, short y, char z)
     : CMapObject(ROT_LAND_OBJECT, serial, 0, color, x, y, z)
     , MinZ(z)
@@ -31,7 +31,7 @@ CLandObject::CLandObject(int serial, ushort graphic, ushort color, short x, shor
     g_LandObjectsCount++;
 #endif //UO_DEBUG_INFO!=0
 }
-//---------------------------------------------------------------------------
+
 CLandObject::~CLandObject()
 {
     WISPFUN_DEBUG("c23_f2");
@@ -53,14 +53,14 @@ CLandObject::~CLandObject()
         NormalBuffer = 0;
     }
 }
-//---------------------------------------------------------------------------
+
 void CLandObject::UpdateGraphicBySeason()
 {
     WISPFUN_DEBUG("c23_f3");
     Graphic = g_Orion.GetLandSeasonGraphic(OriginalGraphic);
     NoDrawTile = (Graphic == 2);
 }
-//---------------------------------------------------------------------------
+
 int CLandObject::GetDirectionZ(int direction)
 {
     WISPFUN_DEBUG("c23_f4");
@@ -78,7 +78,7 @@ int CLandObject::GetDirectionZ(int direction)
 
     return m_Z;
 }
-//---------------------------------------------------------------------------
+
 int CLandObject::CalculateCurrentAverageZ(int direction)
 {
     WISPFUN_DEBUG("c23_f5");
@@ -89,7 +89,7 @@ int CLandObject::CalculateCurrentAverageZ(int direction)
 
     return (result + GetDirectionZ(direction >> 1)) >> 1;
 }
-//---------------------------------------------------------------------------
+
 void CLandObject::UpdateZ(int zTop, int zRight, int zBottom)
 {
     WISPFUN_DEBUG("c23_f6");
@@ -122,7 +122,7 @@ void CLandObject::UpdateZ(int zTop, int zRight, int zBottom)
             MinZ = zBottom;
     }
 }
-//---------------------------------------------------------------------------
+
 void CLandObject::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c23_f7");
@@ -143,7 +143,7 @@ void CLandObject::Draw(int x, int y)
             g_Orion.DrawLandTexture(this, objColor, x, y);
     }
 }
-//---------------------------------------------------------------------------
+
 void CLandObject::Select(int x, int y)
 {
     WISPFUN_DEBUG("c23_f8");
@@ -161,4 +161,3 @@ void CLandObject::Select(int x, int y)
         }
     }
 }
-//----------------------------------------------------------------------------------

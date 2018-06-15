@@ -6,26 +6,26 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSelectProfessionScreen g_SelectProfessionScreen;
-//----------------------------------------------------------------------------------
+
 CSelectProfessionScreen::CSelectProfessionScreen()
     : CBaseScreen(m_SelectProfessionGump)
 {
 }
-//----------------------------------------------------------------------------------
+
 CSelectProfessionScreen::~CSelectProfessionScreen()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CSelectProfessionScreen::SetSkillSelection(int val)
 {
     m_SkillSelection = val;
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -42,7 +42,7 @@ void CSelectProfessionScreen::Init()
     m_Gump.PrepareTextures();
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка события после плавного затемнения экрана
 @param [__in_opt] action Идентификатор действия
@@ -66,4 +66,3 @@ void CSelectProfessionScreen::ProcessSmoothAction(uchar action)
     else if (action == ID_SMOOTH_SPS_GO_SCREEN_CREATE)
         g_Orion.InitScreen(GS_CREATE);
 }
-//----------------------------------------------------------------------------------

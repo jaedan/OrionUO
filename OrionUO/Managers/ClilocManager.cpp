@@ -6,13 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CClilocManager g_ClilocManager;
-//----------------------------------------------------------------------------------
-//--------------------------------------CCliloc-------------------------------------
-//----------------------------------------------------------------------------------
+
 CCliloc::CCliloc(const string &lang)
     : CBaseQueueItem()
 {
@@ -28,7 +26,7 @@ CCliloc::CCliloc(const string &lang)
             Loaded = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 CCliloc::~CCliloc()
 {
     WISPFUN_DEBUG("c135_f2");
@@ -38,7 +36,7 @@ CCliloc::~CCliloc()
     m_ClilocRegular.clear();
     m_ClilocSupport.clear();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузить клилок
 @param [__in] id Индекс клилока
@@ -85,7 +83,7 @@ string CCliloc::Load(uint &id)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 wstring CCliloc::CamelCaseTest(bool toCamelCase, const string &result)
 {
     if (toCamelCase)
@@ -93,7 +91,7 @@ wstring CCliloc::CamelCaseTest(bool toCamelCase, const string &result)
 
     return DecodeUTF8(result);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ASCII строку по id (и загрузить при необходимости)
 @param [__in] id Индекс клилока
@@ -141,13 +139,13 @@ wstring CCliloc::Get(int id, bool toCamelCase, string result)
 
     return CamelCaseTest(toCamelCase, result);
 }
-//----------------------------------------------------------------------------------
+
 string CCliloc::GetA(int id, bool toCamelCase, string result)
 {
     WISPFUN_DEBUG("c135_f4_1");
     return ToString(Get(id, toCamelCase, result));
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить Unicode строку по id (и загрузить при необходимости)
 @param [__in] id Индекс клилока
@@ -159,20 +157,18 @@ wstring CCliloc::GetW(int id, bool toCamelCase, string result)
     WISPFUN_DEBUG("c135_f5");
     return Get(id, toCamelCase, result);
 }
-//----------------------------------------------------------------------------------
-//-----------------------------------CClilocManager---------------------------------
-//----------------------------------------------------------------------------------
+
 CClilocManager::CClilocManager()
     : CBaseQueue()
 {
 }
-//----------------------------------------------------------------------------------
+
 CClilocManager::~CClilocManager()
 {
     m_ENUCliloc = NULL;
     m_LastCliloc = NULL;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить ссылку на объект клилока (и загрузить при необходимости)
 @param [__in] lang Расширение клилока
@@ -223,7 +219,7 @@ CCliloc *CClilocManager::Cliloc(const string &lang)
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 wstring CClilocManager::ParseArgumentsToClilocString(int cliloc, bool toCamelCase, wstring args)
 {
     WISPFUN_DEBUG("c136_f2");
@@ -276,4 +272,3 @@ wstring CClilocManager::ParseArgumentsToClilocString(int cliloc, bool toCamelCas
 
     return message;
 }
-//----------------------------------------------------------------------------------

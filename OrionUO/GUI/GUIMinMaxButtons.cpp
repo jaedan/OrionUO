@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIMinMaxButtons::CGUIMinMaxButtons(
     int serial, ushort graphic, int x, int y, int minValue, int maxValue, int value)
     : CBaseGUI(GOT_MINMAXBUTTONS, serial, graphic, 0, x, y)
@@ -17,13 +17,13 @@ CGUIMinMaxButtons::CGUIMinMaxButtons(
     , Value(value)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIMinMaxButtons::~CGUIMinMaxButtons()
 {
     WISPFUN_DEBUG("c67_f1");
     Text.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::UpdateText()
 {
     WISPFUN_DEBUG("c67_f2");
@@ -120,7 +120,7 @@ void CGUIMinMaxButtons::UpdateText()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::Scroll(int delay)
 {
     WISPFUN_DEBUG("c67_f3");
@@ -142,7 +142,7 @@ void CGUIMinMaxButtons::Scroll(int delay)
         UpdateText();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::OnClick()
 {
     WISPFUN_DEBUG("c67_f4");
@@ -162,7 +162,7 @@ void CGUIMinMaxButtons::OnClick()
     LastScrollTime = g_Ticks + 100;
     ScrollStep = BaseScrollStep;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::SetTextParameters(
     bool haveText,
     SLIDER_TEXT_POSITION textPosition,
@@ -185,14 +185,14 @@ void CGUIMinMaxButtons::SetTextParameters(
 
     UpdateText();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::PrepareTextures()
 {
     WISPFUN_DEBUG("c67_f6");
     g_Orion.ExecuteGump(Graphic);
     g_Orion.ExecuteGump(Graphic + 1);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMinMaxButtons::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c67_f7");
@@ -209,7 +209,7 @@ void CGUIMinMaxButtons::Draw(bool checktrans)
     if (HaveText)
         Text.Draw(TextX, TextY, checktrans);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIMinMaxButtons::Select()
 {
     WISPFUN_DEBUG("c67_f8");
@@ -218,4 +218,3 @@ bool CGUIMinMaxButtons::Select()
 
     return (x >= 0 && y >= 0 && x < 36 && y < 18);
 }
-//----------------------------------------------------------------------------------

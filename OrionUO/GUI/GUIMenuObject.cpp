@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIMenuObject::CGUIMenuObject(
     int serial, ushort graphic, ushort color, int x, int y, const string &text)
     : CGUITilepic(graphic, color, x, y)
@@ -17,11 +17,11 @@ CGUIMenuObject::CGUIMenuObject(
     Serial = serial;
     MoveOnDrag = true;
 }
-//----------------------------------------------------------------------------------
+
 CGUIMenuObject::~CGUIMenuObject()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIMenuObject::Select()
 {
     WISPFUN_DEBUG("c66_f1");
@@ -32,7 +32,7 @@ bool CGUIMenuObject::Select()
 
     return (x >= 0 && y >= 0 && x < size.Width && y < size.Height);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMenuObject::OnMouseEnter()
 {
     WISPFUN_DEBUG("c66_f2");
@@ -47,7 +47,7 @@ void CGUIMenuObject::OnMouseEnter()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIMenuObject::OnMouseExit()
 {
     WISPFUN_DEBUG("c66_f3");
@@ -62,4 +62,3 @@ void CGUIMenuObject::OnMouseExit()
         }
     }
 }
-//----------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 namespace WISP_WINDOW
 {
 CWindow *g_WispWindow = NULL;
-//---------------------------------------------------------------------------
+
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     WISPFUN_DEBUG("c_ww_wp");
@@ -12,17 +12,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
-//----------------------------------------------------------------------------------
+
 CWindow::CWindow()
 {
     WISPFUN_DEBUG("c14_f1");
     g_WispWindow = this;
 }
-//----------------------------------------------------------------------------------
+
 CWindow::~CWindow()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::SetSize(const WISP_GEOMETRY::CSize &size)
 {
     WISPFUN_DEBUG("c14_f2");
@@ -45,7 +45,7 @@ void CWindow::SetSize(const WISP_GEOMETRY::CSize &size)
 
     m_Size = size;
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::SetMinSize(const WISP_GEOMETRY::CSize &newMinSize)
 {
     WISPFUN_DEBUG("c14_f3");
@@ -80,7 +80,7 @@ void CWindow::SetMinSize(const WISP_GEOMETRY::CSize &newMinSize)
 
     m_MinSize = newMinSize;
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::SetMaxSize(const WISP_GEOMETRY::CSize &newMaxSize)
 {
     WISPFUN_DEBUG("c14_f4");
@@ -115,7 +115,7 @@ void CWindow::SetMaxSize(const WISP_GEOMETRY::CSize &newMaxSize)
 
     m_MaxSize = newMaxSize;
 }
-//----------------------------------------------------------------------------------
+
 bool CWindow::Create(
     HINSTANCE hInstance,
     const wchar_t *className,
@@ -190,25 +190,25 @@ bool CWindow::Create(
 
     return OnCreate();
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::Destroy()
 {
     WISPFUN_DEBUG("c14_f6");
     PostMessage(Handle, WM_CLOSE, 0, 0);
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::ShowMessage(const string &text, const string &title, int buttons)
 {
     WISPFUN_DEBUG("c14_f7");
     MessageBoxA(Handle, text.c_str(), title.c_str(), buttons);
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::ShowMessage(const wstring &text, const wstring &title, int buttons)
 {
     WISPFUN_DEBUG("c14_f8");
     MessageBoxW(Handle, text.c_str(), title.c_str(), buttons);
 }
-//----------------------------------------------------------------------------------
+
 LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM &lParam)
 {
     WISPFUN_DEBUG("c14_f9");
@@ -541,7 +541,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::CreateThreadedTimer(
     uint id, int delay, bool oneShot, bool waitForProcessMessage, bool synchronizedDelay)
 {
@@ -559,7 +559,7 @@ void CWindow::CreateThreadedTimer(
     m_ThreadedTimersStack.push_back(timer);
     timer->Run(!oneShot, delay, synchronizedDelay);
 }
-//----------------------------------------------------------------------------------
+
 void CWindow::RemoveThreadedTimer(uint id)
 {
     WISPFUN_DEBUG("c14_f11");
@@ -576,7 +576,7 @@ void CWindow::RemoveThreadedTimer(uint id)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 WISP_THREADED_TIMER::CThreadedTimer *CWindow::GetThreadedTimer(uint id)
 {
     WISPFUN_DEBUG("c14_f12");
@@ -590,6 +590,5 @@ WISP_THREADED_TIMER::CThreadedTimer *CWindow::GetThreadedTimer(uint id)
 
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_WINDOW
-//----------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 namespace WISP_APPLICATION
 {
 CApplication *g_WispApplication = NULL;
-//----------------------------------------------------------------------------------
+
 CApplication::CApplication()
 {
     LOG("INITIATING CAPPLICATION");
@@ -22,14 +22,14 @@ CApplication::CApplication()
     UOFilesPathW = ExePathW;
     g_MainScreen.LoadCustomPath();
 }
-//----------------------------------------------------------------------------------
+
 CApplication::~CApplication()
 {
     WISPFUN_DEBUG("c1_f2");
     g_WispApplication = NULL;
     Hinstance = 0;
 }
-//----------------------------------------------------------------------------------
+
 int CApplication::Run(HINSTANCE hinstance)
 {
     WISPFUN_DEBUG("c1_f3");
@@ -55,7 +55,7 @@ int CApplication::Run(HINSTANCE hinstance)
 
     return (int)msg.wParam;
 }
-//---------------------------------------------------------------------------
+
 string CApplication::GetFileVersion(uint *numericVerion)
 {
     //File version info
@@ -111,7 +111,7 @@ string CApplication::GetFileVersion(uint *numericVerion)
 
     return "unknown";
 }
-//---------------------------------------------------------------------------
+
 string CApplication::ExeFilePath(const char *str, ...)
 {
     WISPFUN_DEBUG("c1_f4");
@@ -125,7 +125,7 @@ string CApplication::ExeFilePath(const char *str, ...)
     string res = ExePathA + "\\" + out;
     return res;
 }
-//---------------------------------------------------------------------------
+
 wstring CApplication::ExeFilePath(const wchar_t *str, ...)
 {
     WISPFUN_DEBUG("c1_f5");
@@ -139,7 +139,7 @@ wstring CApplication::ExeFilePath(const wchar_t *str, ...)
 
     return ExePathW + L"\\" + out;
 }
-//---------------------------------------------------------------------------
+
 string CApplication::UOFilesPath(const char *str, ...)
 {
     WISPFUN_DEBUG("c1_f6");
@@ -153,7 +153,7 @@ string CApplication::UOFilesPath(const char *str, ...)
     string res = UOFilesPathA + "\\" + out;
     return res;
 }
-//---------------------------------------------------------------------------
+
 wstring CApplication::UOFilesPath(const wchar_t *str, ...)
 {
     WISPFUN_DEBUG("c1_f7");
@@ -167,6 +167,5 @@ wstring CApplication::UOFilesPath(const wchar_t *str, ...)
 
     return UOFilesPathW + L"\\" + out;
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_APPLICATION
-//----------------------------------------------------------------------------------

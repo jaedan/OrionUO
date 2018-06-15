@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CPressedObject g_PressedObject;
-//----------------------------------------------------------------------------------
+
 CPressedObject::CPressedObject()
 {
 }
-//----------------------------------------------------------------------------------
+
 CPressedObject::~CPressedObject()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::Init(const CPressedObject &obj)
 {
     WISPFUN_DEBUG("c198_f1");
@@ -34,7 +34,7 @@ void CPressedObject::Init(const CPressedObject &obj)
     MidGump = obj.MidGump;
     MidSerial = obj.MidSerial;
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::ClearAll()
 {
     WISPFUN_DEBUG("c198_f2");
@@ -42,7 +42,7 @@ void CPressedObject::ClearAll()
     ClearRight();
     ClearMid();
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::Clear(CRenderObject *obj)
 {
     WISPFUN_DEBUG("c198_f3");
@@ -64,7 +64,7 @@ void CPressedObject::Clear(CRenderObject *obj)
         MidSerial = 0;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::ClearLeft()
 {
     WISPFUN_DEBUG("c198_f4");
@@ -72,7 +72,7 @@ void CPressedObject::ClearLeft()
     LeftGump = NULL;
     LeftSerial = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitLeft(CRenderObject *obj, CGump *gump)
 {
     WISPFUN_DEBUG("c198_f5");
@@ -80,7 +80,7 @@ void CPressedObject::InitLeft(CRenderObject *obj, CGump *gump)
     LeftGump = gump;
     LeftSerial = (obj != NULL ? obj->Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitLeft(const CSelectedObject &obj)
 {
     WISPFUN_DEBUG("c198_f6");
@@ -88,7 +88,7 @@ void CPressedObject::InitLeft(const CSelectedObject &obj)
     LeftGump = obj.Gump;
     LeftSerial = (LeftObject != NULL ? obj.Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::ClearRight()
 {
     WISPFUN_DEBUG("c198_f7");
@@ -96,7 +96,7 @@ void CPressedObject::ClearRight()
     RightGump = NULL;
     RightSerial = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitRight(CRenderObject *obj, CGump *gump)
 {
     WISPFUN_DEBUG("c198_f8");
@@ -104,7 +104,7 @@ void CPressedObject::InitRight(CRenderObject *obj, CGump *gump)
     RightGump = gump;
     RightSerial = (obj != NULL ? obj->Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitRight(const CSelectedObject &obj)
 {
     WISPFUN_DEBUG("c198_f9");
@@ -112,7 +112,7 @@ void CPressedObject::InitRight(const CSelectedObject &obj)
     RightGump = obj.Gump;
     RightSerial = (RightObject != NULL ? obj.Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::ClearMid()
 {
     WISPFUN_DEBUG("c198_f10");
@@ -120,7 +120,7 @@ void CPressedObject::ClearMid()
     MidGump = NULL;
     MidSerial = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitMid(CRenderObject *obj, CGump *gump)
 {
     WISPFUN_DEBUG("c198_f11");
@@ -128,7 +128,7 @@ void CPressedObject::InitMid(CRenderObject *obj, CGump *gump)
     MidGump = gump;
     MidSerial = (obj != NULL ? obj->Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPressedObject::InitMid(const CSelectedObject &obj)
 {
     WISPFUN_DEBUG("c198_f12");
@@ -136,10 +136,9 @@ void CPressedObject::InitMid(const CSelectedObject &obj)
     MidGump = obj.Gump;
     MidSerial = (MidObject != NULL ? obj.Serial : 0);
 }
-//----------------------------------------------------------------------------------
+
 bool CPressedObject::TestMoveOnDrag()
 {
     WISPFUN_DEBUG("c198_f13");
     return (LeftObject != NULL && LeftObject->IsGUI() && ((CBaseGUI *)LeftObject)->MoveOnDrag);
 }
-//----------------------------------------------------------------------------------

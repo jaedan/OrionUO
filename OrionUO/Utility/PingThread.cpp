@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 typedef struct tagICMPHDR
 {
     u_char Type;
@@ -18,14 +18,14 @@ typedef struct tagICMPHDR
     u_short Seq;
     char Data;
 } ICMPHDR, *PICMPHDR;
-//----------------------------------------------------------------------------------
+
 typedef struct tagECHOREQUEST
 {
     ICMPHDR icmpHdr;
     DWORD dwTime;
     char cData[64];
 } ECHOREQUEST, *PECHOREQUEST;
-//----------------------------------------------------------------------------------
+
 typedef struct tagIPHDR
 {
     u_char VIHL;
@@ -39,14 +39,14 @@ typedef struct tagIPHDR
     struct in_addr iaSrc;
     struct in_addr iaDst;
 } IPHDR, *PIPHDR;
-//----------------------------------------------------------------------------------
+
 typedef struct tagECHOREPLY
 {
     IPHDR ipHdr;
     ECHOREQUEST echoRequest;
     char cFiller[256];
 } ECHOREPLY, *PECHOREPLY;
-//----------------------------------------------------------------------------------
+
 CPingThread::CPingThread(int serverID, const string &serverIP, int requestsCount)
     : WISP_THREAD::CThread()
     , ServerID(serverID)
@@ -56,12 +56,12 @@ CPingThread::CPingThread(int serverID, const string &serverIP, int requestsCount
     LOG("CPingThread => %s\n", serverIP.c_str());
     WISPFUN_DEBUG("");
 }
-//----------------------------------------------------------------------------------
+
 CPingThread::~CPingThread()
 {
     WISPFUN_DEBUG("");
 }
-//----------------------------------------------------------------------------------
+
 ushort CPingThread::CalculateChecksum(pushort addr, int count)
 {
     uint checksum = 0;
@@ -80,7 +80,7 @@ ushort CPingThread::CalculateChecksum(pushort addr, int count)
 
     return ~checksum;
 }
-//----------------------------------------------------------------------------------
+
 int CPingThread::CalculatePing()
 {
     int result = 0;
@@ -163,7 +163,7 @@ int CPingThread::CalculatePing()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CPingThread::OnExecute(uint nowTime)
 {
     WISPFUN_DEBUG("");
@@ -195,4 +195,3 @@ void CPingThread::OnExecute(uint nowTime)
 
     SendMessage(g_OrionWindow.Handle, MessageID, (WPARAM)&info, 0);
 }
-//----------------------------------------------------------------------------------

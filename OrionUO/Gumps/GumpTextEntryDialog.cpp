@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpTextEntryDialog::CGumpTextEntryDialog(
     uint serial, short x, short y, uchar variant, int maxLength, string text, string description)
     : CGump(GT_TEXT_ENTRY_DIALOG, serial, x, y)
@@ -29,11 +29,11 @@ CGumpTextEntryDialog::CGumpTextEntryDialog(
 
     g_GrayMenuCount++;
 }
-//----------------------------------------------------------------------------------
+
 CGumpTextEntryDialog::~CGumpTextEntryDialog()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::PrepareContent()
 {
     WISPFUN_DEBUG("c130_f2");
@@ -53,7 +53,7 @@ void CGumpTextEntryDialog::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::UpdateContent()
 {
     WISPFUN_DEBUG("c130_f3");
@@ -87,7 +87,7 @@ void CGumpTextEntryDialog::UpdateContent()
     if (!NoClose)
         Add(new CGUIButton(ID_GTED_BUTTON_CANCEL, 0x0478, 0x047A, 0x0479, 204, 190));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c130_f4");
@@ -96,7 +96,7 @@ void CGumpTextEntryDialog::GUMP_BUTTON_EVENT_C
     else if (serial == ID_GTED_BUTTON_CANCEL) //Button cancel
         SendTextEntryDialogResponse(false);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c130_f5");
@@ -123,7 +123,7 @@ void CGumpTextEntryDialog::OnCharPress(const WPARAM &wParam, const LPARAM &lPara
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c130_f6");
@@ -152,7 +152,7 @@ void CGumpTextEntryDialog::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTextEntryDialog::SendTextEntryDialogResponse(bool mode)
 {
     WISPFUN_DEBUG("c130_f7");
@@ -166,4 +166,3 @@ void CGumpTextEntryDialog::SendTextEntryDialogResponse(bool mode)
     //Удаляем использованный гамп
     RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

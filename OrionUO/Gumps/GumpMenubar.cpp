@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpMenubar::CGumpMenubar(short x, short y)
     : CGump(GT_MENUBAR, 0, x, y)
 {
@@ -81,11 +81,11 @@ CGumpMenubar::CGumpMenubar(short x, short y)
         entry->FocusedOffsetY = 2;
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpMenubar::~CGumpMenubar()
 {
 }
-//---------------------------------------------------------------------------
+
 void CGumpMenubar::SetOpened(bool val)
 {
     WISPFUN_DEBUG("c101_f2");
@@ -98,7 +98,7 @@ void CGumpMenubar::SetOpened(bool val)
 
     WantRedraw = true;
 }
-//---------------------------------------------------------------------------
+
 void CGumpMenubar::InitToolTip()
 {
     WISPFUN_DEBUG("c101_f3");
@@ -160,7 +160,7 @@ void CGumpMenubar::InitToolTip()
     else
         g_ToolTip.Set(L"Maximize the menubar gump");
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenubar::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c101_f4");
@@ -225,7 +225,7 @@ void CGumpMenubar::GUMP_BUTTON_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenubar::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c101_f5");
@@ -240,7 +240,7 @@ void CGumpMenubar::GUMP_TEXT_ENTRY_EVENT_C
 
     OnButton(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenubar::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c101_f6");
@@ -257,4 +257,3 @@ void CGumpMenubar::OnLeftMouseButtonUp()
 
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

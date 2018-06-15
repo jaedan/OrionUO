@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpBook::CGumpBook(uint serial, short x, short y, short pageCount, bool writable, bool unicode)
     : CGump(GT_BOOK, serial, x, y)
     , PageCount(pageCount)
@@ -127,7 +127,7 @@ CGumpBook::CGumpBook(uint serial, short x, short y, short pageCount, bool writab
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpBook::~CGumpBook()
 {
     WISPFUN_DEBUG("c87_f2");
@@ -135,7 +135,7 @@ CGumpBook::~CGumpBook()
     RELEASE_POINTER(m_ChangedPage);
     RELEASE_POINTER(m_PageDataReceived);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::PrepareContent()
 {
     WISPFUN_DEBUG("c87_f2.1");
@@ -151,7 +151,7 @@ void CGumpBook::PrepareContent()
 		m_PageDataReceived[Page + 1] = true;
 	}*/
 }
-//----------------------------------------------------------------------------------
+
 CGUITextEntry *CGumpBook::GetEntry(int page)
 {
     WISPFUN_DEBUG("c87_f3");
@@ -167,7 +167,7 @@ CGUITextEntry *CGumpBook::GetEntry(int page)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::SetPageData(int page, const wstring &data)
 {
     WISPFUN_DEBUG("c87_f4");
@@ -177,7 +177,7 @@ void CGumpBook::SetPageData(int page, const wstring &data)
     if (entry != NULL)
         entry->m_Entry.SetText(data);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::ChangePage(int newPage, bool playSound)
 {
     WISPFUN_DEBUG("c87_f5");
@@ -209,7 +209,7 @@ void CGumpBook::ChangePage(int newPage, bool playSound)
             g_EntryPointer = &g_GameConsole;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::DelayedClick(CRenderObject *obj)
 {
     WISPFUN_DEBUG("c87_f6");
@@ -219,7 +219,7 @@ void CGumpBook::DelayedClick(CRenderObject *obj)
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c87_f7");
@@ -256,7 +256,7 @@ void CGumpBook::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpBook::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c87_f8");
@@ -288,7 +288,7 @@ bool CGumpBook::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
 {
     WISPFUN_DEBUG("c87_f9");
@@ -449,7 +449,7 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
         //page
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c87_f10");
@@ -482,7 +482,7 @@ void CGumpBook::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     else
         InsertInContent(wParam);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c87_f11");
@@ -517,7 +517,7 @@ void CGumpBook::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::SetPagePos(int val, int page)
 {
     //safety
@@ -534,10 +534,9 @@ void CGumpBook::SetPagePos(int val, int page)
         val = g_EntryPointer->Length();
     g_EntryPointer->SetPos(val, this);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBook::PasteClipboardData(wstring &data)
 {
     IFOR (i, 0, (int)data.length())
         InsertInContent(data[i]);
 }
-//----------------------------------------------------------------------------------

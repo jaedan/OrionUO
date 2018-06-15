@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSkillsManager g_SkillsManager;
-//----------------------------------------------------------------------------------
+
 CSkill::CSkill(bool haveButton, const string &name)
     : Button(haveButton)
 {
@@ -21,7 +21,7 @@ CSkill::CSkill(bool haveButton, const string &name)
 
     //LOG("Skill loaded (button:%i): %s\n", m_Button, m_Name.c_str());
 }
-//----------------------------------------------------------------------------------
+
 bool CSkillsManager::Load()
 {
     WISPFUN_DEBUG("c194_f56");
@@ -57,13 +57,13 @@ bool CSkillsManager::Load()
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillsManager::Add(const CSkill &skill)
 {
     m_Skills.push_back(skill);
     Count++;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillsManager::Clear()
 {
     Count = 0;
@@ -71,7 +71,7 @@ void CSkillsManager::Clear()
     m_Skills.clear();
     m_SortedTable.clear();
 }
-//----------------------------------------------------------------------------------
+
 CSkill *CSkillsManager::Get(int index)
 {
     if (index < (uint)Count)
@@ -79,7 +79,7 @@ CSkill *CSkillsManager::Get(int index)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 bool CSkillsManager::CompareName(const string &str1, const string &str2)
 {
     //Вычисляем минимальную длину строки для сравнения
@@ -102,7 +102,7 @@ bool CSkillsManager::CompareName(const string &str1, const string &str2)
     //Вернем что получилось
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillsManager::Sort()
 {
     m_SortedTable.resize(Count, 0xFF);
@@ -151,7 +151,7 @@ void CSkillsManager::Sort()
     for (int i = 0, j = parsed - 1; i < parsed; i++, j--)
         m_SortedTable[i] = bufTable[j];
 }
-//----------------------------------------------------------------------------------
+
 int CSkillsManager::GetSortedIndex(int index)
 {
     if (index < (uint)Count)
@@ -159,7 +159,7 @@ int CSkillsManager::GetSortedIndex(int index)
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillsManager::UpdateSkillsSum()
 {
     SkillsTotal = 0.0f;
@@ -167,4 +167,3 @@ void CSkillsManager::UpdateSkillsSum()
     for (const CSkill &skill : m_Skills)
         SkillsTotal += skill.Value;
 }
-//----------------------------------------------------------------------------------

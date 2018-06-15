@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CObjectOnCursor g_ObjectInHand;
-//----------------------------------------------------------------------------------
+
 void CObjectOnCursor::Clear()
 {
     Enabled = false;
@@ -27,7 +27,7 @@ void CObjectOnCursor::Clear()
     TiledataPtr = NULL;
     UpdatedInWorld = false;
 }
-//----------------------------------------------------------------------------------
+
 ushort CObjectOnCursor::GetDrawGraphic(bool &doubleDraw)
 {
     WISPFUN_DEBUG("c20_f15");
@@ -48,4 +48,3 @@ ushort CObjectOnCursor::GetDrawGraphic(bool &doubleDraw)
 
     return result;
 }
-//----------------------------------------------------------------------------------

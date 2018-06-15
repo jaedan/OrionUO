@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpMenu::CGumpMenu(uint serial, uint id, short x, short y)
     : CGump(GT_MENU, serial, x, y)
 {
     ID = id;
 }
-//----------------------------------------------------------------------------------
+
 CGumpMenu::~CGumpMenu()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenu::CalculateGumpState()
 {
     WISPFUN_DEBUG("c100_f1");
@@ -27,7 +27,7 @@ void CGumpMenu::CalculateGumpState()
     if (g_GumpPressed)
         FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenu::PrepareContent()
 {
     WISPFUN_DEBUG("c100_f2");
@@ -46,7 +46,7 @@ void CGumpMenu::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpMenu::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c100_f3");
@@ -59,7 +59,7 @@ bool CGumpMenu::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMenu::SendMenuResponse(int index)
 {
     WISPFUN_DEBUG("c100_f4");
@@ -69,4 +69,3 @@ void CGumpMenu::SendMenuResponse(int index)
     //Удаляем использованный гамп
     RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

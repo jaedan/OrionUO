@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CPathFinder g_PathFinder;
-//----------------------------------------------------------------------------------
+
 CPathFinder::CPathFinder()
 {
 }
-//----------------------------------------------------------------------------------
+
 CPathFinder::~CPathFinder()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int stepState)
 {
     WISPFUN_DEBUG("c177_f1");
@@ -187,7 +187,7 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
 
     return !list.empty();
 }
-//----------------------------------------------------------------------------------
+
 int CPathFinder::CalculateMinMaxZ(
     int &minZ, int &maxZ, int newX, int newY, int currentZ, int newDirection, int stepState)
 {
@@ -247,7 +247,7 @@ int CPathFinder::CalculateMinMaxZ(
 
     return maxZ;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 {
     WISPFUN_DEBUG("c177_f3");
@@ -384,7 +384,7 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 
     return (resultZ != -128);
 }
-//----------------------------------------------------------------------------------
+
 void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
 {
     WISPFUN_DEBUG("c177_f4");
@@ -436,7 +436,7 @@ void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
 {
     WISPFUN_DEBUG("c177_f5");
@@ -494,7 +494,7 @@ bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
 
     return passed;
 }
-//----------------------------------------------------------------------------------
+
 int CPathFinder::GetWalkSpeed(bool run, bool onMount)
 {
     WISPFUN_DEBUG("c177_f6");
@@ -505,7 +505,7 @@ int CPathFinder::GetWalkSpeed(bool run, bool onMount)
 
     return CHARACTER_ANIMATION_DELAY_TABLE[mounted][run];
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::Walk(bool run, uchar direction)
 {
     WISPFUN_DEBUG("c177_f7");
@@ -669,13 +669,13 @@ bool CPathFinder::Walk(bool run, uchar direction)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 int CPathFinder::GetGoalDistCost(const WISP_GEOMETRY::CPoint2Di &p, int cost)
 {
     WISPFUN_DEBUG("c177_f8");
     return (abs(m_EndPoint.X - p.X) + abs(m_EndPoint.Y - p.Y)) * cost;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::DoesNotExistOnOpenList(int x, int y, int z)
 {
     WISPFUN_DEBUG("c177_f9");
@@ -694,7 +694,7 @@ bool CPathFinder::DoesNotExistOnOpenList(int x, int y, int z)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::DoesNotExistOnClosedList(int x, int y, int z)
 {
     WISPFUN_DEBUG("c177_f10");
@@ -713,7 +713,7 @@ bool CPathFinder::DoesNotExistOnClosedList(int x, int y, int z)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CPathFinder::AddNodeToList(
     int list, int direction, int x, int y, int z, CPathNode *parentNode, int cost)
 {
@@ -816,7 +816,7 @@ int CPathFinder::AddNodeToList(
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::OpenNodes(CPathNode *node)
 {
     WISPFUN_DEBUG("c177_f12");
@@ -859,7 +859,7 @@ bool CPathFinder::OpenNodes(CPathNode *node)
 
     return found;
 }
-//----------------------------------------------------------------------------------
+
 int CPathFinder::FindCheapestNode()
 {
     WISPFUN_DEBUG("c177_f13");
@@ -885,7 +885,7 @@ int CPathFinder::FindCheapestNode()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::FindPath(int maxNodes)
 {
     WISPFUN_DEBUG("c177_f14");
@@ -944,7 +944,7 @@ bool CPathFinder::FindPath(int maxNodes)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CPathFinder::WalkTo(int x, int y, int z, int distance)
 {
     WISPFUN_DEBUG("c177_f15");
@@ -979,7 +979,7 @@ bool CPathFinder::WalkTo(int x, int y, int z, int distance)
 
     return (m_PathSize != 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPathFinder::ProcessAutowalk()
 {
     WISPFUN_DEBUG("c177_f16");
@@ -1005,11 +1005,10 @@ void CPathFinder::ProcessAutowalk()
             StopAutoWalk();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPathFinder::StopAutoWalk()
 {
     WISPFUN_DEBUG("c177_f17");
     AutoWalking = false;
     m_PathSize = 0;
 }
-//----------------------------------------------------------------------------------

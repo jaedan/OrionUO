@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIColoredPolygone::CGUIColoredPolygone(
     int serial, ushort color, int x, int y, int width, int height, int polygoneColor)
     : CGUIPolygonal(GOT_COLOREDPOLYGONE, x, y, width, height)
@@ -17,11 +17,11 @@ CGUIColoredPolygone::CGUIColoredPolygone(
     Serial = serial;
     UpdateColor(color, polygoneColor);
 }
-//----------------------------------------------------------------------------------
+
 CGUIColoredPolygone::~CGUIColoredPolygone()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIColoredPolygone::UpdateColor(ushort color, int polygoneColor)
 {
     WISPFUN_DEBUG("c48_f2");
@@ -35,7 +35,7 @@ void CGUIColoredPolygone::UpdateColor(ushort color, int polygoneColor)
     if (!ColorA)
         ColorA = 0xFF;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIColoredPolygone::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c48_f3");
@@ -58,18 +58,17 @@ void CGUIColoredPolygone::Draw(bool checktrans)
     if (Focused || (DrawDot && g_GumpSelectedElement == this))
         g_GL.DrawPolygone(m_X + (Width / 2) - 1, m_Y + (Height / 2) - 1, 2, 2);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIColoredPolygone::OnMouseEnter()
 {
     WISPFUN_DEBUG("c48_f4");
     if (DrawDot && g_SelectedObject.Gump != NULL)
         g_SelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIColoredPolygone::OnMouseExit()
 {
     WISPFUN_DEBUG("c48_f5");
     if (DrawDot && g_LastSelectedObject.Gump != NULL)
         g_LastSelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

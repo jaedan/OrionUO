@@ -6,18 +6,18 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CTarget g_Target;
-//----------------------------------------------------------------------------------
+
 CTarget::CTarget()
 {
     //Чистимся
     memset(m_Data, 0, sizeof(m_Data));
     memset(m_LastData, 0, sizeof(m_LastData));
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::Reset()
 {
     WISPFUN_DEBUG("c209_f1");
@@ -37,7 +37,7 @@ void CTarget::Reset()
     Targeting = false;
     MultiGraphic = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::RequestFromCustomHouse()
 {
     Type = 2;
@@ -55,13 +55,13 @@ void CTarget::RequestFromCustomHouse()
         g_CustomHouseGump->WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SetLastTargetObject(int serial)
 {
     Type = 0;
     pack32(m_LastData + 7, serial);
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SetData(WISP_DATASTREAM::CDataReader &reader)
 {
     WISPFUN_DEBUG("c209_f2");
@@ -75,7 +75,7 @@ void CTarget::SetData(WISP_DATASTREAM::CDataReader &reader)
     Targeting = (CursorType < 3);
     MultiGraphic = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SetMultiData(WISP_DATASTREAM::CDataReader &reader)
 {
     WISPFUN_DEBUG("c209_f3");
@@ -97,7 +97,7 @@ void CTarget::SetMultiData(WISP_DATASTREAM::CDataReader &reader)
     MultiX = reader.ReadUInt16BE();
     MultiY = reader.ReadUInt16BE();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SendTargetObject(int serial)
 {
     WISPFUN_DEBUG("c209_f4");
@@ -137,7 +137,7 @@ void CTarget::SendTargetObject(int serial)
 
     SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SendTargetTile(ushort tileID, short x, short y, char z)
 {
     WISPFUN_DEBUG("c209_f5");
@@ -161,7 +161,7 @@ void CTarget::SendTargetTile(ushort tileID, short x, short y, char z)
 
     SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SendCancelTarget()
 {
     WISPFUN_DEBUG("c209_f6");
@@ -184,7 +184,7 @@ void CTarget::SendCancelTarget()
         g_CustomHouseGump->WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::Plugin_SendTargetObject(int serial)
 {
     WISPFUN_DEBUG("c209_f4");
@@ -231,7 +231,7 @@ void CTarget::Plugin_SendTargetObject(int serial)
 
     Plugin_SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::Plugin_SendTargetTile(ushort tileID, short x, short y, char z)
 {
     WISPFUN_DEBUG("c209_f5");
@@ -255,7 +255,7 @@ void CTarget::Plugin_SendTargetTile(ushort tileID, short x, short y, char z)
 
     Plugin_SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::Plugin_SendCancelTarget()
 {
     WISPFUN_DEBUG("c209_f6");
@@ -269,7 +269,7 @@ void CTarget::Plugin_SendCancelTarget()
 
     Plugin_SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SendLastTarget()
 {
     WISPFUN_DEBUG("c209_f7");
@@ -285,7 +285,7 @@ void CTarget::SendLastTarget()
 
     SendTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
@@ -300,7 +300,7 @@ void CTarget::SendTarget()
 
     g_MouseManager.CancelDoubleClick = true;
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::Plugin_SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
@@ -313,7 +313,7 @@ void CTarget::Plugin_SendTarget()
 
     g_MouseManager.CancelDoubleClick = true;
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::UnloadMulti()
 {
     WISPFUN_DEBUG("c209_f9");
@@ -323,7 +323,7 @@ void CTarget::UnloadMulti()
         m_Multi = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::LoadMulti(int offsetX, int offsetY, char offsetZ)
 {
     WISPFUN_DEBUG("c209_f10");
@@ -379,7 +379,7 @@ void CTarget::LoadMulti(int offsetX, int offsetY, char offsetZ)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTarget::AddMultiObject(CMultiObject *obj)
 {
     WISPFUN_DEBUG("c209_f11");
@@ -446,7 +446,7 @@ void CTarget::AddMultiObject(CMultiObject *obj)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CMulti *CTarget::GetMultiAtXY(short x, short y)
 {
     WISPFUN_DEBUG("c209_f12");
@@ -462,4 +462,3 @@ CMulti *CTarget::GetMultiAtXY(short x, short y)
 
     return multi;
 }
-//----------------------------------------------------------------------------------

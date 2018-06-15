@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpSkill::CGumpSkill(int serial, int x, int y)
     : CGump(GT_SKILL, serial, x, y)
 {
@@ -30,18 +30,18 @@ CGumpSkill::CGumpSkill(int serial, int x, int y)
         resizepic->Height = 20 + text->m_Texture.Height;
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpSkill::~CGumpSkill()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkill::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c124_f2");
     if (serial == ID_GS_LOCK_MOVING)
         LockMoving = !LockMoving;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkill::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c124_f3");
@@ -60,4 +60,3 @@ void CGumpSkill::OnLeftMouseButtonUp()
         }
     }
 }
-//----------------------------------------------------------------------------------

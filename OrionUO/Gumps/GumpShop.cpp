@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpShop::CGumpShop(uint serial, bool isBuyGump, short x, short y)
     : CGump(GT_SHOP, serial, x, y)
     , IsBuyGump(isBuyGump)
@@ -111,11 +111,11 @@ CGumpShop::CGumpShop(uint serial, bool isBuyGump, short x, short y)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpShop::~CGumpShop()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::SendList()
 {
     WISPFUN_DEBUG("c123_f2");
@@ -129,7 +129,7 @@ void CGumpShop::SendList()
     else
         CPacketSellRequest(this).Send();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::UpdateTotalPrice()
 {
     WISPFUN_DEBUG("c123_f3");
@@ -150,7 +150,7 @@ void CGumpShop::UpdateTotalPrice()
         m_TotalPriceText->CreateTextureA(9, std::to_string(totalPrice));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::PrepareContent()
 {
     WISPFUN_DEBUG("c123_f4");
@@ -187,7 +187,7 @@ void CGumpShop::PrepareContent()
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c123_f5");
@@ -199,7 +199,7 @@ void CGumpShop::GUMP_BUTTON_EVENT_C
     else if (serial == ID_GB_BUTTON_CLEAR) //Clear
         m_ContinueCounter = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::GUMP_SCROLL_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c123_f6");
@@ -248,7 +248,7 @@ void CGumpShop::GUMP_SCROLL_BUTTON_EVENT_C
 
     UpdateTotalPrice();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpShop::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c123_f7");
@@ -261,7 +261,7 @@ void CGumpShop::OnLeftMouseButtonUp()
         g_MouseManager.CancelDoubleClick = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpShop::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c123_f8");
@@ -332,4 +332,3 @@ bool CGumpShop::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------

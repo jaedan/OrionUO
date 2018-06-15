@@ -6,32 +6,32 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CCreateCharacterScreen g_CreateCharacterScreen;
-//----------------------------------------------------------------------------------
+
 CCreateCharacterScreen::CCreateCharacterScreen()
     : CBaseScreen(m_CreateCharacterGump)
 {
 }
-//----------------------------------------------------------------------------------
+
 CCreateCharacterScreen::~CCreateCharacterScreen()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CCreateCharacterScreen::SetStyleSelection(int val)
 {
     m_StyleSelection = val;
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 void CCreateCharacterScreen::SetColorSelection(int val)
 {
     m_ColorSelection = val;
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -51,7 +51,7 @@ void CCreateCharacterScreen::Init()
     m_Gump.PrepareTextures();
     m_Gump.WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка события после плавного затемнения экрана
 @param [__in_opt] action Идентификатор действия
@@ -77,7 +77,7 @@ void CCreateCharacterScreen::ProcessSmoothAction(uchar action)
     else if (action == ID_SMOOTH_CCS_GO_SCREEN_SELECT_TOWN)
         g_Orion.InitScreen(GS_SELECT_TOWN);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие левой кнопки мыши
 @return 
@@ -96,7 +96,7 @@ void CCreateCharacterScreen::OnLeftMouseButtonDown()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -117,7 +117,7 @@ void CCreateCharacterScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lPa
     Name = g_EntryPointer->c_str();
     m_Gump.WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -135,4 +135,3 @@ void CCreateCharacterScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lPara
         m_Gump.WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------

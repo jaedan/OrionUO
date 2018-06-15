@@ -1,21 +1,21 @@
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 bool g_AltPressed = false;
 bool g_CtrlPressed = false;
 bool g_ShiftPressed = false;
-//----------------------------------------------------------------------------------
+
 bool g_MovingFromMouse = false;
 bool g_AutoMoving = false;
 bool g_TheAbyss = false;
 bool g_AbyssPacket03First = true;
 bool g_Asmut = false;
-//----------------------------------------------------------------------------------
+
 int g_LandObjectsCount = 0;
 int g_StaticsObjectsCount = 0;
 int g_GameObjectsCount = 0;
 int g_MultiObjectsCount = 0;
 int g_RenderedObjectsCountInGameWindow = 0;
-//----------------------------------------------------------------------------------
+
 GLdouble g_GlobalScale = 1.0;
 
 CGLTexture g_MapTexture[MAX_MAPS_COUNT];
@@ -165,7 +165,7 @@ uint g_OrionFeaturesFlags = OFF_ALL_FLAGS;
 PING_INFO_DATA g_GameServerPingInfo = { 0 };
 string g_PingString = "";
 uint g_PingTimer = 0;
-//----------------------------------------------------------------------------------
+
 bool CanBeDraggedByOffset(const WISP_GEOMETRY::CPoint2Di &point)
 {
     if (g_Target.IsTargeting())
@@ -175,7 +175,7 @@ bool CanBeDraggedByOffset(const WISP_GEOMETRY::CPoint2Di &point)
 
     return (abs(point.X) >= DRAG_ITEMS_PIXEL_RANGE || abs(point.Y) >= DRAG_ITEMS_PIXEL_RANGE);
 }
-//----------------------------------------------------------------------------------
+
 void TileOffsetOnMonitorToXY(int &ofsX, int &ofsY, int &x, int &y)
 {
     if (!ofsX)
@@ -218,7 +218,7 @@ void TileOffsetOnMonitorToXY(int &ofsX, int &ofsY, int &x, int &y)
         x += y;
     }
 }
-//----------------------------------------------------------------------------------
+
 string ToCamelCase(string text)
 {
     bool lastSpace = true;
@@ -233,7 +233,7 @@ string ToCamelCase(string text)
 
     return text;
 }
-//----------------------------------------------------------------------------------
+
 int GetDistance(CGameObject *current, CGameObject *target)
 {
     if (current != NULL && target != NULL)
@@ -249,7 +249,7 @@ int GetDistance(CGameObject *current, CGameObject *target)
 
     return 100500;
 }
-//----------------------------------------------------------------------------------
+
 int GetDistance(CGameObject *current, const WISP_GEOMETRY::CPoint2Di &target)
 {
     if (current != NULL)
@@ -265,7 +265,7 @@ int GetDistance(CGameObject *current, const WISP_GEOMETRY::CPoint2Di &target)
 
     return 100500;
 }
-//----------------------------------------------------------------------------------
+
 int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target)
 {
     if (target != NULL)
@@ -281,7 +281,7 @@ int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target)
 
     return 100500;
 }
-//----------------------------------------------------------------------------------
+
 int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target)
 {
     if (target != NULL)
@@ -306,7 +306,7 @@ int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *targ
 
     return 100500;
 }
-//----------------------------------------------------------------------------------
+
 bool CheckMultiDistance(
     const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target, int maxDistance)
 {
@@ -323,7 +323,7 @@ bool CheckMultiDistance(
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, const WISP_GEOMETRY::CPoint2Di &target)
 {
     int distx = abs(target.X - current.X);
@@ -334,7 +334,7 @@ int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, const WISP_GEOMETRY::CP
 
     return distx;
 }
-//----------------------------------------------------------------------------------
+
 int GetTopObjDistance(CGameObject *current, CGameObject *target)
 {
     if (current != NULL && target != NULL)
@@ -356,7 +356,7 @@ int GetTopObjDistance(CGameObject *current, CGameObject *target)
 
     return 100500;
 }
-//---------------------------------------------------------------------------
+
 const char *GetReagentName(ushort id)
 {
     switch (id)
@@ -383,4 +383,3 @@ const char *GetReagentName(ushort id)
 
     return "";
 }
-//----------------------------------------------------------------------------------

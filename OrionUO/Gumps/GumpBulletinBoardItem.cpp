@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpBulletinBoardItem::CGumpBulletinBoardItem(
     int serial,
     int x,
@@ -160,11 +160,11 @@ CGumpBulletinBoardItem::CGumpBulletinBoardItem(
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpBulletinBoardItem::~CGumpBulletinBoardItem()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoardItem::UpdateHeight()
 {
     WISPFUN_DEBUG("c90_f2");
@@ -179,7 +179,7 @@ void CGumpBulletinBoardItem::UpdateHeight()
     if (m_ButtonReply != NULL)
         m_ButtonReply->SetY(Height - 22); //Reply
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoardItem::RecalculateHeight()
 {
     WISPFUN_DEBUG("c90_f3");
@@ -194,7 +194,7 @@ void CGumpBulletinBoardItem::RecalculateHeight()
         m_HTMLGump->CalculateDataSize();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoardItem::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c90_f4");
@@ -226,7 +226,7 @@ void CGumpBulletinBoardItem::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoardItem::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c90_f5");
@@ -235,7 +235,7 @@ void CGumpBulletinBoardItem::OnCharPress(const WPARAM &wParam, const LPARAM &lPa
     RecalculateHeight();
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoardItem::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c90_f6");
@@ -254,4 +254,3 @@ void CGumpBulletinBoardItem::OnKeyDown(const WPARAM &wParam, const LPARAM &lPara
             RecalculateHeight();
     }
 }
-//----------------------------------------------------------------------------------

@@ -6,18 +6,18 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIWorldMapTexture::CGUIWorldMapTexture(int x, int y)
     : CBaseGUI(GOT_EXTERNALTEXTURE, 0, 0, 0, x, y)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIWorldMapTexture::~CGUIWorldMapTexture()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIWorldMapTexture::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c83_f1");
@@ -35,7 +35,7 @@ void CGUIWorldMapTexture::Draw(bool checktrans)
         //g_MapTexture[m_Index].Draw(m_X + m_OffsetX, m_Y + m_OffsetY, Width, Height, checktrans);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIWorldMapTexture::Select()
 {
     WISPFUN_DEBUG("c83_f2");
@@ -49,4 +49,3 @@ bool CGUIWorldMapTexture::Select()
 
     return select;
 }
-//----------------------------------------------------------------------------------

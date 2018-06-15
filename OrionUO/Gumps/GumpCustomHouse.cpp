@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
 
 CGumpCustomHouse *g_CustomHouseGump = NULL;
-//----------------------------------------------------------------------------------
+
 template <class T, class A>
 void ParseCustomHouseObjectFileWithCategory(vector<A> &list, const string &path)
 {
@@ -67,7 +67,7 @@ void ParseCustomHouseObjectFileWithCategory(vector<A> &list, const string &path)
         fclose(file);
     }
 }
-//----------------------------------------------------------------------------------
+
 template <class T>
 void ParseCustomHouseObjectFile(vector<T> &list, const string &path)
 {
@@ -105,7 +105,7 @@ void ParseCustomHouseObjectFile(vector<T> &list, const string &path)
         fclose(file);
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpCustomHouse::CGumpCustomHouse(int serial, int x, int y)
     : CGump(GT_CUSTOM_HOUSE, serial, x, y)
 {
@@ -203,7 +203,7 @@ CGumpCustomHouse::CGumpCustomHouse(int serial, int x, int y)
     UpdateMaxPage();
     WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpCustomHouse::~CGumpCustomHouse()
 {
     g_CustomHouseGump = NULL;
@@ -219,7 +219,7 @@ CGumpCustomHouse::~CGumpCustomHouse()
     CPacketCustomHouseBuildingExit().Send();
     g_Target.SendCancelTarget();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::CalculateGumpState()
 {
     WISPFUN_DEBUG("c120_f1");
@@ -228,7 +228,7 @@ void CGumpCustomHouse::CalculateGumpState()
     if (g_GumpTranslate.X || g_GumpTranslate.Y)
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::InitToolTip()
 {
     WISPFUN_DEBUG("");
@@ -442,7 +442,7 @@ void CGumpCustomHouse::InitToolTip()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawWallSection()
 {
     int x = 0;
@@ -540,7 +540,7 @@ void CGumpCustomHouse::DrawWallSection()
                 new CGUIButton(ID_GCH_WALL_SHOW_WINDOW, 0x562B, 0x562C, 0x562D, 228, 9));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawDoorSection()
 {
     if (Page >= 0 && Page < (int)m_Doors.size())
@@ -665,7 +665,7 @@ void CGumpCustomHouse::DrawDoorSection()
         m_DataBox->Add(new CGUIScissor(false));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawFloorSection()
 {
     if (Page >= 0 && Page < (int)m_Floors.size())
@@ -714,7 +714,7 @@ void CGumpCustomHouse::DrawFloorSection()
         m_DataBox->Add(new CGUIScissor(false));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawStairSection()
 {
     if (Page >= 0 && Page < (int)m_Stairs.size())
@@ -767,7 +767,7 @@ void CGumpCustomHouse::DrawStairSection()
         m_DataBox->Add(new CGUIColoredPolygone(0, 0, 123, 96, 384, 2, 0xFF7F7F7F));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawRoofSection()
 {
     int x = 0;
@@ -877,7 +877,7 @@ void CGumpCustomHouse::DrawRoofSection()
         text->MoveOnDrag = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawMiscSection()
 {
     int x = 0;
@@ -966,7 +966,7 @@ void CGumpCustomHouse::DrawMiscSection()
         m_DataBoxGUI->Add(new CGUIButton(ID_GCH_GO_CATEGORY, 0x5622, 0x5623, 0x5624, 167, 5));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::DrawMenuSection()
 {
     const int textWidth = 108;
@@ -1019,7 +1019,7 @@ void CGumpCustomHouse::DrawMenuSection()
     entry->ReadOnly = true;
     entry->FocusedOffsetY = 2;
 }
-//----------------------------------------------------------------------------------
+
 template <class T, class A>
 pair<int, int> SeekGraphicInCustomHouseObjectListWithCategory(const vector<A> &list, ushort graphic)
 {
@@ -1038,7 +1038,7 @@ pair<int, int> SeekGraphicInCustomHouseObjectListWithCategory(const vector<A> &l
 
     return pair<int, int>(-1, -1);
 }
-//----------------------------------------------------------------------------------
+
 template <class T>
 pair<int, int> SeekGraphicInCustomHouseObjectList(const vector<T> &list, ushort graphic)
 {
@@ -1052,7 +1052,7 @@ pair<int, int> SeekGraphicInCustomHouseObjectList(const vector<T> &list, ushort 
 
     return pair<int, int>(-1, -1);
 }
-//----------------------------------------------------------------------------------
+
 pair<int, int> CGumpCustomHouse::ExistsInList(CUSTOM_HOUSE_GUMP_STATE &state, ushort graphic)
 {
     pair<int, int> result = SeekGraphicInCustomHouseObjectListWithCategory<
@@ -1104,7 +1104,7 @@ pair<int, int> CGumpCustomHouse::ExistsInList(CUSTOM_HOUSE_GUMP_STATE &state, us
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::UpdateContent()
 {
     WISPFUN_DEBUG("");
@@ -1311,7 +1311,7 @@ void CGumpCustomHouse::UpdateContent()
 
     m_TextCost->CreateTextureA(9, std::to_string((Components + Fixtures) * 500));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::UpdateMaxPage()
 {
     WISPFUN_DEBUG("");
@@ -1395,7 +1395,7 @@ void CGumpCustomHouse::UpdateMaxPage()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::SeekGraphic(ushort graphic)
 {
     CUSTOM_HOUSE_GUMP_STATE state;
@@ -1422,7 +1422,7 @@ void CGumpCustomHouse::SeekGraphic(ushort graphic)
         SelectedGraphic = graphic;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpCustomHouse::CanBuildHere(
     vector<CBuildObject> &list, CRenderWorldObject *place, CUSTOM_HOUSE_BUILD_TYPE &type)
 {
@@ -1624,7 +1624,7 @@ bool CGumpCustomHouse::CanBuildHere(
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpCustomHouse::ValidateItemPlace(const RECT &rect, ushort graphic, int x, int y)
 {
     POINT pos = { x, y };
@@ -1649,7 +1649,7 @@ bool CGumpCustomHouse::ValidateItemPlace(const RECT &rect, ushort graphic, int x
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpCustomHouse::ValidatePlaceStructure(
     CGameItem *foundationItem, CMulti *multi, int minZ, int maxZ, int flags)
 {
@@ -1734,7 +1734,7 @@ bool CGumpCustomHouse::ValidatePlaceStructure(
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpCustomHouse::ValidateItemPlace(
     CGameItem *foundationItem,
     CMultiObject *item,
@@ -1918,7 +1918,7 @@ bool CGumpCustomHouse::ValidateItemPlace(
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpCustomHouse::CanEraseHere(CRenderWorldObject *place, CUSTOM_HOUSE_BUILD_TYPE &type)
 {
     type = CHBT_NORMAL;
@@ -1942,7 +1942,7 @@ bool CGumpCustomHouse::CanEraseHere(CRenderWorldObject *place, CUSTOM_HOUSE_BUIL
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::OnTargetWorld(CRenderWorldObject *place)
 {
     if (place != NULL && place->IsMultiObject()) // && place->GetZ() >= MinHouseZ)
@@ -2122,7 +2122,7 @@ void CGumpCustomHouse::OnTargetWorld(CRenderWorldObject *place)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::GenerateFloorPlace()
 {
     CGameItem *foundationItem = g_World->GetWorldItem(Serial);
@@ -2510,7 +2510,7 @@ void CGumpCustomHouse::GenerateFloorPlace()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c101_f5");
@@ -2525,7 +2525,7 @@ void CGumpCustomHouse::GUMP_TEXT_ENTRY_EVENT_C
 
     OnButton(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c101_f6");
@@ -2539,7 +2539,7 @@ void CGumpCustomHouse::OnLeftMouseButtonUp()
 
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCustomHouse::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("");
@@ -2898,4 +2898,3 @@ void CGumpCustomHouse::GUMP_BUTTON_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------------

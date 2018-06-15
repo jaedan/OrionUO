@@ -6,18 +6,18 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpDrag::CGumpDrag(uint serial, short x, short y)
     : CGump(GT_DRAG, serial, x, y)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGumpDrag::~CGumpDrag()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::UpdateContent()
 {
     WISPFUN_DEBUG("c94_f1");
@@ -50,20 +50,20 @@ void CGumpDrag::UpdateContent()
 
     Add(new CGUIButton(ID_GD_OKAY, 0x081A, 0x081C, 0x081B, 102, 37));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c94_f2");
     if (serial == ID_GD_OKAY) //Button Okay
         OnOkayPressed();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::GUMP_SLIDER_CLICK_EVENT_C
 {
     WISPFUN_DEBUG("c94_f3");
     OnSliderMove(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::GUMP_SLIDER_MOVE_EVENT_C
 {
     WISPFUN_DEBUG("c94_f4");
@@ -73,7 +73,7 @@ void CGumpDrag::GUMP_SLIDER_MOVE_EVENT_C
     if (m_Entry != NULL)
         m_Entry->m_Entry.SetText(std::to_wstring(m_Slider->Value));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c94_f5");
@@ -98,7 +98,7 @@ void CGumpDrag::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c94_f6");
@@ -158,7 +158,7 @@ void CGumpDrag::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpDrag::OnOkayPressed()
 {
     WISPFUN_DEBUG("c94_f7");
@@ -175,4 +175,3 @@ void CGumpDrag::OnOkayPressed()
         }
     }
 }
-//----------------------------------------------------------------------------------

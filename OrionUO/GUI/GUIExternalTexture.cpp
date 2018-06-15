@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIExternalTexture::CGUIExternalTexture(
     CGLTexture *texture, bool deleteTextureOnDestroy, int x, int y, int drawWidth, int drawHeight)
     : CBaseGUI(GOT_EXTERNALTEXTURE, 0, 0, 0, x, y)
@@ -18,7 +18,7 @@ CGUIExternalTexture::CGUIExternalTexture(
     , DrawHeight(drawHeight)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIExternalTexture::~CGUIExternalTexture()
 {
     WISPFUN_DEBUG("c53_f1");
@@ -27,7 +27,7 @@ CGUIExternalTexture::~CGUIExternalTexture()
         RELEASE_POINTER(m_Texture);
     }
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CSize CGUIExternalTexture::GetSize()
 {
     WISPFUN_DEBUG("c53_f2");
@@ -48,7 +48,7 @@ WISP_GEOMETRY::CSize CGUIExternalTexture::GetSize()
 
     return size;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIExternalTexture::SetShaderMode()
 {
     WISPFUN_DEBUG("c53_f2_1");
@@ -65,7 +65,7 @@ void CGUIExternalTexture::SetShaderMode()
     else
         glUniform1iARB(g_ShaderDrawMode, SDM_NO_COLOR);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIExternalTexture::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c53_f3");
@@ -96,7 +96,7 @@ void CGUIExternalTexture::Draw(bool checktrans)
             m_Texture->Draw(m_X, m_Y, checktrans);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIExternalTexture::Select()
 {
     WISPFUN_DEBUG("c53_f4");
@@ -105,4 +105,3 @@ bool CGUIExternalTexture::Select()
 
     return false;
 }
-//----------------------------------------------------------------------------------

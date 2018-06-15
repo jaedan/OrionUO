@@ -2,7 +2,6 @@
 
 namespace WISP_NETWORK
 {
-//----------------------------------------------------------------------------------
 CConnection::CConnection(int af, int type, int protocol)
     : Af(af)
     , Type(type)
@@ -18,7 +17,7 @@ CConnection::CConnection(int af, int type, int protocol)
 
     m_MessageParser = new CPacketMessage();
 }
-//----------------------------------------------------------------------------------
+
 CConnection::~CConnection()
 {
     WISPFUN_DEBUG("c3_f2");
@@ -30,7 +29,7 @@ CConnection::~CConnection()
         m_MessageParser = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CConnection::Connect(const string &address, int port)
 {
     WISPFUN_DEBUG("c3_f3");
@@ -76,7 +75,7 @@ bool CConnection::Connect(const string &address, int port)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 void CConnection::Disconnect()
 {
     WISPFUN_DEBUG("c3_f4");
@@ -91,7 +90,7 @@ void CConnection::Disconnect()
         m_MessageParser->Clear();
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CConnection::ReadyRead()
 {
     WISPFUN_DEBUG("c3_f5");
@@ -113,7 +112,7 @@ bool CConnection::ReadyRead()
 
     return (DataReady != 0);
 }
-//----------------------------------------------------------------------------------
+
 bool CConnection::Read(int maxSize)
 {
     WISPFUN_DEBUG("c3_f6");
@@ -146,7 +145,7 @@ bool CConnection::Read(int maxSize)
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 int CConnection::Send(puchar data, int size)
 {
     WISPFUN_DEBUG("c3_f7");
@@ -159,7 +158,7 @@ int CConnection::Send(puchar data, int size)
 
     return sent;
 }
-//----------------------------------------------------------------------------------
+
 int CConnection::Send(const UCHAR_LIST &data)
 {
     WISPFUN_DEBUG("c3_f8");
@@ -174,6 +173,5 @@ int CConnection::Send(const UCHAR_LIST &data)
 
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_NETWORK
-//----------------------------------------------------------------------------------

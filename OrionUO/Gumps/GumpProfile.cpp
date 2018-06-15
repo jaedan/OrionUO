@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpProfile::CGumpProfile(
     uint serial, short x, short y, wstring topText, wstring bottomText, wstring dataText)
     : CGumpBaseScroll(GT_PROFILE, serial, 0x0820, 250, x, y, true)
@@ -58,14 +58,14 @@ CGumpProfile::CGumpProfile(
 
     m_HTMLGump->CalculateDataSize();
 }
-//----------------------------------------------------------------------------------
+
 CGumpProfile::~CGumpProfile()
 {
     WISPFUN_DEBUG("c108_f2");
     if (Changed && m_Entry != NULL)
         CPacketProfileUpdate(Serial, m_Entry->m_Entry.Data(), m_Entry->m_Entry.Length()).Send();
 }
-//----------------------------------------------------------------------------
+
 void CGumpProfile::RecalculateHeight()
 {
     WISPFUN_DEBUG("c108_f3");
@@ -86,7 +86,7 @@ void CGumpProfile::RecalculateHeight()
 
     m_HTMLGump->CalculateDataSize();
 }
-//----------------------------------------------------------------------------
+
 void CGumpProfile::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c108_f4");
@@ -111,7 +111,7 @@ void CGumpProfile::GUMP_BUTTON_EVENT_C
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------
+
 bool CGumpProfile::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c108_f5");
@@ -126,7 +126,7 @@ bool CGumpProfile::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------
+
 void CGumpProfile::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c108_f6");
@@ -136,7 +136,7 @@ void CGumpProfile::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 
     WantRedraw = true;
 }
-//----------------------------------------------------------------------------
+
 void CGumpProfile::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c108_f7");
@@ -156,4 +156,3 @@ void CGumpProfile::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             RecalculateHeight();
     }
 }
-//----------------------------------------------------------------------------

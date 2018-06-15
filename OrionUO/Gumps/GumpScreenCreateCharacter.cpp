@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenCreateCharacter::CGumpScreenCreateCharacter()
     : CGump(GT_NONE, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenCreateCharacter::~CGumpScreenCreateCharacter()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::UpdateContent()
 {
     WISPFUN_DEBUG("c114_f1");
@@ -445,7 +445,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
         Add(new CGUIGroup(0));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::InitToolTip()
 {
     WISPFUN_DEBUG("c114_f2");
@@ -475,7 +475,7 @@ void CGumpScreenCreateCharacter::InitToolTip()
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c114_f3");
@@ -524,7 +524,7 @@ void CGumpScreenCreateCharacter::GUMP_BUTTON_EVENT_C
         g_CreateCharacterScreen.SetColorSelection(0);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::GUMP_RADIO_EVENT_C
 {
     WISPFUN_DEBUG("c114_f4");
@@ -545,7 +545,7 @@ void CGumpScreenCreateCharacter::GUMP_RADIO_EVENT_C
         g_CreateCharacterScreen.SetColorSelection(0);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c114_f5");
@@ -614,7 +614,7 @@ void CGumpScreenCreateCharacter::GUMP_TEXT_ENTRY_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCreateCharacter::GUMP_COMBOBOX_SELECTION_EVENT_C
 {
     WISPFUN_DEBUG("c114_f6");
@@ -640,4 +640,3 @@ void CGumpScreenCreateCharacter::GUMP_COMBOBOX_SELECTION_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------

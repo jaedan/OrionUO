@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpBuff::CGumpBuff(short x, short y)
     : CGump(GT_BUFF, 0, x, y)
 {
@@ -22,17 +22,17 @@ CGumpBuff::CGumpBuff(short x, short y)
     Add(new CGUIAlphaBlending(true, 0.1f));
     Add(new CGUIAlphaBlending(false, 0.1f));
 }
-//----------------------------------------------------------------------------------
+
 CGumpBuff::~CGumpBuff()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpBuff::CanBeDisplayed()
 {
     WISPFUN_DEBUG("c88_f2");
     return g_ConfigManager.ToggleBufficonWindow;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::UpdateBuffIcons()
 {
     WISPFUN_DEBUG("c88_f3");
@@ -89,7 +89,7 @@ void CGumpBuff::UpdateBuffIcons()
         item = next;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::AddBuff(ushort id, ushort timer, const wstring &text)
 {
     WISPFUN_DEBUG("c88_f4");
@@ -120,7 +120,7 @@ void CGumpBuff::AddBuff(ushort id, ushort timer, const wstring &text)
     Add(new CGUIBuff(id, ticks, text));
     WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::DeleteBuff(ushort id)
 {
     WISPFUN_DEBUG("c88_f5");
@@ -135,7 +135,7 @@ void CGumpBuff::DeleteBuff(ushort id)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::InitToolTip()
 {
     WISPFUN_DEBUG("c88_f6");
@@ -183,7 +183,7 @@ void CGumpBuff::InitToolTip()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::GetGumpStatus(
     WISP_GEOMETRY::CPoint2Di &ball,
     WISP_GEOMETRY::CPoint2Di &items,
@@ -302,7 +302,7 @@ void CGumpBuff::GetGumpStatus(
     if (itemsOfs.Y > endGump.Height)
         endGump.Height = itemsOfs.Y;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::PrepareContent()
 {
     WISPFUN_DEBUG("c88_f8");
@@ -312,7 +312,7 @@ void CGumpBuff::PrepareContent()
         WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::UpdateContent()
 {
     WISPFUN_DEBUG("c88_f9");
@@ -381,7 +381,7 @@ void CGumpBuff::UpdateContent()
     if (gui != NULL)
         MoveToBack(gui);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBuff::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c88_f10");
@@ -417,4 +417,3 @@ void CGumpBuff::GUMP_BUTTON_EVENT_C
     else if (serial == ID_GB_LOCK_MOVING)
         LockMoving = !LockMoving;
 }
-//----------------------------------------------------------------------------------

@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameObject::CGameObject(int serial)
     : CRenderStaticObject(ROT_GAME_OBJECT, serial, 0, 0, 0, 0, 0)
     , LastAnimationChangeTime(GetTickCount())
@@ -20,7 +20,7 @@ CGameObject::CGameObject(int serial)
     g_GameObjectsCount++;
 #endif //UO_DEBUG_INFO!=0
 }
-//----------------------------------------------------------------------------------
+
 CGameObject::~CGameObject()
 {
     WISPFUN_DEBUG("c20_f2");
@@ -45,7 +45,7 @@ CGameObject::~CGameObject()
     g_GameObjectsCount--;
 #endif //UO_DEBUG_INFO!=0
 }
-//----------------------------------------------------------------------------------
+
 void CGameObject::SetFlags(uchar val)
 {
     WISPFUN_DEBUG("c20_f3");
@@ -60,7 +60,7 @@ void CGameObject::SetFlags(uchar val)
         g_GumpManager.UpdateContent(Serial, 0, GT_TARGET_SYSTEM);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameObject::SetName(const string &newName)
 {
     WISPFUN_DEBUG("c20_f4");
@@ -84,7 +84,7 @@ void CGameObject::SetName(const string &newName)
 
     m_Name = newName;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать текстуру опции Object Handles (автоматически создает текстуру, если она не была создана)
 @param [__in] x Экранная координата X
@@ -125,7 +125,7 @@ void CGameObject::DrawObjectHandlesTexture()
 
     m_TextureObjectHalndes.Draw(x, y);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Выбрать текстуру опции Object Handles
 @param [__in] x Экранная координата X
@@ -165,7 +165,7 @@ void CGameObject::SelectObjectHandlesTexture()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Создать текстуру для опции Object Handles
 @param [__in] text Текст названия объекта
@@ -266,7 +266,7 @@ void CGameObject::GenerateObjectHandlesTexture(wstring text)
 
     g_GL_BindTexture16(m_TextureObjectHalndes, g_ObjectHandlesWidth, g_ObjectHandlesHeight, pixels);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить текст в контейнер
 @param [__in] td Ссылка на объект текста
@@ -297,7 +297,7 @@ void CGameObject::AddText(CTextData *msg)
 
     g_Orion.AddJournalMessage(msg, JournalPrefix);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить индекс анимации
 @return Индекс анимации
@@ -307,7 +307,7 @@ ushort CGameObject::GetMountAnimation()
     WISPFUN_DEBUG("c20_f9");
     return Graphic; // + UO->GetStaticPointer(Graphic)->Increment;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Очистить контейнер
 @return
@@ -331,7 +331,7 @@ void CGameObject::Clear()
         m_Items = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameObject::ClearUnequipped()
 {
     WISPFUN_DEBUG("c20_f10_1");
@@ -358,7 +358,7 @@ void CGameObject::ClearUnequipped()
         m_Items = newFirstItem;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameObject::ClearNotOpenedItems()
 {
     WISPFUN_DEBUG("c20_f11");
@@ -378,7 +378,7 @@ void CGameObject::ClearNotOpenedItems()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGameObject::Poisoned()
 {
     WISPFUN_DEBUG("c20_f12");
@@ -387,7 +387,7 @@ bool CGameObject::Poisoned()
     else
         return (m_Flags & 0x04);
 }
-//----------------------------------------------------------------------------------
+
 bool CGameObject::Flying()
 {
     WISPFUN_DEBUG("c20_f13");
@@ -396,7 +396,7 @@ bool CGameObject::Flying()
     else
         return false;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Золото ли это
 @return Индекс в таблице золота
@@ -418,7 +418,7 @@ int CGameObject::IsGold(ushort graphic)
 
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить индекс картинки для рисования
 @param [__out] doubleDraw Двойная отрисовка объекта
@@ -444,7 +444,7 @@ ushort CGameObject::GetDrawGraphic(bool &doubleDraw)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать эффект
 @param [__in] drawX Экранная координата X
@@ -481,7 +481,7 @@ void CGameObject::DrawEffects(int x, int y)
         effect->RemoveRenderMode();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameObject::UpdateEffects()
 {
     WISPFUN_DEBUG("c20_f17");
@@ -496,7 +496,7 @@ void CGameObject::UpdateEffects()
         effect = next;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить эффект
 @param [__in] effect Ссылка на эффект
@@ -519,7 +519,7 @@ void CGameObject::AddEffect(CGameEffect *effect)
         m_Effects = effect;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Удалить эффект
 @param [__in] effect Ссылка на эффект
@@ -547,7 +547,7 @@ void CGameObject::RemoveEffect(CGameEffect *effect)
     effect->m_Prev = NULL;
     delete effect;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить объект в список объектов текущего контейнера
 @param [__in] obj Ссылка на объект
@@ -580,7 +580,7 @@ void CGameObject::AddObject(CGameObject *obj)
         obj->Container = Container;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить объект в контейнер (this - контейнер)
 @param [__in] obj Ссылка на объект
@@ -611,7 +611,7 @@ void CGameObject::AddItem(CGameObject *obj)
 
     obj->Container = Serial;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Изъять объект из контейнера
 @param [__in] obj Ссылка на объект
@@ -656,7 +656,7 @@ void CGameObject::Reject(CGameObject *obj)
     obj->m_Prev = NULL;
     obj->Container = 0xFFFFFFFF;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Найти объект в мире, в котором содержится контейнер
 @return Ссылка на объект в мире
@@ -671,7 +671,7 @@ CGameObject *CGameObject::GetTopObject()
 
     return obj;
 }
-//----------------------------------------------------------------------------------
+
 CGameItem *CGameObject::FindLayer(int layer)
 {
     WISPFUN_DEBUG("c20_f24");
@@ -683,4 +683,3 @@ CGameItem *CGameObject::FindLayer(int layer)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------

@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSkillGroupObject::CSkillGroupObject()
 {
     WISPFUN_DEBUG("c207_f1");
     memset(m_Items, 0xFF, sizeof(m_Items));
 }
-//----------------------------------------------------------------------------------
+
 CSkillGroupObject::~CSkillGroupObject()
 {
 }
-//----------------------------------------------------------------------------------
+
 uchar CSkillGroupObject::GetItem(intptr_t index)
 {
     WISPFUN_DEBUG("c207_f2");
@@ -27,7 +27,7 @@ uchar CSkillGroupObject::GetItem(intptr_t index)
 
     return m_Items[index];
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupObject::Add(uchar index)
 {
     WISPFUN_DEBUG("c207_f3");
@@ -37,7 +37,7 @@ void CSkillGroupObject::Add(uchar index)
     m_Items[Count] = index;
     Count++;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupObject::AddSorted(uchar index)
 {
     WISPFUN_DEBUG("c207_f4");
@@ -49,7 +49,7 @@ void CSkillGroupObject::AddSorted(uchar index)
 
     Sort();
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupObject::Remove(uchar index)
 {
     WISPFUN_DEBUG("c207_f5");
@@ -78,7 +78,7 @@ void CSkillGroupObject::Remove(uchar index)
         m_Items[Count] = 0xFF;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CSkillGroupObject::Contains(uchar index)
 {
     WISPFUN_DEBUG("c207_f6");
@@ -90,7 +90,7 @@ bool CSkillGroupObject::Contains(uchar index)
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupObject::Sort()
 {
     WISPFUN_DEBUG("c207_f7");
@@ -113,7 +113,7 @@ void CSkillGroupObject::Sort()
     IFOR (j, 0, Count)
         m_Items[j] = table[j];
 }
-//----------------------------------------------------------------------------------
+
 void CSkillGroupObject::TransferTo(CSkillGroupObject *group)
 {
     WISPFUN_DEBUG("c207_f8");
@@ -122,4 +122,3 @@ void CSkillGroupObject::TransferTo(CSkillGroupObject *group)
 
     group->Sort();
 }
-//----------------------------------------------------------------------------------

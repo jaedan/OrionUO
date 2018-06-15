@@ -6,17 +6,17 @@ namespace WISP_MOUSE
 #pragma warning(disable : 4800)
 
 CMouse *g_WispMouse = NULL;
-//----------------------------------------------------------------------------------
+
 CMouse::CMouse()
 {
     g_WispMouse = this;
 }
-//----------------------------------------------------------------------------------
+
 CMouse::~CMouse()
 {
     g_WispMouse = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CMouse::Update()
 {
     WISPFUN_DEBUG("c8_f1");
@@ -33,7 +33,7 @@ void CMouse::Update()
 
     RealPosition = Position;
 }
-//----------------------------------------------------------------------------------
+
 void CMouse::Update(WPARAM wParam, LPARAM lParam)
 {
     WISPFUN_DEBUG("c8_f2");
@@ -57,14 +57,14 @@ void CMouse::Update(WPARAM wParam, LPARAM lParam)
 
     RealPosition = Position;
 }
-//----------------------------------------------------------------------------------
+
 void CMouse::ReleaseCapture()
 {
     WISPFUN_DEBUG("c8_f3");
     if (!(LeftButtonPressed || RightButtonPressed || MidButtonPressed))
         ::ReleaseCapture();
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CPoint2Di CMouse::LeftDroppedOffset()
 {
     WISPFUN_DEBUG("c8_f4");
@@ -78,7 +78,7 @@ WISP_GEOMETRY::CPoint2Di CMouse::LeftDroppedOffset()
 
     return position;
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CPoint2Di CMouse::RightDroppedOffset()
 {
     WISPFUN_DEBUG("c8_f5");
@@ -92,7 +92,7 @@ WISP_GEOMETRY::CPoint2Di CMouse::RightDroppedOffset()
 
     return position;
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CPoint2Di CMouse::MidDroppedOffset()
 {
     WISPFUN_DEBUG("c8_f6");
@@ -106,6 +106,5 @@ WISP_GEOMETRY::CPoint2Di CMouse::MidDroppedOffset()
 
     return position;
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_MOUSE
-//----------------------------------------------------------------------------------

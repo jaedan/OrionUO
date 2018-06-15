@@ -1,20 +1,19 @@
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 namespace WISP_LOGGER
 {
-//----------------------------------------------------------------------------------
 CLogger g_WispLogger;
 CLogger g_WispCrashLogger;
-//----------------------------------------------------------------------------------
+
 CLogger::CLogger()
 {
 }
-//----------------------------------------------------------------------------------
+
 CLogger::~CLogger()
 {
     Close();
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Close()
 {
     if (m_File != NULL)
@@ -24,7 +23,7 @@ void CLogger::Close()
         m_File = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Init(const string &filePath)
 {
     if (m_File != NULL)
@@ -37,7 +36,7 @@ void CLogger::Init(const string &filePath)
 
     FileName = filePath;
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Init(const wstring &filePath)
 {
     if (m_File != NULL)
@@ -50,7 +49,7 @@ void CLogger::Init(const wstring &filePath)
 
     FileName = ToString(filePath);
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Print(const char *format, ...)
 {
     if (m_File == NULL)
@@ -62,7 +61,7 @@ void CLogger::Print(const char *format, ...)
     va_end(arg);
     fflush(m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::VPrint(const char *format, va_list ap)
 {
     if (m_File == NULL)
@@ -71,7 +70,7 @@ void CLogger::VPrint(const char *format, va_list ap)
     vfprintf(m_File, format, ap);
     fflush(m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Print(const wchar_t *format, ...)
 {
     if (m_File == NULL)
@@ -83,7 +82,7 @@ void CLogger::Print(const wchar_t *format, ...)
     va_end(arg);
     fflush(m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::VPrint(const wchar_t *format, va_list ap)
 {
     if (m_File == NULL)
@@ -92,7 +91,7 @@ void CLogger::VPrint(const wchar_t *format, va_list ap)
     vfwprintf(m_File, format, ap);
     fflush(m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CLogger::Dump(uchar *buf, int size)
 {
     if (m_File == NULL)
@@ -129,6 +128,5 @@ void CLogger::Dump(uchar *buf, int size)
 
     fflush(m_File);
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_LOGGER
-//----------------------------------------------------------------------------------

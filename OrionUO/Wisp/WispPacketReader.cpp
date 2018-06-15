@@ -2,16 +2,15 @@
 
 namespace WISP_NETWORK
 {
-//----------------------------------------------------------------------------------
 CPacketReader::CPacketReader()
     : WISP_DATASTREAM::CDataReader()
 {
 }
-//----------------------------------------------------------------------------------
+
 CPacketReader::~CPacketReader()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CPacketReader::Read(class CConnection *connection)
 {
     WISPFUN_DEBUG("c10_f1");
@@ -46,6 +45,5 @@ void CPacketReader::Read(class CConnection *connection)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_NETWORK
-//----------------------------------------------------------------------------------

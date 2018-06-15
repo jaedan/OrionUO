@@ -2,12 +2,11 @@
 
 namespace WISP_NETWORK
 {
-//----------------------------------------------------------------------------------
 CPacketMessage::CPacketMessage(bool bigEndian)
     : BigEndian(bigEndian)
 {
 }
-//----------------------------------------------------------------------------------
+
 CPacketMessage::CPacketMessage(puchar data, int dataSize, bool bigEndian)
     : BigEndian(bigEndian)
 {
@@ -15,20 +14,20 @@ CPacketMessage::CPacketMessage(puchar data, int dataSize, bool bigEndian)
     m_Data.resize(dataSize);
     memcpy(&m_Data[0], &data[0], dataSize);
 }
-//----------------------------------------------------------------------------------
+
 CPacketMessage::CPacketMessage(const UCHAR_LIST &data, bool bigEndian)
     : BigEndian(bigEndian)
     , m_Data(data)
 {
     WISPFUN_DEBUG("c9_f2");
 }
-//----------------------------------------------------------------------------------
+
 CPacketMessage::~CPacketMessage()
 {
     WISPFUN_DEBUG("c9_f3");
     m_Data.clear();
 }
-//----------------------------------------------------------------------------------
+
 void CPacketMessage::Append(puchar data, int dataSize)
 {
     WISPFUN_DEBUG("c9_f4");
@@ -37,13 +36,13 @@ void CPacketMessage::Append(puchar data, int dataSize)
 
     m_Data.insert(m_Data.end(), buf.begin(), buf.end());
 }
-//----------------------------------------------------------------------------------
+
 void CPacketMessage::Append(const UCHAR_LIST &data)
 {
     WISPFUN_DEBUG("c9_f5");
     m_Data.insert(m_Data.end(), data.begin(), data.end());
 }
-//----------------------------------------------------------------------------------
+
 UCHAR_LIST CPacketMessage::Read(class CPacketReader *reader, int &dataOffset)
 {
     WISPFUN_DEBUG("c9_f6");
@@ -81,6 +80,5 @@ UCHAR_LIST CPacketMessage::Read(class CPacketReader *reader, int &dataOffset)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_NETWORK
-//----------------------------------------------------------------------------------

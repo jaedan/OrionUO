@@ -6,26 +6,26 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpTargetSystem::CGumpTargetSystem(uint serial, short x, short y)
     : CGump(GT_TARGET_SYSTEM, serial, x, y)
 {
     m_Locker.Serial = ID_GSB_LOCK_MOVING;
 }
-//----------------------------------------------------------------------------------
+
 CGumpTargetSystem::~CGumpTargetSystem()
 {
     g_NewTargetSystem.GumpX = m_X;
     g_NewTargetSystem.GumpY = m_Y;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpTargetSystem::CanBeDisplayed()
 {
     return !(g_ConfigManager.DisableNewTargetSystem || !g_NewTargetSystem.Serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTargetSystem::PrepareContent()
 {
     //Если гамп захватили и (может быть) двигают
@@ -37,7 +37,7 @@ void CGumpTargetSystem::PrepareContent()
 			g_GeneratedMouseDown = true;
 	}*/
 }
-//----------------------------------------------------------------------------------
+
 void CGumpTargetSystem::UpdateContent()
 {
     WISPFUN_DEBUG("c129_f1");
@@ -130,7 +130,7 @@ void CGumpTargetSystem::UpdateContent()
         text->CreateTextureA(1, OldName, 150, TS_LEFT, UOFONT_FIXED);
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpTargetSystem::OnLeftMouseDown()
 {
     WISPFUN_DEBUG("c129_f2");
@@ -147,7 +147,7 @@ void CGumpTargetSystem::OnLeftMouseDown()
         }
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpTargetSystem::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c129_f3");
@@ -160,7 +160,7 @@ void CGumpTargetSystem::GUMP_BUTTON_EVENT_C
         g_MouseManager.CancelDoubleClick = true;
     }
 }
-//----------------------------------------------------------------------------
+
 bool CGumpTargetSystem::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c129_f4");
@@ -184,4 +184,3 @@ bool CGumpTargetSystem::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------

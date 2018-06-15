@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIComboBox::CGUIComboBox(
     int serial,
     ushort graphic,
@@ -60,7 +60,7 @@ CGUIComboBox::CGUIComboBox(
             m_MinimizedArrowX = th->Width - 16;
     }
 }
-//----------------------------------------------------------------------------------
+
 CGUIComboBox::~CGUIComboBox()
 {
     WISPFUN_DEBUG("c49_f2");
@@ -70,7 +70,7 @@ CGUIComboBox::~CGUIComboBox()
         Text = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIComboBox::RecalculateWidth()
 {
     WISPFUN_DEBUG("c49_f3");
@@ -97,21 +97,21 @@ void CGUIComboBox::RecalculateWidth()
         m_WorkWidth = OpenedWidth - 6;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIComboBox::SetShowItemsCount(int val)
 {
     WISPFUN_DEBUG("c49_f4");
     m_WorkHeight = val * 15;
     m_ShowItemsCount = val;
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CSize CGUIComboBox::GetSize()
 {
     WISPFUN_DEBUG("c49_f5");
 
     return WISP_GEOMETRY::CSize(m_WorkWidth, m_WorkHeight);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIComboBox::PrepareTextures()
 {
     WISPFUN_DEBUG("c49_f6");
@@ -129,7 +129,7 @@ void CGUIComboBox::PrepareTextures()
         g_Orion.ExecuteGump(0x00FC);
     }
 }
-//----------------------------------------------------------------------------------
+
 CBaseGUI *CGUIComboBox::SkipToStart()
 {
     WISPFUN_DEBUG("c49_f7");
@@ -153,7 +153,7 @@ CBaseGUI *CGUIComboBox::SkipToStart()
 
     return start;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIComboBox::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c49_f8");
@@ -305,7 +305,7 @@ void CGUIComboBox::Draw(bool checktrans)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIComboBox::Select()
 {
     WISPFUN_DEBUG("c49_f9");
@@ -351,7 +351,7 @@ bool CGUIComboBox::Select()
 
     return select;
 }
-//----------------------------------------------------------------------------------
+
 CBaseGUI *CGUIComboBox::SelectedItem()
 {
     WISPFUN_DEBUG("c49_f10");
@@ -396,7 +396,7 @@ CBaseGUI *CGUIComboBox::SelectedItem()
 
     return select;
 }
-//----------------------------------------------------------------------------------
+
 int CGUIComboBox::IsSelectedItem()
 {
     WISPFUN_DEBUG("c49_f11");
@@ -427,4 +427,3 @@ int CGUIComboBox::IsSelectedItem()
 
     return select;
 }
-//----------------------------------------------------------------------------------

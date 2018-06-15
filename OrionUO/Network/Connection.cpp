@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSocket::CSocket(bool gameSocket)
     : WISP_NETWORK::CConnection()
     , GameSocket(gameSocket)
 {
 }
-//----------------------------------------------------------------------------------
+
 CSocket::~CSocket()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CSocket::Connect(const string &address, int port)
 {
     WISPFUN_DEBUG("c158_f1");
@@ -225,7 +225,7 @@ bool CSocket::Connect(const string &address, int port)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 UCHAR_LIST CSocket::Decompression(UCHAR_LIST data)
 {
     WISPFUN_DEBUG("c158_f2");
@@ -255,4 +255,3 @@ UCHAR_LIST CSocket::Decompression(UCHAR_LIST data)
 
     return data;
 }
-//----------------------------------------------------------------------------------

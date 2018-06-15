@@ -6,12 +6,12 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameScreen g_GameScreen;
 RENDER_VARIABLES_FOR_GAME_WINDOW g_RenderBounds;
-//----------------------------------------------------------------------------------
+
 CGameScreen::CGameScreen()
     : CBaseScreen(m_GameScreenGump)
 {
@@ -23,12 +23,12 @@ CGameScreen::CGameScreen()
     memset(&m_ObjectHandlesList[0], 0, sizeof(m_ObjectHandlesList));
     memset(&m_Light[0], 0, sizeof(m_Light));
 }
-//----------------------------------------------------------------------------------
+
 CGameScreen::~CGameScreen()
 {
     WISPFUN_DEBUG("c164_f2");
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -41,7 +41,7 @@ void CGameScreen::Init()
     g_ScreenEffectManager.UseSunrise();
     SmoothScreenAction = 0;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка события после плавного затемнения экрана
 @param [__in_opt] action Идентификатор действия
@@ -56,7 +56,7 @@ void CGameScreen::ProcessSmoothAction(uchar action)
     if (action == ID_SMOOTH_GS_LOGOUT)
         g_LogoutAfterClick = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация всплывающих подсказок
 @return 
@@ -118,7 +118,7 @@ void CGameScreen::InitToolTip()
             g_GumpManager.InitToolTip();
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Вычисление значений Z координаты для рендера
 @param [__out] noDrawRoof Не рисовать крыши и верхние этажи строений
@@ -251,7 +251,7 @@ void CGameScreen::UpdateMaxDrawZ()
         g_MaxGroundZ = maxGroundZ;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Применение прозрачности крон деревьев в указанных координатах
 @param [__in] graphic ндекс картинки дерева
@@ -286,7 +286,7 @@ void CGameScreen::ApplyTransparentFoliageToUnion(ushort graphic, int x, int y, i
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Проверка принадлежности кроны к группе крон (с последующим применением прозрачности всей группе)
 @param [__in] graphic Индекс картинки дерева
@@ -319,7 +319,7 @@ void CGameScreen::CheckFoliageUnion(ushort graphic, int x, int y, int z)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Расчет списка объектов рендера, вычисление прозрачности крон деревьев (в т.ч. составных)
 @return 
@@ -552,7 +552,7 @@ void CGameScreen::CalculateRenderList()
 
     UpdateDrawPos = false;
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::AddTileToRenderList(
     CRenderWorldObject *obj, int worldX, int worldY, bool useObjectHandles, int maxZ)
 {
@@ -856,7 +856,7 @@ void CGameScreen::AddTileToRenderList(
         m_RenderListCount++;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::AddOffsetCharacterTileToRenderList(CGameObject *obj, bool useObjectHandles)
 {
     WISPFUN_DEBUG("c164_f12");
@@ -939,7 +939,7 @@ void CGameScreen::AddOffsetCharacterTileToRenderList(CGameObject *obj, bool useO
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Вычисление параметров игрового окна
 @return 
@@ -1107,7 +1107,7 @@ void CGameScreen::CalculateGameWindowBounds()
             g_LightBuffer.Init(testWidth, testHeight);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Функция добавления источника света
 @param [__in] rwo Верхний объект, источающий свет
@@ -1184,7 +1184,7 @@ void CGameScreen::AddLight(CRenderWorldObject *rwo, CRenderWorldObject *lightObj
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Рисование игрового окна
 @param [__in] mode true - отрисовка, false - выбор
@@ -1336,7 +1336,7 @@ void CGameScreen::DrawGameWindow(bool mode)
             m_ObjectHandlesList[i]->SelectObjectHandlesTexture();
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отображение источников света
 @return 
@@ -1422,7 +1422,7 @@ void CGameScreen::DrawGameWindowLight()
 
     UnuseShader();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отображение текста над объектами мира
 @param [__in] mode true - отрисовка, false - выбор
@@ -1508,7 +1508,7 @@ void CGameScreen::DrawGameWindowText(bool mode)
     else
         g_WorldTextRenderer.Select(NULL);
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::PrepareContent()
 {
     WISPFUN_DEBUG("c164_f18");
@@ -1576,7 +1576,7 @@ void CGameScreen::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовка/выбор объектов
 @param [__in] mode true - отрисовка, false - выбор
@@ -1997,7 +1997,7 @@ void CGameScreen::Render(bool mode)
         g_LastSelectedObject.Init(g_SelectedObject);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие левой кнопки мыши
 @return
@@ -2024,7 +2024,7 @@ void CGameScreen::OnLeftMouseButtonDown()
     if (g_PopupMenu != NULL && g_SelectedObject.Gump != g_PopupMenu)
         g_GumpManager.RemoveGump(g_PopupMenu);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отпускание левой кнопки мыши
 @return 
@@ -2234,7 +2234,7 @@ void CGameScreen::OnLeftMouseButtonUp()
             gumpEntry->FrameCreated = false;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Двойной клик левой кнопкой мыши
 @return true при успешной обработке
@@ -2308,7 +2308,7 @@ bool CGameScreen::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие правой кнопки мыши
 @return
@@ -2322,7 +2322,7 @@ void CGameScreen::OnRightMouseButtonDown()
     if (g_PopupMenu != NULL && g_SelectedObject.Gump != g_PopupMenu)
         g_GumpManager.RemoveGump(g_PopupMenu);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отпускание правой кнопки мыши
 @return 
@@ -2351,7 +2351,7 @@ void CGameScreen::OnRightMouseButtonUp()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Двойной клик правой кнопкой мыши
 @return true при успешной обработке
@@ -2376,7 +2376,7 @@ bool CGameScreen::OnRightMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка средней кнопки (колесика) мыши
 @param [__in] state Состояние колесика
@@ -2409,14 +2409,14 @@ void CGameScreen::OnMidMouseButtonScroll(bool up)
             g_GlobalScale = 2.3;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::OnDragging()
 {
     WISPFUN_DEBUG("c164_f27");
     if (g_PressedObject.LeftGump != NULL)
         g_GumpManager.OnDragging(false);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -2448,7 +2448,7 @@ void CGameScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
         (int)g_EntryPointer->Length() < max(g_EntryPointer->MaxLength, 60))
         g_EntryPointer->Insert((wchar_t)wParam);
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c164_f29");
@@ -2605,7 +2605,7 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameScreen::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c164_f30");
@@ -2615,4 +2615,3 @@ void CGameScreen::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
             g_Orion.ChangeWarmode(0);
     }
 }
-//----------------------------------------------------------------------------------

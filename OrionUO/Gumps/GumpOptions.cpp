@@ -6,22 +6,22 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 const ushort g_OptionsTextColor = 0;
 const int g_OptionsPolygoneColorOffset = 12;
-//----------------------------------------------------------------------------------
+
 CGumpOptions::CGumpOptions(short x, short y)
     : CGump(GT_OPTIONS, 0, x, y)
 {
     Page = 2;
 }
-//----------------------------------------------------------------------------------
+
 CGumpOptions::~CGumpOptions()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpOptions::CalculateGumpState()
 {
     WISPFUN_DEBUG("c104_f1");
@@ -49,7 +49,7 @@ void CGumpOptions::CalculateGumpState()
             WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::PrepareContent()
 {
     WISPFUN_DEBUG("c104_f2");
@@ -59,7 +59,7 @@ void CGumpOptions::PrepareContent()
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::UpdateContent()
 {
     WISPFUN_DEBUG("c104_f3");
@@ -123,7 +123,7 @@ void CGumpOptions::UpdateContent()
 
     RedrawMacroData();
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::Init()
 {
     WISPFUN_DEBUG("c104_f4");
@@ -135,7 +135,7 @@ void CGumpOptions::Init()
 
     WantUpdateContent = true;
 }
-//---------------------------------------------------------------------------
+
 void CGumpOptions::InitToolTip()
 {
     WISPFUN_DEBUG("c104_f5");
@@ -829,7 +829,7 @@ void CGumpOptions::InitToolTip()
             break;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage1()
 {
     WISPFUN_DEBUG("c104_f6");
@@ -911,7 +911,7 @@ void CGumpOptions::DrawPage1()
     checkbox->Checked = g_OptionsConfig.BackgroundSound;
     checkbox->SetTextParameters(0, L"Play sounds in background", g_OptionsTextColor);
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage2()
 {
     WISPFUN_DEBUG("c104_f7");
@@ -1301,7 +1301,7 @@ void CGumpOptions::DrawPage2()
 
     html->CalculateDataSize();
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage3()
 {
     WISPFUN_DEBUG("c104_f8");
@@ -1364,7 +1364,7 @@ void CGumpOptions::DrawPage3()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 88, 173));
     text->CreateTextureW(0, L"Font for Tool-tips");
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage4()
 {
     WISPFUN_DEBUG("c104_f9");
@@ -1624,7 +1624,7 @@ void CGumpOptions::DrawPage4()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 324, 192));
     text->CreateTextureW(0, L"Chat font");
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::RedrawMacroData()
 {
     WISPFUN_DEBUG("c104_f10");
@@ -1745,7 +1745,7 @@ void CGumpOptions::RedrawMacroData()
                 new CGUIButton(ID_GO_P5_BUTTON_DOWN, 0x0985, 0x0986, 0x0986, 415, y /*295 /*269*/));
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage5()
 {
     WISPFUN_DEBUG("c104_f11");
@@ -1809,7 +1809,7 @@ void CGumpOptions::DrawPage5()
 
     m_MacroDataBox = (CGUIDataBox *)Add(new CGUIDataBox());
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage6()
 {
     WISPFUN_DEBUG("c104_f12");
@@ -1979,7 +1979,7 @@ void CGumpOptions::DrawPage6()
 
     html->CalculateDataSize();
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage7()
 {
     WISPFUN_DEBUG("c104_f13");
@@ -2169,7 +2169,7 @@ void CGumpOptions::DrawPage7()
         checkbox->SetTextParameters(0, L"Ignore Alliance Messages", g_OptionsTextColor);
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage8()
 {
     WISPFUN_DEBUG("c104_f14");
@@ -2283,7 +2283,7 @@ void CGumpOptions::DrawPage8()
     checkbox->Checked = g_OptionsConfig.CriminalActionsQuery;
     checkbox->SetTextParameters(0, L"Query before performing criminal actions", g_OptionsTextColor);
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage9()
 {
     WISPFUN_DEBUG("c104_f15");
@@ -2357,7 +2357,7 @@ void CGumpOptions::DrawPage9()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 86, 243));
     text->CreateTextureW(0, L"Set the font for speech");
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::DrawPage10()
 {
     WISPFUN_DEBUG("c104_f16");
@@ -2366,7 +2366,7 @@ void CGumpOptions::DrawPage10()
 
     Add(new CGUIGumppic(0x00EA, 576, 309));
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::UpdateColor(const SELECT_COLOR_GUMP_STATE &state, ushort color)
 {
     WISPFUN_DEBUG("c104_f17");
@@ -2572,7 +2572,7 @@ void CGumpOptions::UpdateColor(const SELECT_COLOR_GUMP_STATE &state, ushort colo
             break;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c104_f18");
@@ -2829,7 +2829,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c104_f19");
@@ -3034,7 +3034,7 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_RADIO_EVENT_C
 {
     WISPFUN_DEBUG("c104_f20");
@@ -3145,13 +3145,13 @@ void CGumpOptions::GUMP_RADIO_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_SLIDER_CLICK_EVENT_C
 {
     WISPFUN_DEBUG("c104_f21");
     OnSliderMove(serial);
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
 {
     WISPFUN_DEBUG("c104_f22");
@@ -3227,7 +3227,7 @@ void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::GUMP_COMBOBOX_SELECTION_EVENT_C
 {
     WISPFUN_DEBUG("c104_f23");
@@ -3309,7 +3309,7 @@ void CGumpOptions::GUMP_COMBOBOX_SELECTION_EVENT_C
         m_WantRedrawMacroData = true;
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c104_f24");
@@ -3402,7 +3402,7 @@ void CGumpOptions::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
         }
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c104_f25");
@@ -3473,7 +3473,7 @@ void CGumpOptions::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         }
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpOptions::ApplyPageChanges()
 {
     WISPFUN_DEBUG("c104_f26");
@@ -3723,7 +3723,7 @@ void CGumpOptions::ApplyPageChanges()
             break;
     }
 }
-//---------------------------------------------------------------------------
+
 const char *CGumpOptions::m_HotkeyText[0x100] = {
     "",               //0x00
     "Left Mouse",     //0x01
@@ -3982,4 +3982,3 @@ const char *CGumpOptions::m_HotkeyText[0x100] = {
     "Clear",          //0xfe
     "0xff"            //0xff
 };
-//----------------------------------------------------------------------------

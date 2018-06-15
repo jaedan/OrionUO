@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpSkills::CGumpSkills(short x, short y, bool minimized, int height)
     : CGumpBaseScroll(GT_SKILLS, 0, 0x1F40, height, x, y, true, 0, true, 15)
 {
@@ -93,11 +93,11 @@ CGumpSkills::CGumpSkills(short x, short y, bool minimized, int height)
 
     m_HTMLGump->CalculateDataSize();
 }
-//----------------------------------------------------------------------------------
+
 CGumpSkills::~CGumpSkills()
 {
 }
-//---------------------------------------------------------------------------
+
 void CGumpSkills::InitToolTip()
 {
     WISPFUN_DEBUG("c125_f2");
@@ -152,7 +152,7 @@ void CGumpSkills::InitToolTip()
     else
         g_ToolTip.Set(L"Double click to maximize skills gump");
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateHeight()
 {
     WISPFUN_DEBUG("c125_f3");
@@ -163,7 +163,7 @@ void CGumpSkills::UpdateHeight()
     m_CreateGroup->SetY(Height - 3); //New Group gump
     m_SkillSum->SetY(Height - 6);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateGroupPositions()
 {
     WISPFUN_DEBUG("c125_f4");
@@ -189,7 +189,7 @@ void CGumpSkills::UpdateGroupPositions()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CGUISkillGroup *CGumpSkills::GetSkillGroup(int index)
 {
     WISPFUN_DEBUG("c125_f5");
@@ -208,7 +208,7 @@ CGUISkillGroup *CGumpSkills::GetSkillGroup(int index)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 CGUISkillItem *CGumpSkills::GetSkill(int index)
 {
     WISPFUN_DEBUG("c125_f6");
@@ -226,7 +226,7 @@ CGUISkillItem *CGumpSkills::GetSkill(int index)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateSkillValue(int index)
 {
     WISPFUN_DEBUG("c125_f7");
@@ -251,7 +251,7 @@ void CGumpSkills::UpdateSkillValue(int index)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateSkillValues()
 {
     WISPFUN_DEBUG("c125_f8");
@@ -267,7 +267,7 @@ void CGumpSkills::UpdateSkillValues()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateSkillsSum()
 {
     WISPFUN_DEBUG("c125_f9");
@@ -275,7 +275,7 @@ void CGumpSkills::UpdateSkillsSum()
     sprintf_s(str, "%.1f", g_SkillsManager.SkillsTotal);
     m_SkillSum->CreateTextureA(3, str);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::Init()
 {
     WISPFUN_DEBUG("c125_f10");
@@ -283,7 +283,7 @@ void CGumpSkills::Init()
     QFOR(group, g_SkillGroupManager.m_Groups, CSkillGroupObject *)
     group->Maximized = false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::CalculateGumpState()
 {
     WISPFUN_DEBUG("c125_f11");
@@ -306,7 +306,7 @@ void CGumpSkills::CalculateGumpState()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::PrepareContent()
 {
     WISPFUN_DEBUG("c125_f12");
@@ -414,7 +414,7 @@ void CGumpSkills::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CSkillGroupObject *CGumpSkills::GetGroupUnderCursor(int &index)
 {
     WISPFUN_DEBUG("c125_f13");
@@ -458,7 +458,7 @@ CSkillGroupObject *CGumpSkills::GetGroupUnderCursor(int &index)
     //Ничего не нашлось
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::UpdateGroupText()
 {
     WISPFUN_DEBUG("c125_f14");
@@ -487,7 +487,7 @@ void CGumpSkills::UpdateGroupText()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::SetGroupTextFromEntry()
 {
     WISPFUN_DEBUG("c125_f15");
@@ -522,7 +522,7 @@ void CGumpSkills::SetGroupTextFromEntry()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c125_f16");
@@ -542,7 +542,7 @@ void CGumpSkills::OnLeftMouseButtonUp()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c125_f17");
@@ -636,7 +636,7 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c125_f18");
@@ -655,7 +655,7 @@ void CGumpSkills::GUMP_CHECKBOX_EVENT_C
         UpdateSkillValues();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c125_f19");
@@ -674,7 +674,7 @@ void CGumpSkills::GUMP_TEXT_ENTRY_EVENT_C
             group->m_Name->Focused = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpSkills::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c125_f20");
@@ -689,7 +689,7 @@ bool CGumpSkills::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c125_f21");
@@ -702,7 +702,7 @@ void CGumpSkills::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     else
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSkills::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c125_f22");
@@ -807,4 +807,3 @@ void CGumpSkills::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             break;
     }
 }
-//----------------------------------------------------------------------------------

@@ -2,17 +2,16 @@
 
 namespace WISP_FILE
 {
-//----------------------------------------------------------------------------------
 CBinaryFileWritter::CBinaryFileWritter()
     : WISP_DATASTREAM::CDataWritter()
 {
 }
-//----------------------------------------------------------------------------------
+
 CBinaryFileWritter::~CBinaryFileWritter()
 {
     Close();
 }
-//----------------------------------------------------------------------------------
+
 bool CBinaryFileWritter::Open(const string &path)
 {
     WISPFUN_DEBUG("c2_f1");
@@ -26,7 +25,7 @@ bool CBinaryFileWritter::Open(const string &path)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CBinaryFileWritter::Open(const wstring &path)
 {
     WISPFUN_DEBUG("c2_f2");
@@ -40,7 +39,7 @@ bool CBinaryFileWritter::Open(const wstring &path)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CBinaryFileWritter::Close()
 {
     WISPFUN_DEBUG("c2_f3");
@@ -52,7 +51,7 @@ void CBinaryFileWritter::Close()
         m_File = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CBinaryFileWritter::WriteBuffer()
 {
     WISPFUN_DEBUG("c2_f4");
@@ -62,6 +61,5 @@ void CBinaryFileWritter::WriteBuffer()
         m_Data.clear();
     }
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_FILE
-//----------------------------------------------------------------------------------

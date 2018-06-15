@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CPluginManager g_PluginManager;
-//----------------------------------------------------------------------------------
+
 bool __cdecl PluginRecvFunction(puchar buf, const int &size)
 {
     WISPFUN_DEBUG("c_plgrcvfnc");
@@ -20,7 +20,7 @@ bool __cdecl PluginRecvFunction(puchar buf, const int &size)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool __cdecl PluginSendFunction(puchar buf, const int &size)
 {
     WISPFUN_DEBUG("c_plgsndfnc");
@@ -52,9 +52,7 @@ bool __cdecl PluginSendFunction(puchar buf, const int &size)
 
     return true;
 }
-//----------------------------------------------------------------------------------
-//--------------------------------------CPlugin-------------------------------------
-//----------------------------------------------------------------------------------
+
 CPlugin::CPlugin(uint flags)
     : CBaseQueueItem()
     , m_Flags(flags)
@@ -67,7 +65,7 @@ CPlugin::CPlugin(uint flags)
     m_PPS->ClientVersion = g_PacketManager.GetClientVersion();
     m_PPS->ClientFlags = (g_FileManager.UseVerdata ? 0x01 : 0);
 }
-//----------------------------------------------------------------------------------
+
 CPlugin::~CPlugin()
 {
     WISPFUN_DEBUG("c151_f2");
@@ -77,14 +75,12 @@ CPlugin::~CPlugin()
         m_PPS = NULL;
     }
 }
-//----------------------------------------------------------------------------------
-//-----------------------------------CPluginManager---------------------------------
-//----------------------------------------------------------------------------------
+
 CPluginManager::CPluginManager()
     : CBaseQueue()
 {
 }
-//----------------------------------------------------------------------------------
+
 LRESULT CPluginManager::WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     WISPFUN_DEBUG("c152_f1");
@@ -104,7 +100,7 @@ LRESULT CPluginManager::WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lp
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CPluginManager::PacketRecv(puchar buf, int size)
 {
     WISPFUN_DEBUG("c152_f2");
@@ -123,7 +119,7 @@ bool CPluginManager::PacketRecv(puchar buf, int size)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CPluginManager::PacketSend(puchar buf, int size)
 {
     WISPFUN_DEBUG("c152_f3");
@@ -142,7 +138,7 @@ bool CPluginManager::PacketSend(puchar buf, int size)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CPluginManager::Disconnect()
 {
     WISPFUN_DEBUG("c152_f4");
@@ -152,7 +148,7 @@ void CPluginManager::Disconnect()
             plugin->m_PPS->OnDisconnect();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPluginManager::WorldDraw()
 {
     WISPFUN_DEBUG("c152_f5");
@@ -162,7 +158,7 @@ void CPluginManager::WorldDraw()
             plugin->m_PPS->OnWorldDraw();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPluginManager::SceneDraw()
 {
     WISPFUN_DEBUG("c152_f6");
@@ -172,7 +168,7 @@ void CPluginManager::SceneDraw()
             plugin->m_PPS->OnSceneDraw();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPluginManager::WorldMapDraw()
 {
     WISPFUN_DEBUG("c152_f7");
@@ -182,4 +178,3 @@ void CPluginManager::WorldMapDraw()
             plugin->m_PPS->OnWorldMapDraw();
     }
 }
-//----------------------------------------------------------------------------------

@@ -6,27 +6,27 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CProfessionManager g_ProfessionManager;
-//----------------------------------------------------------------------------------
+
 //!Ключи конфига
 const string CProfessionManager::m_Keys[m_KeyCount] = {
     "begin", "name", "truename", "desc", "toplevel", "gump", "type",     "children", "skill",
     "stat",  "str",  "int",      "dex",  "end",      "true", "category", "nameid",   "descid"
 };
-//----------------------------------------------------------------------------------
+
 CProfessionManager::CProfessionManager()
     : CBaseQueue()
     , Selected(NULL)
 {
 }
-//----------------------------------------------------------------------------------
+
 CProfessionManager::~CProfessionManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить код кофига по строке
 @param [__in] key Строка из файла
@@ -46,7 +46,7 @@ int CProfessionManager::GetKeyCode(const string &key)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработать часть файла (загрузка профессии)
 @param [__in] file Указатель на файл
@@ -250,7 +250,7 @@ bool CProfessionManager::ParseFilePart(WISP_FILE::CTextFileParser &file)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить ребенка в профессию
 @param [__in] parent Ссылка на родителя
@@ -291,7 +291,7 @@ bool CProfessionManager::AddChild(CBaseProfession *parent, CBaseProfession *chil
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка профессий из файла
 @return true в случае успешной загрузки
@@ -376,7 +376,7 @@ bool CProfessionManager::Load()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка описания профессий
 @return 
@@ -440,7 +440,7 @@ void CProfessionManager::LoadProfessionDescription()
         g_OrionWindow.ShowMessage("Failed to load professn.enu", "Failed to load");
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить родителя профессии
 @param [__in] obj Ссылка на объект профессии
@@ -471,4 +471,3 @@ CBaseProfession *CProfessionManager::GetParent(CBaseProfession *obj, CBaseProfes
 
     return result;
 }
-//----------------------------------------------------------------------------------

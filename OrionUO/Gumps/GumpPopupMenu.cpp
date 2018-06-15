@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpPopupMenu *g_PopupMenu = NULL;
-//----------------------------------------------------------------------------------
+
 CGumpPopupMenu::CGumpPopupMenu(uint serial, short x, short y)
     : CGump(GT_POPUP_MENU, serial, x, y)
 {
@@ -23,13 +23,13 @@ CGumpPopupMenu::CGumpPopupMenu(uint serial, short x, short y)
     m_Polygone->DrawOnly = true;
     m_Polygone->Visible = false;
 }
-//----------------------------------------------------------------------------------
+
 CGumpPopupMenu::~CGumpPopupMenu()
 {
     WISPFUN_DEBUG("c107_f2");
     g_PopupMenu = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPopupMenu::Parse(WISP_NETWORK::CPacketReader &reader)
 {
     ushort mode = reader.ReadUInt16BE();
@@ -156,7 +156,7 @@ void CGumpPopupMenu::Parse(WISP_NETWORK::CPacketReader &reader)
         g_GumpManager.AddGump(menu);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPopupMenu::PrepareContent()
 {
     WISPFUN_DEBUG("c107_f3");
@@ -183,7 +183,7 @@ void CGumpPopupMenu::PrepareContent()
         m_Polygone->Visible = false;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPopupMenu::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c107_f4");
@@ -233,4 +233,3 @@ void CGumpPopupMenu::GUMP_BUTTON_EVENT_C
         RemoveMark = true;
     }
 }
-//----------------------------------------------------------------------------------

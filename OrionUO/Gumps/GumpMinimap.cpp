@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpMinimap::CGumpMinimap(short x, short y, bool minimized)
     : CGump(GT_MINIMAP, 0, x, y)
 {
@@ -17,13 +17,13 @@ CGumpMinimap::CGumpMinimap(short x, short y, bool minimized)
     m_Locker.Serial = ID_GMM_LOCK_MOVING;
     GenerateMap();
 }
-//----------------------------------------------------------------------------------
+
 CGumpMinimap::~CGumpMinimap()
 {
     WISPFUN_DEBUG("c102_f2");
     m_Texture.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::CalculateGumpState()
 {
     WISPFUN_DEBUG("c102_f3");
@@ -34,7 +34,7 @@ void CGumpMinimap::CalculateGumpState()
 
     Minimized = minimized;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::GenerateMap()
 {
     WISPFUN_DEBUG("c102_f4");
@@ -212,7 +212,7 @@ void CGumpMinimap::GenerateMap()
 
     WantUpdateContent = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::CreatePixels(
     USHORT_LIST &data,
     int color,
@@ -246,7 +246,7 @@ void CGumpMinimap::CreatePixels(
             data[block] = color;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::PrepareContent()
 {
     WISPFUN_DEBUG("c102_f5");
@@ -266,7 +266,7 @@ void CGumpMinimap::PrepareContent()
     if (m_Count > 12)
         m_Count = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::UpdateContent()
 {
     WISPFUN_DEBUG("c102_f6");
@@ -330,14 +330,14 @@ void CGumpMinimap::UpdateContent()
         m_DataBox->Add(new CGUIColoredPolygone(0, 0, gumpCenterX, gumpCenterY, 2, 2, 0xFFFFFFFF));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpMinimap::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c102_f7");
     if (serial == ID_GMM_LOCK_MOVING)
         LockMoving = !LockMoving;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpMinimap::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c102_f8");
@@ -346,4 +346,3 @@ bool CGumpMinimap::OnLeftMouseButtonDoubleClick()
 
     return true;
 }
-//----------------------------------------------------------------------------------

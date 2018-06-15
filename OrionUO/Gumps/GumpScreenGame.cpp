@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenGame::CGumpScreenGame()
     : CGump(GT_NONE, 0, 0, 0)
 {
@@ -19,11 +19,11 @@ CGumpScreenGame::CGumpScreenGame()
     Add(new CGUIButton(ID_GS_RESIZE, 0x0837, 0x0837, 0x0838, 0, 0));
     Add(new CGUIGumppic(0x0E14, 0, 0));
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenGame::~CGumpScreenGame()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenGame::UpdateContent()
 {
     WISPFUN_DEBUG("c115_f2");
@@ -81,7 +81,7 @@ void CGumpScreenGame::UpdateContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenGame::InitToolTip()
 {
     WISPFUN_DEBUG("c115_f3");
@@ -91,7 +91,7 @@ void CGumpScreenGame::InitToolTip()
     if (g_SelectedObject.Serial == ID_GS_RESIZE)
         g_ToolTip.Set(L"Resize game window", 100);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenGame::Draw()
 {
     WISPFUN_DEBUG("c115_f4");
@@ -138,7 +138,7 @@ void CGumpScreenGame::Draw()
         g_RenderBounds.GameWindowPosX + g_RenderBounds.GameWindowWidth - 3,
         g_RenderBounds.GameWindowPosY + g_RenderBounds.GameWindowHeight - 3);
 }
-//----------------------------------------------------------------------------------
+
 CRenderObject *CGumpScreenGame::Select()
 {
     WISPFUN_DEBUG("c115_f5");
@@ -186,7 +186,7 @@ CRenderObject *CGumpScreenGame::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenGame::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c115_f6");
@@ -195,7 +195,7 @@ void CGumpScreenGame::OnLeftMouseButtonDown()
     if (g_GumpConsoleType != NULL)
         g_GumpManager.MoveToBack(g_GumpConsoleType);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenGame::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c115_f7");
@@ -243,4 +243,3 @@ void CGumpScreenGame::OnLeftMouseButtonUp()
                 g_OrionWindow.GetSize().Height - g_ConfigManager.GameWindowHeight;
     }
 }
-//----------------------------------------------------------------------------------

@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMapObject::CMapObject(
     RENDER_OBJECT_TYPE type, int serial, ushort graphic, ushort color, short x, short y, char z)
     : CRenderWorldObject(type, serial, graphic, color, x, y, z)
 {
 }
-//----------------------------------------------------------------------------------
+
 CMapObject::~CMapObject()
 {
 #if UO_DEBUG_INFO != 0
@@ -24,4 +24,3 @@ CMapObject::~CMapObject()
         g_StaticsObjectsCount--;
 #endif //UO_DEBUG_INFO!=0
 }
-//----------------------------------------------------------------------------------

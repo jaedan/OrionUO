@@ -6,40 +6,40 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIText::CGUIText(ushort color, int x, int y)
     : CBaseGUI(GOT_TEXT, 0, 0, color, x, y)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIText::~CGUIText()
 {
     WISPFUN_DEBUG("c78_f1");
     m_Texture.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIText::CreateTextureA(
     uchar font, const string &str, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c78_f2");
     g_FontManager.GenerateA(font, m_Texture, str, Color, width, align, flags);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIText::CreateTextureW(
     uchar font, const wstring &str, uchar cell, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c78_f3");
     g_FontManager.GenerateW(font, m_Texture, str, Color, cell, width, align, flags);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIText::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c78_f4");
     m_Texture.Draw(m_X, m_Y, checktrans);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIText::Select()
 {
     WISPFUN_DEBUG("c78_f5");
@@ -48,4 +48,3 @@ bool CGUIText::Select()
 
     return (x >= 0 && y >= 0 && x < m_Texture.Width && y < m_Texture.Height);
 }
-//----------------------------------------------------------------------------------

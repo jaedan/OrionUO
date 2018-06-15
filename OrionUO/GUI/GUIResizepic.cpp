@@ -6,26 +6,26 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIResizepic::CGUIResizepic(int serial, ushort graphic, int x, int y, int width, int height)
     : CGUIPolygonal(GOT_RESIZEPIC, x, y, width, height)
 {
     Serial = serial;
     Graphic = graphic;
 }
-//----------------------------------------------------------------------------------
+
 CGUIResizepic::~CGUIResizepic()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIResizepic::PrepareTextures()
 {
     WISPFUN_DEBUG("c69_f1");
     g_Orion.ExecuteResizepic(Graphic);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIResizepic::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c69_f2");
@@ -66,7 +66,7 @@ void CGUIResizepic::Draw(bool checktrans)
     else
         g_GL_DrawResizepic(th, m_X, m_Y, Width, Height);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIResizepic::Select()
 {
     WISPFUN_DEBUG("c69_f3");
@@ -75,4 +75,3 @@ bool CGUIResizepic::Select()
 
     return g_Orion.ResizepicPixelsInXY(Graphic, m_X, m_Y, Width, Height);
 }
-//----------------------------------------------------------------------------------

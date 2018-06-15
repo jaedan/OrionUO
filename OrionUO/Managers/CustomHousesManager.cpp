@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CustomHousesManager g_CustomHousesManager;
-//----------------------------------------------------------------------------------
+
 void CCustomHouse::Paste(CGameItem *foundation)
 {
     WISPFUN_DEBUG("");
@@ -29,15 +29,13 @@ void CCustomHouse::Paste(CGameItem *foundation)
         g_CustomHouseGump->GenerateFloorPlace();
     }
 }
-//----------------------------------------------------------------------------------
-//--------------------------------CustomHousesManager-------------------------------
-//----------------------------------------------------------------------------------
+
 CustomHousesManager::~CustomHousesManager()
 {
     WISPFUN_DEBUG("");
     Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CustomHousesManager::Clear()
 {
     WISPFUN_DEBUG("");
@@ -48,7 +46,7 @@ void CustomHousesManager::Clear()
         i->second = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 CCustomHouse *CustomHousesManager::Get(int serial)
 {
     WISPFUN_DEBUG("");
@@ -62,14 +60,14 @@ CCustomHouse *CustomHousesManager::Get(int serial)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CustomHousesManager::Add(CCustomHouse *house)
 {
     WISPFUN_DEBUG("");
     if (house != NULL)
         m_Items[house->Serial] = house;
 }
-//----------------------------------------------------------------------------------
+
 void CustomHousesManager::Load(const string &path)
 {
     WISPFUN_DEBUG("");
@@ -119,7 +117,7 @@ void CustomHousesManager::Load(const string &path)
         file.Unload();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CustomHousesManager::Save(const string &path)
 {
     WISPFUN_DEBUG("");
@@ -170,4 +168,3 @@ void CustomHousesManager::Save(const string &path)
 
     writter.Close();
 }
-//----------------------------------------------------------------------------------

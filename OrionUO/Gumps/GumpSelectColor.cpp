@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpSelectColor::CGumpSelectColor(uint serial, short x, short y, SELECT_COLOR_GUMP_STATE state)
     : CGump(GT_SELECT_COLOR, serial, x, y)
     , m_State(state)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGumpSelectColor::~CGumpSelectColor()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSelectColor::UpdateContent()
 {
     WISPFUN_DEBUG("c121_f1");
@@ -84,7 +84,7 @@ void CGumpSelectColor::UpdateContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSelectColor::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c121_f2");
@@ -111,13 +111,13 @@ void CGumpSelectColor::GUMP_BUTTON_EVENT_C
         ((CGUIColoredPolygone *)item)->Focused = (item->Serial == m_SelectedIndex);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSelectColor::GUMP_SLIDER_CLICK_EVENT_C
 {
     WISPFUN_DEBUG("c121_f3");
     OnSliderMove(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSelectColor::GUMP_SLIDER_MOVE_EVENT_C
 {
     WISPFUN_DEBUG("c121_f4");
@@ -127,7 +127,7 @@ void CGumpSelectColor::GUMP_SLIDER_MOVE_EVENT_C
         WantUpdateContent = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpSelectColor::OnSelectColor(ushort color)
 {
     WISPFUN_DEBUG("c121_f5");
@@ -138,4 +138,3 @@ void CGumpSelectColor::OnSelectColor(ushort color)
 
     RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

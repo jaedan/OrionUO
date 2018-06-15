@@ -6,28 +6,28 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CToolTip g_ToolTip;
-//----------------------------------------------------------------------------------
+
 CToolTip::CToolTip()
 {
 }
-//----------------------------------------------------------------------------------
+
 CToolTip::~CToolTip()
 {
     WISPFUN_DEBUG("c213_f1");
     Reset();
 }
-//----------------------------------------------------------------------------------
+
 void CToolTip::Reset()
 {
     WISPFUN_DEBUG("c213_f2");
     Texture.Clear();
     m_Object = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CToolTip::CreateTextTexture(
     CGLTextTexture &texture, const wstring &str, int &width, int minWidth)
 {
@@ -67,7 +67,7 @@ void CToolTip::CreateTextTexture(
     g_FontManager.RecalculateWidthByInfo = false;
     g_FontManager.SetUseHTML(false);
 }
-//----------------------------------------------------------------------------------
+
 void CToolTip::Set(const wstring &str, int maxWidth)
 {
     WISPFUN_DEBUG("c213_f3");
@@ -93,7 +93,7 @@ void CToolTip::Set(const wstring &str, int maxWidth)
 
     CreateTextTexture(Texture, Data, MaxWidth, 0);
 }
-//----------------------------------------------------------------------------------
+
 void CToolTip::Set(int clilocID, const string &str, int maxWidth, bool toCamelCase)
 {
     WISPFUN_DEBUG("c213_f4");
@@ -101,7 +101,7 @@ void CToolTip::Set(int clilocID, const string &str, int maxWidth, bool toCamelCa
 
     ClilocID = clilocID;
 }
-//----------------------------------------------------------------------------------
+
 void CToolTip::Draw(int cursorWidth, int cursorHeight)
 {
     WISPFUN_DEBUG("c213_f5");
@@ -150,4 +150,3 @@ void CToolTip::Draw(int cursorWidth, int cursorHeight)
 
     Use = false;
 }
-//----------------------------------------------------------------------------------

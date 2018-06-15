@@ -1,10 +1,9 @@
-﻿//----------------------------------------------------------------------------------
+﻿
 #ifndef WISPTHREADEDTIMER_H
 #define WISPTHREADEDTIMER_H
-//----------------------------------------------------------------------------------
+
 namespace WISP_THREADED_TIMER
 {
-//----------------------------------------------------------------------------------
 class CThreadedTimer : public WISP_THREAD::CThread
 {
 public:
@@ -20,7 +19,7 @@ public:
     virtual void OnExecute(uint nowTime);
     virtual void OnDestroy();
 };
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_THREADED_TIMER
-//----------------------------------------------------------------------------------
+
 #endif

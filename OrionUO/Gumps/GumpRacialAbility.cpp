@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpRacialAbility::CGumpRacialAbility(int serial, int x, int y)
     : CGump(GT_RACIAL_ABILITY, serial, x, y)
 {
@@ -17,24 +17,24 @@ CGumpRacialAbility::CGumpRacialAbility(int serial, int x, int y)
 
     Add(new CGUIGumppic(serial, 0, 0));
 }
-//----------------------------------------------------------------------------------
+
 CGumpRacialAbility::~CGumpRacialAbility()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpRacialAbility::InitToolTip()
 {
     WISPFUN_DEBUG("c111_f2");
     g_ToolTip.Set(g_ClilocManager.Cliloc(g_Language)->GetW(1112198 + (Serial - 0x5DD0), true), 200);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpRacialAbility::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c111_f3");
     if (serial == ID_GS_LOCK_MOVING)
         LockMoving = !LockMoving;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpRacialAbility::OnAbilityUse(ushort index)
 {
     WISPFUN_DEBUG("c111_f4");
@@ -51,7 +51,7 @@ void CGumpRacialAbility::OnAbilityUse(ushort index)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpRacialAbility::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c111_f5");
@@ -59,4 +59,3 @@ bool CGumpRacialAbility::OnLeftMouseButtonDoubleClick()
 
     return true;
 }
-//----------------------------------------------------------------------------------

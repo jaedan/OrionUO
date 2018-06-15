@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUISkillItem::CGUISkillItem(int serial, int useSerial, int statusSerial, int index, int x, int y)
     : CBaseGUI(GOT_SKILLITEM, serial, 0, 0, x, y)
     , Index(index)
@@ -34,7 +34,7 @@ CGUISkillItem::CGUISkillItem(int serial, int useSerial, int statusSerial, int in
         CreateValueText();
     }
 }
-//----------------------------------------------------------------------------------
+
 CGUISkillItem::~CGUISkillItem()
 {
     WISPFUN_DEBUG("c76_f2");
@@ -44,7 +44,7 @@ CGUISkillItem::~CGUISkillItem()
     RELEASE_POINTER(m_ButtonUse);
     RELEASE_POINTER(m_ButtonStatus);
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillItem::SetStatus(uchar val)
 {
     WISPFUN_DEBUG("c76_f3");
@@ -56,7 +56,7 @@ void CGUISkillItem::SetStatus(uchar val)
     m_ButtonStatus->GraphicSelected = graphic;
     m_ButtonStatus->GraphicPressed = graphic;
 }
-//----------------------------------------------------------------------------------
+
 ushort CGUISkillItem::GetStatusButtonGraphic()
 {
     WISPFUN_DEBUG("c76_f4");
@@ -69,7 +69,7 @@ ushort CGUISkillItem::GetStatusButtonGraphic()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillItem::CreateValueText(bool showReal, bool showCap)
 {
     WISPFUN_DEBUG("c76_f5");
@@ -90,7 +90,7 @@ void CGUISkillItem::CreateValueText(bool showReal, bool showCap)
         g_FontManager.GenerateA(9, m_ValueText, sbf, 0x0288);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillItem::PrepareTextures()
 {
     WISPFUN_DEBUG("c76_f6");
@@ -99,7 +99,7 @@ void CGUISkillItem::PrepareTextures()
 
     m_ButtonStatus->PrepareTextures();
 }
-//----------------------------------------------------------------------------------
+
 CBaseGUI *CGUISkillItem::SelectedItem()
 {
     WISPFUN_DEBUG("c76_f7");
@@ -117,7 +117,7 @@ CBaseGUI *CGUISkillItem::SelectedItem()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillItem::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c76_f8");
@@ -137,7 +137,7 @@ void CGUISkillItem::Draw(bool checktrans)
 
     glTranslatef((GLfloat)-m_X, (GLfloat)-m_Y, 0.0f);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUISkillItem::Select()
 {
     WISPFUN_DEBUG("c76_f9");
@@ -146,4 +146,3 @@ bool CGUISkillItem::Select()
 
     return (x >= 0 && y >= 0 && x < 255 && y < 17);
 }
-//----------------------------------------------------------------------------------

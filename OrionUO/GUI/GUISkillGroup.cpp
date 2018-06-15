@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUISkillGroup::CGUISkillGroup(
     int serial, int minimizeSerial, CSkillGroupObject *group, int x, int y)
     : CBaseGUI(GOT_SKILLGROUP, serial, 0, 0, x, y)
@@ -21,14 +21,14 @@ CGUISkillGroup::CGUISkillGroup(
     m_Name = new CGUITextEntry(serial, 0, 0, 0, 16, -5, 0, false, 6);
     m_Name->m_Entry.SetText(group->Name);
 }
-//----------------------------------------------------------------------------------
+
 CGUISkillGroup::~CGUISkillGroup()
 {
     WISPFUN_DEBUG("c75_f2");
     RELEASE_POINTER(m_Minimizer);
     RELEASE_POINTER(m_Name);
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillGroup::SetMinimized(bool val)
 {
     WISPFUN_DEBUG("c75_f3");
@@ -38,7 +38,7 @@ void CGUISkillGroup::SetMinimized(bool val)
     m_Minimizer->GraphicSelected = graphic;
     m_Minimizer->GraphicPressed = graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillGroup::UpdateDataPositions()
 {
     WISPFUN_DEBUG("c75_f4");
@@ -50,7 +50,7 @@ void CGUISkillGroup::UpdateDataPositions()
         y += 17;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillGroup::PrepareTextures()
 {
     WISPFUN_DEBUG("c75_f5");
@@ -61,13 +61,13 @@ void CGUISkillGroup::PrepareTextures()
     QFOR(item, m_Items, CBaseGUI *)
     item->PrepareTextures();
 }
-//----------------------------------------------------------------------------------
+
 bool CGUISkillGroup::EntryPointerHere()
 {
     WISPFUN_DEBUG("c75_f6");
     return (g_EntryPointer == &m_Name->m_Entry);
 }
-//----------------------------------------------------------------------------------
+
 CBaseGUI *CGUISkillGroup::SelectedItem()
 {
     WISPFUN_DEBUG("c75_f7");
@@ -99,7 +99,7 @@ CBaseGUI *CGUISkillGroup::SelectedItem()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CSize CGUISkillGroup::GetSize()
 {
     WISPFUN_DEBUG("c75_f8");
@@ -110,7 +110,7 @@ WISP_GEOMETRY::CSize CGUISkillGroup::GetSize()
 
     return size;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISkillGroup::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c75_f9");
@@ -151,7 +151,7 @@ void CGUISkillGroup::Draw(bool checktrans)
 
     glTranslatef((GLfloat)-m_X, (GLfloat)-m_Y, 0.0f);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUISkillGroup::Select()
 {
     WISPFUN_DEBUG("c75_f10");
@@ -180,4 +180,3 @@ bool CGUISkillGroup::Select()
 
     return result;
 }
-//----------------------------------------------------------------------------------

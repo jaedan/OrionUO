@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
-//----------------------------------------------------------------------------------
+
 //!Глобальные состояния нажатия дополнительных клавишь
 extern bool g_AltPressed;
 extern bool g_CtrlPressed;
 extern bool g_ShiftPressed;
-//----------------------------------------------------------------------------------
+
 //!Использование мышки для перемещения персонажа
 extern bool g_MovingFromMouse;
 
@@ -24,7 +24,7 @@ extern bool g_AutoMoving;
 extern bool g_TheAbyss;
 extern bool g_AbyssPacket03First;
 extern bool g_Asmut;
-//----------------------------------------------------------------------------------
+
 #include "Wisp/WispGlobal.h"
 #include "Wisp/WispGeometry.h"
 #include "Wisp/WispLogger.h"
@@ -36,7 +36,7 @@ extern bool g_Asmut;
 #include "EnumList.h"
 #include "DefinitionMacro.h"
 #include "Constants.h"
-//----------------------------------------------------------------------------------
+
 #define CWISPDEBUGLOGGER 0
 
 #if CWISPDEBUGLOGGER != 0
@@ -44,15 +44,15 @@ extern bool g_Asmut;
 #else //CWISPDEBUGLOGGER == 0
 #define DEBUGLOG(...)
 #endif //CWISPDEBUGLOGGER!=0
-//----------------------------------------------------------------------------------
+
 #pragma warning(disable : 4800) //forcing value to bool 'true' or 'false' (performance warning)
-//----------------------------------------------------------------------------------
+
 bool CanBeDraggedByOffset(const WISP_GEOMETRY::CPoint2Di &point);
-//----------------------------------------------------------------------------------
+
 void TileOffsetOnMonitorToXY(int &ofsX, int &ofsY, int &x, int &y);
-//----------------------------------------------------------------------------------
+
 string ToCamelCase(string text);
-//----------------------------------------------------------------------------------
+
 //Функции для вычисления дистанции
 class CGameObject;
 int GetDistance(CGameObject *current, CGameObject *target);
@@ -63,16 +63,16 @@ int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target);
 int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, const WISP_GEOMETRY::CPoint2Di &target);
 int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target);
 int GetTopObjDistance(CGameObject *current, CGameObject *target);
-//----------------------------------------------------------------------------------
+
 const char *GetReagentName(ushort id);
-//----------------------------------------------------------------------------------
+
 //!Счетчики объектов (только для отладки)
 extern int g_LandObjectsCount;
 extern int g_StaticsObjectsCount;
 extern int g_GameObjectsCount;
 extern int g_MultiObjectsCount;
 extern int g_RenderedObjectsCountInGameWindow;
-//----------------------------------------------------------------------------------
+
 extern GLdouble g_GlobalScale;
 
 extern CGLTexture g_MapTexture[MAX_MAPS_COUNT];
@@ -270,7 +270,7 @@ extern uint g_OrionFeaturesFlags;
 extern struct PING_INFO_DATA g_GameServerPingInfo;
 extern string g_PingString;
 extern uint g_PingTimer;
-//----------------------------------------------------------------------------------
+
 inline bool IsBackground(const __int64 &flags)
 {
     return (flags & 0x00000001);
@@ -399,6 +399,5 @@ inline bool IsStairRight(const __int64 &flags)
 {
     return (flags & 0x80000000);
 }
-//----------------------------------------------------------------------------------
+
 #endif
-//----------------------------------------------------------------------------------

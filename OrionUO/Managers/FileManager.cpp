@@ -6,24 +6,24 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
 CFileManager g_FileManager;
-//----------------------------------------------------------------------------------
+
 CUopMappedFile::CUopMappedFile()
     : WISP_FILE::CMappedFile()
 {
 }
-//----------------------------------------------------------------------------------
+
 CUopMappedFile::~CUopMappedFile()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CUopMappedFile::Add(uint64 hash, const CUopBlockHeader &item)
 {
     m_Map[hash] = item;
 }
-//----------------------------------------------------------------------------------
+
 CUopBlockHeader *CUopMappedFile::GetBlock(uint64 hash)
 {
     std::unordered_map<uint64, CUopBlockHeader>::iterator found = m_Map.find(hash);
@@ -33,7 +33,7 @@ CUopBlockHeader *CUopMappedFile::GetBlock(uint64 hash)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 UCHAR_LIST CUopMappedFile::GetData(const CUopBlockHeader &block)
 {
     ResetPtr();
@@ -58,16 +58,16 @@ UCHAR_LIST CUopMappedFile::GetData(const CUopBlockHeader &block)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 CFileManager::CFileManager()
     : WISP_DATASTREAM::CDataReader()
 {
 }
-//----------------------------------------------------------------------------------
+
 CFileManager::~CFileManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::Load()
 {
     if (g_PacketManager.GetClientVersion() >= CV_7000 && LoadUOPFile(m_MainMisc, "MainMisc.uop"))
@@ -159,7 +159,7 @@ bool CFileManager::Load()
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::LoadWithUOP()
 {
     if (true)
@@ -288,7 +288,7 @@ bool CFileManager::LoadWithUOP()
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 void CFileManager::Unload()
 {
     WISPFUN_DEBUG("c142_f2");
@@ -351,7 +351,7 @@ void CFileManager::Unload()
 
     m_VerdataMul.Unload();
 }
-//----------------------------------------------------------------------------------
+
 void CFileManager::SendFilesInfo()
 {
     if (m_TiledataMul.Start != NULL)
@@ -450,13 +450,13 @@ void CFileManager::SendFilesInfo()
                 .SendToPlugin();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CFileManager::TryReadUOPAnimations()
 {
     std::thread readThread(&CFileManager::ReadTask, this);
     readThread.detach();
 }
-//----------------------------------------------------------------------------------
+
 void CFileManager::ReadTask()
 {
     std::unordered_map<unsigned long long, UOPAnimationData> hashes;
@@ -568,7 +568,7 @@ void CFileManager::ReadTask()
 
     m_AutoResetEvent.Set();
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::FileExists(const std::string &filename)
 {
     struct stat buf;
@@ -578,7 +578,7 @@ bool CFileManager::FileExists(const std::string &filename)
     }
     return false;
 }
-//----------------------------------------------------------------------------------
+
 char *CFileManager::ReadUOPDataFromFileStream(UOPAnimationData &animData)
 {
     animData.fileStream->clear();
@@ -588,7 +588,7 @@ char *CFileManager::ReadUOPDataFromFileStream(UOPAnimationData &animData)
     animData.fileStream->read(buf, animData.compressedLength);
     return buf;
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::DecompressUOPFileData(
     UOPAnimationData &animData, UCHAR_LIST &decLayoutData, char *buf)
 {
@@ -608,7 +608,7 @@ bool CFileManager::DecompressUOPFileData(
     }
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
 {
     //LOG("Loading UOP fileName: %s\n", fileName);
@@ -704,7 +704,7 @@ bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::TryOpenFileStream(std::fstream &fileStream, std::string &filePath)
 {
     LOG("Trying to open file stream for %s\n", filePath);
@@ -717,7 +717,7 @@ bool CFileManager::TryOpenFileStream(std::fstream &fileStream, std::string &file
     LOG("Opened file stream for %s\n", filePath);
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool CFileManager::IsMulFileOpen(int idx) const
 {
     //we only have 5 anim mul files atm
@@ -725,7 +725,7 @@ bool CFileManager::IsMulFileOpen(int idx) const
         return false;
     return m_AnimMul[idx].is_open();
 }
-//----------------------------------------------------------------------------------
+
 void CFileManager::ReadAnimMulDataFromFileStream(
     vector<char> &animData, CTextureAnimationDirection &direction)
 {
@@ -734,4 +734,3 @@ void CFileManager::ReadAnimMulDataFromFileStream(
     fileStream->seekg(direction.Address, 0);
     fileStream->read(static_cast<char *>(animData.data()), direction.Size);
 }
-//----------------------------------------------------------------------------------

@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIButtonTileart::CGUIButtonTileart(
     int serial,
     ushort graphic,
@@ -28,11 +28,11 @@ CGUIButtonTileart::CGUIButtonTileart(
 {
     Type = GOT_BUTTONTILEART;
 }
-//----------------------------------------------------------------------------------
+
 CGUIButtonTileart::~CGUIButtonTileart()
 {
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CSize CGUIButtonTileart::GetSize()
 {
     WISPFUN_DEBUG("c45_f1");
@@ -67,7 +67,7 @@ WISP_GEOMETRY::CSize CGUIButtonTileart::GetSize()
 
     return WISP_GEOMETRY::CSize(abs(endX) - abs(startX), abs(endY) - abs(startY));
 }
-//----------------------------------------------------------------------------------
+
 void CGUIButtonTileart::PrepareTextures()
 {
     WISPFUN_DEBUG("c45_f2");
@@ -75,7 +75,7 @@ void CGUIButtonTileart::PrepareTextures()
 
     g_Orion.ExecuteStaticArt(TileGraphic);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIButtonTileart::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c45_f3");
@@ -90,7 +90,7 @@ void CGUIButtonTileart::Draw(bool checktrans)
         th->Draw(m_X, m_Y, checktrans);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIButtonTileart::Select()
 {
     WISPFUN_DEBUG("c45_f4");
@@ -104,4 +104,3 @@ bool CGUIButtonTileart::Select()
 
     return false;
 }
-//----------------------------------------------------------------------------------

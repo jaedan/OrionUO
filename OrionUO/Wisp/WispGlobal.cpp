@@ -1,23 +1,23 @@
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 DWORD g_MainThread = 0;
 deque<string> g_WispDebugFunStack;
 #if USE_WISP_DEBUG_FUNCTION_NAMES == 2
 char *g_WispCurrentFunctionName = NULL;
 #endif
-//----------------------------------------------------------------------------------
+
 CWispFunDebug::CWispFunDebug(const char *str)
 {
     if (g_MainThread == GetCurrentThreadId())
         g_WispDebugFunStack.push_back(str);
 }
-//----------------------------------------------------------------------------------
+
 CWispFunDebug::~CWispFunDebug()
 {
     if (g_MainThread == GetCurrentThreadId())
         g_WispDebugFunStack.pop_back();
 }
-//----------------------------------------------------------------------------------
+
 int CalculatePercents(int max, int current, int maxValue)
 {
     if (max > 0)
@@ -33,7 +33,7 @@ int CalculatePercents(int max, int current, int maxValue)
 
     return max;
 }
-//----------------------------------------------------------------------------------
+
 string EncodeUTF8(const wstring &wstr)
 {
     int size = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
@@ -48,7 +48,7 @@ string EncodeUTF8(const wstring &wstr)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 wstring DecodeUTF8(const string &str)
 {
     int size = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
@@ -63,7 +63,7 @@ wstring DecodeUTF8(const string &str)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 string ToCamelCaseA(string str)
 {
     int offset = 'a' - 'A';
@@ -84,7 +84,7 @@ string ToCamelCaseA(string str)
 
     return str;
 }
-//----------------------------------------------------------------------------------
+
 wstring ToCamelCaseW(wstring str)
 {
     int offset = L'a' - L'A';
@@ -105,7 +105,7 @@ wstring ToCamelCaseW(wstring str)
 
     return str;
 }
-//----------------------------------------------------------------------------------
+
 string ToString(const wstring &wstr)
 {
     string str = "";
@@ -121,7 +121,7 @@ string ToString(const wstring &wstr)
 
     return str;
 }
-//----------------------------------------------------------------------------------
+
 wstring ToWString(const string &str)
 {
     int size = (int)str.length();
@@ -136,7 +136,7 @@ wstring ToWString(const string &str)
 
     return wstr;
 }
-//----------------------------------------------------------------------------------
+
 string Trim(const string &str)
 {
     string::const_iterator it = str.begin();
@@ -149,12 +149,12 @@ string Trim(const string &str)
 
     return string(it, rit.base());
 }
-//----------------------------------------------------------------------------------
+
 int ToInt(const string &str)
 {
     return atoi(str.c_str());
 }
-//----------------------------------------------------------------------------------
+
 string ToLowerA(string str)
 {
     if (str.length())
@@ -162,7 +162,7 @@ string ToLowerA(string str)
 
     return str.c_str();
 }
-//----------------------------------------------------------------------------------
+
 string ToUpperA(string str)
 {
     if (str.length())
@@ -170,7 +170,7 @@ string ToUpperA(string str)
 
     return str.c_str();
 }
-//----------------------------------------------------------------------------------
+
 wstring ToLowerW(wstring str)
 {
     if (str.length())
@@ -178,7 +178,7 @@ wstring ToLowerW(wstring str)
 
     return str.c_str();
 }
-//----------------------------------------------------------------------------------
+
 wstring ToUpperW(wstring str)
 {
     if (str.length())
@@ -186,7 +186,7 @@ wstring ToUpperW(wstring str)
 
     return str.c_str();
 }
-//----------------------------------------------------------------------------------
+
 bool Int32TryParse(string str, int &result)
 {
     std::istringstream convert(str);
@@ -206,7 +206,7 @@ bool Int32TryParse(string str, int &result)
     }
     return true;
 }
-//----------------------------------------------------------------------------------
+
 bool ToBool(const string &str)
 {
     string data = ToLowerA(str);
@@ -220,7 +220,7 @@ bool ToBool(const string &str)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 #if DEBUGGIND_OUTPUT == 1
 void DebugMsg(const char *format, ...)
 {
@@ -234,7 +234,7 @@ void DebugMsg(const char *format, ...)
 
     va_end(arg);
 }
-//----------------------------------------------------------------------------------
+
 void DebugMsg(const wchar_t *format, ...)
 {
     va_list arg;
@@ -247,7 +247,7 @@ void DebugMsg(const wchar_t *format, ...)
 
     va_end(arg);
 }
-//----------------------------------------------------------------------------------
+
 void DebugDump(puchar data, int size)
 {
     int num_lines = size / 16;
@@ -284,4 +284,3 @@ void DebugDump(puchar data, int size)
     }
 }
 #endif
-//----------------------------------------------------------------------------------

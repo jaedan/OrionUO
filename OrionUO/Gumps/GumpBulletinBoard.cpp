@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpBulletinBoard::CGumpBulletinBoard(uint serial, short x, short y, string name)
     : CGump(GT_BULLETIN_BOARD, serial, x, y)
 {
@@ -64,13 +64,13 @@ CGumpBulletinBoard::CGumpBulletinBoard(uint serial, short x, short y, string nam
         slider->SetY(slider->GetY() - 14);
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpBulletinBoard::~CGumpBulletinBoard()
 {
     WISPFUN_DEBUG("c89_f2");
     g_GumpManager.CloseGump(0xFFFFFFFF, Serial, GT_BULLETIN_BOARD_ITEM);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpBulletinBoard::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c89_f3");
@@ -82,7 +82,7 @@ void CGumpBulletinBoard::GUMP_BUTTON_EVENT_C
         g_GumpManager.AddGump(gump);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpBulletinBoard::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c89_f4");
@@ -102,4 +102,3 @@ bool CGumpBulletinBoard::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------

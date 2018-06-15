@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpCombatBook::CGumpCombatBook(int x, int y)
     : CGump(GT_COMBAT_BOOK, 0, x, y)
 {
@@ -28,11 +28,11 @@ CGumpCombatBook::CGumpCombatBook(int x, int y)
 
     PagesCount = DictionaryPagesCount + (AbilityCount * 2);
 }
-//----------------------------------------------------------------------------------
+
 CGumpCombatBook::~CGumpCombatBook()
 {
 }
-//----------------------------------------------------------------------------------
+
 USHORT_LIST CGumpCombatBook::GetItemsList(uchar index)
 {
     WISPFUN_DEBUG("c91_f2");
@@ -345,7 +345,7 @@ USHORT_LIST CGumpCombatBook::GetItemsList(uchar index)
 
     return list;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCombatBook::InitToolTip()
 {
     WISPFUN_DEBUG("c91_f3");
@@ -376,7 +376,7 @@ void CGumpCombatBook::InitToolTip()
                 80);
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpCombatBook::PrepareContent()
 {
     WISPFUN_DEBUG("c91_f4");
@@ -398,7 +398,7 @@ void CGumpCombatBook::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------
+
 void CGumpCombatBook::UpdateContent()
 {
     WISPFUN_DEBUG("c91_f5");
@@ -529,7 +529,7 @@ void CGumpCombatBook::UpdateContent()
         (CGUIButton *)Add(new CGUIButton(ID_GCB_BUTTON_NEXT, 0x08BC, 0x08BC, 0x08BC, 321, 8));
     m_NextPage->Visible = (Page + 2 < PagesCount);
 }
-//----------------------------------------------------------------------------
+
 void CGumpCombatBook::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c91_f6");
@@ -578,7 +578,7 @@ void CGumpCombatBook::GUMP_BUTTON_EVENT_C
         g_ClickObject.Page = newPage;
     }
 }
-//----------------------------------------------------------------------------
+
 bool CGumpCombatBook::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c91_f7");
@@ -634,7 +634,7 @@ bool CGumpCombatBook::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCombatBook::DelayedClick(CRenderObject *obj)
 {
     WISPFUN_DEBUG("c91_f8");
@@ -644,7 +644,7 @@ void CGumpCombatBook::DelayedClick(CRenderObject *obj)
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpCombatBook::ChangePage(int newPage)
 {
     WISPFUN_DEBUG("c91_f9");
@@ -655,7 +655,7 @@ void CGumpCombatBook::ChangePage(int newPage)
 
     g_Orion.PlaySoundEffect(0x0055);
 }
-//----------------------------------------------------------------------------------
+
 const string CGumpCombatBook::m_AbilityName[MAX_ABILITIES_COUNT]{
     "Armor Ignore",       "Bleed Attack",    "Concussion Blow",
     "Crushing Blow",      "Disarm",          "Dismount",
@@ -671,4 +671,3 @@ const string CGumpCombatBook::m_AbilityName[MAX_ABILITIES_COUNT]{
     "Infused Throw", //CV_7000
     "Mystic Arc",         "Disrobe"
 };
-//----------------------------------------------------------------------------------

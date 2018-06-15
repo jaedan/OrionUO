@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenSelectProfession::CGumpScreenSelectProfession()
     : CGump(GT_NONE, 0, 0, 0)
 {
@@ -24,11 +24,11 @@ CGumpScreenSelectProfession::CGumpScreenSelectProfession()
 
     m_SkillsSliders[3] = NULL;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenSelectProfession::~CGumpScreenSelectProfession()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::UpdateContent()
 {
     WISPFUN_DEBUG("c117_f2");
@@ -45,7 +45,7 @@ void CGumpScreenSelectProfession::UpdateContent()
     else
         UpdateContentOld();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::UpdateContentOld()
 {
     WISPFUN_DEBUG("c117_f3");
@@ -267,7 +267,7 @@ void CGumpScreenSelectProfession::UpdateContentOld()
         Add(new CGUIButton(ID_SPS_ARROW_NEXT, 0x15A4, 0x15A5, 0x15A6, 610, 445));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::UpdateContentNew()
 {
     WISPFUN_DEBUG("c117_f4");
@@ -468,7 +468,7 @@ void CGumpScreenSelectProfession::UpdateContentNew()
         Add(new CGUIButton(ID_SPS_ARROW_NEXT, 0x15A4, 0x15A5, 0x15A6, 610, 445));
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::InitToolTip()
 {
     WISPFUN_DEBUG("c117_f5");
@@ -524,7 +524,7 @@ void CGumpScreenSelectProfession::InitToolTip()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c117_f6");
@@ -652,13 +652,13 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::GUMP_SLIDER_CLICK_EVENT_C
 {
     WISPFUN_DEBUG("c117_f7");
     OnSliderMove(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::GUMP_SLIDER_MOVE_EVENT_C
 {
     WISPFUN_DEBUG("c117_f8");
@@ -685,7 +685,7 @@ void CGumpScreenSelectProfession::GUMP_SLIDER_MOVE_EVENT_C
     if (serial >= ID_SPS_SKILLS_SPHERE && (int)serial < ID_SPS_SKILLS_SPHERE + skillsCount)
         ShuffleSkills(serial - ID_SPS_SKILLS_SPHERE);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::ShuffleStats(int id, int maxSum, int maxVal)
 {
     WISPFUN_DEBUG("c117_f9");
@@ -760,7 +760,7 @@ void CGumpScreenSelectProfession::ShuffleStats(int id, int maxSum, int maxVal)
     profession->Dex = stats[1];
     profession->Int = stats[2];
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectProfession::ShuffleSkills(int id)
 {
     WISPFUN_DEBUG("c117_f10");
@@ -864,4 +864,3 @@ void CGumpScreenSelectProfession::ShuffleSkills(int id)
     profession->SetSkillValue(1, skills[1]);
     profession->SetSkillValue(2, skills[2]);
 }
-//----------------------------------------------------------------------------------

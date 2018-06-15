@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpGrayMenu::CGumpGrayMenu(uint serial, uint id, short x, short y)
     : CGump(GT_GRAY_MENU, serial, x, y)
 {
@@ -26,11 +26,11 @@ CGumpGrayMenu::CGumpGrayMenu(uint serial, uint id, short x, short y)
 
     g_GrayMenuCount++;
 }
-//----------------------------------------------------------------------------------
+
 CGumpGrayMenu::~CGumpGrayMenu()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGrayMenu::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c97_f2");
@@ -56,7 +56,7 @@ void CGumpGrayMenu::GUMP_BUTTON_EVENT_C
             TT_SYSTEM, 0xFFFFFFFF, 3, 0x0021, "You must choose the section of menu.");
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpGrayMenu::SendMenuResponse(int index)
 {
     WISPFUN_DEBUG("c97_f3");
@@ -66,4 +66,3 @@ void CGumpGrayMenu::SendMenuResponse(int index)
     //Удаляем использованный гамп
     RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIAlphaBlending::CGUIAlphaBlending(bool enabled, float alpha)
     : CGUIBlending(enabled, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     , Alpha(alpha)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUIAlphaBlending::~CGUIAlphaBlending()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIAlphaBlending::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c40_f1");
@@ -29,4 +29,3 @@ void CGUIAlphaBlending::Draw(bool checktrans)
     else
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
-//----------------------------------------------------------------------------------

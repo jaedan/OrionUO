@@ -6,10 +6,10 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef GUMPBULLETINBOARDITEM_H
 #define GUMPBULLETINBOARDITEM_H
-//----------------------------------------------------------------------------------
+
 class CGumpBulletinBoardItem : public CGumpBaseScroll
 {
 protected:
@@ -53,6 +53,5 @@ public:
     virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam);
     virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
 };
-//----------------------------------------------------------------------------------
+
 #endif
-//----------------------------------------------------------------------------------

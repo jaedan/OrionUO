@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CPacket::CPacket(const size_t &size, bool autoResize)
     : WISP_DATASTREAM::CDataWritter(size, autoResize)
 {
 }
-//----------------------------------------------------------------------------------
+
 void CPacket::Send()
 {
     if (m_Data.size())
         g_Orion.Send(m_Data);
 }
-//----------------------------------------------------------------------------------
+
 CPacketFirstLogin::CPacketFirstLogin()
     : CPacket(62)
 {
@@ -34,7 +34,7 @@ CPacketFirstLogin::CPacketFirstLogin()
         WriteUInt8(0xFF);
     }
 }
-//----------------------------------------------------------------------------------
+
 CPacketSelectServer::CPacketSelectServer(uchar index)
     : CPacket(3)
 {
@@ -42,7 +42,7 @@ CPacketSelectServer::CPacketSelectServer(uchar index)
     WriteUInt8(0x00);
     WriteUInt8(index);
 }
-//----------------------------------------------------------------------------------
+
 CPacketSecondLogin::CPacketSecondLogin()
     : CPacket(65)
 {
@@ -60,7 +60,7 @@ CPacketSecondLogin::CPacketSecondLogin()
 
     WriteString(g_MainScreen.m_Password->c_str(), passLen, false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     : CPacket(104)
 {
@@ -170,7 +170,7 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     WriteUInt16BE(g_CreateCharacterManager.ShirtColor);
     WriteUInt16BE(g_CreateCharacterManager.PantsColor);
 }
-//----------------------------------------------------------------------------------
+
 CPacketDeleteCharacter::CPacketDeleteCharacter(int charIndex)
     : CPacket(39)
 {
@@ -179,7 +179,7 @@ CPacketDeleteCharacter::CPacketDeleteCharacter(int charIndex)
     WriteUInt32BE(charIndex);
     WriteDataBE(g_ConnectionManager.GetClientIP(), 4);
 }
-//----------------------------------------------------------------------------------
+
 CPacketSelectCharacter::CPacketSelectCharacter(int index, const string &name)
     : CPacket(73)
 {
@@ -206,7 +206,7 @@ CPacketSelectCharacter::CPacketSelectCharacter(int index, const string &name)
     WriteUInt32BE(index);
     WriteDataBE(g_ConnectionManager.GetClientIP(), 4);
 }
-//----------------------------------------------------------------------------------
+
 CPacketPickupRequest::CPacketPickupRequest(uint serial, ushort count)
     : CPacket(7)
 {
@@ -214,7 +214,7 @@ CPacketPickupRequest::CPacketPickupRequest(uint serial, ushort count)
     WriteUInt32BE(serial);
     WriteUInt16BE(count);
 }
-//----------------------------------------------------------------------------------
+
 CPacketDropRequestOld::CPacketDropRequestOld(
     uint serial, ushort x, ushort y, char z, uint container)
     : CPacket(14)
@@ -226,7 +226,7 @@ CPacketDropRequestOld::CPacketDropRequestOld(
     WriteUInt8(z);
     WriteUInt32BE(container);
 }
-//----------------------------------------------------------------------------------
+
 CPacketDropRequestNew::CPacketDropRequestNew(
     uint serial, ushort x, ushort y, char z, uchar slot, uint container)
     : CPacket(15)
@@ -239,7 +239,7 @@ CPacketDropRequestNew::CPacketDropRequestNew(
     WriteUInt8(slot);
     WriteUInt32BE(container);
 }
-//----------------------------------------------------------------------------------
+
 CPacketEquipRequest::CPacketEquipRequest(uint serial, uchar layer, uint container)
     : CPacket(10)
 {
@@ -248,7 +248,7 @@ CPacketEquipRequest::CPacketEquipRequest(uint serial, uchar layer, uint containe
     WriteUInt8(layer);
     WriteUInt32BE(container);
 }
-//----------------------------------------------------------------------------------
+
 CPacketChangeWarmode::CPacketChangeWarmode(uchar state)
     : CPacket(5)
 {
@@ -256,13 +256,13 @@ CPacketChangeWarmode::CPacketChangeWarmode(uchar state)
     WriteUInt8(state);
     WriteUInt16BE(0x0032);
 }
-//----------------------------------------------------------------------------------
+
 CPacketHelpRequest::CPacketHelpRequest()
     : CPacket(258)
 {
     WriteUInt8(0x9B);
 }
-//----------------------------------------------------------------------------------
+
 CPacketStatusRequest::CPacketStatusRequest(uint serial)
     : CPacket(10)
 {
@@ -271,7 +271,7 @@ CPacketStatusRequest::CPacketStatusRequest(uint serial)
     WriteUInt8(4);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketSkillsRequest::CPacketSkillsRequest(uint serial)
     : CPacket(10)
 {
@@ -280,7 +280,7 @@ CPacketSkillsRequest::CPacketSkillsRequest(uint serial)
     WriteUInt8(5);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketSkillsStatusChangeRequest::CPacketSkillsStatusChangeRequest(uchar skill, uchar state)
     : CPacket(6)
 {
@@ -289,28 +289,28 @@ CPacketSkillsStatusChangeRequest::CPacketSkillsStatusChangeRequest(uchar skill, 
     WriteUInt16BE((ushort)skill);
     WriteUInt8(state);
 }
-//----------------------------------------------------------------------------------
+
 CPacketClickRequest::CPacketClickRequest(uint serial)
     : CPacket(5)
 {
     WriteUInt8(0x09);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketDoubleClickRequest::CPacketDoubleClickRequest(uint serial)
     : CPacket(5)
 {
     WriteUInt8(0x06);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketAttackRequest::CPacketAttackRequest(uint serial)
     : CPacket(5)
 {
     WriteUInt8(0x05);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketClientVersion::CPacketClientVersion(string version)
     : CPacket(4 + version.length())
 {
@@ -318,7 +318,7 @@ CPacketClientVersion::CPacketClientVersion(string version)
     WriteUInt16BE(4 + (int)version.length());
     WriteString(version.c_str(), (int)version.length(), false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketASCIISpeechRequest::CPacketASCIISpeechRequest(
     const char *text, SPEECH_TYPE type, ushort font, ushort color)
     : CPacket(1)
@@ -334,7 +334,7 @@ CPacketASCIISpeechRequest::CPacketASCIISpeechRequest(
     WriteUInt16BE(font);
     WriteString(text, len, false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
     const wchar_t *text, SPEECH_TYPE type, ushort font, ushort color, puchar language)
     : CPacket(1)
@@ -419,7 +419,7 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
         WriteWString(text, len, true, true);
     }
 }
-//----------------------------------------------------------------------------------
+
 CPacketCastSpell::CPacketCastSpell(int index)
     : CPacket(1)
 {
@@ -448,7 +448,7 @@ CPacketCastSpell::CPacketCastSpell(int index)
         WriteString(spell, len, false);
     }
 }
-//----------------------------------------------------------------------------------
+
 CPacketCastSpellFromBook::CPacketCastSpellFromBook(int index, uint serial)
     : CPacket(1)
 {
@@ -464,7 +464,7 @@ CPacketCastSpellFromBook::CPacketCastSpellFromBook(int index, uint serial)
     WriteUInt8(0x27);
     WriteString(spell, len, false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketUseSkill::CPacketUseSkill(int index)
     : CPacket(10)
 {
@@ -480,7 +480,7 @@ CPacketUseSkill::CPacketUseSkill(int index)
     WriteUInt8(0x24);
     WriteString(skill, len, false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketOpenDoor::CPacketOpenDoor()
     : CPacket(5)
 {
@@ -488,7 +488,7 @@ CPacketOpenDoor::CPacketOpenDoor()
     WriteUInt16BE(0x0005);
     WriteUInt8(0x58);
 }
-//----------------------------------------------------------------------------------
+
 CPacketOpenSpellbook::CPacketOpenSpellbook(SPELLBOOK_TYPE type)
     : CPacket(6)
 {
@@ -497,7 +497,7 @@ CPacketOpenSpellbook::CPacketOpenSpellbook(SPELLBOOK_TYPE type)
     WriteUInt8(0x43);
     WriteUInt8(type + 30);
 }
-//----------------------------------------------------------------------------------
+
 CPacketEmoteAction::CPacketEmoteAction(const char *action)
     : CPacket(1)
 {
@@ -510,7 +510,7 @@ CPacketEmoteAction::CPacketEmoteAction(const char *action)
     WriteUInt8(0xC7);
     WriteString(action, len, false);
 }
-//----------------------------------------------------------------------------------
+
 CPacketGumpResponse::CPacketGumpResponse(CGumpGeneric *gump, int code)
     : CPacket(1)
 {
@@ -580,7 +580,7 @@ CPacketGumpResponse::CPacketGumpResponse(CGumpGeneric *gump, int code)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CPacketVirtureGumpResponse::CPacketVirtureGumpResponse(CGump *gump, int code)
     : CPacket(15)
 {
@@ -592,7 +592,7 @@ CPacketVirtureGumpResponse::CPacketVirtureGumpResponse(CGump *gump, int code)
     WriteUInt32BE(0x000001CD);
     WriteUInt32BE(code);
 }
-//----------------------------------------------------------------------------------
+
 CPacketMenuResponse::CPacketMenuResponse(CGump *gump, int code)
     : CPacket(13)
 {
@@ -616,7 +616,7 @@ CPacketMenuResponse::CPacketMenuResponse(CGump *gump, int code)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 CPacketGrayMenuResponse::CPacketGrayMenuResponse(CGump *gump, int code)
     : CPacket(13)
 {
@@ -625,7 +625,7 @@ CPacketGrayMenuResponse::CPacketGrayMenuResponse(CGump *gump, int code)
     WriteUInt16BE(gump->ID);
     WriteUInt16BE(code);
 }
-//----------------------------------------------------------------------------------
+
 CPacketTradeResponse::CPacketTradeResponse(CGumpSecureTrading *gump, int code)
     : CPacket(17)
 {
@@ -644,14 +644,14 @@ CPacketTradeResponse::CPacketTradeResponse(CGumpSecureTrading *gump, int code)
         WriteUInt32BE(gump->StateMy);
     }
 }
-//---------------------------------------------------------------------------
+
 CPacketLogoutNotification::CPacketLogoutNotification()
     : CPacket(5)
 {
     WriteUInt8(0x01);
     WriteUInt32BE(0xFFFFFFFF);
 }
-//---------------------------------------------------------------------------
+
 CPacketTextEntryDialogResponse::CPacketTextEntryDialogResponse(
     CGumpTextEntryDialog *gump, CEntryText *entry, bool code)
     : CPacket(1)
@@ -671,7 +671,7 @@ CPacketTextEntryDialogResponse::CPacketTextEntryDialogResponse(
 
     WriteString(entry->c_str(), len);
 }
-//---------------------------------------------------------------------------
+
 CPacketRenameRequest::CPacketRenameRequest(uint serial, string newName)
     : CPacket(35)
 {
@@ -679,7 +679,7 @@ CPacketRenameRequest::CPacketRenameRequest(uint serial, string newName)
     WriteUInt32BE(serial);
     WriteString(newName.c_str(), newName.length(), false);
 }
-//---------------------------------------------------------------------------
+
 CPacketTipRequest::CPacketTipRequest(ushort id, uchar flag)
     : CPacket(4)
 {
@@ -687,7 +687,7 @@ CPacketTipRequest::CPacketTipRequest(ushort id, uchar flag)
     WriteUInt16BE(id);
     WriteUInt8(flag);
 }
-//---------------------------------------------------------------------------
+
 CPacketASCIIPromptResponse::CPacketASCIIPromptResponse(const char *text, size_t len, bool cancel)
     : CPacket(1)
 {
@@ -700,7 +700,7 @@ CPacketASCIIPromptResponse::CPacketASCIIPromptResponse(const char *text, size_t 
 
     WriteString(text, len);
 }
-//---------------------------------------------------------------------------
+
 CPacketUnicodePromptResponse::CPacketUnicodePromptResponse(
     const wchar_t *text, size_t len, const string &lang, bool cancel)
     : CPacket(1)
@@ -715,7 +715,7 @@ CPacketUnicodePromptResponse::CPacketUnicodePromptResponse(
 
     WriteWString(text, len, false, false);
 }
-//---------------------------------------------------------------------------
+
 CPacketDyeDataResponse::CPacketDyeDataResponse(uint serial, ushort graphic, ushort color)
     : CPacket(9)
 {
@@ -724,7 +724,7 @@ CPacketDyeDataResponse::CPacketDyeDataResponse(uint serial, ushort graphic, usho
     WriteUInt16BE(graphic);
     WriteUInt16BE(color);
 }
-//---------------------------------------------------------------------------
+
 CPacketProfileRequest::CPacketProfileRequest(uint serial)
     : CPacket(8)
 {
@@ -733,7 +733,7 @@ CPacketProfileRequest::CPacketProfileRequest(uint serial)
     WriteUInt8(0);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketProfileUpdate::CPacketProfileUpdate(uint serial, const wchar_t *text, size_t len)
     : CPacket(1)
 {
@@ -748,7 +748,7 @@ CPacketProfileUpdate::CPacketProfileUpdate(uint serial, const wchar_t *text, siz
     WriteUInt16BE((ushort)len);
     WriteWString(text, len, true, false);
 }
-//---------------------------------------------------------------------------
+
 CPacketCloseStatusbarGump::CPacketCloseStatusbarGump(uint serial)
     : CPacket(9)
 {
@@ -757,7 +757,7 @@ CPacketCloseStatusbarGump::CPacketCloseStatusbarGump(uint serial)
     WriteUInt16BE(0x000C);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyInviteRequest::CPacketPartyInviteRequest()
     : CPacket(10)
 {
@@ -767,7 +767,7 @@ CPacketPartyInviteRequest::CPacketPartyInviteRequest()
     WriteUInt8(0x01);
     WriteUInt32BE(0x00000000);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyRemoveRequest::CPacketPartyRemoveRequest(uint serial)
     : CPacket(10)
 {
@@ -777,7 +777,7 @@ CPacketPartyRemoveRequest::CPacketPartyRemoveRequest(uint serial)
     WriteUInt8(0x02);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyChangeLootTypeRequest::CPacketPartyChangeLootTypeRequest(uchar type)
     : CPacket(7)
 {
@@ -787,7 +787,7 @@ CPacketPartyChangeLootTypeRequest::CPacketPartyChangeLootTypeRequest(uchar type)
     WriteUInt8(0x06);
     WriteUInt8(type);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyAccept::CPacketPartyAccept(uint serial)
     : CPacket(10)
 {
@@ -797,7 +797,7 @@ CPacketPartyAccept::CPacketPartyAccept(uint serial)
     WriteUInt8(0x08);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyDecline::CPacketPartyDecline(uint serial)
     : CPacket(10)
 {
@@ -807,7 +807,7 @@ CPacketPartyDecline::CPacketPartyDecline(uint serial)
     WriteUInt8(0x09);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketPartyMessage::CPacketPartyMessage(const wchar_t *text, size_t len, uint serial)
     : CPacket(1)
 {
@@ -828,7 +828,7 @@ CPacketPartyMessage::CPacketPartyMessage(const wchar_t *text, size_t len, uint s
 
     WriteWString(text, len, true, false);
 }
-//---------------------------------------------------------------------------
+
 CPacketGameWindowSize::CPacketGameWindowSize()
     : CPacket(13)
 {
@@ -838,7 +838,7 @@ CPacketGameWindowSize::CPacketGameWindowSize()
     WriteUInt32BE(g_ConfigManager.GameWindowWidth);
     WriteUInt32BE(g_ConfigManager.GameWindowHeight);
 }
-//---------------------------------------------------------------------------
+
 CPacketClientViewRange::CPacketClientViewRange(uchar range)
     : CPacket(2)
 {
@@ -851,7 +851,7 @@ CPacketClientViewRange::CPacketClientViewRange(uchar range)
 
     WriteUInt8(range);
 }
-//---------------------------------------------------------------------------
+
 CPacketBulletinBoardRequestMessage::CPacketBulletinBoardRequestMessage(uint serial, uint msgSerial)
     : CPacket(12)
 {
@@ -861,7 +861,7 @@ CPacketBulletinBoardRequestMessage::CPacketBulletinBoardRequestMessage(uint seri
     WriteUInt32BE(serial);
     WriteUInt32BE(msgSerial);
 }
-//---------------------------------------------------------------------------
+
 CPacketBulletinBoardRequestMessageSummary::CPacketBulletinBoardRequestMessageSummary(
     uint serial, uint msgSerial)
     : CPacket(12)
@@ -872,7 +872,7 @@ CPacketBulletinBoardRequestMessageSummary::CPacketBulletinBoardRequestMessageSum
     WriteUInt32BE(serial);
     WriteUInt32BE(msgSerial);
 }
-//---------------------------------------------------------------------------
+
 CPacketBulletinBoardPostMessage::CPacketBulletinBoardPostMessage(
     uint serial, uint replySerial, const char *subject, const char *message)
     : CPacket(1)
@@ -941,7 +941,7 @@ CPacketBulletinBoardPostMessage::CPacketBulletinBoardPostMessage(
     WriteString(msgPtr, len, false);
     WriteUInt8(0);
 }
-//---------------------------------------------------------------------------
+
 CPacketBulletinBoardRemoveMessage::CPacketBulletinBoardRemoveMessage(uint serial, uint msgSerial)
     : CPacket(12)
 {
@@ -951,7 +951,7 @@ CPacketBulletinBoardRemoveMessage::CPacketBulletinBoardRemoveMessage(uint serial
     WriteUInt32BE(serial);
     WriteUInt32BE(msgSerial);
 }
-//---------------------------------------------------------------------------
+
 CPacketAssistVersion::CPacketAssistVersion(uint version, string clientVersion)
     : CPacket(1)
 {
@@ -963,7 +963,7 @@ CPacketAssistVersion::CPacketAssistVersion(uint version, string clientVersion)
     WriteUInt32BE(version);
     WriteString(clientVersion.c_str(), clientVersion.length());
 }
-//---------------------------------------------------------------------------
+
 CPacketRazorAnswer::CPacketRazorAnswer()
     : CPacket(4)
 {
@@ -971,7 +971,7 @@ CPacketRazorAnswer::CPacketRazorAnswer()
     WriteUInt16BE(0x0004);
     WriteUInt8(0xFF);
 }
-//---------------------------------------------------------------------------
+
 CPacketLanguage::CPacketLanguage(const string &lang)
     : CPacket(1)
 {
@@ -983,7 +983,7 @@ CPacketLanguage::CPacketLanguage(const string &lang)
     WriteUInt16BE(0x000B);
     WriteString(lang, lang.length(), false);
 }
-//---------------------------------------------------------------------------
+
 CPacketClientType::CPacketClientType()
     : CPacket(10)
 {
@@ -999,7 +999,7 @@ CPacketClientType::CPacketClientType()
 
     WriteUInt32BE(clientFlag);
 }
-//---------------------------------------------------------------------------
+
 CPacketRequestPopupMenu::CPacketRequestPopupMenu(uint serial)
     : CPacket(9)
 {
@@ -1008,7 +1008,7 @@ CPacketRequestPopupMenu::CPacketRequestPopupMenu(uint serial)
     WriteUInt16BE(0x0013);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketPopupMenuSelection::CPacketPopupMenuSelection(uint serial, ushort menuID)
     : CPacket(11)
 {
@@ -1018,7 +1018,7 @@ CPacketPopupMenuSelection::CPacketPopupMenuSelection(uint serial, ushort menuID)
     WriteUInt32BE(serial);
     WriteUInt16BE(menuID);
 }
-//---------------------------------------------------------------------------
+
 CPacketOpenChat::CPacketOpenChat(const wstring &name)
     : CPacket(64)
 {
@@ -1034,7 +1034,7 @@ CPacketOpenChat::CPacketOpenChat(const wstring &name)
         WriteWString(name, len, false, false);
     }
 }
-//---------------------------------------------------------------------------
+
 CPacketMapMessage::CPacketMapMessage(uint serial, MAP_MESSAGE action, uchar pin, short x, short y)
     : CPacket(11)
 {
@@ -1045,7 +1045,7 @@ CPacketMapMessage::CPacketMapMessage(uint serial, MAP_MESSAGE action, uchar pin,
     WriteUInt16BE(x);
     WriteUInt16BE(y);
 }
-//---------------------------------------------------------------------------
+
 CPacketGuildMenuRequest::CPacketGuildMenuRequest()
     : CPacket(10)
 {
@@ -1055,7 +1055,7 @@ CPacketGuildMenuRequest::CPacketGuildMenuRequest()
     WriteUInt16BE(0x0028);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketQuestMenuRequest::CPacketQuestMenuRequest()
     : CPacket(10)
 {
@@ -1065,7 +1065,7 @@ CPacketQuestMenuRequest::CPacketQuestMenuRequest()
     WriteUInt16BE(0x0032);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketEquipLastWeapon::CPacketEquipLastWeapon()
     : CPacket(10)
 {
@@ -1075,7 +1075,7 @@ CPacketEquipLastWeapon::CPacketEquipLastWeapon()
     WriteUInt16BE(0x001E);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketVirtureRequest::CPacketVirtureRequest(int buttonID)
     : CPacket(23)
 {
@@ -1087,7 +1087,7 @@ CPacketVirtureRequest::CPacketVirtureRequest(int buttonID)
     WriteUInt32BE(0x00000001);
     WriteUInt32BE(g_PlayerSerial);
 }
-//---------------------------------------------------------------------------
+
 CPacketInvokeVirtureRequest::CPacketInvokeVirtureRequest(uchar id)
     : CPacket(6)
 {
@@ -1097,7 +1097,7 @@ CPacketInvokeVirtureRequest::CPacketInvokeVirtureRequest(uchar id)
     WriteUInt8(id);
     WriteUInt8(0x00);
 }
-//---------------------------------------------------------------------------
+
 CPacketMegaClilocRequestOld::CPacketMegaClilocRequestOld(int serial)
     : CPacket(9)
 {
@@ -1106,7 +1106,7 @@ CPacketMegaClilocRequestOld::CPacketMegaClilocRequestOld(int serial)
     WriteUInt16BE(0x0010);
     WriteUInt32BE(serial);
 }
-//---------------------------------------------------------------------------
+
 CPacketMegaClilocRequest::CPacketMegaClilocRequest(UINT_LIST &list)
     : CPacket(1)
 {
@@ -1129,7 +1129,7 @@ CPacketMegaClilocRequest::CPacketMegaClilocRequest(UINT_LIST &list)
     else
         list.clear();
 }
-//---------------------------------------------------------------------------
+
 CPacketChangeStatLockStateRequest::CPacketChangeStatLockStateRequest(uchar stat, uchar state)
     : CPacket(7)
 {
@@ -1139,7 +1139,7 @@ CPacketChangeStatLockStateRequest::CPacketChangeStatLockStateRequest(uchar stat,
     WriteUInt8(stat);
     WriteUInt8(state);
 }
-//---------------------------------------------------------------------------
+
 CPacketBookPageData::CPacketBookPageData(CGumpBook *gump, int page)
     : CPacket(1)
 {
@@ -1197,7 +1197,7 @@ CPacketBookPageData::CPacketBookPageData(CGumpBook *gump, int page)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 CPacketBookPageDataRequest::CPacketBookPageDataRequest(int serial, int page)
     : CPacket(13)
 {
@@ -1208,7 +1208,7 @@ CPacketBookPageDataRequest::CPacketBookPageDataRequest(int serial, int page)
     WriteUInt16BE(page);
     WriteUInt16BE(0xFFFF);
 }
-//---------------------------------------------------------------------------
+
 CPacketBuyRequest::CPacketBuyRequest(CGumpShop *gump)
     : CPacket(1)
 {
@@ -1247,7 +1247,7 @@ CPacketBuyRequest::CPacketBuyRequest(CGumpShop *gump)
     else
         WriteUInt8(0x00);
 }
-//---------------------------------------------------------------------------
+
 CPacketSellRequest::CPacketSellRequest(CGumpShop *gump)
     : CPacket(1)
 {
@@ -1279,7 +1279,7 @@ CPacketSellRequest::CPacketSellRequest(CGumpShop *gump)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 CPacketUseCombatAbility::CPacketUseCombatAbility(uchar index)
     : CPacket(15)
 {
@@ -1291,7 +1291,7 @@ CPacketUseCombatAbility::CPacketUseCombatAbility(uchar index)
     WriteUInt8(index);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketTargetSelectedObject::CPacketTargetSelectedObject(
     int useObjectSerial, int targetObjectSerial)
     : CPacket(13)
@@ -1302,7 +1302,7 @@ CPacketTargetSelectedObject::CPacketTargetSelectedObject(
     WriteUInt32BE(useObjectSerial);
     WriteUInt32BE(targetObjectSerial);
 }
-//---------------------------------------------------------------------------
+
 CPacketToggleGargoyleFlying::CPacketToggleGargoyleFlying()
     : CPacket(11)
 {
@@ -1312,7 +1312,7 @@ CPacketToggleGargoyleFlying::CPacketToggleGargoyleFlying()
     WriteUInt16BE(0x0001);
     WriteUInt32BE(0x00000000);
 }
-//----------------------------------------------------------------------------------
+
 CPacketCustomHouseDataReq::CPacketCustomHouseDataReq(int serial)
     : CPacket(9)
 {
@@ -1321,7 +1321,7 @@ CPacketCustomHouseDataReq::CPacketCustomHouseDataReq(int serial)
     WriteUInt16BE(0x1E);
     WriteUInt32BE(serial);
 }
-//----------------------------------------------------------------------------------
+
 CPacketStunReq::CPacketStunReq()
     : CPacket(5)
 {
@@ -1329,7 +1329,7 @@ CPacketStunReq::CPacketStunReq()
     WriteUInt16BE(0x05);
     WriteUInt16BE(0x09);
 }
-//----------------------------------------------------------------------------------
+
 CPacketDisarmReq::CPacketDisarmReq()
     : CPacket(5)
 {
@@ -1337,13 +1337,13 @@ CPacketDisarmReq::CPacketDisarmReq()
     WriteUInt16BE(0x05);
     WriteUInt16BE(0x0A);
 }
-//----------------------------------------------------------------------------------
+
 CPacketResend::CPacketResend()
     : CPacket(3)
 {
     WriteUInt8(0x22);
 }
-//----------------------------------------------------------------------------------
+
 CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence, int fastWalkKey)
     : CPacket(7)
 {
@@ -1352,7 +1352,7 @@ CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence, int fast
     WriteUInt8(sequence);
     WriteUInt32BE(fastWalkKey);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseBackup::CPacketCustomHouseBackup()
     : CPacket(10)
 {
@@ -1362,7 +1362,7 @@ CPacketCustomHouseBackup::CPacketCustomHouseBackup()
     WriteUInt16BE(0x0002);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseRestore::CPacketCustomHouseRestore()
     : CPacket(10)
 {
@@ -1372,7 +1372,7 @@ CPacketCustomHouseRestore::CPacketCustomHouseRestore()
     WriteUInt16BE(0x0003);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseCommit::CPacketCustomHouseCommit()
     : CPacket(10)
 {
@@ -1382,7 +1382,7 @@ CPacketCustomHouseCommit::CPacketCustomHouseCommit()
     WriteUInt16BE(0x0004);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseBuildingExit::CPacketCustomHouseBuildingExit()
     : CPacket(10)
 {
@@ -1392,7 +1392,7 @@ CPacketCustomHouseBuildingExit::CPacketCustomHouseBuildingExit()
     WriteUInt16BE(0x000C);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseGoToFloor::CPacketCustomHouseGoToFloor(uchar floor)
     : CPacket(15)
 {
@@ -1404,7 +1404,7 @@ CPacketCustomHouseGoToFloor::CPacketCustomHouseGoToFloor(uchar floor)
     WriteUInt8(floor);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseSync::CPacketCustomHouseSync()
     : CPacket(10)
 {
@@ -1414,7 +1414,7 @@ CPacketCustomHouseSync::CPacketCustomHouseSync()
     WriteUInt16BE(0x000E);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseClear::CPacketCustomHouseClear()
     : CPacket(10)
 {
@@ -1424,7 +1424,7 @@ CPacketCustomHouseClear::CPacketCustomHouseClear()
     WriteUInt16BE(0x0010);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseRevert::CPacketCustomHouseRevert()
     : CPacket(10)
 {
@@ -1434,7 +1434,7 @@ CPacketCustomHouseRevert::CPacketCustomHouseRevert()
     WriteUInt16BE(0x001A);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseResponse::CPacketCustomHouseResponse()
     : CPacket(10)
 {
@@ -1444,7 +1444,7 @@ CPacketCustomHouseResponse::CPacketCustomHouseResponse()
     WriteUInt16BE(0x000A);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseAddItem::CPacketCustomHouseAddItem(ushort graphic, int x, int y)
     : CPacket(25)
 {
@@ -1460,7 +1460,7 @@ CPacketCustomHouseAddItem::CPacketCustomHouseAddItem(ushort graphic, int x, int 
     WriteUInt32BE(y);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseDeleteItem::CPacketCustomHouseDeleteItem(ushort graphic, int x, int y, int z)
     : CPacket(30)
 {
@@ -1478,7 +1478,7 @@ CPacketCustomHouseDeleteItem::CPacketCustomHouseDeleteItem(ushort graphic, int x
     WriteUInt32BE(z);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseAddRoof::CPacketCustomHouseAddRoof(ushort graphic, int x, int y, int z)
     : CPacket(30)
 {
@@ -1496,7 +1496,7 @@ CPacketCustomHouseAddRoof::CPacketCustomHouseAddRoof(ushort graphic, int x, int 
     WriteUInt32BE(z);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseDeleteRoof::CPacketCustomHouseDeleteRoof(ushort graphic, int x, int y, int z)
     : CPacket(30)
 {
@@ -1514,7 +1514,7 @@ CPacketCustomHouseDeleteRoof::CPacketCustomHouseDeleteRoof(ushort graphic, int x
     WriteUInt32BE(z);
     WriteUInt8(0x0A);
 }
-//---------------------------------------------------------------------------
+
 CPacketCustomHouseAddStair::CPacketCustomHouseAddStair(ushort graphic, int x, int y)
     : CPacket(25)
 {
@@ -1530,7 +1530,7 @@ CPacketCustomHouseAddStair::CPacketCustomHouseAddStair(ushort graphic, int x, in
     WriteUInt32BE(y);
     WriteUInt8(0x0A);
 }
-//----------------------------------------------------------------------------------
+
 CPacketOrionVersion::CPacketOrionVersion(int version)
     : CPacket(9)
 {
@@ -1539,4 +1539,3 @@ CPacketOrionVersion::CPacketOrionVersion(int version)
     WriteUInt16BE(OCT_ORION_VERSION);
     WriteUInt32BE(version);
 }
-//----------------------------------------------------------------------------------

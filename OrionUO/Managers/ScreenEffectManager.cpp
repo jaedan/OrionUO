@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
 
 CScreenEffectManager g_ScreenEffectManager;
-//---------------------------------------------------------------------------
+
 CScreenEffectManager::CScreenEffectManager()
 {
 }
-//---------------------------------------------------------------------------
+
 CScreenEffectManager::~CScreenEffectManager()
 {
 }
-//---------------------------------------------------------------------------
+
 int CScreenEffectManager::Process()
 {
     WISPFUN_DEBUG("c154_f1");
@@ -82,7 +82,7 @@ int CScreenEffectManager::Process()
 
     return 0;
 }
-//---------------------------------------------------------------------------
+
 void CScreenEffectManager::Draw()
 {
     WISPFUN_DEBUG("c154_f2");
@@ -104,7 +104,7 @@ void CScreenEffectManager::Draw()
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
-} //---------------------------------------------------------------------------
+}
 bool CScreenEffectManager::Use(
     const SCREEN_EFFECT_MODE &mode, const SCREEN_EFFECT_TYPE &type, bool ignoreEnabled)
 {
@@ -130,7 +130,7 @@ bool CScreenEffectManager::Use(
 
     return Enabled;
 }
-//---------------------------------------------------------------------------
+
 bool CScreenEffectManager::UseSunrise()
 {
     WISPFUN_DEBUG("c154_f4");
@@ -138,7 +138,7 @@ bool CScreenEffectManager::UseSunrise()
     Step = 0.05f;
     return result;
 }
-//---------------------------------------------------------------------------
+
 bool CScreenEffectManager::UseSunset()
 {
     WISPFUN_DEBUG("c154_f5");
@@ -146,4 +146,3 @@ bool CScreenEffectManager::UseSunset()
     Step = 0.05f;
     return result;
 }
-//---------------------------------------------------------------------------

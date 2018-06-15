@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIShopResult::CGUIShopResult(CGUIShopItem *shopItem, int x, int y)
     : CBaseGUI(GOT_SHOPRESULT, shopItem->Serial, shopItem->Graphic, shopItem->Color, x, y)
     , Price(shopItem->Price)
@@ -30,14 +30,14 @@ CGUIShopResult::CGUIShopResult(CGUIShopItem *shopItem, int x, int y)
     m_MinMaxButtons->DefaultTextOffset = -122;
     m_MinMaxButtons->SetTextParameters(true, STP_LEFT_CENTER, 9, 0x021F, false);
 }
-//----------------------------------------------------------------------------------
+
 CGUIShopResult::~CGUIShopResult()
 {
     WISPFUN_DEBUG("c74_f2");
     m_NameText.Clear();
     RELEASE_POINTER(m_MinMaxButtons);
 }
-//----------------------------------------------------------------------------------
+
 CBaseGUI *CGUIShopResult::SelectedItem()
 {
     WISPFUN_DEBUG("c74_f3");
@@ -50,13 +50,13 @@ CBaseGUI *CGUIShopResult::SelectedItem()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopResult::PrepareTextures()
 {
     WISPFUN_DEBUG("c74_f4");
     m_MinMaxButtons->PrepareTextures();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopResult::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c74_f5");
@@ -69,7 +69,7 @@ void CGUIShopResult::Draw(bool checktrans)
 
     glTranslatef((GLfloat)-m_X, (GLfloat)-m_Y, 0.0f);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIShopResult::Select()
 {
     WISPFUN_DEBUG("c74_f6");
@@ -78,4 +78,3 @@ bool CGUIShopResult::Select()
 
     return (x >= 0 && y >= 0 && x < 200 && y < m_NameText.Height);
 }
-//----------------------------------------------------------------------------------

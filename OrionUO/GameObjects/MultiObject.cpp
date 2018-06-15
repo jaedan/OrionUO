@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMultiObject::CMultiObject(ushort graphic, short x, short y, char z, int flags)
     : CRenderStaticObject(ROT_MULTI_OBJECT, 0, graphic, 0, x, y, z)
     , OnTarget(flags == 2)
@@ -21,14 +21,14 @@ CMultiObject::CMultiObject(ushort graphic, short x, short y, char z, int flags)
     g_MultiObjectsCount++;
 #endif //UO_DEBUG_INFO!=0
 }
-//----------------------------------------------------------------------------------
+
 CMultiObject::~CMultiObject()
 {
 #if UO_DEBUG_INFO != 0
     g_MultiObjectsCount--;
 #endif //UO_DEBUG_INFO!=0
 }
-//----------------------------------------------------------------------------------
+
 void CMultiObject::UpdateGraphicBySeason()
 {
     WISPFUN_DEBUG("c25_f2");
@@ -41,7 +41,7 @@ void CMultiObject::UpdateGraphicBySeason()
         Vegetation = g_Orion.IsVegetation(Graphic);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CMultiObject::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c25_f3");
@@ -100,7 +100,7 @@ void CMultiObject::Draw(int x, int y)
         CRenderStaticObject::Draw(x, y);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CMultiObject::Select(int x, int y)
 {
     WISPFUN_DEBUG("c25_f4");
@@ -122,4 +122,3 @@ void CMultiObject::Select(int x, int y)
         CRenderStaticObject::Select(x, y);
     }
 }
-//----------------------------------------------------------------------------------

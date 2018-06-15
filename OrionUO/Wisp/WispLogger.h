@@ -1,10 +1,9 @@
-﻿//----------------------------------------------------------------------------------
+﻿
 #ifndef WISPLOGGER_H
 #define WISPLOGGER_H
-//----------------------------------------------------------------------------------
+
 namespace WISP_LOGGER
 {
-//----------------------------------------------------------------------------------
 #define CWISPLOGGER 1
 
 #if CWISPLOGGER != 0
@@ -24,7 +23,7 @@ namespace WISP_LOGGER
 #define INITCRASHLOGGER(path) WISP_LOGGER::g_WispCrashLogger.Init(path);
 #define CRASHLOG WISP_LOGGER::g_WispCrashLogger.Print
 #define CRASHLOG_DUMP WISP_LOGGER::g_WispCrashLogger.Dump
-//----------------------------------------------------------------------------------
+
 class CLogger
 {
 public:
@@ -50,10 +49,9 @@ public:
     void VPrint(const wchar_t *format, va_list ap);
     void Dump(uchar *buf, int size);
 };
-//----------------------------------------------------------------------------------
+
 extern CLogger g_WispLogger;
 extern CLogger g_WispCrashLogger;
 } // namespace WISP_LOGGER
-//----------------------------------------------------------------------------------
+
 #endif //WISPLOGGER_H
-//----------------------------------------------------------------------------------

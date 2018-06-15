@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGLTexture::CGLTexture()
 {
 }
-//----------------------------------------------------------------------------------
+
 CGLTexture::~CGLTexture()
 {
     WISPFUN_DEBUG("c36_f1");
     Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGLTexture::Draw(int x, int y, bool checktrans)
 {
     WISPFUN_DEBUG("c36_f2");
@@ -43,7 +43,7 @@ void CGLTexture::Draw(int x, int y, bool checktrans)
             g_GL_Draw(*this, x, y);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGLTexture::Draw(int x, int y, int width, int height, bool checktrans)
 {
     WISPFUN_DEBUG("c36_f3");
@@ -74,14 +74,14 @@ void CGLTexture::Draw(int x, int y, int width, int height, bool checktrans)
             g_GL_DrawStretched(*this, x, y, width, height);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGLTexture::DrawRotated(int x, int y, float angle)
 {
     WISPFUN_DEBUG("c36_f4");
     if (Texture != 0)
         g_GL_DrawRotated(*this, x, y, angle);
 }
-//----------------------------------------------------------------------------------
+
 void CGLTexture::DrawTransparent(int x, int y, bool stencil)
 {
     WISPFUN_DEBUG("c36_f5");
@@ -105,7 +105,7 @@ void CGLTexture::DrawTransparent(int x, int y, bool stencil)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGLTexture::Clear()
 {
     WISPFUN_DEBUG("c36_f6");
@@ -131,7 +131,7 @@ void CGLTexture::Clear()
         MirroredVertexBuffer = 0;
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGLTexture::Select(int x, int y, bool pixelCheck)
 {
     x = g_MouseManager.Position.X - x;
@@ -150,4 +150,3 @@ bool CGLTexture::Select(int x, int y, bool pixelCheck)
 
     return false;
 }
-//----------------------------------------------------------------------------------

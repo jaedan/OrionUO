@@ -6,12 +6,12 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef GUMP_H
 #define GUMP_H
-//----------------------------------------------------------------------------------
+
 class CBaseGUI;
-//----------------------------------------------------------------------------------
+
 #define GUMP_BUTTON_EVENT_C OnButton(int serial)
 #define GUMP_CHECKBOX_EVENT_C OnCheckbox(int serial, bool state)
 #define GUMP_RADIO_EVENT_C OnRadio(int serial, bool state)
@@ -24,7 +24,7 @@ class CBaseGUI;
 #define GUMP_DIRECT_HTML_LINK_EVENT_C OnDirectHTMLLink(ushort link)
 #define GUMP_COMBOBOX_SELECTION_EVENT_C OnComboboxSelection(int serial)
 #define GUMP_SCROLL_BUTTON_EVENT_C OnScrollButton()
-//----------------------------------------------------------------------------------
+
 #define GUMP_BUTTON_EVENT_H virtual void GUMP_BUTTON_EVENT_C
 #define GUMP_CHECKBOX_EVENT_H virtual void GUMP_CHECKBOX_EVENT_C
 #define GUMP_RADIO_EVENT_H virtual void GUMP_RADIO_EVENT_C
@@ -37,7 +37,7 @@ class CBaseGUI;
 #define GUMP_DIRECT_HTML_LINK_EVENT_H virtual void GUMP_DIRECT_HTML_LINK_EVENT_C
 #define GUMP_COMBOBOX_SELECTION_EVENT_H virtual void GUMP_COMBOBOX_SELECTION_EVENT_C
 #define GUMP_SCROLL_BUTTON_EVENT_H virtual void GUMP_SCROLL_BUTTON_EVENT_C
-//----------------------------------------------------------------------------------
+
 //!Базовый класс гампов
 class CGump : public CRenderObject
 {
@@ -165,10 +165,9 @@ public:
     virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam) {}
     virtual void OnKeyUp(const WPARAM &wParam, const LPARAM &lParam) {}
 };
-//----------------------------------------------------------------------------------
+
 //!Ссылка на гамп, который в данный момент изменяет высоту
 extern CGump *g_ResizedGump;
 extern CGump *g_CurrentCheckGump;
-//----------------------------------------------------------------------------------
+
 #endif
-//----------------------------------------------------------------------------------

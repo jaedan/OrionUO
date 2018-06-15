@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectWall::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -74,7 +74,7 @@ bool CCustomHouseObjectWall::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectWall::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -85,7 +85,7 @@ int CCustomHouseObjectWall::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectFloor::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -133,7 +133,7 @@ bool CCustomHouseObjectFloor::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectFloor::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -144,7 +144,7 @@ int CCustomHouseObjectFloor::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectDoor::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -176,7 +176,7 @@ bool CCustomHouseObjectDoor::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectDoor::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -187,7 +187,7 @@ int CCustomHouseObjectDoor::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectMisc::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -221,7 +221,7 @@ bool CCustomHouseObjectMisc::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectMisc::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -232,7 +232,7 @@ int CCustomHouseObjectMisc::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectStair::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -270,7 +270,7 @@ bool CCustomHouseObjectStair::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectStair::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -281,7 +281,7 @@ int CCustomHouseObjectStair::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectTeleport::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -329,7 +329,7 @@ bool CCustomHouseObjectTeleport::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectTeleport::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -340,7 +340,7 @@ int CCustomHouseObjectTeleport::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectRoof::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -390,7 +390,7 @@ bool CCustomHouseObjectRoof::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectRoof::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -401,7 +401,7 @@ int CCustomHouseObjectRoof::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------
+
 bool CCustomHouseObjectPlaceInfo::Parse(const char *text)
 {
     WISPFUN_DEBUG("");
@@ -432,7 +432,7 @@ bool CCustomHouseObjectPlaceInfo::Parse(const char *text)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CCustomHouseObjectPlaceInfo::Contains(ushort graphic) const
 {
     IFOR (i, 0, GRAPHICS_COUNT)
@@ -443,4 +443,3 @@ int CCustomHouseObjectPlaceInfo::Contains(ushort graphic) const
 
     return -1;
 }
-//----------------------------------------------------------------------------------

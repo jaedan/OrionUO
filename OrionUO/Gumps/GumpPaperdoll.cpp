@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 int CGumpPaperdoll::UsedLayers[m_LayerCount] = {
     OL_CLOAK,    OL_RING,  OL_SHIRT,  OL_ARMS,  OL_PANTS,  OL_SHOES,    OL_LEGS,    OL_TORSO,
     OL_BRACELET, OL_15,    OL_GLOVES, OL_TUNIC, OL_SKIRT,  OL_NECKLACE, OL_HAIR,    OL_ROBE,
     OL_EARRINGS, OL_BEARD, OL_HELMET, OL_WAIST, OL_1_HAND, OL_2_HAND,   OL_TALISMAN
 };
-//----------------------------------------------------------------------------------
+
 CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
     : CGump(GT_PAPERDOLL, serial, x, y)
 {
@@ -113,11 +113,11 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
 
     m_DataBox = (CGUIDataBox *)Add(new CGUIDataBox());
 }
-//----------------------------------------------------------------------------------
+
 CGumpPaperdoll::~CGumpPaperdoll()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::CalculateGumpState()
 {
     WISPFUN_DEBUG("c105_f2");
@@ -139,7 +139,7 @@ void CGumpPaperdoll::CalculateGumpState()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::InitToolTip()
 {
     WISPFUN_DEBUG("c105_f3");
@@ -239,7 +239,7 @@ void CGumpPaperdoll::InitToolTip()
     else
         g_ToolTip.Set(L"Double click to maximize paperdoll gump");
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::DelayedClick(CRenderObject *obj)
 {
     WISPFUN_DEBUG("c105_f4");
@@ -275,7 +275,7 @@ void CGumpPaperdoll::DelayedClick(CRenderObject *obj)
         g_Orion.AddJournalMessage(td, "");
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::PrepareContent()
 {
     WISPFUN_DEBUG("c105_f5");
@@ -343,7 +343,7 @@ void CGumpPaperdoll::PrepareContent()
     if (!Minimized && m_TextRenderer.CalculatePositions(false))
         WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::UpdateContent()
 {
     WISPFUN_DEBUG("c105_f6");
@@ -693,7 +693,7 @@ void CGumpPaperdoll::UpdateContent()
 
     m_DataBox->Add(new CGUIShader(&g_ColorizerShader, false));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::UpdateDescription(const string &text)
 {
     WISPFUN_DEBUG("c105_f7");
@@ -704,7 +704,7 @@ void CGumpPaperdoll::UpdateDescription(const string &text)
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::Draw()
 {
     WISPFUN_DEBUG("c105_f8");
@@ -731,7 +731,7 @@ void CGumpPaperdoll::Draw()
         glTranslatef(-g_GumpTranslate.X, -g_GumpTranslate.Y, 0.0f);
     }
 }
-//----------------------------------------------------------------------------------
+
 CRenderObject *CGumpPaperdoll::Select()
 {
     WISPFUN_DEBUG("c105_f9");
@@ -755,7 +755,7 @@ CRenderObject *CGumpPaperdoll::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c105_f10");
@@ -839,7 +839,7 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpPaperdoll::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c105_f11");
@@ -932,7 +932,7 @@ void CGumpPaperdoll::OnLeftMouseButtonUp()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpPaperdoll::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c105_f12");
@@ -1002,4 +1002,3 @@ bool CGumpPaperdoll::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------

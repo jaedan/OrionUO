@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpNotify::CGumpNotify(short x, short y, uchar variant, short width, short height, string text)
     : CGump(GT_NOTIFY, 0, x, y)
     , Variant(variant)
@@ -27,18 +27,18 @@ CGumpNotify::CGumpNotify(short x, short y, uchar variant, short width, short hei
 
     Add(new CGUIButton(ID_GN_BUTTON_OK, 0x0481, 0x0482, 0x0483, (Width / 2) - 13, Height - 45));
 }
-//----------------------------------------------------------------------------------
+
 CGumpNotify::~CGumpNotify()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpNotify::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c103_f2");
     if (serial == ID_GN_BUTTON_OK)
         Process();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpNotify::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c103_f3");
@@ -52,7 +52,7 @@ void CGumpNotify::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         Process();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpNotify::Process()
 {
     WISPFUN_DEBUG("c103_f4");
@@ -61,4 +61,3 @@ void CGumpNotify::Process()
     else if (Variant == ID_GN_STATE_NOTIFICATION)
         RemoveMark = true;
 }
-//----------------------------------------------------------------------------------

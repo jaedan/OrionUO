@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CStaticObject::CStaticObject(int serial, ushort graphic, ushort color, short x, short y, char z)
     : CRenderStaticObject(ROT_STATIC_OBJECT, serial, graphic, color, x, y, z)
 {
@@ -25,7 +25,7 @@ CStaticObject::CStaticObject(int serial, ushort graphic, ushort color, short x, 
     g_StaticsObjectsCount++;
 #endif //UO_DEBUG_INFO!=0
 }
-//---------------------------------------------------------------------------
+
 void CStaticObject::UpdateGraphicBySeason()
 {
     WISPFUN_DEBUG("c28_f2");
@@ -40,7 +40,7 @@ void CStaticObject::UpdateGraphicBySeason()
 
     NoDrawTile = IsNoDrawTile(Graphic);
 }
-//----------------------------------------------------------------------------------
+
 void CStaticObject::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c28_f3");
@@ -53,7 +53,7 @@ void CStaticObject::Draw(int x, int y)
 
     CRenderStaticObject::Draw(x, y);
 }
-//----------------------------------------------------------------------------------
+
 void CStaticObject::Select(int x, int y)
 {
     WISPFUN_DEBUG("c28_f4");
@@ -61,4 +61,3 @@ void CStaticObject::Select(int x, int y)
 
     CRenderStaticObject::Select(x, y);
 }
-//----------------------------------------------------------------------------------

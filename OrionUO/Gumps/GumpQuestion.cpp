@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpQuestion::CGumpQuestion(uint serial, short x, short y, uchar variant)
     : CGump(GT_QUESTION, serial, x, y)
     , Variant(variant)
@@ -29,11 +29,11 @@ CGumpQuestion::CGumpQuestion(uint serial, short x, short y, uchar variant)
     Add(new CGUIButton(ID_GQ_BUTTON_CANCEL, 0x0817, 0x0819, 0x0818, 37, 75));
     Add(new CGUIButton(ID_GQ_BUTTON_OKAY, 0x081A, 0x081C, 0x081B, 100, 75));
 }
-//----------------------------------------------------------------------------------
+
 CGumpQuestion::~CGumpQuestion()
 {
 }
-//----------------------------------------------------------------------------
+
 void CGumpQuestion::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c109_f2");
@@ -50,4 +50,3 @@ void CGumpQuestion::GUMP_BUTTON_EVENT_C
         }
     }
 }
-//---------------------------------------------------------------------------

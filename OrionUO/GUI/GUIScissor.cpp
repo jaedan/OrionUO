@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIScissor::CGUIScissor(bool enabled, int baseX, int baseY, int x, int y, int width, int height)
     : CGUIPolygonal(GOT_SCISSOR, x, y, width, height)
     , BaseX(baseX)
@@ -16,11 +16,11 @@ CGUIScissor::CGUIScissor(bool enabled, int baseX, int baseY, int x, int y, int w
 {
     Enabled = enabled;
 }
-//----------------------------------------------------------------------------------
+
 CGUIScissor::~CGUIScissor()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIScissor::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c70_f1");
@@ -49,4 +49,3 @@ void CGUIScissor::Draw(bool checktrans)
     else
         g_GL.PopScissor();
 }
-//----------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
-﻿//----------------------------------------------------------------------------------
+﻿
 #ifndef WISPDEFINITIONS_H
 #define WISPDEFINITIONS_H
-//----------------------------------------------------------------------------------
+
 //0 - disable debugging
 //1 - debugging with queue (very slow run mode)
 //2 - debugging with function name (normal run mode)
@@ -18,7 +18,7 @@ extern char *g_WispCurrentFunctionName;
 #else
 #define WISPFUN_DEBUG(name)
 #endif
-//----------------------------------------------------------------------------------
+
 #define WISP_ONE_NAME 1
 
 #if WISP_ONE_NAME == 1
@@ -44,7 +44,7 @@ extern char *g_WispCurrentFunctionName;
 #define WISP_FILE WispFile
 #define WISP_LOGGER WispLogger
 #endif
-//----------------------------------------------------------------------------------
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -57,7 +57,7 @@ typedef char *pchar;
 typedef short *pshort;
 typedef int *pint;
 typedef __int64 *pint64;
-//----------------------------------------------------------------------------------
+
 #define DEBUGGIND_OUTPUT 1
 
 #if DEBUGGIND_OUTPUT == 1
@@ -68,20 +68,20 @@ void DebugDump(puchar data, int size);
 #define DebugMsg(...)
 #define DebugDump(buf, size)
 #endif
-//----------------------------------------------------------------------------------
+
 #define RELEASE_POINTER(ptr)                                                                       \
     if (ptr != NULL)                                                                               \
     {                                                                                              \
         delete ptr;                                                                                \
         ptr = NULL;                                                                                \
     }
-//----------------------------------------------------------------------------------
+
 //!Incremented ordinary for
 #define IFOR(var, start, stop) for (intptr_t var = start; var < (intptr_t)stop; var++)
 //!Decremented ordinary for
 #define DFOR(var, start, stop) for (intptr_t var = start; var >= (intptr_t)stop; var--)
-//----------------------------------------------------------------------------------
+
 #define IN_RANGE(name, id1, id2) ((name) >= (id1) && (name) <= (id2))
 #define OUT_RANGE(name, id1, id2) ((name) < (id1) || (name) > (id2))
-//----------------------------------------------------------------------------------
+
 #endif

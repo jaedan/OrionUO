@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CTextData::CTextData()
     : CRenderTextObject()
 {
     WISPFUN_DEBUG("c174_f1");
 }
-//---------------------------------------------------------------------------
+
 CTextData::CTextData(CTextData *obj)
     : Unicode(obj->Unicode)
     , Type(obj->Type)
@@ -29,14 +29,14 @@ CTextData::CTextData(CTextData *obj)
     Text = obj->Text;
     UnicodeText = obj->UnicodeText;
 }
-//---------------------------------------------------------------------------
+
 CTextData::~CTextData()
 {
     WISPFUN_DEBUG("c174_f3");
     m_Texture.Clear();
     Owner = NULL;
 }
-//---------------------------------------------------------------------------
+
 bool CTextData::CanBeDrawedInJournalGump()
 {
     WISPFUN_DEBUG("c174_f4");
@@ -59,7 +59,7 @@ bool CTextData::CanBeDrawedInJournalGump()
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 void CTextData::GenerateTexture(
     int maxWidth, ushort flags, TEXT_ALIGN_TYPE align, uchar cell, int font)
 {
@@ -87,4 +87,3 @@ void CTextData::GenerateTexture(
         }
     }
 }
-//----------------------------------------------------------------------------------

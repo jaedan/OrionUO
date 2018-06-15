@@ -2,7 +2,6 @@
 
 namespace WISP_FILE
 {
-//----------------------------------------------------------------------------------
 CTextFileParser::CTextFileParser(
     const string &path, const char *delimiters, const char *comentaries, const char *quotes)
 {
@@ -11,7 +10,7 @@ CTextFileParser::CTextFileParser(
 
     StartupInitalize(delimiters, comentaries, quotes);
 }
-//----------------------------------------------------------------------------------
+
 CTextFileParser::CTextFileParser(
     const wstring &path, const char *delimiters, const char *comentaries, const char *quotes)
 {
@@ -20,14 +19,14 @@ CTextFileParser::CTextFileParser(
 
     StartupInitalize(delimiters, comentaries, quotes);
 }
-//----------------------------------------------------------------------------------
+
 CTextFileParser::~CTextFileParser()
 {
     WISPFUN_DEBUG("c11_f3");
     //Выгружаем файл из памяти
     m_File.Unload();
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на конец файла
 void CTextFileParser::StartupInitalize(
     const char *delimiters, const char *comentaries, const char *quotes)
@@ -57,21 +56,21 @@ void CTextFileParser::StartupInitalize(
     //Вычисляем конец файла
     m_End = m_File.End;
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на конец файла
 void CTextFileParser::Restart()
 {
     WISPFUN_DEBUG("c11_f5");
     m_File.ResetPtr();
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на конец файла
 bool CTextFileParser::IsEOF()
 {
     WISPFUN_DEBUG("c11_f6");
     return (m_File.Ptr >= m_End);
 }
-//----------------------------------------------------------------------------------
+
 //Получить конец строки
 void CTextFileParser::GetEOL()
 {
@@ -92,7 +91,7 @@ void CTextFileParser::GetEOL()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на разделитель
 bool CTextFileParser::IsDelimiter()
 {
@@ -105,7 +104,7 @@ bool CTextFileParser::IsDelimiter()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Пропустить все до данных
 void CTextFileParser::SkipToData()
 {
@@ -114,7 +113,7 @@ void CTextFileParser::SkipToData()
     while (m_Ptr < m_EOL && *m_Ptr && IsDelimiter())
         m_Ptr++;
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на комментарий
 bool CTextFileParser::IsComment()
 {
@@ -136,7 +135,7 @@ bool CTextFileParser::IsComment()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на кавычку
 bool CTextFileParser::IsQuote()
 {
@@ -155,7 +154,7 @@ bool CTextFileParser::IsQuote()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Проверка на закрывающую кавычку
 bool CTextFileParser::IsSecondQuote()
 {
@@ -174,7 +173,7 @@ bool CTextFileParser::IsSecondQuote()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Получить следующий токен
 string CTextFileParser::ObtainData()
 {
@@ -203,7 +202,7 @@ string CTextFileParser::ObtainData()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Получить следующий фрагмент строки или токен (если кавычки не обнаружены)
 string CTextFileParser::ObtainQuotedData()
 {
@@ -262,7 +261,7 @@ string CTextFileParser::ObtainQuotedData()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Прочитать токены из файла
 void CTextFileParser::SaveRawLine()
 {
@@ -280,7 +279,7 @@ void CTextFileParser::SaveRawLine()
     else
         RawLine = "";
 }
-//----------------------------------------------------------------------------------
+
 //Прочитать токены из файла
 STRING_LIST CTextFileParser::ReadTokens(bool trim)
 {
@@ -322,7 +321,7 @@ STRING_LIST CTextFileParser::ReadTokens(bool trim)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 //Прочитать токены из строки
 STRING_LIST CTextFileParser::GetTokens(const char *str, bool trim)
 {
@@ -362,22 +361,22 @@ STRING_LIST CTextFileParser::GetTokens(const char *str, bool trim)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 CTextFileWritter::CTextFileWritter(const string &path)
 {
     fopen_s(&m_File, path.c_str(), "w");
 }
-//----------------------------------------------------------------------------------
+
 CTextFileWritter::CTextFileWritter(const wstring &path)
 {
     _wfopen_s(&m_File, path.c_str(), L"w");
 }
-//----------------------------------------------------------------------------------
+
 CTextFileWritter::~CTextFileWritter()
 {
     Close();
 }
-//----------------------------------------------------------------------------------
+
 void CTextFileWritter::Close()
 {
     if (m_File != NULL)
@@ -386,24 +385,23 @@ void CTextFileWritter::Close()
         m_File = NULL;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTextFileWritter::WriteString(const string &key, const string &value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + value + "\n").c_str(), m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CTextFileWritter::WriteInt(const string &key, int value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + std::to_string(value) + "\n").c_str(), m_File);
 }
-//----------------------------------------------------------------------------------
+
 void CTextFileWritter::WriteBool(const string &key, bool value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + (value ? "yes" : "no") + "\n").c_str(), m_File);
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_FILE
-//----------------------------------------------------------------------------------

@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpManager g_GumpManager;
-//----------------------------------------------------------------------------------
+
 /*!
 Вычислить количество статусбаров без пати
 @return Количество non-party статусбыров
@@ -29,7 +29,7 @@ int CGumpManager::GetNonpartyStatusbarsCount()
 
     return count;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить гамп
 @param [__in] obj Ссылка на гамп
@@ -214,7 +214,7 @@ void CGumpManager::AddGump(CGump *obj)
         obj->PrepareTextures();
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить гамп-владелец текущей активной TEntryText
 @return Ссылку на гамп или NULL
@@ -230,7 +230,7 @@ CGump *CGumpManager::GetTextEntryOwner()
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Проверить, существует ли гамп
 @param [__in] gumpID ID гампа (в памяти)
@@ -247,7 +247,7 @@ CGump *CGumpManager::GumpExists(uintptr_t gumpID)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обновить содержимое гампа
 @param [__in] serial Серийник гампа
@@ -265,7 +265,7 @@ CGump *CGumpManager::UpdateContent(int serial, int id, const GUMP_TYPE &type)
 
     return gump;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обновить гамп
 @param [__in] serial Серийник гампа
@@ -283,7 +283,7 @@ CGump *CGumpManager::UpdateGump(int serial, int id, const GUMP_TYPE &type)
 
     return gump;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Найти гамп
 @param [__in] serial Серийник гампа
@@ -323,7 +323,7 @@ CGump *CGumpManager::GetGump(int serial, int id, const GUMP_TYPE &type)
 
     return gump;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Закрыть все гампы с указанными параметрами
 @param [__in] serial Серийник гампа
@@ -368,7 +368,7 @@ void CGumpManager::CloseGump(uint serial, uint id, GUMP_TYPE type)
         gump = next;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Удалить гамп
 @param [__in] obj Ссылка на гамп
@@ -403,7 +403,7 @@ void CGumpManager::RemoveGump(CGump *obj)
     obj->m_Prev = NULL;
     delete obj;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Событие удаления менеджера (вызывается перед удалением)
 @return 
@@ -423,7 +423,7 @@ void CGumpManager::OnDelete()
         gump = tmp;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Удалить гампы, которые не могут быть досягаемы из-за изменения дистанции до объекта
 @return 
@@ -474,7 +474,7 @@ void CGumpManager::RemoveRangedGumps()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::PrepareContent()
 {
     WISPFUN_DEBUG("c144_f12");
@@ -491,7 +491,7 @@ void CGumpManager::PrepareContent()
         gump = next;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::RemoveMarked()
 {
     WISPFUN_DEBUG("c144_f13");
@@ -505,7 +505,7 @@ void CGumpManager::RemoveMarked()
         gump = next;
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Подготовка текстур
 @return 
@@ -521,7 +521,7 @@ void CGumpManager::PrepareTextures()
 
     g_CurrentCheckGump = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::Draw(bool blocked)
 {
     WISPFUN_DEBUG("c144_f15");
@@ -551,7 +551,7 @@ void CGumpManager::Draw(bool blocked)
     if (menuBarGump != NULL && (g_CustomHouseGump == NULL || menuBarGump == g_CustomHouseGump))
         menuBarGump->Draw();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::Select(bool blocked)
 {
     WISPFUN_DEBUG("c144_f16");
@@ -582,7 +582,7 @@ void CGumpManager::Select(bool blocked)
         (g_CustomHouseGump == NULL || menuBarGump == g_CustomHouseGump))
         menuBarGump->Select();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::InitToolTip()
 {
     WISPFUN_DEBUG("c144_f17");
@@ -598,7 +598,7 @@ void CGumpManager::InitToolTip()
         gump->InitToolTip();
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Перерисовать все гампы
 @return 
@@ -609,7 +609,7 @@ void CGumpManager::RedrawAll()
     QFOR(gump, m_Items, CGump *)
     gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие левой кнопки мыши
 @param [__in] blocked Состояние экрана
@@ -640,7 +640,7 @@ void CGumpManager::OnLeftMouseButtonDown(bool blocked)
 
     RemoveMarked();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отпускание левой кнопки мыши
 @param [__in] blocked Состояние экрана
@@ -791,7 +791,7 @@ bool CGumpManager::OnLeftMouseButtonUp(bool blocked)
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Двойной клик левой кнопкой мыши
 @param [__in] blocked Состояние экрана
@@ -821,7 +821,7 @@ bool CGumpManager::OnLeftMouseButtonDoubleClick(bool blocked)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Нажатие правой кнопки мыши
 @param [__in] blocked Состояние экрана
@@ -852,7 +852,7 @@ void CGumpManager::OnRightMouseButtonDown(bool blocked)
 
     RemoveMarked();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отпускание правой кнопки мыши
 @param [__in] blocked Состояние экрана
@@ -1019,7 +1019,7 @@ void CGumpManager::OnRightMouseButtonUp(bool blocked)
 
     RemoveMarked();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка средней кнопки (колесика) мыши
 @param [__in] state Состояние колесика
@@ -1039,7 +1039,7 @@ void CGumpManager::OnMidMouseButtonScroll(bool up, bool blocked)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::OnDragging(bool blocked)
 {
     WISPFUN_DEBUG("c144_f25");
@@ -1053,7 +1053,7 @@ void CGumpManager::OnDragging(bool blocked)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -1090,7 +1090,7 @@ bool CGumpManager::OnCharPress(const WPARAM &wParam, const LPARAM &lParam, bool 
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -1147,7 +1147,7 @@ bool CGumpManager::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam, bool bl
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка гампов из конфига
 @param [__in] path Путь к файлу конфига
@@ -1524,7 +1524,7 @@ void CGumpManager::Load(const string &path)
 
     AddGump(new CGumpConsoleType(minimizedConsoleType, showFullTextConsoleType));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpManager::SaveDefaultGumpProperties(
     WISP_FILE::CBinaryFileWritter &writer, CGump *gump, int size)
 {
@@ -1543,7 +1543,7 @@ void CGumpManager::SaveDefaultGumpProperties(
     writer.WriteUInt16LE(gump->MinimizedY);
     writer.WriteInt8(gump->LockMoving);
 };
-//----------------------------------------------------------------------------------
+
 /*!
 Сохранить гампы в конфиг
 @param [__in] path Путь к файлу кофнига
@@ -1798,4 +1798,3 @@ void CGumpManager::Save(const string &path)
 
     writter.Close();
 }
-//----------------------------------------------------------------------------------

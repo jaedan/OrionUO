@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CPacketManager g_PacketManager;
-//----------------------------------------------------------------------------------
+
 //Карта пакетов УО для анализа
 #define UMSG(save, size)                                                                           \
     {                                                                                              \
@@ -40,7 +40,7 @@ CPacketManager g_PacketManager;
     {                                                                                              \
         save, name, size, DIR_BOTH, &CPacketManager::Handle##rmethod                               \
     }
-//----------------------------------------------------------------------------------
+
 CPacketInfo CPacketManager::m_Packets[0x100] = {
     /*0x00*/ SMSG(ORION_SAVE_PACKET, "Create Character", 0x68),
     /*0x01*/ SMSG(ORION_SAVE_PACKET, "Disconnect", 0x05),
@@ -319,18 +319,18 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /*0xFE*/ RMSG(ORION_SAVE_PACKET, "Razor Handshake", 0x8),
     /*0xFF*/ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE)
 };
-//----------------------------------------------------------------------------------
+
 CPacketManager::CPacketManager()
     : WISP_NETWORK::CPacketReader()
 {
     InitializeCriticalSection(&m_CSPluginNetwork);
 }
-//----------------------------------------------------------------------------------
+
 CPacketManager::~CPacketManager()
 {
     DeleteCriticalSection(&m_CSPluginNetwork);
 }
-//---------------------------------------------------------------------------
+
 bool CPacketManager::AutoLoginNameExists(const string &name)
 {
     WISPFUN_DEBUG("c150_f1");
@@ -341,7 +341,7 @@ bool CPacketManager::AutoLoginNameExists(const string &name)
 
     return (AutoLoginNames.find(search) != string::npos);
 }
-//----------------------------------------------------------------------------------
+
 #define CV_PRINT 0
 
 #if CV_PRINT != 0
@@ -349,7 +349,7 @@ bool CPacketManager::AutoLoginNameExists(const string &name)
 #else //CV_PRINT==0
 #define CVPRINT(s)
 #endif //CV_PRINT!=0
-//----------------------------------------------------------------------------------
+
 void CPacketManager::SetClientVersion(CLIENT_VERSION newClientVersion)
 {
     WISPFUN_DEBUG("c150_f2");
@@ -534,7 +534,7 @@ void CPacketManager::SetClientVersion(CLIENT_VERSION newClientVersion)
         m_Packets[0x00].Size = 0x68;
     }
 }
-//----------------------------------------------------------------------------------
+
 int CPacketManager::GetPacketSize(const UCHAR_LIST &packet, int &offsetToSize)
 {
     WISPFUN_DEBUG("c150_f3");
@@ -543,7 +543,7 @@ int CPacketManager::GetPacketSize(const UCHAR_LIST &packet, int &offsetToSize)
 
     return 0;
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::SendMegaClilocRequests()
 {
     WISPFUN_DEBUG("c150_f5");
@@ -563,7 +563,7 @@ void CPacketManager::SendMegaClilocRequests()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::AddMegaClilocRequest(int serial)
 {
     WISPFUN_DEBUG("c150_f6");
@@ -575,7 +575,7 @@ void CPacketManager::AddMegaClilocRequest(int serial)
 
     m_MegaClilocRequests.push_back(serial);
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::OnReadFailed()
 {
     WISPFUN_DEBUG("c150_f7");
@@ -589,7 +589,7 @@ void CPacketManager::OnReadFailed()
 
     g_ConnectionManager.Disconnect();
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::OnPacket()
 {
     WISPFUN_DEBUG("c150_f8");
@@ -633,7 +633,7 @@ void CPacketManager::OnPacket()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::SavePluginReceivePacket(puchar buf, int size)
 {
     WISPFUN_DEBUG("c150_f9");
@@ -645,7 +645,7 @@ void CPacketManager::SavePluginReceivePacket(puchar buf, int size)
     m_PluginData.push_front(packet);
     LeaveCriticalSection(&m_CSPluginNetwork);
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::ProcessPluginPackets()
 {
     WISPFUN_DEBUG("c150_f10");
@@ -661,7 +661,7 @@ void CPacketManager::ProcessPluginPackets()
     }
     LeaveCriticalSection(&m_CSPluginNetwork);
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::PluginReceiveHandler(puchar buf, int size)
 {
     WISPFUN_DEBUG("c150_f11");
@@ -693,9 +693,9 @@ void CPacketManager::PluginReceiveHandler(puchar buf, int size)
         (this->*(info.Handler))();
     }
 }
-//----------------------------------------------------------------------------------
+
 #define PACKET_HANDLER(name) void CPacketManager::Handle##name()
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(LoginError)
 {
     WISPFUN_DEBUG("c150_f12");
@@ -707,13 +707,13 @@ PACKET_HANDLER(LoginError)
         g_ConnectionManager.Disconnect();
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ServerList)
 {
     WISPFUN_DEBUG("c150_f13");
     g_ServerList.ParsePacket(*this);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(RelayServer)
 {
     WISPFUN_DEBUG("c150_f14");
@@ -729,7 +729,7 @@ PACKET_HANDLER(RelayServer)
     g_PacketLoginComplete = false;
     g_CurrentMap = 0;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CharacterList)
 {
     WISPFUN_DEBUG("c150_f15");
@@ -789,7 +789,7 @@ PACKET_HANDLER(CharacterList)
 
     g_CharacterListScreen.UpdateContent();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ResendCharacterList)
 {
     WISPFUN_DEBUG("c150_f16");
@@ -861,7 +861,7 @@ PACKET_HANDLER(ResendCharacterList)
     if (!haveCharacter)
         g_Orion.InitScreen(GS_PROFESSION_SELECT);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(LoginComplete)
 {
     WISPFUN_DEBUG("c150_f17");
@@ -869,7 +869,7 @@ PACKET_HANDLER(LoginComplete)
 
     g_Orion.LoginComplete(false);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(SetTime)
 {
     WISPFUN_DEBUG("c150_f18");
@@ -877,7 +877,7 @@ PACKET_HANDLER(SetTime)
     g_ServerTimeMinute = ReadUInt8();
     g_ServerTimeSecond = ReadUInt8();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(EnterWorld)
 {
     WISPFUN_DEBUG("c150_f19");
@@ -962,7 +962,7 @@ PACKET_HANDLER(EnterWorld)
             g_Orion.CreateTextMessageF(3, 0x0037, "Login confirm to %s", server->Name.c_str());
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateHitpoints)
 {
     WISPFUN_DEBUG("c150_f20");
@@ -982,7 +982,7 @@ PACKET_HANDLER(UpdateHitpoints)
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateMana)
 {
     WISPFUN_DEBUG("c150_f21");
@@ -1001,7 +1001,7 @@ PACKET_HANDLER(UpdateMana)
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateStamina)
 {
     WISPFUN_DEBUG("c150_f22");
@@ -1020,7 +1020,7 @@ PACKET_HANDLER(UpdateStamina)
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(MobileAttributes)
 {
     WISPFUN_DEBUG("c150_f23");
@@ -1046,7 +1046,7 @@ PACKET_HANDLER(MobileAttributes)
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(NewHealthbarUpdate)
 {
     WISPFUN_DEBUG("c150_f24");
@@ -1107,7 +1107,7 @@ PACKET_HANDLER(NewHealthbarUpdate)
 
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdatePlayer)
 {
     WISPFUN_DEBUG("c150_f25");
@@ -1139,7 +1139,7 @@ PACKET_HANDLER(UpdatePlayer)
     g_World->UpdatePlayer(
         serial, graphic, graphicIncrement, color, flags, x, y, serverID, direction, z);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CharacterStatus)
 {
     WISPFUN_DEBUG("c150_f26");
@@ -1284,7 +1284,7 @@ PACKET_HANDLER(CharacterStatus)
     g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateItem)
 {
     WISPFUN_DEBUG("c150_f27");
@@ -1380,7 +1380,7 @@ PACKET_HANDLER(UpdateItem)
         updateType,
         1);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateItemSA)
 {
     WISPFUN_DEBUG("c150_f28");
@@ -1421,7 +1421,7 @@ PACKET_HANDLER(UpdateItemSA)
         g_World->UpdatePlayer(
             serial, graphic, graphicIncrement, color, flags, x, y, 0 /*serverID*/, direction, z);
 }
-//---------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateObject)
 {
     WISPFUN_DEBUG("c150_f29");
@@ -1527,7 +1527,7 @@ PACKET_HANDLER(UpdateObject)
         g_Player->UpdateAbilities();
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(EquipItem)
 {
     WISPFUN_DEBUG("c150_f30");
@@ -1568,7 +1568,7 @@ PACKET_HANDLER(EquipItem)
     if (cserial == g_PlayerSerial && (layer == OL_1_HAND || layer == OL_2_HAND))
         g_Player->UpdateAbilities();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateContainedItem)
 {
     WISPFUN_DEBUG("c150_f31");
@@ -1591,7 +1591,7 @@ PACKET_HANDLER(UpdateContainedItem)
     g_World->UpdateContainedItem(
         serial, graphic, graphicIncrement, count, x, y, containerSerial, color);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateContainedItems)
 {
     WISPFUN_DEBUG("c150_f32");
@@ -1656,7 +1656,7 @@ PACKET_HANDLER(UpdateContainedItems)
             serial, graphic, graphicIncrement, count, x, y, containerSerial, color);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DenyMoveItem)
 {
     WISPFUN_DEBUG("c150_f33");
@@ -1746,7 +1746,7 @@ PACKET_HANDLER(DenyMoveItem)
         g_Orion.CreateTextMessage(TT_SYSTEM, 0xFFFFFFFF, 3, 0, errorMessages[code]);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(EndDraggingItem)
 {
     WISPFUN_DEBUG("c150_f33_1");
@@ -1760,7 +1760,7 @@ PACKET_HANDLER(EndDraggingItem)
     g_ObjectInHand.Enabled = false;
     g_ObjectInHand.Dropped = false;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DropItemAccepted)
 {
     WISPFUN_DEBUG("c150_f33_1");
@@ -1770,7 +1770,7 @@ PACKET_HANDLER(DropItemAccepted)
     g_ObjectInHand.Enabled = false;
     g_ObjectInHand.Dropped = false;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DeleteObject)
 {
     WISPFUN_DEBUG("c150_f34");
@@ -1873,7 +1873,7 @@ PACKET_HANDLER(DeleteObject)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateCharacter)
 {
     WISPFUN_DEBUG("c150_f35");
@@ -1921,7 +1921,7 @@ PACKET_HANDLER(UpdateCharacter)
 
     g_World->MoveToTop(obj);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Warmode)
 {
     WISPFUN_DEBUG("c150_f36");
@@ -1950,7 +1950,7 @@ PACKET_HANDLER(Warmode)
 
     g_World->MoveToTop(g_Player);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(PauseControl)
 {
     WISPFUN_DEBUG("c150_f37");
@@ -1959,7 +1959,7 @@ PACKET_HANDLER(PauseControl)
 	if (!g_ClientPaused)
 	UO->ResumeClient();*/
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenPaperdoll)
 {
     WISPFUN_DEBUG("c150_f38");
@@ -1988,19 +1988,19 @@ PACKET_HANDLER(OpenPaperdoll)
     gump->CanLift = (flags & 0x02);
     gump->UpdateDescription(text);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ClientVersion)
 {
     WISPFUN_DEBUG("c150_f39");
     CPacketClientVersion(g_Orion.ClientVersionText).Send();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Ping)
 {
     WISPFUN_DEBUG("c150_f40");
     g_Ping = 0;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(SetWeather)
 {
     WISPFUN_DEBUG("c150_f41");
@@ -2060,7 +2060,7 @@ PACKET_HANDLER(SetWeather)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(PersonalLightLevel)
 {
     WISPFUN_DEBUG("c150_f42");
@@ -2076,7 +2076,7 @@ PACKET_HANDLER(PersonalLightLevel)
         g_PersonalLightLevel = level;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(LightLevel)
 {
     WISPFUN_DEBUG("c150_f43");
@@ -2087,7 +2087,7 @@ PACKET_HANDLER(LightLevel)
 
     g_LightLevel = level;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(EnableLockedFeatures)
 {
     WISPFUN_DEBUG("c150_f44");
@@ -2100,7 +2100,7 @@ PACKET_HANDLER(EnableLockedFeatures)
 
     g_AnimationManager.UpdateAnimationAddressTable();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenContainer)
 {
     WISPFUN_DEBUG("c150_f45");
@@ -2291,7 +2291,7 @@ PACKET_HANDLER(OpenContainer)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UpdateSkills)
 {
     WISPFUN_DEBUG("c150_f46");
@@ -2405,7 +2405,7 @@ PACKET_HANDLER(UpdateSkills)
 
     LOG("Skill(s) updated!\n");
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ExtendedCommand)
 {
     WISPFUN_DEBUG("c150_f47");
@@ -2823,7 +2823,7 @@ PACKET_HANDLER(ExtendedCommand)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DenyWalk)
 {
     WISPFUN_DEBUG("c150_f48");
@@ -2844,7 +2844,7 @@ PACKET_HANDLER(DenyWalk)
 
     g_World->MoveToTop(g_Player);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ConfirmWalk)
 {
     WISPFUN_DEBUG("c150_f49");
@@ -2866,13 +2866,13 @@ PACKET_HANDLER(ConfirmWalk)
 
     g_World->MoveToTop(g_Player);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenUrl)
 {
     WISPFUN_DEBUG("c150_f50");
     g_Orion.GoToWebLink(ReadString(0));
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Target)
 {
     WISPFUN_DEBUG("c150_f51");
@@ -2885,7 +2885,7 @@ PACKET_HANDLER(Target)
         g_PartyHelperTarget = 0;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Talk)
 {
     WISPFUN_DEBUG("c150_f52");
@@ -2982,7 +2982,7 @@ PACKET_HANDLER(Talk)
         g_Orion.CreateTextMessage(TT_OBJECT, serial, (uchar)font, textColor, str);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UnicodeTalk)
 {
     WISPFUN_DEBUG("c150_f53");
@@ -3090,7 +3090,7 @@ PACKET_HANDLER(UnicodeTalk)
             TT_OBJECT, serial, (uchar)g_ConfigManager.SpeechFont, textColor, str);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ClientTalk)
 {
     WISPFUN_DEBUG("c150_f54");
@@ -3127,7 +3127,7 @@ PACKET_HANDLER(ClientTalk)
 
     g_AbyssPacket03First = false;
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(MultiPlacement)
 {
     WISPFUN_DEBUG("c150_f55");
@@ -3139,7 +3139,7 @@ PACKET_HANDLER(MultiPlacement)
 
     g_Target.SetMultiData(*this);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(GraphicEffect)
 {
     WISPFUN_DEBUG("c150_f56");
@@ -3269,7 +3269,7 @@ PACKET_HANDLER(GraphicEffect)
 
     g_EffectManager.AddEffect(effect);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DeathScreen)
 {
     WISPFUN_DEBUG("c150_f57");
@@ -3293,7 +3293,7 @@ PACKET_HANDLER(DeathScreen)
         g_DeathScreenTimer = g_Ticks + DEATH_SCREEN_DELAY;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(PlaySoundEffect)
 {
     WISPFUN_DEBUG("c150_f58");
@@ -3308,7 +3308,7 @@ PACKET_HANDLER(PlaySoundEffect)
 
     g_Orion.PlaySoundEffect(index, g_SoundManager.GetVolumeValue(distance));
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(PlayMusic)
 {
     WISPFUN_DEBUG("c150_f59");
@@ -3321,7 +3321,7 @@ PACKET_HANDLER(PlayMusic)
 
     g_Orion.PlayMusic(index);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DragAnimation)
 {
     WISPFUN_DEBUG("c150_f60");
@@ -3415,7 +3415,7 @@ PACKET_HANDLER(DragAnimation)
 
     g_EffectManager.AddEffect(effect);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CorpseEquipment)
 {
     WISPFUN_DEBUG("c150_f61");
@@ -3440,7 +3440,7 @@ PACKET_HANDLER(CorpseEquipment)
         layer = ReadUInt8();
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ASCIIPrompt)
 {
     WISPFUN_DEBUG("c150_f62");
@@ -3450,7 +3450,7 @@ PACKET_HANDLER(ASCIIPrompt)
     g_ConsolePrompt = PT_ASCII;
     memcpy(&g_LastASCIIPrompt[0], &Start[0], 11);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(UnicodePrompt)
 {
     WISPFUN_DEBUG("c150_f63");
@@ -3460,7 +3460,7 @@ PACKET_HANDLER(UnicodePrompt)
     g_ConsolePrompt = PT_UNICODE;
     memcpy(&g_LastUnicodePrompt[0], &Start[0], 11);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CharacterAnimation)
 {
     WISPFUN_DEBUG("c150_f64");
@@ -3489,7 +3489,7 @@ PACKET_HANDLER(CharacterAnimation)
         obj->AnimationFromServer = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(NewCharacterAnimation)
 {
     WISPFUN_DEBUG("c150_f65");
@@ -3518,7 +3518,7 @@ PACKET_HANDLER(NewCharacterAnimation)
         obj->AnimationFromServer = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DisplayQuestArrow)
 {
     WISPFUN_DEBUG("c150_f66");
@@ -3527,13 +3527,13 @@ PACKET_HANDLER(DisplayQuestArrow)
     g_QuestArrow.X = ReadUInt16BE();
     g_QuestArrow.Y = ReadUInt16BE();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ClientViewRange)
 {
     WISPFUN_DEBUG("c150_f67");
     g_ConfigManager.UpdateRange = ReadUInt8();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(KrriosClientSpecial)
 {
     WISPFUN_DEBUG("c150_f68");
@@ -3542,7 +3542,7 @@ PACKET_HANDLER(KrriosClientSpecial)
     if (type == 0xFE)
         CPacketRazorAnswer().Send();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(AssistVersion)
 {
     WISPFUN_DEBUG("c150_f69");
@@ -3550,7 +3550,7 @@ PACKET_HANDLER(AssistVersion)
 
     CPacketAssistVersion(version, g_Orion.ClientVersionText).Send();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CharacterListNotification)
 {
     WISPFUN_DEBUG("c150_f70");
@@ -3559,7 +3559,7 @@ PACKET_HANDLER(CharacterListNotification)
     g_ConnectionScreen.SetConnectionFailed(true);
     g_ConnectionScreen.SetErrorCode(ReadUInt8());
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(ErrorCode)
 {
     WISPFUN_DEBUG("c150_f71");
@@ -3572,7 +3572,7 @@ PACKET_HANDLER(ErrorCode)
     if (code > 7)
         g_ConnectionScreen.SetErrorCode(3);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(AttackCharacter)
 {
     WISPFUN_DEBUG("c150_f72");
@@ -3586,7 +3586,7 @@ PACKET_HANDLER(AttackCharacter)
             CPacketStatusRequest(g_LastAttackObject).Send();
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Season)
 {
     WISPFUN_DEBUG("c150_f73");
@@ -3609,7 +3609,7 @@ PACKET_HANDLER(Season)
 
     g_Orion.ChangeSeason((SEASON_TYPE)season, g_OldSeasonMusic);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DisplayDeath)
 {
     WISPFUN_DEBUG("c150_f74");
@@ -3636,14 +3636,14 @@ PACKET_HANDLER(DisplayDeath)
 
     owner->SetAnimation(group, 0, 5, 1, false, false);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenChat)
 {
     WISPFUN_DEBUG("c150_f75");
     uchar newbuf[4] = { 0xf0, 0x00, 0x04, 0xff };
     g_Orion.Send(newbuf, 4);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DisplayClilocString)
 {
     WISPFUN_DEBUG("c150_f76");
@@ -3707,7 +3707,7 @@ PACKET_HANDLER(DisplayClilocString)
         g_Orion.CreateUnicodeTextMessage(TT_OBJECT, serial, (uchar)font, color, message);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(MegaCliloc)
 {
     WISPFUN_DEBUG("c150_f77");
@@ -3860,7 +3860,7 @@ PACKET_HANDLER(MegaCliloc)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Damage)
 {
     WISPFUN_DEBUG("c150_f78");
@@ -3904,7 +3904,7 @@ PACKET_HANDLER(Damage)
         text->Timer = g_Ticks + DAMAGE_TEXT_NORMAL_DELAY;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BuffDebuff)
 {
     WISPFUN_DEBUG("c150_f79");
@@ -4070,7 +4070,7 @@ PACKET_HANDLER(BuffDebuff)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(SecureTrading)
 {
     WISPFUN_DEBUG("c150_f80");
@@ -4130,7 +4130,7 @@ PACKET_HANDLER(SecureTrading)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(TextEntryDialog)
 {
     WISPFUN_DEBUG("c150_f81");
@@ -4159,7 +4159,7 @@ PACKET_HANDLER(TextEntryDialog)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenMenu)
 {
     WISPFUN_DEBUG("c150_f82");
@@ -4279,7 +4279,7 @@ PACKET_HANDLER(OpenMenu)
         g_GumpManager.AddGump(gump);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::AddHTMLGumps(CGump *gump, vector<HTMLGumpDataInfo> &list)
 {
     WISPFUN_DEBUG("c150_f83");
@@ -4347,7 +4347,7 @@ void CPacketManager::AddHTMLGumps(CGump *gump, vector<HTMLGumpDataInfo> &list)
 
     list.clear();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenGump)
 {
     WISPFUN_DEBUG("c150_f84");
@@ -4845,7 +4845,7 @@ PACKET_HANDLER(OpenGump)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenCompressedGump)
 {
     WISPFUN_DEBUG("c150_f85");
@@ -4950,7 +4950,7 @@ PACKET_HANDLER(OpenCompressedGump)
 
     OnPacket();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(DyeData)
 {
     WISPFUN_DEBUG("c150_f86");
@@ -4967,7 +4967,7 @@ PACKET_HANDLER(DyeData)
 
     g_GumpManager.AddGump(gump);
 }
-//---------------------------------------------------------------------------
+
 PACKET_HANDLER(DisplayMap)
 {
     WISPFUN_DEBUG("c150_f87");
@@ -5011,7 +5011,7 @@ PACKET_HANDLER(DisplayMap)
     if (obj != NULL)
         obj->Opened = true;
 }
-//---------------------------------------------------------------------------
+
 PACKET_HANDLER(MapData)
 {
     WISPFUN_DEBUG("c150_f88");
@@ -5067,7 +5067,7 @@ PACKET_HANDLER(MapData)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(TipWindow)
 {
     WISPFUN_DEBUG("c150_f89");
@@ -5094,7 +5094,7 @@ PACKET_HANDLER(TipWindow)
         g_GumpManager.AddGump(gump);
     }
 }
-//---------------------------------------------------------------------------
+
 PACKET_HANDLER(CharacterProfile)
 {
     WISPFUN_DEBUG("c150_f90");
@@ -5112,7 +5112,7 @@ PACKET_HANDLER(CharacterProfile)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BulletinBoardData)
 {
     WISPFUN_DEBUG("c150_f91");
@@ -5257,7 +5257,7 @@ PACKET_HANDLER(BulletinBoardData)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenBook)
 {
     WISPFUN_DEBUG("c150_f92");
@@ -5277,7 +5277,7 @@ PACKET_HANDLER(OpenBook)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OpenBookNew)
 {
     WISPFUN_DEBUG("c150_f93");
@@ -5303,7 +5303,7 @@ PACKET_HANDLER(OpenBookNew)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BookData)
 {
     WISPFUN_DEBUG("c150_f94");
@@ -5346,7 +5346,7 @@ PACKET_HANDLER(BookData)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BuyList)
 {
     WISPFUN_DEBUG("c150_f95");
@@ -5454,7 +5454,7 @@ PACKET_HANDLER(BuyList)
     else
         LOG("Unknown layer for buy container!!!\n");
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(SellList)
 {
     WISPFUN_DEBUG("c150_f96");
@@ -5523,7 +5523,7 @@ PACKET_HANDLER(SellList)
 
     g_GumpManager.AddGump(gump);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BuyReply)
 {
     WISPFUN_DEBUG("c150_f97");
@@ -5533,13 +5533,13 @@ PACKET_HANDLER(BuyReply)
     if (!flag) //Close shop gump
         g_GumpManager.CloseGump(serial, 0, GT_SHOP);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Logout)
 {
     WISPFUN_DEBUG("c150_f98");
     g_Orion.LogOut();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OPLInfo)
 {
     WISPFUN_DEBUG("c150_f99");
@@ -5552,7 +5552,7 @@ PACKET_HANDLER(OPLInfo)
             AddMegaClilocRequest(serial);
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(CustomHouse)
 {
     WISPFUN_DEBUG("c150_f100");
@@ -5711,7 +5711,7 @@ PACKET_HANDLER(CustomHouse)
     if (enableResponse)
         CPacketCustomHouseResponse().Send();
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(OrionMessages)
 {
     WISPFUN_DEBUG("c150_f101");
@@ -6037,7 +6037,7 @@ PACKET_HANDLER(OrionMessages)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(PacketsList)
 {
     WISPFUN_DEBUG("c150_f102");
@@ -6059,7 +6059,7 @@ PACKET_HANDLER(PacketsList)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(MovePlayer)
 {
     WISPFUN_DEBUG("c150_f103");
@@ -6069,7 +6069,7 @@ PACKET_HANDLER(MovePlayer)
     uchar direction = ReadUInt8();
     g_PathFinder.Walk(direction & 0x80, direction & 7);
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(Pathfinding)
 {
     WISPFUN_DEBUG("c150_f104");
@@ -6081,7 +6081,7 @@ PACKET_HANDLER(Pathfinding)
     ushort z = ReadInt16BE();
     g_PathFinder.WalkTo(x, y, z, 0);
 }
-//----------------------------------------------------------------------------------
+
 void CPacketManager::SetCachedGumpCoords(uint id, int x, int y)
 {
     std::unordered_map<uint, GumpCoords>::iterator found = m_GumpsCoordsCache.find(id);
@@ -6096,7 +6096,7 @@ void CPacketManager::SetCachedGumpCoords(uint id, int x, int y)
         m_GumpsCoordsCache[id] = GumpCoords{ x, y };
     }
 }
-//----------------------------------------------------------------------------------
+
 PACKET_HANDLER(BoatMoving)
 {
     WISPFUN_DEBUG("c150_f105");
@@ -6160,4 +6160,3 @@ PACKET_HANDLER(BoatMoving)
             1);
     }
 }
-//----------------------------------------------------------------------------------

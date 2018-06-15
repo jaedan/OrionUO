@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenCharacterList::CGumpScreenCharacterList()
     : CGump(GT_NONE, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenCharacterList::~CGumpScreenCharacterList()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCharacterList::UpdateContent()
 {
     WISPFUN_DEBUG("c112_f1");
@@ -92,7 +92,7 @@ void CGumpScreenCharacterList::UpdateContent()
     Add(new CGUIButton(ID_CS_ARROW_PREV, 0x15A1, 0x15A2, 0x15A3, 586, 445));
     Add(new CGUIButton(ID_CS_ARROW_NEXT, 0x15A4, 0x15A5, 0x15A6, 610, 445));
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCharacterList::InitToolTip()
 {
     WISPFUN_DEBUG("c112_f2");
@@ -150,7 +150,7 @@ void CGumpScreenCharacterList::InitToolTip()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCharacterList::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c112_f3");
@@ -168,7 +168,7 @@ void CGumpScreenCharacterList::GUMP_BUTTON_EVENT_C
         g_CharacterListScreen.CreateSmoothAction(
             CCharacterListScreen::ID_SMOOTH_CLS_GO_SCREEN_DELETE);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenCharacterList::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c112_f4");
@@ -188,7 +188,7 @@ void CGumpScreenCharacterList::GUMP_TEXT_ENTRY_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Двойной клик левой кнопкой мыши
 @return true при успешной обработке
@@ -216,4 +216,3 @@ bool CGumpScreenCharacterList::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------

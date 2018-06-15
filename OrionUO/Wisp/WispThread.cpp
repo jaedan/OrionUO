@@ -4,7 +4,6 @@
 
 namespace WISP_THREAD
 {
-//----------------------------------------------------------------------------------
 unsigned __stdcall CThreadLoop(void *arg)
 {
     WISPFUN_DEBUG("c_trdlp");
@@ -39,7 +38,7 @@ unsigned __stdcall CThreadLoop(void *arg)
 
     return 0;
 };
-//----------------------------------------------------------------------------------
+
 unsigned __stdcall CThreadLoopSynchronizedDelay(void *arg)
 {
     WISPFUN_DEBUG("c_trdlpsd");
@@ -85,14 +84,14 @@ unsigned __stdcall CThreadLoopSynchronizedDelay(void *arg)
 
     return 0;
 };
-//----------------------------------------------------------------------------------
+
 CThread::CThread()
 {
     WISPFUN_DEBUG("c12_f1");
     //DebugMsg("CThread\n");
     InitializeCriticalSection(&m_CriticalSection);
 }
-//----------------------------------------------------------------------------------
+
 CThread::~CThread()
 {
     WISPFUN_DEBUG("c12_f2");
@@ -107,7 +106,7 @@ CThread::~CThread()
 
     ID = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CThread::Run(bool cycled, int delay, bool synchronizedDelay)
 {
     WISPFUN_DEBUG("c12_f3");
@@ -123,7 +122,7 @@ void CThread::Run(bool cycled, int delay, bool synchronizedDelay)
             m_Handle = (HANDLE)_beginthreadex(NULL, 0, CThreadLoop, this, 0, &ID);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CThread::IsActive()
 {
     WISPFUN_DEBUG("c12_f4");
@@ -133,7 +132,7 @@ bool CThread::IsActive()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CThread::Stop()
 {
     WISPFUN_DEBUG("c12_f5");
@@ -141,7 +140,7 @@ void CThread::Stop()
     m_Active = false;
     LeaveCriticalSection(&m_CriticalSection);
 }
-//----------------------------------------------------------------------------------
+
 bool CThread::Cycled()
 {
     WISPFUN_DEBUG("c12_f6");
@@ -151,7 +150,7 @@ bool CThread::Cycled()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CThread::Pause()
 {
     WISPFUN_DEBUG("c12_f7");
@@ -159,7 +158,7 @@ void CThread::Pause()
     m_Paused = true;
     LeaveCriticalSection(&m_CriticalSection);
 }
-//----------------------------------------------------------------------------------
+
 void CThread::Resume()
 {
     WISPFUN_DEBUG("c12_f8");
@@ -167,7 +166,7 @@ void CThread::Resume()
     m_Paused = false;
     LeaveCriticalSection(&m_CriticalSection);
 }
-//----------------------------------------------------------------------------------
+
 bool CThread::Paused()
 {
     WISPFUN_DEBUG("c12_f9");
@@ -177,7 +176,7 @@ bool CThread::Paused()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 int CThread::Delay()
 {
     WISPFUN_DEBUG("c12_f10");
@@ -187,7 +186,7 @@ int CThread::Delay()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CThread::ChangeDelay(int newDelay)
 {
     WISPFUN_DEBUG("c12_f11");
@@ -195,6 +194,5 @@ void CThread::ChangeDelay(int newDelay)
     m_Delay = newDelay;
     LeaveCriticalSection(&m_CriticalSection);
 }
-//----------------------------------------------------------------------------------
+
 }; // namespace WISP_THREAD
-//----------------------------------------------------------------------------------

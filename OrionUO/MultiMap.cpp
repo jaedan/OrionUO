@@ -6,19 +6,19 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMultiMap g_MultiMap;
-//----------------------------------------------------------------------------------
+
 CMultiMap::CMultiMap()
 {
 }
-//----------------------------------------------------------------------------------
+
 CMultiMap::~CMultiMap()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CMultiMap::LoadMap(CGumpMap *gump, CGUIExternalTexture *mapObject)
 {
     WISPFUN_DEBUG("c192_f1");
@@ -140,7 +140,7 @@ void CMultiMap::LoadMap(CGumpMap *gump, CGUIExternalTexture *mapObject)
         g_GL_BindTexture16(*mapObject->m_Texture, gump->Width, gump->Height, &wordMap[0]);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CMultiMap::LoadFacet(CGumpMap *gump, CGUIExternalTexture *mapObject, int facet)
 {
     WISPFUN_DEBUG("c192_f2");
@@ -205,4 +205,3 @@ bool CMultiMap::LoadFacet(CGumpMap *gump, CGUIExternalTexture *mapObject, int fa
 
     return true;
 }
-//----------------------------------------------------------------------------------

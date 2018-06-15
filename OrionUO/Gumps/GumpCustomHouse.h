@@ -6,10 +6,10 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef GUMPCUSTOMHOUSE_H
 #define GUMPCUSTOMHOUSE_H
-//----------------------------------------------------------------------------------
+
 enum CUSTOM_HOUSE_GUMP_STATE
 {
     CHGS_WALL = 0,
@@ -20,7 +20,7 @@ enum CUSTOM_HOUSE_GUMP_STATE
     CHGS_MISC,
     CHGS_MENU
 };
-//----------------------------------------------------------------------------------
+
 enum CUSTOM_HOUSE_FLOOR_VISION_STATE
 {
     CHGVS_NORMAL = 0,
@@ -31,7 +31,7 @@ enum CUSTOM_HOUSE_FLOOR_VISION_STATE
     CHGVS_TRANSLUCENT_FLOOR,
     CHGVS_HIDE_ALL
 };
-//----------------------------------------------------------------------------------
+
 enum CUSTOM_HOUSE_BUILD_TYPE
 {
     CHBT_NORMAL = 0,
@@ -39,7 +39,7 @@ enum CUSTOM_HOUSE_BUILD_TYPE
     CHBT_FLOOR,
     CHBT_STAIR
 };
-//----------------------------------------------------------------------------------
+
 enum CUSTOM_HOUSE_MULTI_OBJECT_FLAGS
 {
     CHMOF_GENERIC_INTERNAL = 0x01,
@@ -52,7 +52,7 @@ enum CUSTOM_HOUSE_MULTI_OBJECT_FLAGS
     CHMOF_VALIDATED_PLACE = 0x80,
     CHMOF_INCORRECT_PLACE = 0x100
 };
-//----------------------------------------------------------------------------------
+
 enum CUSTOM_HOUSE_VALIDATE_CHECK_FLAGS
 {
     CHVCF_TOP = 0x01,
@@ -65,7 +65,7 @@ enum CUSTOM_HOUSE_VALIDATE_CHECK_FLAGS
     CHVCF_CANGO_W = 0x80,
     CHVCF_CANGO_N = 0x100
 };
-//----------------------------------------------------------------------------------
+
 class CGumpCustomHouse : public CGump
 {
 public:
@@ -204,8 +204,7 @@ public:
 
     virtual void OnLeftMouseButtonUp();
 };
-//----------------------------------------------------------------------------------
+
 extern CGumpCustomHouse *g_CustomHouseGump;
-//----------------------------------------------------------------------------------
+
 #endif //GUMPCUSTOMHOUSE_H
-//----------------------------------------------------------------------------------

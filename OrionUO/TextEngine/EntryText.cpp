@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CEntryText *g_EntryPointer = NULL;
-//----------------------------------------------------------------------------------
+
 CEntryText::CEntryText(int maxLength, int width, int maxWidth, bool numberOnly)
     : MaxLength(maxLength)
     , Width(width)
@@ -19,7 +19,7 @@ CEntryText::CEntryText(int maxLength, int width, int maxWidth, bool numberOnly)
 {
     WISPFUN_DEBUG("c169_f1");
 }
-//----------------------------------------------------------------------------------
+
 CEntryText::~CEntryText()
 {
     WISPFUN_DEBUG("c169_f2");
@@ -40,7 +40,7 @@ CEntryText::~CEntryText()
     //Очистим данные
     Clear();
 }
-//----------------------------------------------------------------------------------
+
 //Вызывается при клике на текстовое поле (если это предусмотрено в обработчике)
 const char *CEntryText::c_str()
 {
@@ -48,7 +48,7 @@ const char *CEntryText::c_str()
     m_CText = ToString(Text);
     return m_CText.c_str();
 }
-//----------------------------------------------------------------------------------
+
 //Вызывается при клике на текстовое поле (если это предусмотрено в обработчике)
 void CEntryText::OnClick(
     CGump *gump, uchar font, bool unicode, int x, int y, TEXT_ALIGN_TYPE align, ushort flags)
@@ -89,7 +89,7 @@ void CEntryText::OnClick(
     if (gump != NULL)
         gump->FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 //Вызывается при обработке нажатия клавиши
 void CEntryText::OnKey(CGump *gump, WPARAM wParam)
 {
@@ -136,7 +136,7 @@ void CEntryText::OnKey(CGump *gump, WPARAM wParam)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 //Получить количество строк
 int CEntryText::GetLinesCountA(uchar font, TEXT_ALIGN_TYPE align, ushort flags, int width)
 {
@@ -159,7 +159,7 @@ int CEntryText::GetLinesCountA(uchar font, TEXT_ALIGN_TYPE align, ushort flags, 
 
     return count;
 }
-//----------------------------------------------------------------------------------
+
 //Получить количество строк
 int CEntryText::GetLinesCountW(uchar font, TEXT_ALIGN_TYPE align, ushort flags, int width)
 {
@@ -182,7 +182,7 @@ int CEntryText::GetLinesCountW(uchar font, TEXT_ALIGN_TYPE align, ushort flags, 
 
     return count;
 }
-//----------------------------------------------------------------------------------
+
 //Вставить символ относительно m_Position
 bool CEntryText::Insert(wchar_t ch, CGump *gump)
 {
@@ -226,7 +226,7 @@ bool CEntryText::Insert(wchar_t ch, CGump *gump)
 
     return true;
 }
-//----------------------------------------------------------------------------------
+
 //Удалить символ относительно m_Position (true - слева, false - справа)
 void CEntryText::Remove(bool left, CGump *gump)
 {
@@ -260,7 +260,7 @@ void CEntryText::Remove(bool left, CGump *gump)
     if (gump != NULL)
         gump->FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Очистить данные
 @return 
@@ -277,7 +277,7 @@ void CEntryText::Clear()
     m_Texture.Clear();
     CaretPos.Reset();
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::Paste()
 {
     WISPFUN_DEBUG("c169_f11");
@@ -303,7 +303,7 @@ void CEntryText::Paste()
         CloseClipboard();
     }
 }
-//----------------------------------------------------------------------------------
+
 //Изменение позиции m_Position
 void CEntryText::AddPos(int val, CGump *gump)
 {
@@ -326,7 +326,7 @@ void CEntryText::AddPos(int val, CGump *gump)
     if (gump != NULL)
         gump->FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 //Изменение позиции m_Position
 void CEntryText::SetPos(int val, CGump *gump)
 {
@@ -349,7 +349,7 @@ void CEntryText::SetPos(int val, CGump *gump)
     if (gump != NULL)
         gump->FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 //Изменение текста
 void CEntryText::SetText(const string &text)
 {
@@ -360,7 +360,7 @@ void CEntryText::SetText(const string &text)
     //Стандартная процедура изменения текста
     SetText(wtext);
 }
-//----------------------------------------------------------------------------------
+
 //Изменение текста
 void CEntryText::SetText(const wstring &text)
 {
@@ -404,7 +404,7 @@ void CEntryText::SetText(const wstring &text)
     if (gump != NULL)
         gump->FrameCreated = false;
 }
-//----------------------------------------------------------------------------------
+
 //Проверка ширины текста и корректировка входящей строки (при необходимости)
 string CEntryText::CheckMaxWidthA(uchar font, string str)
 {
@@ -427,7 +427,7 @@ string CEntryText::CheckMaxWidthA(uchar font, string str)
 
     return str;
 }
-//----------------------------------------------------------------------------------
+
 wstring CEntryText::CheckMaxWidthW(uchar font, wstring str)
 {
     WISPFUN_DEBUG("c169_f17");
@@ -449,7 +449,7 @@ wstring CEntryText::CheckMaxWidthW(uchar font, wstring str)
 
     return str;
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::FixMaxWidthA(uchar font)
 {
     WISPFUN_DEBUG("c169_f18");
@@ -471,7 +471,7 @@ void CEntryText::FixMaxWidthA(uchar font)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::FixMaxWidthW(uchar font)
 {
     WISPFUN_DEBUG("c169_f19");
@@ -491,7 +491,7 @@ void CEntryText::FixMaxWidthW(uchar font)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::CreateTextureA(
     uchar font, string str, ushort color, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -540,7 +540,7 @@ void CEntryText::CreateTextureA(
         g_FontManager.GenerateA(font, m_Texture, str, color, Width + abs(DrawOffset), align, flags);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::CreateTextureW(
     uchar font, wstring str, ushort color, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -583,7 +583,7 @@ void CEntryText::CreateTextureW(
         g_FontManager.GenerateW(font, m_Texture, str, color, 30, Width, align, flags);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::PrepareToDrawA(uchar font, ushort color, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c169_f22");
@@ -605,7 +605,7 @@ void CEntryText::PrepareToDrawA(uchar font, ushort color, TEXT_ALIGN_TYPE align,
             g_FontManager.GenerateA(font, m_CaretTexture, "_", color);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::PrepareToDrawW(uchar font, ushort color, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c169_f23");
@@ -627,7 +627,7 @@ void CEntryText::PrepareToDrawW(uchar font, ushort color, TEXT_ALIGN_TYPE align,
             g_FontManager.GenerateW(font, m_CaretTexture, L"_", color, 30);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::DrawA(uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c169_f24");
@@ -647,7 +647,7 @@ void CEntryText::DrawA(uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE a
         m_CaretTexture.Draw(x + DrawOffset + CaretPos.X, y + offsY + CaretPos.Y);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::DrawW(uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE align, ushort flags)
 {
     WISPFUN_DEBUG("c169_f25");
@@ -660,7 +660,7 @@ void CEntryText::DrawW(uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE a
     if (this == g_EntryPointer)
         m_CaretTexture.Draw(x + DrawOffset + CaretPos.X, y + CaretPos.Y);
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::DrawMaskA(
     uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -693,7 +693,7 @@ void CEntryText::DrawMaskA(
         g_FontManager.DrawA(font, "_", color, x + DrawOffset, y + offsY);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::DrawMaskW(
     uchar font, ushort color, int x, int y, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -722,26 +722,25 @@ void CEntryText::DrawMaskW(
         g_FontManager.DrawW(font, L"_", color, x + DrawOffset, y, 30, 0, TS_LEFT, flags);
     }
 }
-//----------------------------------------------------------------------------------
+
 WPARAM CEntryText::GetLastChar()
 {
     if (Text.length() == 0)
         return 0;
     return Text[Text.length() - 1];
 }
-//----------------------------------------------------------------------------------
+
 void CEntryText::RemoveSequence(int startPos, int length)
 {
     Text.erase(startPos, length);
 }
-//----------------------------------------------------------------------------------
+
 string CEntryText::GetTextA() const
 {
     return m_CText;
 }
-//----------------------------------------------------------------------------------
+
 wstring CEntryText::GetTextW() const
 {
     return Text;
 }
-//----------------------------------------------------------------------------------

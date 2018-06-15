@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUICheckbox::CGUICheckbox(
     int serial, ushort graphic, ushort graphicChecked, ushort graphicDisabled, int x, int y)
     : CGUIDrawObject(GOT_CHECKBOX, serial, graphic, 0, x, y)
@@ -17,13 +17,13 @@ CGUICheckbox::CGUICheckbox(
     , GraphicDisabled(graphicDisabled)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGUICheckbox::~CGUICheckbox()
 {
     WISPFUN_DEBUG("c46_f1");
     Text.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::SetTextParameters(
     uchar font,
     const wstring &text,
@@ -38,7 +38,7 @@ void CGUICheckbox::SetTextParameters(
     g_FontManager.GenerateW(font, Text, text, color, 30, textWidth, align, textFlags);
     UpdateTextPosition();
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::SetTextParameters(
     uchar font,
     const string &text,
@@ -53,7 +53,7 @@ void CGUICheckbox::SetTextParameters(
     g_FontManager.GenerateA(font, Text, text, color, textWidth, align, textFlags);
     UpdateTextPosition();
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::UpdateTextPosition()
 {
     WISPFUN_DEBUG("c46_f4");
@@ -140,7 +140,7 @@ void CGUICheckbox::UpdateTextPosition()
     TextX = textX;
     TextY = textY;
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::PrepareTextures()
 {
     WISPFUN_DEBUG("c46_f5");
@@ -148,7 +148,7 @@ void CGUICheckbox::PrepareTextures()
     g_Orion.ExecuteGump(GraphicChecked);
     g_Orion.ExecuteGump(GraphicDisabled);
 }
-//----------------------------------------------------------------------------------
+
 ushort CGUICheckbox::GetDrawGraphic()
 {
     WISPFUN_DEBUG("c46_f6");
@@ -163,7 +163,7 @@ ushort CGUICheckbox::GetDrawGraphic()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c46_f7");
@@ -171,7 +171,7 @@ void CGUICheckbox::Draw(bool checktrans)
 
     Text.Draw(TextX, TextY, checktrans);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUICheckbox::Select()
 {
     WISPFUN_DEBUG("c46_f8");
@@ -187,18 +187,17 @@ bool CGUICheckbox::Select()
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::OnMouseEnter()
 {
     WISPFUN_DEBUG("c46_f9");
     if (Graphic != GraphicSelected && g_SelectedObject.Gump != NULL)
         g_SelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGUICheckbox::OnMouseExit()
 {
     WISPFUN_DEBUG("c46_f10");
     if (Graphic != GraphicSelected && g_LastSelectedObject.Gump != NULL)
         g_LastSelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

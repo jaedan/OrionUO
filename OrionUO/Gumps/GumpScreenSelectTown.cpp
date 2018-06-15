@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenSelectTown::CGumpScreenSelectTown()
     : CGump(GT_NONE, 0, 0, 0)
 {
@@ -27,11 +27,11 @@ CGumpScreenSelectTown::CGumpScreenSelectTown()
     m_TownButtonText.push_back(WISP_GEOMETRY::CPoint2Di(100, 250));
     m_TownButtonText.push_back(WISP_GEOMETRY::CPoint2Di(270, 130));
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenSelectTown::~CGumpScreenSelectTown()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectTown::UpdateContent()
 {
     WISPFUN_DEBUG("c118_f2");
@@ -134,7 +134,7 @@ void CGumpScreenSelectTown::UpdateContent()
         entry->Focused = (g_SelectTownScreen.m_City->Name == city->Name);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectTown::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c118_f3");
@@ -146,7 +146,7 @@ void CGumpScreenSelectTown::GUMP_BUTTON_EVENT_C
         g_SelectTownScreen.CreateSmoothAction(
             CSelectTownScreen::ID_SMOOTH_STS_GO_SCREEN_GAME_CONNECT);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenSelectTown::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c118_f4");
@@ -194,4 +194,3 @@ void CGumpScreenSelectTown::GUMP_TEXT_ENTRY_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------

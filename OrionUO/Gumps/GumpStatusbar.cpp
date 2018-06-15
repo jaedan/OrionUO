@@ -6,12 +6,12 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
 
 int CGumpStatusbar::m_StatusbarDefaultWidth = 154;
 int CGumpStatusbar::m_StatusbarDefaultHeight = 59;
-//----------------------------------------------------------------------------------
+
 CGumpStatusbar::CGumpStatusbar(uint serial, short x, short y, bool minimized)
     : CGump(GT_STATUSBAR, serial, x, y)
 {
@@ -28,7 +28,7 @@ CGumpStatusbar::CGumpStatusbar(uint serial, short x, short y, bool minimized)
 
     m_Locker.Serial = ID_GSB_LOCK_MOVING;
 }
-//----------------------------------------------------------------------------------
+
 CGumpStatusbar::~CGumpStatusbar()
 {
     WISPFUN_DEBUG("c128_f2");
@@ -38,7 +38,7 @@ CGumpStatusbar::~CGumpStatusbar()
 
     RemoveFromGroup();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::InitToolTip()
 {
     WISPFUN_DEBUG("c128_f3");
@@ -96,7 +96,7 @@ void CGumpStatusbar::InitToolTip()
             g_ToolTip.Set(text, 80);
     }
 }
-//----------------------------------------------------------------------------------
+
 CGumpStatusbar *CGumpStatusbar::GetTopStatusbar()
 {
     WISPFUN_DEBUG("c128_f4");
@@ -113,7 +113,7 @@ CGumpStatusbar *CGumpStatusbar::GetTopStatusbar()
 
     return gump;
 }
-//----------------------------------------------------------------------------------
+
 CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
 {
     WISPFUN_DEBUG("c128_f5");
@@ -245,7 +245,7 @@ CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
 
     return (CGumpStatusbar *)gump;
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpStatusbar::GetStatusbarGroupOffset(int &x, int &y)
 {
     WISPFUN_DEBUG("c128_f6");
@@ -276,7 +276,7 @@ bool CGumpStatusbar::GetStatusbarGroupOffset(int &x, int &y)
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::UpdateGroup(int x, int y)
 {
     WISPFUN_DEBUG("c128_f7");
@@ -301,7 +301,7 @@ void CGumpStatusbar::UpdateGroup(int x, int y)
 
     g_GumpManager.MoveToBack(this);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::AddStatusbar(CGumpStatusbar *bar)
 {
     WISPFUN_DEBUG("c128_f8");
@@ -336,7 +336,7 @@ void CGumpStatusbar::AddStatusbar(CGumpStatusbar *bar)
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::RemoveFromGroup()
 {
     WISPFUN_DEBUG("c128_f9");
@@ -367,7 +367,7 @@ void CGumpStatusbar::RemoveFromGroup()
         WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::CalculateGumpState()
 {
     WISPFUN_DEBUG("c128_f10");
@@ -402,7 +402,7 @@ void CGumpStatusbar::CalculateGumpState()
         g_GumpTranslate.Y = (float)y;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::PrepareContent()
 {
     WISPFUN_DEBUG("c128_f11");
@@ -435,7 +435,7 @@ void CGumpStatusbar::PrepareContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::UpdateContent()
 {
     WISPFUN_DEBUG("c128_f12");
@@ -1139,7 +1139,7 @@ void CGumpStatusbar::UpdateContent()
             item->MoveOnDrag = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c128_f13");
@@ -1155,7 +1155,7 @@ void CGumpStatusbar::OnLeftMouseButtonDown()
     else
         CGump::OnLeftMouseButtonDown();
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c128_f14");
@@ -1221,7 +1221,7 @@ void CGumpStatusbar::GUMP_BUTTON_EVENT_C
         CPacketChangeStatLockStateRequest(2, g_Player->LockInt).Send();
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c128_f15");
@@ -1272,7 +1272,7 @@ bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c128_f16");
@@ -1294,7 +1294,7 @@ void CGumpStatusbar::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c128_f17");
@@ -1355,7 +1355,7 @@ void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             break;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpStatusbar::SendRenameRequest()
 {
     WISPFUN_DEBUG("c128_f18");
@@ -1373,4 +1373,3 @@ void CGumpStatusbar::SendRenameRequest()
         }
     }
 }
-//----------------------------------------------------------------------------------

@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpAbility::CGumpAbility(int serial, int x, int y)
     : CGump(GT_ABILITY, serial, x, y)
 {
@@ -25,11 +25,11 @@ CGumpAbility::CGumpAbility(int serial, int x, int y)
 
     m_Body = (CGUIGumppic *)Add(new CGUIGumppic(Graphic, 0, 0));
 }
-//----------------------------------------------------------------------------------
+
 CGumpAbility::~CGumpAbility()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpAbility::InitToolTip()
 {
     WISPFUN_DEBUG("c85_f2");
@@ -39,7 +39,7 @@ void CGumpAbility::InitToolTip()
         g_ClilocManager.Cliloc(g_Language)->GetW(1028838 + (g_Ability[index] & 0x7F) - 1, true),
         80);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpAbility::UpdateContent()
 {
     WISPFUN_DEBUG("c85_f3");
@@ -53,14 +53,14 @@ void CGumpAbility::UpdateContent()
         m_Body->Graphic = 0x5200 + (ability & 0x7F) - 1;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpAbility::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c85_f4");
     if (serial == ID_GS_LOCK_MOVING)
         LockMoving = !LockMoving;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpAbility::OnAbilityUse(int index)
 {
     WISPFUN_DEBUG("c85_f5");
@@ -81,7 +81,7 @@ void CGumpAbility::OnAbilityUse(int index)
     g_GumpManager.UpdateContent(0, 0, GT_ABILITY);
     g_GumpManager.UpdateContent(1, 0, GT_ABILITY);
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpAbility::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c85_f6");
@@ -89,4 +89,3 @@ bool CGumpAbility::OnLeftMouseButtonDoubleClick()
 
     return true;
 }
-//----------------------------------------------------------------------------------

@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpContainer::CGumpContainer(uint serial, uint id, short x, short y)
     : CGump(GT_CONTAINER, serial, x, y)
     , IsGameBoard(id == 0x091A || id == 0x092E)
@@ -48,11 +48,11 @@ CGumpContainer::CGumpContainer(uint serial, uint id, short x, short y)
 
     Add(new CGUIShader(&g_ColorizerShader, false));
 }
-//----------------------------------------------------------------------------------
+
 CGumpContainer::~CGumpContainer()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::UpdateItemCoordinates(CGameObject *item)
 {
     WISPFUN_DEBUG("c93_f3");
@@ -73,7 +73,7 @@ void CGumpContainer::UpdateItemCoordinates(CGameObject *item)
             item->SetY(rect.MinY + rect.MaxY);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::CalculateGumpState()
 {
     WISPFUN_DEBUG("c93_f4");
@@ -95,14 +95,14 @@ void CGumpContainer::CalculateGumpState()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::PrepareTextures()
 {
     WISPFUN_DEBUG("c93_f5");
     CGump::PrepareTextures();
     g_Orion.ExecuteGumpPart(0x0045, 2); //Corpse eyes
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::InitToolTip()
 {
     WISPFUN_DEBUG("c93_f6");
@@ -116,7 +116,7 @@ void CGumpContainer::InitToolTip()
     else
         g_ToolTip.Set(L"Double click to maximize container gump");
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::PrepareContent()
 {
     WISPFUN_DEBUG("c93_f7");
@@ -190,7 +190,7 @@ void CGumpContainer::PrepareContent()
             WantRedraw = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::UpdateContent()
 {
     WISPFUN_DEBUG("c93_f8");
@@ -271,7 +271,7 @@ void CGumpContainer::UpdateContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::Draw()
 {
     WISPFUN_DEBUG("c93_f9");
@@ -290,7 +290,7 @@ void CGumpContainer::Draw()
         glTranslatef(-g_GumpTranslate.X, -g_GumpTranslate.Y, 0.0f);
     }
 }
-//----------------------------------------------------------------------------------
+
 CRenderObject *CGumpContainer::Select()
 {
     WISPFUN_DEBUG("c93_f10");
@@ -309,7 +309,7 @@ CRenderObject *CGumpContainer::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c93_f11");
@@ -321,7 +321,7 @@ void CGumpContainer::GUMP_BUTTON_EVENT_C
         g_MouseManager.CancelDoubleClick = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpContainer::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c93_f12");
@@ -451,7 +451,7 @@ void CGumpContainer::OnLeftMouseButtonUp()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpContainer::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c93_f13");
@@ -475,4 +475,3 @@ bool CGumpContainer::OnLeftMouseButtonDoubleClick()
 
     return result;
 }
-//----------------------------------------------------------------------------------

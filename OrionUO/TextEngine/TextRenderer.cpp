@@ -6,24 +6,24 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CTextRenderer g_WorldTextRenderer;
-//----------------------------------------------------------------------------------
+
 CTextRenderer::CTextRenderer()
     : CRenderTextObject()
     , m_TextItems(this)
     , m_DrawPointer(NULL)
 {
 }
-//----------------------------------------------------------------------------------
+
 CTextRenderer::~CTextRenderer()
 {
     WISPFUN_DEBUG("c175_f1");
     m_TextItems = NULL;
 }
-//---------------------------------------------------------------------------
+
 CRenderTextObject *CTextRenderer::AddText(CRenderTextObject *obj)
 {
     WISPFUN_DEBUG("c175_f2");
@@ -53,7 +53,7 @@ CRenderTextObject *CTextRenderer::AddText(CRenderTextObject *obj)
 
     return obj;
 }
-//---------------------------------------------------------------------------
+
 void CTextRenderer::ToTop(CRenderTextObject *obj)
 {
     WISPFUN_DEBUG("c175_f3");
@@ -68,7 +68,7 @@ void CTextRenderer::ToTop(CRenderTextObject *obj)
     if (next != NULL)
         next->m_PrevDraw = obj;
 }
-//----------------------------------------------------------------------------------
+
 bool CTextRenderer::InRect(CTextData *text, CRenderWorldObject *rwo)
 {
     WISPFUN_DEBUG("c175_f4");
@@ -92,7 +92,7 @@ bool CTextRenderer::InRect(CTextData *text, CRenderWorldObject *rwo)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 bool CTextRenderer::ProcessTextRemoveBlending(CTextData &text)
 {
     if (g_ConfigManager.RemoveTextWithBlending)
@@ -122,7 +122,7 @@ bool CTextRenderer::ProcessTextRemoveBlending(CTextData &text)
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 bool CTextRenderer::CalculatePositions(bool noCalculate)
 {
     WISPFUN_DEBUG("c175_f5");
@@ -162,7 +162,7 @@ bool CTextRenderer::CalculatePositions(bool noCalculate)
 
     return changed;
 }
-//----------------------------------------------------------------------------------
+
 void CTextRenderer::Draw()
 {
     WISPFUN_DEBUG("c175_f6");
@@ -214,7 +214,7 @@ void CTextRenderer::Draw()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CTextRenderer::Select(CGump *gump)
 {
     WISPFUN_DEBUG("c175_f7");
@@ -245,7 +245,7 @@ void CTextRenderer::Select(CGump *gump)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CTextRenderer::CalculateWorldPositions(bool noCalculate)
 {
     WISPFUN_DEBUG("c175_f8");
@@ -278,7 +278,7 @@ bool CTextRenderer::CalculateWorldPositions(bool noCalculate)
 
     return changed;
 }
-//----------------------------------------------------------------------------------
+
 void CTextRenderer::WorldDraw()
 {
     WISPFUN_DEBUG("c175_f9");
@@ -344,4 +344,3 @@ void CTextRenderer::WorldDraw()
         }
     }
 }
-//----------------------------------------------------------------------------------

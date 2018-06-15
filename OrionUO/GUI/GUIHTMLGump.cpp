@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIHTMLGump::CGUIHTMLGump(
     int serial,
     ushort graphic,
@@ -32,18 +32,18 @@ CGUIHTMLGump::CGUIHTMLGump(
 
     Initalize();
 }
-//----------------------------------------------------------------------------------
+
 CGUIHTMLGump::~CGUIHTMLGump()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::PrepareTextures()
 {
     WISPFUN_DEBUG("c60_f2");
     QFOR(item, m_Items, CBaseGUI *)
     item->PrepareTextures();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::Initalize(bool menu)
 {
     WISPFUN_DEBUG("c60_f3");
@@ -152,7 +152,7 @@ void CGUIHTMLGump::Initalize(bool menu)
         Add(m_Scissor);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::UpdateHeight(int height)
 {
     WISPFUN_DEBUG("c60_f4");
@@ -185,14 +185,14 @@ void CGUIHTMLGump::UpdateHeight(int height)
 
     CalculateDataSize();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::ResetDataOffset()
 {
     WISPFUN_DEBUG("c60_f5");
     m_Slider->Value = 0;
     CurrentOffset.Reset();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::CalculateDataSize(CBaseGUI *item, int &startX, int &startY, int &endX, int &endY)
 {
     WISPFUN_DEBUG("c60_f6");
@@ -224,7 +224,7 @@ void CGUIHTMLGump::CalculateDataSize(CBaseGUI *item, int &startX, int &startY, i
             endY = curY;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::CalculateDataSize()
 {
     WISPFUN_DEBUG("c60_f7");
@@ -265,7 +265,7 @@ void CGUIHTMLGump::CalculateDataSize()
 
     m_Slider->CalculateOffset();
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIHTMLGump::EntryPointerHere()
 {
     WISPFUN_DEBUG("c60_f8");
@@ -277,7 +277,7 @@ bool CGUIHTMLGump::EntryPointerHere()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIHTMLGump::Select()
 {
     WISPFUN_DEBUG("c60_f9");
@@ -299,11 +299,10 @@ bool CGUIHTMLGump::Select()
 
     return selected;
 }
-//----------------------------------------------------------------------------------
+
 void CGUIHTMLGump::Scroll(bool up, int delay)
 {
     WISPFUN_DEBUG("c60_f10");
     if (m_Slider != NULL)
         m_Slider->OnScroll(up, delay);
 }
-//----------------------------------------------------------------------------------

@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CMainScreen g_MainScreen;
-//----------------------------------------------------------------------------------
+
 CMainScreen::CMainScreen()
     : CBaseScreen(m_MainGump)
     , m_Account(NULL)
@@ -21,13 +21,13 @@ CMainScreen::CMainScreen()
     WISPFUN_DEBUG("c165_f1");
     m_Password = new CEntryText(32, 0, 300);
 }
-//----------------------------------------------------------------------------------
+
 CMainScreen::~CMainScreen()
 {
     WISPFUN_DEBUG("c165_f2");
     delete m_Password;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Инициализация
 @return 
@@ -66,7 +66,7 @@ void CMainScreen::Init()
 
     m_Gump.PrepareTextures();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка события после плавного затемнения экрана
 @param [__in_opt] action Идентификатор действия
@@ -83,7 +83,7 @@ void CMainScreen::ProcessSmoothAction(uchar action)
     else if (action == ID_SMOOTH_MS_QUIT)
         g_OrionWindow.Destroy();
 }
-//----------------------------------------------------------------------------------
+
 void CMainScreen::SetAccounting(const string &account, const string &password)
 {
     WISPFUN_DEBUG("c165_f5");
@@ -96,7 +96,7 @@ void CMainScreen::SetAccounting(const string &account, const string &password)
     IFOR (i, 0, len)
         m_MainGump.m_PasswordFake->Insert(L'*');
 }
-//----------------------------------------------------------------------------------
+
 void CMainScreen::Paste()
 {
     WISPFUN_DEBUG("c165_f6");
@@ -113,7 +113,7 @@ void CMainScreen::Paste()
     else
         g_EntryPointer->Paste();
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -141,7 +141,7 @@ void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 
     m_Gump.WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Обработка нажатия клавиши
 @param [__in] wparam не подписанный параметр
@@ -184,7 +184,7 @@ void CMainScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 
     m_Gump.WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить код конфига по ключу
 @param [__in] key Ключ
@@ -210,7 +210,7 @@ int CMainScreen::GetConfigKeyCode(const string &key)
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка кастомного пути к папке с УО файлами
 @return
@@ -240,7 +240,7 @@ void CMainScreen::LoadCustomPath()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка конфига
 @return 
@@ -341,7 +341,7 @@ void CMainScreen::LoadGlobalConfig()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Сохранение конфига
 @return 
@@ -396,7 +396,7 @@ void CMainScreen::SaveGlobalConfig()
     }
     fclose(uo_cfg);
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Шифрование пароля для сохранения в конфиг
 @param [__in] buf Не зашифрованный пароль
@@ -423,7 +423,7 @@ string CMainScreen::CryptPW(const char *buf, int len)
 
     return ret;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Расшифровка пароля
 @param [__in] buf Зашифрованный пароль
@@ -450,4 +450,3 @@ string CMainScreen::DecryptPW(const char *buf, int len)
 
     return ret;
 }
-//----------------------------------------------------------------------------------

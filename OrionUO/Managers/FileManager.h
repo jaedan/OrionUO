@@ -6,10 +6,10 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
-//----------------------------------------------------------------------------------
+
 class CUopBlockHeader
 {
 public:
@@ -37,7 +37,7 @@ public:
     }
     ~CUopBlockHeader() {}
 };
-//----------------------------------------------------------------------------------
+
 class CUopMappedFile : public WISP_FILE::CMappedFile
 {
 public:
@@ -53,7 +53,7 @@ public:
 
     UCHAR_LIST GetData(const CUopBlockHeader &block);
 };
-//----------------------------------------------------------------------------------
+
 class CFileManager : public WISP_DATASTREAM::CDataReader
 {
 public:
@@ -145,7 +145,7 @@ private:
 
     bool LoadUOPFile(CUopMappedFile &file, const char *fileName);
 };
-//---------------------------------------------------------------------------
+
 extern CFileManager g_FileManager;
-//---------------------------------------------------------------------------
+
 #endif

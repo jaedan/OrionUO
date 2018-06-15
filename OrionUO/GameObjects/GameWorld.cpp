@@ -6,17 +6,17 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameWorld *g_World = NULL;
-//----------------------------------------------------------------------------------
+
 CGameWorld::CGameWorld(int serial)
 {
     WISPFUN_DEBUG("c22_f1");
     CreatePlayer(serial);
 }
-//----------------------------------------------------------------------------------
+
 CGameWorld::~CGameWorld()
 {
     WISPFUN_DEBUG("c22_f2");
@@ -35,13 +35,13 @@ CGameWorld::~CGameWorld()
 
     m_Items = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::ResetObjectHandlesState()
 {
     QFOR(obj, m_Items, CGameObject *)
     obj->ClosedObjectHandle = false;
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 {
     WISPFUN_DEBUG("c22_f3");
@@ -78,7 +78,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Обработка анимации всех персонажей
 @return 
@@ -293,7 +293,7 @@ void CGameWorld::ProcessAnimation()
         g_GameScreen.RenderListInitalized = false;
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Создать игрока
 @param [__in] serial Серийник игрока
@@ -318,7 +318,7 @@ void CGameWorld::CreatePlayer(int serial)
         m_Items->m_Prev = NULL;
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Удалить игрока
 @return 
@@ -336,7 +336,7 @@ void CGameWorld::RemovePlayer()
         g_PlayerSerial = 0;
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Установить текущего чара с указанным серийником как основного
 @param [__in] serial Серийник нового игрока
@@ -348,7 +348,7 @@ void CGameWorld::SetPlayer(int serial)
     if (serial != g_Player->Serial)
         CreatePlayer(serial);
 }
-//---------------------------------------------------------------------------
+
 /*!
 Создать (или взять, если уже существует) игровой предмет
 @param [__in] serial Серийник предмета
@@ -379,7 +379,7 @@ CGameItem *CGameWorld::GetWorldItem(int serial)
 
     return (CGameItem *)(*i).second;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Создать (или взять, если уже существует) игрового персонажа
 @param [__in] serial Серийник персонажа
@@ -410,7 +410,7 @@ CGameCharacter *CGameWorld::GetWorldCharacter(int serial)
 
     return i->second->GameCharacterPtr();
 }
-//---------------------------------------------------------------------------
+
 /*!
 Найти игровой объект в памяти
 @param [__in] serial Серийник объекта
@@ -427,7 +427,7 @@ CGameObject *CGameWorld::FindWorldObject(int serial)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Найти игровой предмет в памяти
 @param [__in] serial Серийник предмета
@@ -444,7 +444,7 @@ CGameItem *CGameWorld::FindWorldItem(int serial)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Найти игрового персонажа в памяти
 @param [__in] serial Серийник персонажа
@@ -461,7 +461,7 @@ CGameCharacter *CGameWorld::FindWorldCharacter(int serial)
 
     return result;
 }
-//---------------------------------------------------------------------------
+
 void CGameWorld::ReplaceObject(CGameObject *obj, int newSerial)
 {
     WISPFUN_DEBUG("c22_f12_1");
@@ -475,7 +475,7 @@ void CGameWorld::ReplaceObject(CGameObject *obj, int newSerial)
     m_Map[newSerial] = obj;
     obj->Serial = newSerial;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Удалить объект из памяти
 @param [__in] obj Ссылка на объект
@@ -491,7 +491,7 @@ void CGameWorld::RemoveObject(CGameObject *obj)
     m_Map.erase(serial);
     delete obj;
 }
-//---------------------------------------------------------------------------
+
 /*!
 Вынуть объект из контейнера
 @param [__in] obj Ссылка на объект
@@ -550,7 +550,7 @@ void CGameWorld::RemoveFromContainer(CGameObject *obj)
     obj->m_Prev = NULL;
     obj->RemoveRender();
 }
-//---------------------------------------------------------------------------
+
 /*!
 Очистить указанный контейнер
 @param [__in] obj Ссылка на объект (контейнер)
@@ -562,7 +562,7 @@ void CGameWorld::ClearContainer(CGameObject *obj)
     if (!obj->Empty())
         obj->Clear();
 }
-//---------------------------------------------------------------------------
+
 /*!
 Положить в контейнер
 @param [__in] obj Ссылка на объект
@@ -575,7 +575,7 @@ void CGameWorld::PutContainer(CGameObject *obj, CGameObject *container)
     RemoveFromContainer(obj);
     container->AddItem(obj);
 }
-//---------------------------------------------------------------------------
+
 /*!
 Поднять объект вверх в очереди
 @param [__in] obj Ссылка на объект
@@ -689,7 +689,7 @@ void CGameWorld::MoveToTop(CGameObject *obj)
         }
     }
 }
-//---------------------------------------------------------------------------
+
 /*!
 Поиск объекта
 @param [__in] serialStart Начальный серийник для поиска
@@ -808,7 +808,7 @@ CGameObject *CGameWorld::SearchWorldObject(
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::UpdateGameObject(
     int serial,
     ushort graphic,
@@ -1044,7 +1044,7 @@ void CGameWorld::UpdateGameObject(
 
     MoveToTop(obj);
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::UpdatePlayer(
     int serial,
     ushort graphic,
@@ -1113,7 +1113,7 @@ void CGameWorld::UpdatePlayer(
         MoveToTop(g_Player);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::UpdateItemInContainer(CGameObject *obj, CGameObject *container, int x, int y)
 {
     obj->SetX(x);
@@ -1154,7 +1154,7 @@ void CGameWorld::UpdateItemInContainer(CGameObject *obj, CGameObject *container,
             g_GumpManager.UpdateContent(0, top->Serial, GT_TRADE);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameWorld::UpdateContainedItem(
     int serial,
     ushort graphic,
@@ -1219,7 +1219,7 @@ void CGameWorld::UpdateContainedItem(
         y,
         color);
 }
-//---------------------------------------------------------------------------
+
 /*!
 Дамп предметов, хранящихся в памяти
 @param [__in] nCount Количество отступов
@@ -1269,4 +1269,3 @@ void CGameWorld::Dump(uchar tCount, uint serial)
         obj = (CGameObject *)obj->m_Next;
     }
 }
-//---------------------------------------------------------------------------

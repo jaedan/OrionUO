@@ -6,20 +6,20 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpScreenConnection::CGumpScreenConnection()
     : CGump(GT_NONE, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
 }
-//----------------------------------------------------------------------------------
+
 CGumpScreenConnection::~CGumpScreenConnection()
 {
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenConnection::CreateText(int x, int y, string str, uchar font)
 {
     WISPFUN_DEBUG("c113_f1");
@@ -30,7 +30,7 @@ void CGumpScreenConnection::CreateText(int x, int y, string str, uchar font)
     obj->CreateTextureA(font, str, 260, TS_CENTER);
     Add(obj);
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenConnection::UpdateContent()
 {
     WISPFUN_DEBUG("c113_f2");
@@ -225,7 +225,7 @@ void CGumpScreenConnection::UpdateContent()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpScreenConnection::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c113_f3");
@@ -254,4 +254,3 @@ void CGumpScreenConnection::GUMP_BUTTON_EVENT_C
     else if (serial == ID_CS_CANCEL) //Button x
         g_ConnectionScreen.CreateSmoothAction(CConnectionScreen::ID_SMOOTH_CS_GO_SCREEN_CHARACTER);
 }
-//----------------------------------------------------------------------------------

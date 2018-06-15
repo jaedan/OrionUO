@@ -6,15 +6,15 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameItem::CGameItem(int serial)
     : CGameObject(serial)
 {
     NPC = false;
 }
-//----------------------------------------------------------------------------------
+
 CGameItem::~CGameItem()
 {
     WISPFUN_DEBUG("c19_f1");
@@ -40,7 +40,7 @@ CGameItem::~CGameItem()
         Dragged = false;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameItem::ClearMultiItems()
 {
     WISPFUN_DEBUG("c19_f2");
@@ -53,7 +53,7 @@ void CGameItem::ClearMultiItems()
 
     WantUpdateMulti = true;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Событие изменения картинки объекта
 @param [__in_opt] direction Направление предмета (для трупов)
@@ -117,7 +117,7 @@ void CGameItem::OnGraphicChange(int direction)
             LoadMulti(m_Items == NULL);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameItem::CalculateFieldColor()
 {
     WISPFUN_DEBUG("c19_f5");
@@ -142,7 +142,7 @@ void CGameItem::CalculateFieldColor()
     else if (Graphic == 0x0080)
         FieldColor = 0x038A;
 }
-//----------------------------------------------------------------------------------
+
 void CGameItem::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c19_f7");
@@ -262,7 +262,7 @@ void CGameItem::Draw(int x, int y)
         DrawEffects(x, y);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Отрисовать предмет
 @param [__in] mode Режим рисования. true - рисование, false - выбор объектов
@@ -313,7 +313,7 @@ void CGameItem::Select(int x, int y)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получить индекс картинки (для анимации)
 @return Индекс картинки
@@ -575,7 +575,7 @@ ushort CGameItem::GetMountAnimation()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGameItem::ClearCustomHouseMultis(int state)
 {
     CMulti *nextMulti = NULL;
@@ -608,7 +608,7 @@ void CGameItem::ClearCustomHouseMultis(int state)
             Delete(multi);
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить мульти в текущий объект
 @return
@@ -628,7 +628,7 @@ CGameItem::AddMulti(ushort graphic, ushort color, char x, char y, char z, bool i
 
     return mo;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Загрузка мульти в текущий объект
 @return 
@@ -757,7 +757,7 @@ void CGameItem::LoadMulti(bool dropAlpha)
     if (minimap != NULL)
         minimap->LastX = 0;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Добавить объекта-мульти
 @param [__in] obj Ссылка на мульти-объект
@@ -824,7 +824,7 @@ void CGameItem::AddMultiObject(CMultiObject *obj)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Получение объекта мульти в заданных координатах
 @param [__in] x Координата X
@@ -842,7 +842,7 @@ CMulti *CGameItem::GetMultiAtXY(short x, short y)
 
     return NULL;
 }
-//----------------------------------------------------------------------------------
+
 /*!
 Найти объект внутри (рекурсивно) по типу с учетом (и без) цвета
 @param [__in] graphic Индекс картинки
@@ -900,10 +900,9 @@ CGameItem *CGameItem::FindItem(ushort graphic, ushort color)
 
     return item;
 }
-//----------------------------------------------------------------------------------
+
 CMulti *CGameItem::GetMulti()
 {
     CMulti *multi = (CMulti *)m_Items;
     return multi;
 }
-//----------------------------------------------------------------------------------

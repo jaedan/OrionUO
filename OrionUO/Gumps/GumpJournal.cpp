@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGumpJournal::CGumpJournal(short x, short y, bool minimized, int height)
     : CGumpBaseScroll(GT_JOURNAL, 0, 0x0820, height, x, y, true, 0, true)
 {
@@ -58,11 +58,11 @@ CGumpJournal::CGumpJournal(short x, short y, bool minimized, int height)
     QFOR(item, g_Journal.m_Items, CTextData *)
     AddText(item);
 }
-//----------------------------------------------------------------------------------
+
 CGumpJournal::~CGumpJournal()
 {
 }
-//---------------------------------------------------------------------------
+
 void CGumpJournal::InitToolTip()
 {
     WISPFUN_DEBUG("c98_f2");
@@ -114,7 +114,7 @@ void CGumpJournal::InitToolTip()
     else
         g_ToolTip.Set(L"Double click to maximize journal gump");
 }
-//----------------------------------------------------------------------------------
+
 void CGumpJournal::UpdateHeight()
 {
     WISPFUN_DEBUG("c98_f3");
@@ -135,7 +135,7 @@ void CGumpJournal::UpdateHeight()
     if (!m_TextLocker->Visible)
         m_HTMLGump->m_Slider->Value = m_HTMLGump->m_Slider->MaxValue;
 }
-//----------------------------------------------------------------------------------
+
 int CGumpJournal::RecalculateHeight()
 {
     WISPFUN_DEBUG("c98_f4");
@@ -165,7 +165,7 @@ int CGumpJournal::RecalculateHeight()
 
     return height;
 }
-//----------------------------------------------------------------------------------
+
 void CGumpJournal::AddText(CTextData *obj)
 {
     WISPFUN_DEBUG("c98_f5");
@@ -193,7 +193,7 @@ void CGumpJournal::AddText(CTextData *obj)
         m_HTMLGump->m_Slider->CalculateOffset();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpJournal::DeleteText(CTextData *obj)
 {
     WISPFUN_DEBUG("c98_f6");
@@ -209,7 +209,7 @@ void CGumpJournal::DeleteText(CTextData *obj)
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpJournal::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c98_f7");
@@ -227,7 +227,7 @@ void CGumpJournal::GUMP_BUTTON_EVENT_C
         m_TextLocker->Visible = false;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGumpJournal::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c98_f8");
@@ -268,7 +268,7 @@ void CGumpJournal::GUMP_CHECKBOX_EVENT_C
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGumpJournal::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c98_f9");
@@ -283,4 +283,3 @@ bool CGumpJournal::OnLeftMouseButtonDoubleClick()
 
     return false;
 }
-//----------------------------------------------------------------------------------

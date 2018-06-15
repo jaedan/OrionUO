@@ -6,29 +6,29 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGameConsole g_GameConsole;
-//----------------------------------------------------------------------------------
+
 CGameConsole::CGameConsole()
     : CEntryText(128, 1000, 1000)
 {
 }
-//----------------------------------------------------------------------------------
+
 CGameConsole::~CGameConsole()
 {
     WISPFUN_DEBUG("c170_f1");
     if (g_EntryPointer == this)
         g_EntryPointer = NULL;
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::Send()
 {
     WISPFUN_DEBUG("c170_f2");
     Send(Text);
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::Send(wstring text, ushort defaultColor)
 {
     WISPFUN_DEBUG("c170_f2.1");
@@ -162,7 +162,7 @@ void CGameConsole::Send(wstring text, ushort defaultColor)
             .Send();
     }
 }
-//----------------------------------------------------------------------------------
+
 wstring CGameConsole::IsSystemCommand(
     const wchar_t *text, size_t &len, int &member, GAME_CONSOLE_TEXT_TYPE &type)
 {
@@ -277,7 +277,7 @@ wstring CGameConsole::IsSystemCommand(
 
     return result;
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::DrawW(BYTE font, WORD color, int x, int y, TEXT_ALIGN_TYPE align, WORD flags)
 {
     WISPFUN_DEBUG("c170_f4");
@@ -332,7 +332,7 @@ void CGameConsole::DrawW(BYTE font, WORD color, int x, int y, TEXT_ALIGN_TYPE al
         g_FontManager.DrawW(font, L"_", color, x, y, 30, 0, align, UOFONT_BLACK_BORDER);
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::SaveConsoleMessage()
 {
     WISPFUN_DEBUG("c170_f5");
@@ -348,7 +348,7 @@ void CGameConsole::SaveConsoleMessage()
     m_ConsoleSelectedIndex = (m_ConsoleStackCount - 1) % MAX_CONSOLE_STACK_SIZE;
     m_PositionChanged = false;
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::ChangeConsoleMessage(bool next)
 {
     WISPFUN_DEBUG("c170_f6");
@@ -379,7 +379,7 @@ void CGameConsole::ChangeConsoleMessage(bool next)
         m_PositionChanged = true;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGameConsole::ClearStack()
 {
     WISPFUN_DEBUG("c170_f7");
@@ -388,4 +388,3 @@ void CGameConsole::ClearStack()
     m_ConsoleSelectedIndex = 0;
     m_PositionChanged = false;
 }
-//----------------------------------------------------------------------------------

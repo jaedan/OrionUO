@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUISlider::CGUISlider(
     int serial,
     ushort graphic,
@@ -37,13 +37,13 @@ CGUISlider::CGUISlider(
     WISPFUN_DEBUG("c77_f1");
     CalculateOffset();
 }
-//----------------------------------------------------------------------------------
+
 CGUISlider::~CGUISlider()
 {
     WISPFUN_DEBUG("c77_f2");
     Text.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::UpdateText()
 {
     WISPFUN_DEBUG("c77_f3");
@@ -152,7 +152,7 @@ void CGUISlider::UpdateText()
         }
     }
 }
-//----------------------------------------------------------------------------------
+
 WISP_GEOMETRY::CSize CGUISlider::GetSize()
 {
     WISPFUN_DEBUG("c77_f4");
@@ -181,7 +181,7 @@ WISP_GEOMETRY::CSize CGUISlider::GetSize()
 
     return size;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::OnScroll(bool up, int delay)
 {
     WISPFUN_DEBUG("c77_f5");
@@ -203,7 +203,7 @@ void CGUISlider::OnScroll(bool up, int delay)
         UpdateText();
     }
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::OnClick(int x, int y)
 {
     WISPFUN_DEBUG("c77_f6");
@@ -222,7 +222,7 @@ void CGUISlider::OnClick(int x, int y)
     CalculateOffset();
     UpdateText();
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::CalculateOffset()
 {
     WISPFUN_DEBUG("c77_f7");
@@ -250,7 +250,7 @@ void CGUISlider::CalculateOffset()
     if (Offset < 0)
         Offset = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::SetTextParameters(
     bool haveText,
     SLIDER_TEXT_POSITION textPosition,
@@ -273,7 +273,7 @@ void CGUISlider::SetTextParameters(
 
     UpdateText();
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::PrepareTextures()
 {
     WISPFUN_DEBUG("c77_f9");
@@ -289,7 +289,7 @@ void CGUISlider::PrepareTextures()
             g_Orion.ExecuteGump(BackgroundGraphic);
     }
 }
-//----------------------------------------------------------------------------------
+
 ushort CGUISlider::GetDrawGraphic()
 {
     WISPFUN_DEBUG("c77_f10");
@@ -302,7 +302,7 @@ ushort CGUISlider::GetDrawGraphic()
 
     return graphic;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c77_f11");
@@ -385,7 +385,7 @@ void CGUISlider::Draw(bool checktrans)
             Text.Draw(TextX, TextY, checktrans);
     }
 }
-//----------------------------------------------------------------------------------
+
 bool CGUISlider::Select()
 {
     WISPFUN_DEBUG("c77_f12");
@@ -421,18 +421,17 @@ bool CGUISlider::Select()
 
     return false;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::OnMouseEnter()
 {
     WISPFUN_DEBUG("c77_f13");
     if (g_SelectedObject.Gump != NULL)
         g_SelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------
+
 void CGUISlider::OnMouseExit()
 {
     WISPFUN_DEBUG("c77_f14");
     if (g_LastSelectedObject.Gump != NULL)
         g_LastSelectedObject.Gump->WantRedraw = true;
 }
-//----------------------------------------------------------------------------------

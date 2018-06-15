@@ -6,9 +6,9 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CGUIShopItem::CGUIShopItem(
     int serial,
     ushort graphic,
@@ -30,14 +30,14 @@ CGUIShopItem::CGUIShopItem(
     CreateNameText();
     UpdateOffsets();
 }
-//----------------------------------------------------------------------------------
+
 CGUIShopItem::~CGUIShopItem()
 {
     WISPFUN_DEBUG("c73_f2");
     m_NameText.Clear();
     m_CountText.Clear();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::UpdateOffsets()
 {
     if (Serial >= 0x40000000)
@@ -92,7 +92,7 @@ void CGUIShopItem::UpdateOffsets()
     else
         m_TextOffset = ((m_MaxOffset - m_NameText.Height) / 2);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::OnClick()
 {
     WISPFUN_DEBUG("c73_f3");
@@ -119,7 +119,7 @@ void CGUIShopItem::OnClick()
     Selected = true;
     CreateNameText();
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::CreateNameText()
 {
     WISPFUN_DEBUG("c73_f4");
@@ -131,7 +131,7 @@ void CGUIShopItem::CreateNameText()
     string str = Name + " at " + std::to_string(Price) + "gp";
     g_FontManager.GenerateA(9, m_NameText, str, textColor, 90);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::CreateCountText(int lostCount)
 {
     WISPFUN_DEBUG("c73_f5");
@@ -142,7 +142,7 @@ void CGUIShopItem::CreateCountText(int lostCount)
 
     g_FontManager.GenerateA(9, m_CountText, std::to_string(Count - lostCount), textColor);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::PrepareTextures()
 {
     WISPFUN_DEBUG("c73_f6");
@@ -189,7 +189,7 @@ void CGUIShopItem::PrepareTextures()
     g_Orion.ExecuteGump(0x003A);
     g_Orion.ExecuteGump(0x003B);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::SetShaderMode()
 {
     WISPFUN_DEBUG("c73_f7");
@@ -206,7 +206,7 @@ void CGUIShopItem::SetShaderMode()
     else
         glUniform1iARB(g_ShaderDrawMode, SDM_NO_COLOR);
 }
-//----------------------------------------------------------------------------------
+
 void CGUIShopItem::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c73_f8");
@@ -303,7 +303,7 @@ void CGUIShopItem::Draw(bool checktrans)
 
     glTranslatef((GLfloat)-m_X, (GLfloat)-m_Y, 0.0f);
 }
-//----------------------------------------------------------------------------------
+
 bool CGUIShopItem::Select()
 {
     WISPFUN_DEBUG("c73_f9");
@@ -312,4 +312,3 @@ bool CGUIShopItem::Select()
 
     return (x >= 0 && y >= -10 && x < 200 && y < m_MaxOffset);
 }
-//----------------------------------------------------------------------------------

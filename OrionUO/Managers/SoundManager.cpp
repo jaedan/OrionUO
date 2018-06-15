@@ -6,11 +6,11 @@
 **
 ************************************************************************************
 */
-//----------------------------------------------------------------------------------
+
 #include "stdafx.h"
-//----------------------------------------------------------------------------------
+
 CSoundManager g_SoundManager;
-//----------------------------------------------------------------------------------
+
 #pragma region BASS.DLL error code descriptions
 
 struct BASS_ErrorDescription
@@ -18,7 +18,7 @@ struct BASS_ErrorDescription
     int errorCode;
     char desc[64];
 };
-//----------------------------------------------------------------------------------
+
 BASS_ErrorDescription BASS_ErrorTable[38] = {
     { -2, "unspecified error" },
     { BASS_OK, "OK" },
@@ -59,7 +59,7 @@ BASS_ErrorDescription BASS_ErrorTable[38] = {
     { BASS_ERROR_BUSY, "the device is busy" },
     { BASS_ERROR_UNKNOWN, "some other mystery problem" },
 };
-//----------------------------------------------------------------------------------
+
 const char *BASS_ErrorGetDescription()
 {
     WISPFUN_DEBUG("c_errgetdesc");
@@ -74,15 +74,15 @@ const char *BASS_ErrorGetDescription()
     return BASS_ErrorTable[0].desc;
 }
 #pragma endregion
-//----------------------------------------------------------------------------------
+
 CSoundManager::CSoundManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 CSoundManager::~CSoundManager()
 {
 }
-//----------------------------------------------------------------------------------
+
 bool CSoundManager::Init()
 {
     WISPFUN_DEBUG("c156_f1");
@@ -106,27 +106,27 @@ bool CSoundManager::Init()
     }
     return true;
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::Free()
 {
     WISPFUN_DEBUG("c156_f2");
     StopMusic();
     BASS_Free();
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::PauseSound()
 {
     WISPFUN_DEBUG("c156_f3");
     BASS_Pause();
     g_Orion.AdjustSoundEffects(g_Ticks + 100000);
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::ResumeSound()
 {
     WISPFUN_DEBUG("c156_f4");
     BASS_Start();
 }
-//----------------------------------------------------------------------------------
+
 /// <summary>Расчитывает громкость звука с учетом громкости в клиенте
 /// и возможной дистанции для эффетов.</summary>
 /// <param name="distance">расстояние для эффектов.
@@ -150,7 +150,7 @@ float CSoundManager::GetVolumeValue(int distance, bool music)
         return volume - (soundValuePerDistance * distance);
     }
 }
-//----------------------------------------------------------------------------------
+
 /// <summary>Создаёт в памяти 16 битный wave файл для последующего
 /// проигрывания.</summary>
 /// <param name="is">ссылка на запись звука в MUL файле</param>
@@ -184,7 +184,7 @@ UCHAR_LIST CSoundManager::CreateWaveFile(CIndexSound &is)
 
     return waveSound;
 }
-//----------------------------------------------------------------------------------
+
 HSTREAM CSoundManager::LoadSoundEffect(CIndexSound &is)
 {
     WISPFUN_DEBUG("c156_f7");
@@ -208,7 +208,7 @@ HSTREAM CSoundManager::LoadSoundEffect(CIndexSound &is)
 
     return hStream;
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::PlaySoundEffect(HSTREAM hStream, float volume)
 {
     WISPFUN_DEBUG("c156_f8");
@@ -221,7 +221,7 @@ void CSoundManager::PlaySoundEffect(HSTREAM hStream, float volume)
     if (!BASS_ChannelPlay(hStream, false))
         LOG("Bass sound play error: %s\n", BASS_ErrorGetDescription());
 }
-//----------------------------------------------------------------------------------
+
 /// <summary>Очистка звукового потока и высвобождение памяти.</summary>
 /// <param name="hSteam">stream handle</param>
 bool CSoundManager::FreeStream(HSTREAM hSteam)
@@ -234,7 +234,7 @@ bool CSoundManager::IsPlayingNormalMusic()
     WISPFUN_DEBUG("c156_f10");
     return BASS_ChannelIsActive(m_Music);
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::PlayMidi(int index, bool warmode)
 {
     WISPFUN_DEBUG("c156_f11");
@@ -269,7 +269,7 @@ void CSoundManager::PlayMidi(int index, bool warmode)
     else
         LOG("Music ID is out of range: %i\n", index);
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::PlayMP3(const string &fileName, int index, bool loop, bool warmode)
 {
     WISPFUN_DEBUG("c156_f12");
@@ -292,7 +292,7 @@ void CSoundManager::PlayMP3(const string &fileName, int index, bool loop, bool w
         CurrentMusicIndex = index;
     }
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::StopWarMusic()
 {
     WISPFUN_DEBUG("c156_f13");
@@ -302,7 +302,7 @@ void CSoundManager::StopWarMusic()
     if (m_Music != 0 && !BASS_ChannelIsActive(m_Music))
         BASS_ChannelPlay(m_Music, 1);
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::StopMusic()
 {
     WISPFUN_DEBUG("c156_f14");
@@ -311,7 +311,7 @@ void CSoundManager::StopMusic()
     BASS_ChannelStop(m_WarMusic);
     m_WarMusic = 0;
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::SetMusicVolume(float volume)
 {
     WISPFUN_DEBUG("c156_f15");
@@ -321,7 +321,7 @@ void CSoundManager::SetMusicVolume(float volume)
     if (m_WarMusic != 0 && BASS_ChannelIsActive(m_WarMusic))
         BASS_ChannelSetAttribute(m_WarMusic, BASS_ATTRIB_VOL, volume);
 }
-//----------------------------------------------------------------------------------
+
 void CSoundManager::TraceMusicError(DWORD error)
 {
     WISPFUN_DEBUG("c156_f16");
@@ -335,7 +335,7 @@ void CSoundManager::TraceMusicError(DWORD error)
             LOG("Midi error: #%i\n", error);
     }
 }
-//----------------------------------------------------------------------------------
+
 const MidiInfoStruct CSoundManager::MidiInfo[MIDI_MUSIC_COUNT] = {
     { "oldult01.mid", true },  { "create1.mid", false },  { "dragflit.mid", false },
     { "oldult02.mid", true },  { "oldult03.mid", true },  { "oldult04.mid", true },
@@ -357,4 +357,3 @@ const MidiInfoStruct CSoundManager::MidiInfo[MIDI_MUSIC_COUNT] = {
     { "oldult04.mid", false }, { "dragflit.mid", false }, { "create1.mid", false },
     { "approach.mid", false }, { "combat3.mid", false },  { "jungle_a.mid", false }
 };
-//----------------------------------------------------------------------------------
