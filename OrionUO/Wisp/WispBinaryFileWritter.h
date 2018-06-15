@@ -8,22 +8,21 @@ namespace WISP_FILE
 class CBinaryFileWritter : public WISP_DATASTREAM::CDataWritter
 {
 private:
-	FILE *m_File{ NULL };
+    FILE *m_File{ NULL };
 
 public:
-	CBinaryFileWritter();
+    CBinaryFileWritter();
 
-	virtual ~CBinaryFileWritter();
+    virtual ~CBinaryFileWritter();
 
-	bool Open(const string &path);
-	bool Open(const wstring &path);
+    bool Open(const string &path);
+    bool Open(const wstring &path);
 
-	void Close();
+    void Close();
 
-	void WriteBuffer();
+    void WriteBuffer();
 };
 //----------------------------------------------------------------------------------
-}; //namespace
+}; // namespace WISP_FILE
 //----------------------------------------------------------------------------------
 #endif
-

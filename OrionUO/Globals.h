@@ -40,12 +40,12 @@ extern bool g_Asmut;
 #define CWISPDEBUGLOGGER 0
 
 #if CWISPDEBUGLOGGER != 0
-	#define DEBUGLOG LOG
+#define DEBUGLOG LOG
 #else //CWISPDEBUGLOGGER == 0
-	#define DEBUGLOG(...)
+#define DEBUGLOG(...)
 #endif //CWISPDEBUGLOGGER!=0
 //----------------------------------------------------------------------------------
-#pragma warning(disable: 4800) //forcing value to bool 'true' or 'false' (performance warning)
+#pragma warning(disable : 4800) //forcing value to bool 'true' or 'false' (performance warning)
 //----------------------------------------------------------------------------------
 bool CanBeDraggedByOffset(const WISP_GEOMETRY::CPoint2Di &point);
 //----------------------------------------------------------------------------------
@@ -57,7 +57,8 @@ string ToCamelCase(string text);
 class CGameObject;
 int GetDistance(CGameObject *current, CGameObject *target);
 int GetDistance(CGameObject *current, const WISP_GEOMETRY::CPoint2Di &target);
-bool CheckMultiDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target, int maxDistance);
+bool CheckMultiDistance(
+    const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target, int maxDistance);
 int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target);
 int GetDistance(const WISP_GEOMETRY::CPoint2Di &current, const WISP_GEOMETRY::CPoint2Di &target);
 int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *target);
@@ -234,7 +235,12 @@ extern uint g_LockedClientFeatures;
 
 extern bool g_GeneratedMouseDown;
 
-enum DEVELOPER_MODE{DM_NO_DEBUG = 0, DM_SHOW_FPS_ONLY, DM_DEBUGGING};
+enum DEVELOPER_MODE
+{
+    DM_NO_DEBUG = 0,
+    DM_SHOW_FPS_ONLY,
+    DM_DEBUGGING
+};
 extern DEVELOPER_MODE g_DeveloperMode;
 extern DEVELOPER_MODE g_OptionsDeveloperMode;
 
@@ -265,38 +271,134 @@ extern struct PING_INFO_DATA g_GameServerPingInfo;
 extern string g_PingString;
 extern uint g_PingTimer;
 //----------------------------------------------------------------------------------
-inline bool IsBackground(const __int64 &flags) { return (flags & 0x00000001); }
-inline bool IsWeapon(const __int64 &flags) { return (flags & 0x00000002); }
-inline bool IsTransparent(const __int64 &flags) { return (flags & 0x00000004); }
-inline bool IsTranslucent(const __int64 &flags) { return (flags & 0x00000008); }
-inline bool IsWall(const __int64 &flags) { return (flags & 0x00000010); }
-inline bool IsDamaging(const __int64 &flags) { return (flags & 0x00000020); }
-inline bool IsImpassable(const __int64 &flags) { return (flags & 0x00000040); }
-inline bool IsWet(const __int64 &flags) { return (flags & 0x00000080); }
-inline bool IsUnknown(const __int64 &flags) { return (flags & 0x00000100); }
-inline bool IsSurface(const __int64 &flags) { return (flags & 0x00000200); }
-inline bool IsBridge(const __int64 &flags) { return (flags & 0x00000400); }
-inline bool IsStackable(const __int64 &flags) { return (flags & 0x00000800); }
-inline bool IsWindow(const __int64 &flags) { return (flags & 0x00001000); }
-inline bool IsNoShoot(const __int64 &flags) { return (flags & 0x00002000); }
-inline bool IsPrefixA(const __int64 &flags) { return (flags & 0x00004000); }
-inline bool IsPrefixAn(const __int64 &flags) { return (flags & 0x00008000); }
-inline bool IsInternal(const __int64 &flags) { return (flags & 0x00010000); }
-inline bool IsFoliage(const __int64 &flags) { return (flags & 0x00020000); }
-inline bool IsPartialHue(const __int64 &flags) { return (flags & 0x00040000); }
-inline bool IsUnknown1(const __int64 &flags) { return (flags & 0x00080000); }
-inline bool IsMap(const __int64 &flags) { return (flags & 0x00100000); }
-inline bool IsContainer(const __int64 &flags) { return (flags & 0x00200000); }
-inline bool IsWearable(const __int64 &flags) { return (flags & 0x00400000); }
-inline bool IsLightSource(const __int64 &flags) { return (flags & 0x00800000); }
-inline bool IsAnimated(const __int64 &flags) { return (flags & 0x01000000); }
-inline bool IsNoDiagonal(const __int64 &flags) { return (flags & 0x02000000); }
-inline bool IsUnknown2(const __int64 &flags) { return (flags & 0x04000000); }
-inline bool IsArmor(const __int64 &flags) { return (flags & 0x08000000); }
-inline bool IsRoof(const __int64 &flags) { return (flags & 0x10000000); }
-inline bool IsDoor(const __int64 &flags) { return (flags & 0x20000000); }
-inline bool IsStairBack(const __int64 &flags) { return (flags & 0x40000000); }
-inline bool IsStairRight(const __int64 &flags) { return (flags & 0x80000000); }
+inline bool IsBackground(const __int64 &flags)
+{
+    return (flags & 0x00000001);
+}
+inline bool IsWeapon(const __int64 &flags)
+{
+    return (flags & 0x00000002);
+}
+inline bool IsTransparent(const __int64 &flags)
+{
+    return (flags & 0x00000004);
+}
+inline bool IsTranslucent(const __int64 &flags)
+{
+    return (flags & 0x00000008);
+}
+inline bool IsWall(const __int64 &flags)
+{
+    return (flags & 0x00000010);
+}
+inline bool IsDamaging(const __int64 &flags)
+{
+    return (flags & 0x00000020);
+}
+inline bool IsImpassable(const __int64 &flags)
+{
+    return (flags & 0x00000040);
+}
+inline bool IsWet(const __int64 &flags)
+{
+    return (flags & 0x00000080);
+}
+inline bool IsUnknown(const __int64 &flags)
+{
+    return (flags & 0x00000100);
+}
+inline bool IsSurface(const __int64 &flags)
+{
+    return (flags & 0x00000200);
+}
+inline bool IsBridge(const __int64 &flags)
+{
+    return (flags & 0x00000400);
+}
+inline bool IsStackable(const __int64 &flags)
+{
+    return (flags & 0x00000800);
+}
+inline bool IsWindow(const __int64 &flags)
+{
+    return (flags & 0x00001000);
+}
+inline bool IsNoShoot(const __int64 &flags)
+{
+    return (flags & 0x00002000);
+}
+inline bool IsPrefixA(const __int64 &flags)
+{
+    return (flags & 0x00004000);
+}
+inline bool IsPrefixAn(const __int64 &flags)
+{
+    return (flags & 0x00008000);
+}
+inline bool IsInternal(const __int64 &flags)
+{
+    return (flags & 0x00010000);
+}
+inline bool IsFoliage(const __int64 &flags)
+{
+    return (flags & 0x00020000);
+}
+inline bool IsPartialHue(const __int64 &flags)
+{
+    return (flags & 0x00040000);
+}
+inline bool IsUnknown1(const __int64 &flags)
+{
+    return (flags & 0x00080000);
+}
+inline bool IsMap(const __int64 &flags)
+{
+    return (flags & 0x00100000);
+}
+inline bool IsContainer(const __int64 &flags)
+{
+    return (flags & 0x00200000);
+}
+inline bool IsWearable(const __int64 &flags)
+{
+    return (flags & 0x00400000);
+}
+inline bool IsLightSource(const __int64 &flags)
+{
+    return (flags & 0x00800000);
+}
+inline bool IsAnimated(const __int64 &flags)
+{
+    return (flags & 0x01000000);
+}
+inline bool IsNoDiagonal(const __int64 &flags)
+{
+    return (flags & 0x02000000);
+}
+inline bool IsUnknown2(const __int64 &flags)
+{
+    return (flags & 0x04000000);
+}
+inline bool IsArmor(const __int64 &flags)
+{
+    return (flags & 0x08000000);
+}
+inline bool IsRoof(const __int64 &flags)
+{
+    return (flags & 0x10000000);
+}
+inline bool IsDoor(const __int64 &flags)
+{
+    return (flags & 0x20000000);
+}
+inline bool IsStairBack(const __int64 &flags)
+{
+    return (flags & 0x40000000);
+}
+inline bool IsStairRight(const __int64 &flags)
+{
+    return (flags & 0x80000000);
+}
 //----------------------------------------------------------------------------------
 #endif
 //----------------------------------------------------------------------------------

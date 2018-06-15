@@ -8,33 +8,33 @@ namespace WISP_APPLICATION
 class CApplication
 {
 public:
-	HINSTANCE Hinstance = 0;
-	string ExePathA = "";
-	wstring ExePathW = L"";
-	string UOFilesPathA = "";
-	wstring UOFilesPathW = L"";
+    HINSTANCE Hinstance = 0;
+    string ExePathA = "";
+    wstring ExePathW = L"";
+    string UOFilesPathA = "";
+    wstring UOFilesPathW = L"";
 
 protected:
-	virtual void OnMainLoop() {}
+    virtual void OnMainLoop() {}
 
 public:
-	CApplication();
-	virtual ~CApplication();
+    CApplication();
+    virtual ~CApplication();
 
-	int Run(HINSTANCE hinstance);
+    int Run(HINSTANCE hinstance);
 
-	string GetFileVersion(uint *numericVerion = NULL);
+    string GetFileVersion(uint *numericVerion = NULL);
 
-	string ExeFilePath(const char *str, ...);
-	wstring ExeFilePath(const wchar_t *str, ...);
+    string ExeFilePath(const char *str, ...);
+    wstring ExeFilePath(const wchar_t *str, ...);
 
-	string UOFilesPath(const char *str, ...);
-	wstring UOFilesPath(const wchar_t *str, ...);;
+    string UOFilesPath(const char *str, ...);
+    wstring UOFilesPath(const wchar_t *str, ...);
+    ;
 };
 //----------------------------------------------------------------------------------
 extern CApplication *g_WispApplication;
 //----------------------------------------------------------------------------------
-}; //namespace
+}; // namespace WISP_APPLICATION
 //----------------------------------------------------------------------------------
 #endif
-

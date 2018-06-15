@@ -8,25 +8,24 @@ namespace WISP_FILE
 class CMappedFile : public WISP_DATASTREAM::CDataReader
 {
 private:
-	HANDLE m_File{ INVALID_HANDLE_VALUE };
-	HANDLE m_Map{ 0 };
+    HANDLE m_File{ INVALID_HANDLE_VALUE };
+    HANDLE m_Map{ 0 };
 
-	bool Load();
+    bool Load();
 
 public:
-	CMappedFile();
+    CMappedFile();
 
-	virtual ~CMappedFile();
+    virtual ~CMappedFile();
 
-	bool Load(const string &path);
-	bool Load(const wstring &path);
+    bool Load(const string &path);
+    bool Load(const wstring &path);
 
-	void Unload();
+    void Unload();
 };
 //----------------------------------------------------------------------------------
 extern string g_WispMappedFileError;
 //----------------------------------------------------------------------------------
-}; //namespace
+}; // namespace WISP_FILE
 //----------------------------------------------------------------------------------
 #endif
-

@@ -13,23 +13,27 @@
 class CGumpGeneric : public CGump
 {
 public:
-	uint MasterGump = 0;
+    uint MasterGump = 0;
 
-	CGumpGeneric(uint serial, short x, short y, uint id);
-	virtual ~CGumpGeneric();
+    CGumpGeneric(uint serial, short x, short y, uint id);
+    virtual ~CGumpGeneric();
 
-	void AddText(int index, const wstring &text, CBaseGUI *start = NULL, bool backbroundCanBeColored = false);
+    void AddText(
+        int index,
+        const wstring &text,
+        CBaseGUI *start = NULL,
+        bool backbroundCanBeColored = false);
 
-	void SendGumpResponse(int index);
+    void SendGumpResponse(int index);
 
-	virtual void InitToolTip();
+    virtual void InitToolTip();
 
-	GUMP_BUTTON_EVENT_H;
-	GUMP_DIRECT_HTML_LINK_EVENT_H;
+    GUMP_BUTTON_EVENT_H;
+    GUMP_DIRECT_HTML_LINK_EVENT_H;
 
-	virtual bool OnLeftMouseButtonDoubleClick();
-	virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam);
-	virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
+    virtual bool OnLeftMouseButtonDoubleClick();
+    virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam);
+    virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
 };
 //----------------------------------------------------------------------------------
 #endif

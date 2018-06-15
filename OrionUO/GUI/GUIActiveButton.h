@@ -15,10 +15,16 @@
 class CGUIActiveButton : public CGUIButton
 {
 public:
-	CGUIActiveButton(const uint &serial, const ushort &graphic, const ushort &graphicSelected, const ushort &graphicPressed, const int &x, const int &y);
-	virtual ~CGUIActiveButton();
+    CGUIActiveButton(
+        const uint &serial,
+        const ushort &graphic,
+        const ushort &graphicSelected,
+        const ushort &graphicPressed,
+        const int &x,
+        const int &y);
+    virtual ~CGUIActiveButton();
 
-	virtual bool IsPressedOuthit() { return true; }
+    virtual bool IsPressedOuthit() { return true; }
 };
 //----------------------------------------------------------------------------------
 #endif

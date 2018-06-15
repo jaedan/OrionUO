@@ -21,17 +21,17 @@ CScene g_Scene;
 */
 int CScene::DrawSmoothMonitor()
 {
-	WISPFUN_DEBUG("c203_f1");
-	if (g_SmoothMonitor.Process())
-	{
-		ProcessSmoothAction();
+    WISPFUN_DEBUG("c203_f1");
+    if (g_SmoothMonitor.Process())
+    {
+        ProcessSmoothAction();
 
-		g_GL.EndDraw();
+        g_GL.EndDraw();
 
-		return 1;
-	}
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 //---------------------------------------------------------------------------
 void CScene::ProcessSmoothAction(uchar action)
@@ -44,8 +44,8 @@ void CScene::ProcessSmoothAction(uchar action)
 */
 void CScene::DrawSmoothMonitorEffect()
 {
-	WISPFUN_DEBUG("c203_f2");
-	g_SmoothMonitor.Draw();
+    WISPFUN_DEBUG("c203_f2");
+    g_SmoothMonitor.Draw();
 }
 //---------------------------------------------------------------------------
 /*!
@@ -55,19 +55,19 @@ void CScene::DrawSmoothMonitorEffect()
 */
 void CScene::CreateSmoothAction(uchar action)
 {
-	WISPFUN_DEBUG("c203_f3");
-	if (g_SmoothMonitor.UseSunset())
-		m_SmoothScreenAction = action;
-	else
-		ProcessSmoothAction(action);
+    WISPFUN_DEBUG("c203_f3");
+    if (g_SmoothMonitor.UseSunset())
+        m_SmoothScreenAction = action;
+    else
+        ProcessSmoothAction(action);
 }
 //---------------------------------------------------------------------------
 void CScene::Init(const GAME_STATE &state)
 {
-	WISPFUN_DEBUG("c203_f4");
-	g_GameState = state;
-	g_SelectedObject.Clear();
-	g_PressedObject.ClearAll();
+    WISPFUN_DEBUG("c203_f4");
+    g_GameState = state;
+    g_SelectedObject.Clear();
+    g_PressedObject.ClearAll();
 }
 //---------------------------------------------------------------------------
 void CScene::InitToolTip()
@@ -96,12 +96,12 @@ void CScene::OnRightMouseButtonUp()
 //---------------------------------------------------------------------------
 bool CScene::OnLeftMouseButtonDoubleClick()
 {
-	return false;
+    return false;
 }
 //---------------------------------------------------------------------------
 bool CScene::OnRightMouseButtonDoubleClick()
 {
-	return false;
+    return false;
 }
 //---------------------------------------------------------------------------
 void CScene::OnMouseWheel(const MOUSE_WHEEL_STATE &state)
@@ -110,7 +110,7 @@ void CScene::OnMouseWheel(const MOUSE_WHEEL_STATE &state)
 //---------------------------------------------------------------------------
 bool CScene::OnMouseWheelDoubleClick()
 {
-	return false;
+    return false;
 }
 //---------------------------------------------------------------------------
 void CScene::OnDragging()
