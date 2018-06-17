@@ -54,8 +54,6 @@ public:
     CFileManager();
     virtual ~CFileManager();
 
-    AutoResetEvent m_AutoResetEvent;
-
     WISP_FILE::CMappedFile m_AnimIdx[6];
     WISP_FILE::CMappedFile m_ArtIdx;
     WISP_FILE::CMappedFile m_GumpIdx;

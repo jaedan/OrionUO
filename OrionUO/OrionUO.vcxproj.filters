@@ -780,9 +780,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\AutoResetEvent.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Managers\CorpseManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -1489,9 +1486,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\AutoResetEvent.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Managers\CorpseManager.cpp">
       <Filter>Source Files\Managers</Filter>

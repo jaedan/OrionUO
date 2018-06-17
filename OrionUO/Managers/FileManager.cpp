@@ -436,12 +436,6 @@ void CFileManager::SendFilesInfo()
 
 void CFileManager::TryReadUOPAnimations()
 {
-    std::thread readThread(&CFileManager::ReadTask, this);
-    readThread.detach();
-}
-
-void CFileManager::ReadTask()
-{
     std::unordered_map<uint64_t, UOPAnimationData> hashes;
     IFOR (i, 1, 5)
     {
@@ -547,8 +541,6 @@ void CFileManager::ReadTask()
 
     if (g_AnimationManager.AnimGroupCount < maxGroup)
         g_AnimationManager.AnimGroupCount = maxGroup;
-
-    m_AutoResetEvent.Set();
 }
 
 bool CFileManager::FileExists(const std::string &filename)
