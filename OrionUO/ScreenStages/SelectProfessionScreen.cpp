@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SelectProfessionScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -26,10 +19,6 @@ void CSelectProfessionScreen::SetSkillSelection(int val)
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CSelectProfessionScreen::Init()
 {
     WISPFUN_DEBUG("c166_f1");
@@ -43,11 +32,6 @@ void CSelectProfessionScreen::Init()
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CSelectProfessionScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c166_f2");

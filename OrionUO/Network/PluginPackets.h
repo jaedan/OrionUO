@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PluginPackets.h
-**
-** Copyright (C) November 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PLUGINPACKETS_H
 #define PLUGINPACKETS_H
@@ -80,4 +73,4 @@ public:
     CPluginPacketOpenMap();
 };
 
-#endif //PLUGINPACKETS_H
+#endif

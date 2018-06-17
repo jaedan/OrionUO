@@ -1,26 +1,11 @@
-﻿/***********************************************************************************
-**
-** Weather.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
 CWeather g_Weather;
-/// <summary>
-/// колебания по синусоиде с частотой freq и амплитудой -range до +range
-/// </summary>
-/// <param name="freq">Частота колебаний в Гц (в сек).</param>
-/// <param name="range">Диапазон колебаний (от -range до +range).</param>
-/// <param name="current_tick">Текущий тик, мс.</param>
-/// <returns>Значение от -range до +range для данного тика</returns>
+
 float SinOscillate(float freq, int range, DWORD current_tick)
 {
-    //float anglef = int((current_tick / (1000.0f / 360.0f)) * freq) % 360;
-
     float anglef = (float)(int((current_tick / 2.7777f) * freq) % 360);
     return sinf(deg2radf(anglef)) * range;
 }
@@ -81,7 +66,6 @@ void CWeather::Draw(int x, int y)
 
     if (Timer < g_Ticks)
     {
-        //if (CurrentCount) Reset();
         if (!CurrentCount)
             return;
 
@@ -92,7 +76,7 @@ void CWeather::Draw(int x, int y)
 
     uint passed = g_Ticks - LastTick;
 
-    if (passed > 7000) // если времени слишком много прошло со старой симуляции
+    if (passed > 7000)
     {
         LastTick = g_Ticks;
         passed = 25;
@@ -103,7 +87,7 @@ void CWeather::Draw(int x, int y)
     if (WindTimer < g_Ticks)
     {
         if (!WindTimer)
-            windChanged = true; //Для установки стартовых значений снежинок
+            windChanged = true;
 
         WindTimer = g_Ticks + (RandomIntMinMax(7, 13) * 1000);
 
@@ -197,9 +181,8 @@ void CWeather::Draw(int x, int y)
 
                 if (windChanged)
                 {
-                    // вычисление угла скорости в градусах
                     effect->SpeedAngle = rad2degf(std::atan2f(effect->SpeedX, effect->SpeedY));
-                    // числинное значение скорости
+
                     effect->SpeedMagnitude =
                         sqrtf(powf(effect->SpeedX, 2) + powf(effect->SpeedY, 2));
                 }
@@ -207,14 +190,10 @@ void CWeather::Draw(int x, int y)
                 float speed_angle = effect->SpeedAngle;
                 float speed_magnitude = effect->SpeedMagnitude;
 
-                // коэффицент скейлирования (используеться для рандомизации скорости снега)
                 speed_magnitude += effect->ScaleRatio;
 
-                // тут движение УГЛА силы по синусоиде, ID() снежинки добавляется для смещения фазы
-                // хотя там можно заюзать любое постоянное число, например, порядковый номер снежинки
                 speed_angle += SinOscillate(0.4f, 20, g_Ticks + effect->ID);
 
-                // обратная проекция на оси X, Y из угла и (скалярного) значения
                 effect->SpeedX = speed_magnitude * sinf(deg2radf(speed_angle));
                 effect->SpeedY = speed_magnitude * cosf(deg2radf(speed_angle));
 

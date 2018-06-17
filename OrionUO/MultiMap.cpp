@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MultiMap.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -105,19 +98,12 @@ void CMultiMap::LoadMap(CGumpMap *gump, CGUIExternalTexture *mapObject)
                 currentHeight += height;
                 posY = gump->Width * ((currentHeight - startHeight) >> 8);
             }
-
-            //if (y >= Height)
-            //	break;
         }
-
-        //if (y >= Height)
-        //	break;
     }
 
     if (maxPixelValue >= 1)
     {
-        pushort huesData =
-            (pushort)((puchar)g_ColorManager.GetHuesRangePointer() + 30800); // color = 0x015C
+        pushort huesData = (pushort)((puchar)g_ColorManager.GetHuesRangePointer() + 30800);
 
         USHORT_LIST colorTable(maxPixelValue);
         int colorOffset = 31 * maxPixelValue;
@@ -164,8 +150,6 @@ bool CMultiMap::LoadFacet(CGumpMap *gump, CGUIExternalTexture *mapObject, int fa
     int mapWidth = file.ReadInt16LE();
     int mapHeight = file.ReadInt16LE();
 
-    //DebugMsg("Facet w:%i h:%i\n", mapWidth, mapHeight);
-
     int startX = gump->StartX;
     int endX = gump->EndX;
 
@@ -199,7 +183,6 @@ bool CMultiMap::LoadFacet(CGumpMap *gump, CGUIExternalTexture *mapObject, int fa
 
     g_GL_BindTexture16(*mapObject->m_Texture, width, height, &map[0]);
 
-    //Или не надо...?
     mapObject->m_Texture->Width = gump->Width;
     mapObject->m_Texture->Height = gump->Height;
 

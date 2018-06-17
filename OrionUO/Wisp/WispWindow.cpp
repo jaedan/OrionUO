@@ -134,7 +134,7 @@ bool CWindow::Create(
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hCursor = cursor; //LoadCursor(NULL, IDC_ARROW);
+    wcex.hCursor = cursor;
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = className;
@@ -212,7 +212,7 @@ void CWindow::ShowMessage(const wstring &text, const wstring &title, int buttons
 LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM &lParam)
 {
     WISPFUN_DEBUG("c14_f9");
-    //DebugMsg("m=0x%08X, w0x%08X l0x%08X\n", message, wParam, lParam);
+
     static bool parse = true;
 
     if (!parse)
@@ -294,7 +294,6 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
             OnDestroy();
 
-            //ExitProcess(0);
             PostQuitMessage(0);
 
             return 0;
@@ -400,7 +399,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
             break;
         }
-        //Нажатие на колесико мышки
+
         case WM_MBUTTONDOWN:
         {
             SetCapture(Handle);
@@ -433,7 +432,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
             break;
         }
-        //Отпускание колесика мышки
+
         case WM_MBUTTONUP:
         {
             WISP_MOUSE::g_WispMouse->Update();
@@ -444,7 +443,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
             break;
         }
-        //Колесико мышки вверх/вниз
+
         case WM_MOUSEWHEEL:
         {
             WISP_MOUSE::g_WispMouse->Update();
@@ -452,7 +451,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
 
             break;
         }
-        //Доп. кнопки мыши
+
         case WM_XBUTTONDOWN:
         {
             WISP_MOUSE::g_WispMouse->Update();
@@ -464,24 +463,24 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
         {
             OnCharPress(wParam, lParam);
 
-            return 0; //break;
+            return 0;
         }
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
         {
             OnKeyDown(wParam, lParam);
 
-            if (wParam == VK_F4 && (GetAsyncKeyState(VK_MENU) & 0x80000000)) //Alt + F4
+            if (wParam == VK_F4 && (GetAsyncKeyState(VK_MENU) & 0x80000000))
                 break;
 
-            return 0; //break;
+            return 0;
         }
         case WM_KEYUP:
         case WM_SYSKEYUP:
         {
             OnKeyUp(wParam, lParam);
 
-            return 0; //break;
+            return 0;
         }
         case WM_NCACTIVATE:
         {
@@ -522,13 +521,11 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
         {
             OnThreadedTimer((uint)wParam, (WISP_THREADED_TIMER::CThreadedTimer *)lParam);
 
-            //DebugMsg("OnThreadedTimer %i, 0x%08X\n", wParam, lParam);
-
             return 0;
         }
         case WM_SYSCHAR:
         {
-            if (wParam == VK_F4 && (GetAsyncKeyState(VK_MENU) & 0x80000000)) //Alt + F4
+            if (wParam == VK_F4 && (GetAsyncKeyState(VK_MENU) & 0x80000000))
                 break;
             return 0;
         }

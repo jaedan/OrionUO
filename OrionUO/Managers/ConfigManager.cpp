@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ConfigManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -18,10 +11,6 @@ CConfigManager::CConfigManager()
     Init();
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CConfigManager::Init()
 {
     WISPFUN_DEBUG("c138_f2");
@@ -662,11 +651,6 @@ void CConfigManager::SetCharacterBackpackStyle(uchar val)
     }
 }
 
-/*!
-Получить цвет исходя из "злобности"
-@param [__in] notoriety Злобность
-@return Индекс цвета
-*/
 ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
 {
     WISPFUN_DEBUG("c138_f29");
@@ -674,32 +658,32 @@ ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
 
     switch ((NOTORIETY_TYPE)notoriety)
     {
-        case NT_INNOCENT: //Blue
+        case NT_INNOCENT:
         {
             color = InnocentColor;
             break;
         }
-        case NT_FRIENDLY: //Green
+        case NT_FRIENDLY:
         {
             color = FriendlyColor;
             break;
         }
-        case NT_SOMEONE_GRAY: //Someone gray
+        case NT_SOMEONE_GRAY:
         {
             color = SomeoneColor;
             break;
         }
-        case NT_CRIMINAL: //Criminal
+        case NT_CRIMINAL:
         {
             color = CriminalColor;
             break;
         }
-        case NT_ENEMY: //Orange
+        case NT_ENEMY:
         {
             color = EnemyColor;
             break;
         }
-        case NT_MURDERER: //Red*
+        case NT_MURDERER:
         {
             color = MurdererColor;
             break;
@@ -716,11 +700,6 @@ ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
     return color;
 }
 
-/*!
-Загрузка конфига
-@param [__in] path Путь к файлу с конфигом
-@return 
-*/
 bool CConfigManager::LoadBin(string path)
 {
     WISPFUN_DEBUG("c138_f30");
@@ -734,7 +713,6 @@ bool CConfigManager::LoadBin(string path)
         UpdateRange = g_MaxViewRange;
         uchar version = file.ReadUInt8();
 
-        //Page 1
         puchar next = file.Ptr;
         char blockSize = file.ReadInt8();
         next += blockSize;
@@ -752,7 +730,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 2
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -942,7 +919,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 3
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -957,7 +933,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 4
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -985,7 +960,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 6
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -1038,7 +1012,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 7
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -1066,7 +1039,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 8
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -1084,7 +1056,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 9
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -1104,7 +1075,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //Page 10
         next = file.Ptr;
         blockSize = file.ReadInt8();
         next += blockSize;
@@ -1115,7 +1085,6 @@ bool CConfigManager::LoadBin(string path)
 
         file.Ptr = next;
 
-        //No page
         blockSize = file.ReadInt8();
 
         if (!file.ReadInt8())
@@ -1194,16 +1163,6 @@ bool CConfigManager::LoadBin(string path)
 
         result = true;
     }
-    /*else
-	{
-		Init();
-
-		if (g_GameState >= GS_GAME)
-		{
-			SendMessage(g_hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
-			SendMessage(g_hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-		}
-	}*/
 
     if (g_GameState >= GS_GAME)
     {
@@ -1394,7 +1353,6 @@ bool CConfigManager::Load(const string &path)
 
             switch (code)
             {
-                //Page 1
                 case CMKC_SOUND:
                     SetSound(ToBool(strings[1]));
                     break;
@@ -1417,7 +1375,6 @@ bool CConfigManager::Load(const string &path)
                     BackgroundSound = ToBool(strings[1]);
                     break;
 
-                //Page 2
                 case CMKC_CLIENT_FPS:
                     SetClientFPS(atoi(strings[1].c_str()));
                     break;
@@ -1530,7 +1487,6 @@ bool CConfigManager::Load(const string &path)
                     DrawStatusForHumanoids = ToBool(strings[1]);
                     break;
 
-                //Page 3
                 case CMKC_USE_TOOLTIPS:
                     UseToolTips = ToBool(strings[1]);
                     break;
@@ -1544,7 +1500,6 @@ bool CConfigManager::Load(const string &path)
                     ToolTipsDelay = atoi(strings[1].c_str());
                     break;
 
-                //Page 4
                 case CMKC_CHAT_COLOR_INPUT_TEXT:
                     ChatColorInputText = atoi(strings[1].c_str());
                     break;
@@ -1597,7 +1552,6 @@ bool CConfigManager::Load(const string &path)
                     ChatColorBGCommandList = atoi(strings[1].c_str());
                     break;
 
-                //Page 6
                 case CMKC_ENABLE_PATHFIND:
                     EnablePathfind = ToBool(strings[1]);
                     break;
@@ -1647,7 +1601,6 @@ bool CConfigManager::Load(const string &path)
                     g_ContainerRect.DefaultY = atoi(strings[1].c_str());
                     break;
 
-                //Page 7
                 case CMKC_GAME_WINDOW_WIDTH:
                     GameWindowWidth = atoi(strings[1].c_str());
                     break;
@@ -1700,7 +1653,6 @@ bool CConfigManager::Load(const string &path)
                     LockGumpsMoving = ToBool(strings[1]);
                     break;
 
-                //Page 8
                 case CMKC_INNOCENT_COLOR:
                     InnocentColor = atoi(strings[1].c_str());
                     break;
@@ -1723,7 +1675,6 @@ bool CConfigManager::Load(const string &path)
                     CriminalActionsQuery = ToBool(strings[1]);
                     break;
 
-                //Page 9
                 case CMKC_SHOW_INCOMING_NAMES:
                     ShowIncomingNames = ToBool(strings[1]);
                     break;
@@ -1747,7 +1698,6 @@ bool CConfigManager::Load(const string &path)
                     SpeechFont = atoi(strings[1].c_str());
                     break;
 
-                //No page
                 case CMKC_GAME_WINDOW_X:
                     GameWindowX = atoi(strings[1].c_str());
                     break;
@@ -1852,7 +1802,6 @@ void CConfigManager::Save(const string &path)
 
     if (writter.Opened())
     {
-        //Page 1
         writter.WriteBool("Sound", m_Sound);
         writter.WriteInt("SoundVolume", m_SoundVolume);
         writter.WriteBool("Music", m_Music);
@@ -1861,7 +1810,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("CombatMusic", CombatMusic);
         writter.WriteBool("BackgroundSound", BackgroundSound);
 
-        //Page 2
         writter.WriteInt("ClientFPS", m_ClientFPS);
         writter.WriteBool("UseScaling", m_UseScaling);
         writter.WriteBool("RemoveTextWithBlending", RemoveTextWithBlending);
@@ -1900,13 +1848,11 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("CancelNewTargetSystemOnShiftEsc", CancelNewTargetSystemOnShiftEsc);
         writter.WriteBool("DrawStatusForHumanoids", DrawStatusForHumanoids);
 
-        //Page 3
         writter.WriteBool("UseToolTips", UseToolTips);
         writter.WriteInt("ToolTipsTextColor", ToolTipsTextColor);
         writter.WriteInt("ToolTipsTextFont", ToolTipsTextFont);
         writter.WriteInt("ToolTipsDelay", ToolTipsDelay);
 
-        //Page 4
         writter.WriteInt("ChatColorInputText", ChatColorInputText);
         writter.WriteInt("ChatColorMenuOption", ChatColorMenuOption);
         writter.WriteInt("ChatColorPlayerInMemberList", ChatColorPlayerInMemberList);
@@ -1925,7 +1871,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteInt("ChatColorBGConfList", ChatColorBGConfList);
         writter.WriteInt("ChatColorBGCommandList", ChatColorBGCommandList);
 
-        //Page 6
         writter.WriteBool("EnablePathfind", EnablePathfind);
         writter.WriteBool("HoldTabForCombat", HoldTabForCombat);
         writter.WriteBool("OffsetInterfaceWindows", OffsetInterfaceWindows);
@@ -1944,7 +1889,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteInt("ContainerDefaultY", g_ContainerRect.DefaultY);
         writter.WriteInt("CharacterBackpackStyle", GetCharacterBackpackStyle());
 
-        //Page 7
         writter.WriteInt("GameWindowWidth", GameWindowWidth);
         writter.WriteInt("GameWindowHeight", GameWindowHeight);
         writter.WriteInt("SpeechDelay", SpeechDelay);
@@ -1963,7 +1907,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("LockResizingGameWindow", LockResizingGameWindow);
         writter.WriteBool("LockGumpsMoving", LockGumpsMoving);
 
-        //Page 8
         writter.WriteInt("InnocentColor", InnocentColor);
         writter.WriteInt("FriendlyColor", FriendlyColor);
         writter.WriteInt("SomeoneColor", SomeoneColor);
@@ -1972,7 +1915,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteInt("MurdererColor", MurdererColor);
         writter.WriteBool("CriminalActionsQuery", CriminalActionsQuery);
 
-        //Page 9
         writter.WriteBool("ShowIncomingNames", ShowIncomingNames);
         writter.WriteBool("UseCircleTrans", UseCircleTrans);
         writter.WriteBool("StatReport", StatReport);
@@ -1981,7 +1923,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteInt("SkillReport", SkillReport);
         writter.WriteInt("SpeechFont", SpeechFont);
 
-        //No page
         writter.WriteInt("GameWindowX", GameWindowX);
         writter.WriteInt("GameWindowY", GameWindowY);
 

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** FontsManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -26,10 +19,6 @@ CFontsManager::~CFontsManager()
     m_WebLink.clear();
 }
 
-/*!
-Загрузка ASCII шрифтов
-@return true при успешной загрузке
-*/
 bool CFontsManager::LoadFonts()
 {
     WISPFUN_DEBUG("c143_f3");
@@ -53,7 +42,7 @@ bool CFontsManager::LoadFonts()
 
             int bcount = fh->Width * fh->Height * 2;
 
-            if (fontFile.Ptr + bcount > fontFile.End) //Bad font file...
+            if (fontFile.Ptr + bcount > fontFile.End)
             {
                 exit = true;
 
@@ -129,11 +118,6 @@ bool CFontsManager::UnicodeFontExists(uchar font)
     return true;
 }
 
-/*!
-Переход по ссылке по индексу
-@param [__in] link Индекс ссылки
-@return 
-*/
 void CFontsManager::GoToWebLink(ushort link)
 {
     WISPFUN_DEBUG("c143_f5");
@@ -146,12 +130,6 @@ void CFontsManager::GoToWebLink(ushort link)
     }
 }
 
-/*!
-Получить смещение символа ширифта
-@param [__in] font Шрифт
-@param [__in] index Индекс символа
-@return Смещение в пикселях
-*/
 int CFontsManager::GetFontOffsetY(uchar font, uchar index)
 {
     WISPFUN_DEBUG("c143_f6");
@@ -181,16 +159,6 @@ int CFontsManager::GetFontOffsetY(uchar font, uchar index)
     return 0;
 }
 
-/*!
-Получить позицию каретки в тексте
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] pos Текущая позиция в тексте
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Координаты каретки
-*/
 WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
     uchar font, const string &str, int pos, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -213,7 +181,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
     int height = 0;
     PMULTILINES_FONT_INFO ptr = info;
 
-    //loop throgh lines to get width and height
     while (info != NULL)
     {
         p.X = 0;
@@ -221,12 +188,10 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
         if (info->CharStart == pos)
             return p;
 
-        //if pos is not in this line, just skip this
         if (pos <= info->CharStart + len)
         {
             IFOR (i, 0, len)
             {
-                //collect data about width of each character
                 uchar index = m_FontIndex[(uchar)ptr->Data[i].item];
                 p.X += fd.Chars[index].Width;
 
@@ -235,7 +200,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
             }
         }
 
-        //add to height if there's another line
         if (info->m_Next != NULL)
             p.Y += info->MaxHeight;
 
@@ -250,17 +214,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
     return p;
 }
 
-/*!
-Вычислить положение каретки
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] x Координата каретки по оси X
-@param [__in] y Координата каретки по оси Y
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Позиция каретки в строке
-*/
 int CFontsManager::CalculateCaretPosA(
     uchar font, const string &str, int x, int y, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -333,13 +286,6 @@ int CFontsManager::CalculateCaretPosA(
     return pos;
 }
 
-/*!
-Получить ширину текста
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in_opt] len Длина текста
-@return Ширина текста в пикселях
-*/
 int CFontsManager::GetWidthA(uchar font, const string &str)
 {
     WISPFUN_DEBUG("c143_f9");
@@ -357,16 +303,6 @@ int CFontsManager::GetWidthA(uchar font, const string &str)
     return textLength;
 }
 
-/*!
-Получить ширину текста (с учетом параметров отрисовки)
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] maxWidth Максимальная ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Ширина текста в пикселях
-*/
 int CFontsManager::GetWidthExA(
     uchar font, const string &str, int maxWidth, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -394,15 +330,6 @@ int CFontsManager::GetWidthExA(
     return textWidth;
 }
 
-/*!
-Получить высоту текста
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return Высота текста в пикселях
-*/
 int CFontsManager::GetHeightA(
     uchar font, const string &str, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -432,11 +359,6 @@ int CFontsManager::GetHeightA(
     return textHeight;
 }
 
-/*!
-Получить высоту текста по списку строк
-@param [__in] info Ссылка на мультистрочный текст
-@return Высота текста в пикселях
-*/
 int CFontsManager::GetHeightA(PMULTILINES_FONT_INFO info)
 {
     WISPFUN_DEBUG("c143_f12");
@@ -452,15 +374,6 @@ int CFontsManager::GetHeightA(PMULTILINES_FONT_INFO info)
     return textHeight;
 }
 
-/*!
-Получить текст указанной ширины
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] width Ширина текстуры
-@param [__in] IsCropped Ограниченный текст, вышедшая за доступные пределы часть обрезается и заменяется на многоточие
-@return Результирующий текст
-*/
 string CFontsManager::GetTextByWidthA(uchar font, const string &str, int width, bool isCropped)
 {
     WISPFUN_DEBUG("c143_f13");
@@ -493,16 +406,6 @@ string CFontsManager::GetTextByWidthA(uchar font, const string &str, int width, 
     return result;
 }
 
-/*!
-Получить информацию о тексте (в мультистрочном виде)
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@param [__in] width Ширина текстуры
-@return Ссылка на мультистрочный текст или NULL
-*/
 PMULTILINES_FONT_INFO CFontsManager::GetInfoA(
     uchar font, const char *str, int len, TEXT_ALIGN_TYPE align, ushort flags, int width)
 {
@@ -709,17 +612,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoA(
     return info;
 }
 
-/*!
-Сгенерировать текстуру текста
-@param [__in] font Шрифт
-@param [__inout] th Данные о текстуре текста
-@param [__in] str Текст
-@param [__in_opt] color Цвет
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return true при успешной генерации
-*/
 bool CFontsManager::GenerateA(
     uchar font,
     CGLTextTexture &th,
@@ -749,17 +641,6 @@ bool CFontsManager::GenerateA(
     return GenerateABase(font, th, str, color, width, align, flags);
 }
 
-/*!
-Сгенерировать пиксели текстуры текста
-@param [__in] font Шрифт
-@param [__inout] th Данные о текстуре текста
-@param [__in] str Текст
-@param [__in] color Цвет текста
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Ссылка на массив пикселей
-*/
 UINT_LIST CFontsManager::GeneratePixelsA(
     uchar font,
     CGLTextTexture &th,
@@ -885,9 +766,7 @@ UINT_LIST CFontsManager::GeneratePixelsA(
 
                         int block = (testY * width) + ((int)x + w);
 
-                        pData[block] =
-                            pcl << 8 |
-                            0xFF; // (0xFF << 24) | (GetBValue(pcl) << 16) | (GetGValue(pcl) << 8) | GetRValue(pcl);
+                        pData[block] = pcl << 8 | 0xFF;
                     }
                 }
             }
@@ -909,17 +788,6 @@ UINT_LIST CFontsManager::GeneratePixelsA(
     return pData;
 }
 
-/*!
-Создание ASCII текстуры
-@param [__in] font Шрифт
-@param [__out] th Данные текстуры
-@param [__in] str Текст
-@param [__in] color Цвет
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return true при успешной генерации
-*/
 bool CFontsManager::GenerateABase(
     uchar font,
     CGLTextTexture &th,
@@ -943,18 +811,6 @@ bool CFontsManager::GenerateABase(
     return true;
 }
 
-/*!
-Отрисовать текст
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] color Цвет
-@param [__in] x Экранная координата X
-@param [__in] y Экранная координата Y
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return 
-*/
 void CFontsManager::DrawA(
     uchar font,
     const string &str,
@@ -972,16 +828,6 @@ void CFontsManager::DrawA(
         th.Draw(x, y);
 }
 
-/*!
-Получить позицию каретки в тексте
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] pos Текущая позиция в тексте
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Координаты каретки
-*/
 WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
     uchar font, const wstring &str, int pos, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -1001,7 +847,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
 
     puint table = (puint)m_UnicodeFontAddress[font];
 
-    //loop throgh lines to get width and height
     while (info != NULL)
     {
         p.X = 0;
@@ -1009,12 +854,10 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
         if (info->CharStart == pos)
             return p;
 
-        //if pos is not in this line, just skip this
         if (pos <= info->CharStart + len)
         {
             IFOR (i, 0, len)
             {
-                //collect data about width of each character
                 const wchar_t &ch = info->Data[i].item;
                 uint offset = table[ch];
 
@@ -1031,7 +874,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
             }
         }
 
-        //add to height if there's another line
         if (info->m_Next != NULL)
             p.Y += info->MaxHeight;
 
@@ -1046,17 +888,6 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
     return p;
 }
 
-/*!
-Вычислить положение каретки
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] x Координата каретки по оси X
-@param [__in] y Координата каретки по оси Y
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Позиция каретки в строке
-*/
 int CFontsManager::CalculateCaretPosW(
     uchar font, const wstring &str, int x, int y, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -1134,13 +965,6 @@ int CFontsManager::CalculateCaretPosW(
     return pos;
 }
 
-/*!
-Получить ширину текста
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in_opt] len Длина текста
-@return Ширина текста в пикселях
-*/
 int CFontsManager::GetWidthW(uchar font, const wstring &str)
 {
     WISPFUN_DEBUG("c143_f21");
@@ -1172,16 +996,6 @@ int CFontsManager::GetWidthW(uchar font, const wstring &str)
     return max(maxTextLength, textLength);
 }
 
-/*!
-Получить ширину текста (с учетом параметров отрисовки)
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] maxWidth Максимальная ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Ширина текста в пикселях
-*/
 int CFontsManager::GetWidthExW(
     uchar font, const wstring &str, int maxWidth, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -1210,15 +1024,6 @@ int CFontsManager::GetWidthExW(
     return textWidth;
 }
 
-/*!
-Получить высоту текста
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return Высота текста в пикселях
-*/
 int CFontsManager::GetHeightW(
     uchar font, const wstring &str, int width, TEXT_ALIGN_TYPE align, ushort flags)
 {
@@ -1252,11 +1057,6 @@ int CFontsManager::GetHeightW(
     return textHeight;
 }
 
-/*!
-Получить высоту текста по списку строк
-@param [__in] info Ссылка на мультистрочный текст
-@return Высота текста в пикселях
-*/
 int CFontsManager::GetHeightW(PMULTILINES_FONT_INFO info)
 {
     WISPFUN_DEBUG("c143_f24");
@@ -1274,15 +1074,6 @@ int CFontsManager::GetHeightW(PMULTILINES_FONT_INFO info)
     return textHeight;
 }
 
-/*!
-Получить текст указанной ширины
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] width Ширина текстуры
-@param [__in] IsCropped Ограниченный текст, вышедшая за доступные пределы часть обрезается и заменяется на многоточие
-@return Результирующий текст
-*/
 wstring CFontsManager::GetTextByWidthW(uchar font, const wstring &str, int width, bool isCropped)
 {
     WISPFUN_DEBUG("c143_f25");
@@ -1338,12 +1129,6 @@ ushort CFontsManager::GetWebLinkID(const wstring &link, uint &color)
     return GetWebLinkID(ToString(link), color);
 }
 
-/*!
-Получить индекс ссылки
-@param [__in] link Ссылка
-@param [__out] color Цвет ссылки
-@return Индекс ссылки
-*/
 ushort CFontsManager::GetWebLinkID(const string &link, uint &color)
 {
     WISPFUN_DEBUG("c143_f27");
@@ -1427,8 +1212,6 @@ HTMLCHAR_LIST CFontsManager::GetHTMLData(
             }
             else if (stack.size() > 1)
             {
-                //stack.pop_back();
-
                 int index = -1;
 
                 DFOR (j, (int)stack.size() - 1, 1)
@@ -1830,11 +1613,11 @@ HTML_TAG_TYPE CFontsManager::ParseHTMLTag(
     if (j != (int)i && i < len)
     {
         int cmdLen = (int)i - j;
-        //LOG("cmdLen = %i\n", cmdLen);
+
         wstring cmd;
         cmd.resize(cmdLen);
         memcpy(&cmd[0], &str[j], cmdLen * 2);
-        //LOG(L"cmd[%s] = %s\n", (endTag ? L"end" : L"start"), cmd.c_str());
+
         cmd = ToLowerW(cmd);
 
         j = (int)i;
@@ -1900,10 +1683,9 @@ HTML_TAG_TYPE CFontsManager::ParseHTMLTag(
                     {
                         wstring content = L"";
                         cmdLen = (int)i - j;
-                        //LOG("contentCmdLen = %i\n", cmdLen);
+
                         content.resize(cmdLen);
                         memcpy(&content[0], &str[j], cmdLen * 2);
-                        //LOG(L"contentCmd = %s\n", content.c_str());
 
                         if (content.size())
                             GetHTMLInfoFromContent(info, ToString(content));
@@ -1920,16 +1702,6 @@ HTML_TAG_TYPE CFontsManager::ParseHTMLTag(
     return tag;
 }
 
-/*!
-Получение данных многострочного текста HTML
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@param [__in] width Ширина текста
-@return Ссылка на данные
-*/
 PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
     uchar font, const wchar_t *str, int len, TEXT_ALIGN_TYPE align, ushort flags, int width)
 {
@@ -2004,8 +1776,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
                 if (!ptr->Width)
                     ptr->Width = 1;
 
-                // (!ptr->MaxHeight)
-                //ptr->MaxHeight = 14;
                 ptr->MaxHeight = MAX_HTML_TEXT_HEIGHT;
 
                 ptr->Data.resize(ptr->CharCount);
@@ -2036,8 +1806,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
                 if (!ptr->Width)
                     ptr->Width = 1;
 
-                //if (!ptr->MaxHeight)
-                //ptr->MaxHeight = 10;
                 ptr->MaxHeight = MAX_HTML_TEXT_HEIGHT;
 
                 PMULTILINES_FONT_INFO newptr = new MULTILINES_FONT_INFO();
@@ -2072,8 +1840,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
 
                     readWidth += ((char)data[0] + (char)data[2] + 1);
 
-                    //if (((char)data[1] + (char)data[3]) > ptr->MaxHeight)
-                    //ptr->MaxHeight = ((char)data[1] + (char)data[3]);
                     ptr->MaxHeight = MAX_HTML_TEXT_HEIGHT;
 
                     charCount++;
@@ -2090,8 +1856,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
                 if (!ptr->Width)
                     ptr->Width = 1;
 
-                //if (!ptr->MaxHeight)
-                //ptr->MaxHeight = 10;
                 ptr->MaxHeight = MAX_HTML_TEXT_HEIGHT;
 
                 ptr->Data.resize(ptr->CharCount);
@@ -2127,16 +1891,10 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
         if (si == L' ')
         {
             readWidth += UNICODE_SPACE_WIDTH;
-
-            //if (!ptr->MaxHeight)
-            //ptr->MaxHeight = 5;
         }
         else
         {
             readWidth += ((char)data[0] + (char)data[2] + 1) + solidWidth;
-
-            //if (((char)data[1] + (char)data[3]) > ptr->MaxHeight)
-            //->MaxHeight = ((char)data[1] + (char)data[3]);
         }
 
         charCount++;
@@ -2149,16 +1907,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoHTML(
     return info;
 }
 
-/*!
-Получить информацию о тексте (в мультистрочном виде)
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] len Длина текста
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@param [__in] width Ширина текстуры
-@return Ссылка на мультистрочный текст или NULL
-*/
 PMULTILINES_FONT_INFO CFontsManager::GetInfoW(
     uchar font, const wchar_t *str, int len, TEXT_ALIGN_TYPE align, ushort flags, int width)
 {
@@ -2390,18 +2138,6 @@ PMULTILINES_FONT_INFO CFontsManager::GetInfoW(
     return info;
 }
 
-/*!
-Сгенерировать текстуру текста
-@param [__in] font Шрифт
-@param [__inout] th Данные о текстуре текста
-@param [__in] str Текст
-@param [__in_opt] color Цвет
-@param [__in_opt] cell Ячейка в палитре цветов
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return true при успешной генерации
-*/
 bool CFontsManager::GenerateW(
     uchar font,
     CGLTextTexture &th,
@@ -2432,18 +2168,6 @@ bool CFontsManager::GenerateW(
     return GenerateWBase(font, th, str, color, cell, width, align, flags);
 }
 
-/*!
-Сгенерировать пиксели текстуры текста
-@param [__in] font Шрифт
-@param [__inout] th Данные о текстуре текста
-@param [__in] str Текст
-@param [__in] color Цвет текста
-@param [__in] cell Ячейка в палитре цветов
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return Ссылка на массив пикселей
-*/
 UINT_LIST CFontsManager::GeneratePixelsW(
     uchar font,
     CGLTextTexture &th,
@@ -2550,7 +2274,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
 
     uint datacolor = 0;
 
-    if (/*m_UseHTML &&*/ color == 0xFFFF)
+    if (color == 0xFFFF)
         datacolor = 0xFFFFFFFE;
     else
         datacolor = g_ColorManager.GetPolygoneColor(cell, color) << 8 | 0xFF;
@@ -2634,12 +2358,6 @@ UINT_LIST CFontsManager::GeneratePixelsW(
                 th.AddWebLink(wlr);
                 oldLink = 0;
             }
-
-            /*if (m_UseHTML)
-			{
-			if (i >= ptr->Data.size()) break;
-			si = ptr->Data[i].item;
-			}*/
 
             if ((!table[si] || table[si] == 0xFFFFFFFF) && si != L' ')
                 continue;
@@ -2759,7 +2477,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
                         {
                             int testX = (int)cx + w + offsX + italicOffset;
 
-                            if (testX >= width /* + italicOffset*/)
+                            if (testX >= width)
                                 break;
 
                             int block = (testY * width) + testX;
@@ -2802,7 +2520,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
                         {
                             int testX = (int)cx + w + offsX + italicOffset;
 
-                            if (testX >= width /* + italicOffset*/)
+                            if (testX >= width)
                                 break;
 
                             int block = (testY * width) + testX;
@@ -2838,7 +2556,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
                         {
                             int testX = (int)cx + w + offsX + italicOffset;
 
-                            if (testX >= width /* + italicOffset*/)
+                            if (testX >= width)
                                 break;
 
                             int block = (testY * width) + testX;
@@ -2959,18 +2677,6 @@ UINT_LIST CFontsManager::GeneratePixelsW(
     return pData;
 }
 
-/*!
-Создание Unicode текстуры
-@param [__in] font Шрифт
-@param [__out] th Данные текстуры
-@param [__in] str Текст
-@param [__in] color Цвет
-@param [__in] cell Номер ячейки в палитре цветов
-@param [__in] width Ширина текстуры
-@param [__in] align Расположение текста
-@param [__in] flags Эффекты текста
-@return true при успешной генерации
-*/
 bool CFontsManager::GenerateWBase(
     uchar font,
     CGLTextTexture &th,
@@ -2995,19 +2701,6 @@ bool CFontsManager::GenerateWBase(
     return result;
 }
 
-/*!
-Отрисовать текст
-@param [__in] font Шрифт
-@param [__in] str Текст
-@param [__in] color Цвет
-@param [__in] x Экранная координата X
-@param [__in] y Экранная координата Y
-@param [__in_opt] cell Ячейка в палитре цветов
-@param [__in_opt] width Ширина текстуры
-@param [__in_opt] align Расположение текста
-@param [__in_opt] flags Эффекты текста
-@return
-*/
 void CFontsManager::DrawW(
     uchar font,
     const wstring &str,
@@ -3026,262 +2719,21 @@ void CFontsManager::DrawW(
         th.Draw(x, y);
 }
 
-//!Таблица ассоциации ASCII шрифтов
 uchar CFontsManager::m_FontIndex[256] = {
-    0xFF, //0
-    0xFF, //1
-    0xFF, //2
-    0xFF, //3
-    0xFF, //4
-    0xFF, //5
-    0xFF, //6
-    0xFF, //7
-    0xFF, //8
-    0xFF, //9
-    0xFF, //10
-    0xFF, //11
-    0xFF, //12
-    0xFF, //13
-    0xFF, //14
-    0xFF, //15
-    0xFF, //16
-    0xFF, //17
-    0xFF, //18
-    0xFF, //19
-    0xFF, //20
-    0xFF, //21
-    0xFF, //22
-    0xFF, //23
-    0xFF, //24
-    0xFF, //25
-    0xFF, //26
-    0xFF, //27
-    0xFF, //28
-    0xFF, //29
-    0xFF, //30
-    0xFF, //31
-    0,    //32
-    1,    //33
-    2,    //34
-    3,    //35
-    4,    //36
-    5,    //37
-    6,    //38
-    7,    //39
-    8,    //40
-    9,    //41
-    10,   //42
-    11,   //43
-    12,   //44
-    13,   //45
-    14,   //46
-    15,   //47
-    16,   //48
-    17,   //49
-    18,   //50
-    19,   //51
-    20,   //52
-    21,   //53
-    22,   //54
-    23,   //55
-    24,   //56
-    25,   //57
-    26,   //58
-    27,   //59
-    28,   //60
-    29,   //61
-    30,   //62
-    31,   //63
-    32,   //64
-    33,   //65
-    34,   //66
-    35,   //67
-    36,   //68
-    37,   //69
-    38,   //70
-    39,   //71
-    40,   //72
-    41,   //73
-    42,   //74
-    43,   //75
-    44,   //76
-    45,   //77
-    46,   //78
-    47,   //79
-    48,   //80
-    49,   //81
-    50,   //82
-    51,   //83
-    52,   //84
-    53,   //85
-    54,   //86
-    55,   //87
-    56,   //88
-    57,   //89
-    58,   //90
-    59,   //91
-    60,   //92
-    61,   //93
-    62,   //94
-    63,   //95
-    64,   //96
-    65,   //97
-    66,   //98
-    67,   //99
-    68,   //100
-    69,   //101
-    70,   //102
-    71,   //103
-    72,   //104
-    73,   //105
-    74,   //106
-    75,   //107
-    76,   //108
-    77,   //109
-    78,   //110
-    79,   //111
-    80,   //112
-    81,   //113
-    82,   //114
-    83,   //115
-    84,   //116
-    85,   //117
-    86,   //118
-    87,   //119
-    88,   //120
-    89,   //121
-    90,   //122
-    0xFF, //123
-    0xFF, //124
-    0xFF, //125
-    0xFF, //126
-    0xFF, //127
-    0xFF, //128
-    0xFF, //129
-    0xFF, //130
-    0xFF, //131
-    0xFF, //132
-    0xFF, //133
-    0xFF, //134
-    0xFF, //135
-    0xFF, //136
-    0xFF, //137
-    0xFF, //138
-    0xFF, //139
-    0xFF, //140
-    0xFF, //141
-    0xFF, //142
-    0xFF, //143
-    0xFF, //144
-    0xFF, //145
-    0xFF, //146
-    0xFF, //147
-    0xFF, //148
-    0xFF, //149
-    0xFF, //150
-    0xFF, //151
-    0xFF, //152
-    0xFF, //153
-    0xFF, //154
-    0xFF, //155
-    0xFF, //156
-    0xFF, //157
-    0xFF, //158
-    0xFF, //159
-    0xFF, //160
-    0xFF, //161
-    0xFF, //162
-    0xFF, //163
-    0xFF, //164
-    0xFF, //165
-    0xFF, //166
-    0xFF, //167
-    136,  //168
-    0xFF, //169
-    0xFF, //170
-    0xFF, //171
-    0xFF, //172
-    0xFF, //173
-    0xFF, //174
-    0xFF, //175
-    0xFF, //176
-    0xFF, //177
-    0xFF, //178
-    0xFF, //179
-    0xFF, //180
-    0xFF, //181
-    0xFF, //182
-    0xFF, //183
-    152,  //184
-    0xFF, //185
-    0xFF, //186
-    0xFF, //187
-    0xFF, //188
-    0xFF, //189
-    0xFF, //190
-    0xFF, //191
-    160,  //192
-    161,  //193
-    162,  //194
-    163,  //195
-    164,  //196
-    165,  //197
-    166,  //198
-    167,  //199
-    168,  //200
-    169,  //201
-    170,  //202
-    171,  //203
-    172,  //204
-    173,  //205
-    174,  //206
-    175,  //207
-    176,  //208
-    177,  //209
-    178,  //210
-    179,  //211
-    180,  //212
-    181,  //213
-    182,  //214
-    183,  //215
-    184,  //216
-    185,  //217
-    186,  //218
-    187,  //219
-    188,  //220
-    189,  //221
-    190,  //222
-    191,  //223
-    192,  //224
-    193,  //225
-    194,  //226
-    195,  //227
-    196,  //228
-    197,  //229
-    198,  //230
-    199,  //231
-    200,  //232
-    201,  //233
-    202,  //234
-    203,  //235
-    204,  //236
-    205,  //237
-    206,  //238
-    207,  //239
-    208,  //240
-    209,  //241
-    210,  //242
-    211,  //243
-    212,  //244
-    213,  //245
-    214,  //246
-    215,  //247
-    216,  //248
-    217,  //249
-    218,  //250
-    219,  //251
-    220,  //252
-    221,  //253
-    222,  //254
-    223   //255
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0,    1,    2,    3,    4,    5,    6,    7,    8,    9,    10,   11,   12,   13,   14,   15,
+    16,   17,   18,   19,   20,   21,   22,   23,   24,   25,   26,   27,   28,   29,   30,   31,
+    32,   33,   34,   35,   36,   37,   38,   39,   40,   41,   42,   43,   44,   45,   46,   47,
+    48,   49,   50,   51,   52,   53,   54,   55,   56,   57,   58,   59,   60,   61,   62,   63,
+    64,   65,   66,   67,   68,   69,   70,   71,   72,   73,   74,   75,   76,   77,   78,   79,
+    80,   81,   82,   83,   84,   85,   86,   87,   88,   89,   90,   0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 136,  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 152,  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    160,  161,  162,  163,  164,  165,  166,  167,  168,  169,  170,  171,  172,  173,  174,  175,
+    176,  177,  178,  179,  180,  181,  182,  183,  184,  185,  186,  187,  188,  189,  190,  191,
+    192,  193,  194,  195,  196,  197,  198,  199,  200,  201,  202,  203,  204,  205,  206,  207,
+    208,  209,  210,  211,  212,  213,  214,  215,  216,  217,  218,  219,  220,  221,  222,  223
 };

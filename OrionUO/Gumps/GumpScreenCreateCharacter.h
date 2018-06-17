@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenCreateCharacter.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSCREENCREATECHARACTER_H
 #define GUMPSCREENCREATECHARACTER_H
@@ -13,7 +6,6 @@
 class CGumpScreenCreateCharacter : public CGump
 {
 private:
-    //!Идентификаторы кнопок
     static const int ID_CCS_QUIT = 1;
     static const int ID_CCS_ARROW_PREV = 2;
     static const int ID_CCS_ARROW_NEXT = 3;

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PacketManager.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PACKETMANAGER_H
 #define PACKETMANAGER_H
@@ -23,31 +16,24 @@ typedef void (CPacketManager::*PACKET_FUNCTION)();
 #define ORION_IGNORE_PACKET 0
 #endif
 
-//!Направление пакета
 enum PACKET_DIRECTION
 {
-    DIR_SEND = 0, //!От клиента серверу
-    DIR_RECV,     //!От сервера клиенту
-    DIR_BOTH      //!В обе стороны
+    DIR_SEND = 0,
+    DIR_RECV,
+    DIR_BOTH
 };
 
-//!Класс для хранения информации о пакетах
 class CPacketInfo
 {
 public:
-    //!Записывать ли пакет в лог
     bool save;
 
-    //!Название пакета
     const char *Name;
 
-    //!Размер пакета
     int Size;
 
-    //!Направление пакета
     PACKET_DIRECTION Direction;
 
-    //!Обработчик пакета
     PACKET_FUNCTION Handler;
 };
 
@@ -102,7 +88,6 @@ protected:
 
     virtual void OnReadFailed();
 
-    //!Обработчики пакетов
     HANDLER_PACKET(LoginError);
     HANDLER_PACKET(ServerList);
     HANDLER_PACKET(RelayServer);
@@ -198,21 +183,6 @@ protected:
     HANDLER_PACKET(MovePlayer);
     HANDLER_PACKET(Pathfinding);
     HANDLER_PACKET(BoatMoving);
-
-    //Не обработаны
-    /*
-0x15 BMSG("Follow", 0x09),
-0x2F RMSG("Combat Notification", 0x0a),
-0xB2 BMSG("Chat Data", SIZE_VARIABLE),
-0xB3 RMSG("Chat Text ?", SIZE_VARIABLE),
-0xB5 BMSG("Open Chat Window", 0x40),
-0xB7 RMSG("Popup Help Data", SIZE_VARIABLE),
-
-0x15, 0x2F, 0x30, 0x31, 0x76, 0x7B, 0x81, 0x8B,
-0x98, 0xB2, 0xB3, 0xB7, 0xBB, 0xC3, 0xC4, 0xC6, 0xC9,
-0xCA, 0xCB, 0xCD, 0xCE, 0xD0, 0xDA, 0xDB, 0xDE, 0xE5, 0xE6,
-0xE7, 0xE9, 0xEA, 0xF2, 0xF6
-*/
 
 public:
     CPacketManager();

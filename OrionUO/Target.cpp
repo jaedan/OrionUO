@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Target.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -13,7 +6,6 @@ CTarget g_Target;
 
 CTarget::CTarget()
 {
-    //Чистимся
     memset(m_Data, 0, sizeof(m_Data));
     memset(m_LastData, 0, sizeof(m_LastData));
 }
@@ -21,7 +13,7 @@ CTarget::CTarget()
 void CTarget::Reset()
 {
     WISPFUN_DEBUG("c209_f1");
-    //Чистимся
+
     memset(m_Data, 0, sizeof(m_Data));
     memset(m_LastData, 0, sizeof(m_LastData));
 
@@ -65,10 +57,9 @@ void CTarget::SetLastTargetObject(int serial)
 void CTarget::SetData(WISP_DATASTREAM::CDataReader &reader)
 {
     WISPFUN_DEBUG("c209_f2");
-    //Копируем буффер
+
     memcpy(&m_Data[0], reader.Start, reader.Size);
 
-    //И устанавливаем соответствующие значения
     Type = reader.ReadUInt8();
     CursorID = reader.ReadUInt32BE();
     CursorType = reader.ReadUInt8();
@@ -79,17 +70,16 @@ void CTarget::SetData(WISP_DATASTREAM::CDataReader &reader)
 void CTarget::SetMultiData(WISP_DATASTREAM::CDataReader &reader)
 {
     WISPFUN_DEBUG("c209_f3");
-    //Устанавливаем соответствующие значения
+
     Type = 1;
     CursorType = 0;
     Targeting = true;
     CursorID = reader.ReadUInt32BE(1);
 
-    //Копируем буффер
     memset(&m_Data[0], 0, 19);
     m_Data[0] = 0x6C;
-    m_Data[1] = 1;                           //Таргет на ландшафт
-    memcpy(m_Data + 2, reader.Start + 2, 4); //Копируем ID курсора (ID дида)
+    m_Data[1] = 1;
+    memcpy(m_Data + 2, reader.Start + 2, 4);
 
     reader.ResetPtr();
     reader.Move(18);
@@ -102,9 +92,8 @@ void CTarget::SendTargetObject(int serial)
 {
     WISPFUN_DEBUG("c209_f4");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
-    //Пишем серийник объекта, на который ткнули прицелом, остальное - затираем
     pack32(m_Data + 7, serial);
     m_Data[1] = 0;
 
@@ -128,7 +117,6 @@ void CTarget::SendTargetObject(int serial)
     {
         g_LastTargetObject = serial;
 
-        //Скопируем для LastTarget
         memcpy(m_LastData, m_Data, sizeof(m_Data));
 
         if (obj != NULL && obj->NPC && ((CGameCharacter *)obj)->MaxHits == 0)
@@ -142,21 +130,17 @@ void CTarget::SendTargetTile(ushort tileID, short x, short y, char z)
 {
     WISPFUN_DEBUG("c209_f5");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
     m_Data[1] = 1;
 
-    //Пишем координаты и индекс тайла, на который ткнули, остальное трем
     pack32(m_Data + 7, 0);
     pack16(m_Data + 11, x);
     pack16(m_Data + 13, y);
 
-    //m_Data[15] = 0xFF;
-    //m_Data[16] = z;
     pack16(m_Data + 15, (short)z);
     pack16(m_Data + 17, tileID);
 
-    //Скопируем для LastTarget
     memcpy(m_LastData, m_Data, sizeof(m_Data));
 
     SendTarget();
@@ -166,9 +150,8 @@ void CTarget::SendCancelTarget()
 {
     WISPFUN_DEBUG("c209_f6");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
-    //Уходят только нули
     pack32(m_Data + 7, 0);
     pack32(m_Data + 11, 0xFFFFFFFF);
     pack32(m_Data + 15, 0);
@@ -189,9 +172,8 @@ void CTarget::Plugin_SendTargetObject(int serial)
 {
     WISPFUN_DEBUG("c209_f4");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
-    //Пишем серийник объекта, на который ткнули прицелом, остальное - затираем
     pack32(m_Data + 7, serial);
     m_Data[1] = 0;
 
@@ -215,7 +197,6 @@ void CTarget::Plugin_SendTargetObject(int serial)
     {
         g_LastTargetObject = serial;
 
-        //Скопируем для LastTarget
         memcpy(m_LastData, m_Data, sizeof(m_Data));
 
         if (obj != NULL && obj->NPC && ((CGameCharacter *)obj)->MaxHits == 0)
@@ -236,21 +217,17 @@ void CTarget::Plugin_SendTargetTile(ushort tileID, short x, short y, char z)
 {
     WISPFUN_DEBUG("c209_f5");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
     m_Data[1] = 1;
 
-    //Пишем координаты и индекс тайла, на который ткнули, остальное трем
     pack32(m_Data + 7, 0);
     pack16(m_Data + 11, x);
     pack16(m_Data + 13, y);
 
-    //m_Data[15] = 0xFF;
-    //m_Data[16] = z;
     pack16(m_Data + 15, (short)z);
     pack16(m_Data + 17, tileID);
 
-    //Скопируем для LastTarget
     memcpy(m_LastData, m_Data, sizeof(m_Data));
 
     Plugin_SendTarget();
@@ -260,9 +237,8 @@ void CTarget::Plugin_SendCancelTarget()
 {
     WISPFUN_DEBUG("c209_f6");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
-    //Уходят только нули
     pack32(m_Data + 7, 0);
     pack32(m_Data + 11, 0xFFFFFFFF);
     pack32(m_Data + 15, 0);
@@ -274,9 +250,8 @@ void CTarget::SendLastTarget()
 {
     WISPFUN_DEBUG("c209_f7");
     if (!Targeting)
-        return; //Если в клиенте нет таргета - выход
+        return;
 
-    //Восстановим пакет последнего актуального таргета
     memcpy(m_Data, m_LastData, sizeof(m_Data));
     m_Data[0] = 0x6C;
     m_Data[1] = Type;
@@ -293,7 +268,6 @@ void CTarget::SendTarget()
     if (Type != 2)
         g_Orion.Send(m_Data, sizeof(m_Data));
 
-    //Чистим данные
     memset(m_Data, 0, sizeof(m_Data));
     Targeting = false;
     MultiGraphic = 0;
@@ -306,7 +280,6 @@ void CTarget::Plugin_SendTarget()
     WISPFUN_DEBUG("c209_f8");
     SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)m_Data, sizeof(m_Data));
 
-    //Чистим данные
     memset(m_Data, 0, sizeof(m_Data));
     Targeting = false;
     MultiGraphic = 0;
@@ -341,7 +314,7 @@ void CTarget::LoadMulti(int offsetX, int offsetY, char offsetZ)
             return;
 
         WISP_DATASTREAM::CDataReader reader(&data[0], data.size());
-        reader.Move(8); //ID + Count
+        reader.Move(8);
 
         IFOR (i, 0, count)
         {
@@ -419,8 +392,6 @@ void CTarget::AddMultiObject(CMultiObject *obj)
                     return;
                 }
             }
-
-            //Если пришли сюда - что-то пошло не так
         }
         else
         {

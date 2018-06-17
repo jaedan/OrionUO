@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Gump.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -26,13 +19,11 @@ CGump::CGump(GUMP_TYPE type, uint serial, int x, int y)
 CGump::~CGump()
 {
     WISPFUN_DEBUG("c84_f1");
-    //Если это гамп, блокирующий игровое окно
+
     if (Blocked)
     {
-        //Уменьшаем счетчик блокирующих гампов
         g_GrayMenuCount--;
 
-        //Если таких гампов больше нет - восстанавливаем игровой экран
         if (g_GrayMenuCount <= 0)
         {
             g_GrayMenuCount = 0;
@@ -142,10 +133,6 @@ bool CGump::CanBeMoved()
     return result;
 }
 
-/*!
-Отрисовать замочек гампа
-@return
-*/
 void CGump::DrawLocker()
 {
     WISPFUN_DEBUG("c84_f3");
@@ -175,9 +162,7 @@ bool CGump::TestLockerClick()
 void CGump::CalculateGumpState()
 {
     WISPFUN_DEBUG("c84_f6");
-    g_GumpPressed =
-        (!g_ObjectInHand.Enabled &&
-         g_PressedObject.LeftGump == this /*&& g_SelectedObject.Gump() == this*/);
+    g_GumpPressed = (!g_ObjectInHand.Enabled && g_PressedObject.LeftGump == this);
     g_GumpSelectedElement = ((g_SelectedObject.Gump == this) ? g_SelectedObject.Object : NULL);
     g_GumpPressedElement = NULL;
 
@@ -291,9 +276,6 @@ bool CGump::ApplyTransparent(CBaseGUI *item, int page, int currentPage, const in
         {
             page = ((CGUIPage *)item)->Index;
 
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
-
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
                                   (!page && !draw2Page)));
@@ -328,9 +310,6 @@ void CGump::DrawItems(CBaseGUI *start, int currentPage, int draw2Page)
         if (item->Type == GOT_PAGE)
         {
             page = ((CGUIPage *)item)->Index;
-
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
 
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
@@ -380,8 +359,8 @@ void CGump::DrawItems(CBaseGUI *start, int currentPage, int draw2Page)
                 }
                 case GOT_CHECKTRANS:
                 {
-                    transparent = ApplyTransparent(
-                        (CBaseGUI *)item->m_Next, page /*Page*/, currentPage, draw2Page);
+                    transparent =
+                        ApplyTransparent((CBaseGUI *)item->m_Next, page, currentPage, draw2Page);
 
                     glColor4f(1.0f, 1.0f, 1.0f, alpha[transparent]);
 
@@ -429,9 +408,6 @@ CRenderObject *CGump::SelectItems(CBaseGUI *start, int currentPage, int draw2Pag
         if (item->Type == GOT_PAGE)
         {
             page = ((CGUIPage *)item)->Index;
-
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
 
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
@@ -486,7 +462,6 @@ CRenderObject *CGump::SelectItems(CBaseGUI *start, int currentPage, int draw2Pag
                         item = (CBaseGUI *)item->m_Next;
                     }
 
-                    //Scissor
                     if (item->Select())
                     {
                         int offsetX = htmlGump->DataOffset.X - htmlGump->CurrentOffset.X;
@@ -526,8 +501,6 @@ CRenderObject *CGump::SelectItems(CBaseGUI *start, int currentPage, int draw2Pag
                 }
                 case GOT_COMBOBOX:
                 {
-                    //selected = ((CGUIComboBox*)item)->SelectedItem();
-
                     if (g_PressedObject.LeftObject == item)
                         combo = (CGUIComboBox *)item;
                     else
@@ -593,9 +566,6 @@ void CGump::TestItemsLeftMouseDown(
         {
             page = ((CGUIPage *)item)->Index;
 
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
-
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
                                   (!page && !draw2Page)));
@@ -625,9 +595,7 @@ void CGump::TestItemsLeftMouseDown(
 
                     continue;
                 }
-                else if (
-                    item->Type != GOT_SKILLGROUP &&
-                    item->Type != GOT_DATABOX /*&& item->Type != GOT_TEXTENTRY*/)
+                else if (item->Type != GOT_SKILLGROUP && item->Type != GOT_DATABOX)
                     continue;
             }
 
@@ -643,9 +611,6 @@ void CGump::TestItemsLeftMouseDown(
                     if (box->ToPage != -1)
                     {
                         gump->Page = box->ToPage;
-
-                        //if (gump->Page < 1)
-                        //	gump->Page = 1;
                     }
                 }
                 case GOT_COLOREDPOLYGONE:
@@ -846,9 +811,6 @@ void CGump::TestItemsLeftMouseUp(CGump *gump, CBaseGUI *start, int currentPage, 
         {
             page = ((CGUIPage *)item)->Index;
 
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
-
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
                                   (!page && !draw2Page)));
@@ -888,9 +850,6 @@ void CGump::TestItemsLeftMouseUp(CGump *gump, CBaseGUI *start, int currentPage, 
                     if (box->ToPage != -1)
                     {
                         gump->Page = box->ToPage;
-
-                        //if (gump->Page < 1)
-                        //	gump->Page = 1;
                     }
 
                     gump->OnButton(item->Serial);
@@ -938,9 +897,6 @@ void CGump::TestItemsLeftMouseUp(CGump *gump, CBaseGUI *start, int currentPage, 
 
                         if (gump->GumpType == GT_GENERIC)
                             gump->WantUpdateContent = true;
-
-                        //if (gump->Page < 1)
-                        //	gump->Page = 1;
                     }
                     else
                         gump->OnButton(item->Serial);
@@ -1087,9 +1043,6 @@ void CGump::TestItemsScrolling(
         {
             page = ((CGUIPage *)item)->Index;
 
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
-
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
                                   (!page && !draw2Page)));
@@ -1203,9 +1156,6 @@ void CGump::TestItemsDragging(
         if (item->Type == GOT_PAGE)
         {
             page = ((CGUIPage *)item)->Index;
-
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
 
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||
@@ -1426,7 +1376,7 @@ void CGump::Draw()
     if (!g_ConfigManager.GetUseGLListsForInterface())
     {
         glEnable(GL_BLEND);
-        //glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1527,9 +1477,6 @@ void CGump::GetItemsSize(
         if (item->Type == GOT_PAGE)
         {
             page = ((CGUIPage *)item)->Index;
-
-            //if (page >= 2 && page > currentPage + draw2Page)
-            //	break;
 
             canDraw =
                 ((page == -1) || ((page >= currentPage && page <= currentPage + draw2Page) ||

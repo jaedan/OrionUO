@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GLEngine.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -42,34 +35,32 @@ CGLEngine::~CGLEngine()
 bool CGLEngine::GLSetupPixelFormat()
 {
     WISPFUN_DEBUG("c29_f2");
-    PIXELFORMATDESCRIPTOR pfd = {
-        sizeof(PIXELFORMATDESCRIPTOR),                                  //nSize
-        1,                                                              //nVersion
-        /*PFD_DRAW_TO_WINDOW |*/ PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, //dwFlags
-        PFD_TYPE_RGBA,                                                  //iPixelType
-        16,                                                             //cColorBits
-        0,
-        0, //cRedBits, cRedShift
-        0,
-        0, //cGreenBits, cGreenShift
-        0,
-        0, //cBlueBits, cBlueShift
-        0,
-        0, //cAlphaBits, cAlphaShift
-        0,
-        0,
-        0,
-        0,
-        0,  //cAccumBits, cAccumRedBits, cAccumGreenBits, cAccumBlueBits, cAccumAlphaBits
-        16, //cDepthBits
-        1,  //cStencilBits
-        0,  //cAuxBuffers
-        PFD_MAIN_PLANE, //iLayerType
-        0,              //bReserved
-        0,              //dwLayerMask
-        0,              //dwVisibleMask
-        0               //dwDamageMask
-    };
+    PIXELFORMATDESCRIPTOR pfd = { sizeof(PIXELFORMATDESCRIPTOR),
+                                  1,
+                                  PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+                                  PFD_TYPE_RGBA,
+                                  16,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  16,
+                                  1,
+                                  0,
+                                  PFD_MAIN_PLANE,
+                                  0,
+                                  0,
+                                  0,
+                                  0 };
 
     int pixelformat = ChoosePixelFormat(DC, &pfd);
 
@@ -153,12 +144,11 @@ bool CGLEngine::Install()
     if (!CanUseFrameBuffer && g_ShowWarnings)
         g_OrionWindow.ShowMessage("Your graphics card does not support Frame Buffers!", "Warning!");
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black Background
-    glShadeModel(GL_SMOOTH);              // Enables Smooth Color Shading
-    glClearDepth(1.0);                    // Depth Buffer Setup
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glShadeModel(GL_SMOOTH);
+    glClearDepth(1.0);
     glDisable(GL_DITHER);
 
-    //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);   //Realy Nice perspective calculations
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 
     glEnable(GL_TEXTURE_2D);
@@ -217,7 +207,6 @@ void CGLEngine::UpdateRect()
     int height = cr.bottom - cr.top;
 
     ViewPort(0, 0, width, height);
-    //ViewPort(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
 
     g_GumpManager.RedrawAll();
 }
@@ -584,19 +573,19 @@ void CGLEngine::GL1_DrawLandTexture(const CGLTexture &texture, int x, int y, CLa
     glBegin(GL_TRIANGLE_STRIP);
     glNormal3f((GLfloat)normals[0].X, (GLfloat)normals[0].Y, (GLfloat)normals[0].Z);
     glTexCoord2i(0, 0);
-    glVertex2i(22, -rc.left); //^
+    glVertex2i(22, -rc.left);
 
     glNormal3f((GLfloat)normals[3].X, (GLfloat)normals[3].Y, (GLfloat)normals[3].Z);
     glTexCoord2i(0, 1);
-    glVertex2i(0, 22 - rc.top); //<
+    glVertex2i(0, 22 - rc.top);
 
     glNormal3f((GLfloat)normals[1].X, (GLfloat)normals[1].Y, (GLfloat)normals[1].Z);
     glTexCoord2i(1, 0);
-    glVertex2i(44, 22 - rc.bottom); //>
+    glVertex2i(44, 22 - rc.bottom);
 
     glNormal3f((GLfloat)normals[2].X, (GLfloat)normals[2].Y, (GLfloat)normals[2].Z);
     glTexCoord2i(1, 1);
-    glVertex2i(22, 44 - rc.right); //v
+    glVertex2i(22, 44 - rc.right);
     glEnd();
 
     glTranslatef(-translateX, -translateY, 0.0f);

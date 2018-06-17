@@ -2,7 +2,6 @@
 
 namespace WISP_MOUSE
 {
-//forcing value to bool 'true' or 'false' (performance warning)
 #pragma warning(disable : 4800)
 
 CMouse *g_WispMouse = NULL;
@@ -51,9 +50,6 @@ void CMouse::Update(WPARAM wParam, LPARAM lParam)
 
     Position.X = pos.x;
     Position.Y = pos.y;
-
-    //Position.X = LOWORD(lParam);
-    //Position.Y = HIWORD(lParam);
 
     RealPosition = Position;
 }

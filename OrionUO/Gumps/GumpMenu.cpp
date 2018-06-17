@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpMenu.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -63,9 +56,8 @@ bool CGumpMenu::OnLeftMouseButtonDoubleClick()
 void CGumpMenu::SendMenuResponse(int index)
 {
     WISPFUN_DEBUG("c100_f4");
-    //Ответ на меню
+
     CPacketMenuResponse(this, index).Send();
 
-    //Удаляем использованный гамп
     RemoveMark = true;
 }

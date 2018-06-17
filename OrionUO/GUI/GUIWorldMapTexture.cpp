@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIWorldMapTexture.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -31,8 +24,6 @@ void CGUIWorldMapTexture::Draw(bool checktrans)
         g_GL.GL1_Draw(tex, m_X + OffsetX, m_Y + OffsetY);
 
         tex.Texture = 0;
-
-        //g_MapTexture[m_Index].Draw(m_X + m_OffsetX, m_Y + m_OffsetY, Width, Height, checktrans);
     }
 }
 

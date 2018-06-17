@@ -1,16 +1,8 @@
-﻿/***********************************************************************************
-**
-** TextData.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef TEXTDATA_H
 #define TEXTDATA_H
 
-//Класс для хранения информации о текстуре текста
 class CTextData : public CRenderTextObject
 {
 public:
@@ -31,10 +23,8 @@ public:
 
     bool CanBeDrawedInJournalGump();
 
-    //Текстура текста
     CGLTextTexture m_Texture;
 
-    //Генерация текстуры текста
     void GenerateTexture(
         int maxWidth,
         ushort flags = 0,

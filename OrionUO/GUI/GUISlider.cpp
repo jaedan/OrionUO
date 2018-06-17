@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUISlider.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -83,7 +76,7 @@ void CGUISlider::UpdateText()
                     break;
                 }
                 case STP_LEFT:
-                    //textY -= 4;
+
                 case STP_LEFT_CENTER:
                 {
                     textX -= Text.Width - DefaultTextOffset;
@@ -91,7 +84,7 @@ void CGUISlider::UpdateText()
                     break;
                 }
                 case STP_RIGHT:
-                    //textY -= 4;
+
                 case STP_RIGHT_CENTER:
                 {
                     if (Vertical)
@@ -175,7 +168,6 @@ WISP_GEOMETRY::CSize CGUISlider::GetSize()
 
         if (HaveText)
         {
-            //Text.Draw(TextX, TextY, checktrans);
         }
     }
 
@@ -306,18 +298,6 @@ ushort CGUISlider::GetDrawGraphic()
 void CGUISlider::Draw(bool checktrans)
 {
     WISPFUN_DEBUG("c77_f11");
-    /*Value++;
-	if (Value > MaxValue)
-	{
-		Value = MinValue;
-
-		TextPosition = (SLIDER_TEXT_POSITION)(TextPosition + 1);
-
-		if (TextPosition > STP_RIGHT)
-			TextPosition = STP_TOP;
-	}
-	UpdateText();
-	CalculateOffset();*/
 
     glUniform1iARB(g_ShaderDrawMode, SDM_NO_COLOR);
 

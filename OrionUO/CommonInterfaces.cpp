@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CommonInterfaces.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -53,8 +46,6 @@ IOrionString &IOrionString::operator()(const std::wstring &str)
 
     return *this;
 }
-
-//IGLEngine
 
 void __cdecl FUNCBODY_PushScissor(int x, int y, int width, int height)
 {
@@ -139,8 +130,6 @@ void __cdecl FUNCBODY_DrawGumppic(
 {
     g_Orion.DrawGump(graphic, color, x, y, width, height);
 }
-
-//IUltimaOnline
 
 unsigned __int64 __cdecl FUNCBODY_GetLandFlags(unsigned short graphic)
 {
@@ -298,8 +287,6 @@ void __cdecl FUNCBODY_SecureTradingClose(unsigned int id1)
     }
 }
 
-//IClilocManager
-
 IOrionString *__cdecl FUNCBODY_GetClilocA(unsigned int clilocID, const char *defaultText)
 {
     return &g_OrionString(g_ClilocManager.Cliloc(g_Language)->GetA(clilocID, false, defaultText));
@@ -314,8 +301,6 @@ IOrionString *__cdecl FUNCBODY_GetClilocArguments(unsigned int clilocID, const w
 {
     return &g_OrionString(g_ClilocManager.ParseArgumentsToClilocString(clilocID, false, args));
 }
-
-//IColorManager
 
 int __cdecl FUNCBODY_GetHuesCount()
 {
@@ -351,8 +336,6 @@ unsigned int __cdecl FUNCBODY_GetPartialHueColor(unsigned short &c, unsigned sho
 {
     return g_ColorManager.GetPartialHueColor(c, color);
 }
-
-//IPathFinder
 
 bool __cdecl FUNCBODY_GetCanWalk(unsigned char &direction, int &x, int &y, char &z)
 {
@@ -422,8 +405,6 @@ bool __cdecl FUNCBODY_GetAutowalking()
 {
     return g_PathFinder.AutoWalking;
 }
-
-//IFileManager
 
 void __cdecl FUNCBODY_GetFileInfo(unsigned int index, ORION_RAW_FILE_INFO &info)
 {

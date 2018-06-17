@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameEffectMoving.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -18,10 +11,6 @@ CGameEffectMoving::~CGameEffectMoving()
 {
 }
 
-/*!
-Обновить эффект
-@return
-*/
 void CGameEffectMoving::Update(CGameObject *parent)
 {
     WISPFUN_DEBUG("c18_f1");
@@ -84,9 +73,9 @@ void CGameEffectMoving::Update(CGameObject *parent)
     int delta = deltaXY[0];
     int stepXY = 0;
     static const int effectSpeed = 5;
-    int tempXY[2] = { effectSpeed /*m_Speed*/, 0 };
+    int tempXY[2] = { effectSpeed, 0 };
 
-    for (int j = 0; j < effectSpeed /*m_Speed*/; j++)
+    for (int j = 0; j < effectSpeed; j++)
     {
         stepXY += deltaXY[1];
 
@@ -167,7 +156,6 @@ void CGameEffectMoving::Update(CGameObject *parent)
 
         int countX = drawDestX - (newDrawX + OffsetX);
         int countY = drawDestY - (newDrawY + OffsetY);
-        //int countY = drawDestY - (newDrawY + m_OffsetY + m_OffsetZ) - (m_DestZ - m_Z) * 4;
 
         if (m_Z != DestZ)
         {
@@ -198,7 +186,7 @@ void CGameEffectMoving::Update(CGameObject *parent)
 
             if (OffsetZ >= 4)
             {
-                int countZ = 1; // m_OffsetZ / 4;
+                int countZ = 1;
 
                 if (incZ)
                     m_Z += countZ;
@@ -209,7 +197,6 @@ void CGameEffectMoving::Update(CGameObject *parent)
                     OffsetZ = 0;
                 else
                     OffsetZ %= 8;
-                //m_OffsetZ -= countZ * 4;
 
                 wantUpdateInRenderList = true;
             }
@@ -217,7 +204,7 @@ void CGameEffectMoving::Update(CGameObject *parent)
 
         countY -= OffsetZ + (DestZ - m_Z) * 4;
 
-        Angle = 180.0f + (float)(atan2(countY, countX) * 57.295780); //180.0f / M_PI = 57.295780f
+        Angle = 180.0f + (float)(atan2(countY, countX) * 57.295780);
 
         if (m_X != newX || m_Y != newY)
         {

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ClickObject.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -32,8 +25,7 @@ void CClickObject::Clear()
     Object = NULL;
     Gump = NULL;
     Timer = 0;
-    //m_X = 0;
-    //m_Y = 0;
+
     Enabled = false;
     Page = 0;
 }

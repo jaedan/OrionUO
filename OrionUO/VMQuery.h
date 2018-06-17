@@ -1,28 +1,19 @@
-/******************************************************************************
-Module:  VMQuery.h
-Notices: Copyright (c) 2000 Jeffrey Richter
-******************************************************************************/
+
 
 typedef struct
 {
-    // Region information
     PVOID pvRgnBaseAddress;
-    DWORD dwRgnProtection; // PAGE_*
+    DWORD dwRgnProtection;
     SIZE_T RgnSize;
-    DWORD dwRgnStorage; // MEM_*: Free, Image, Mapped, Private
+    DWORD dwRgnStorage;
     DWORD dwRgnBlocks;
-    DWORD dwRgnGuardBlks; // If > 0, region contains thread stack
-    BOOL fRgnIsAStack;    // TRUE if region contains thread stack
+    DWORD dwRgnGuardBlks;
+    BOOL fRgnIsAStack;
 
-    // Block information
     PVOID pvBlkBaseAddress;
-    DWORD dwBlkProtection; // PAGE_*
+    DWORD dwBlkProtection;
     SIZE_T BlkSize;
-    DWORD dwBlkStorage; // MEM_*: Free, Reserve, Image, Mapped, Private
+    DWORD dwBlkStorage;
 } VMQUERY, *PVMQUERY;
 
-///////////////////////////////////////////////////////////////////////////////
-
 BOOL VMQuery(HANDLE hProcess, LPCVOID pvAddress, PVMQUERY pVMQ);
-
-//////////////////////////////// End of File //////////////////////////////////

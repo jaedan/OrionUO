@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenMain.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -46,8 +39,6 @@ void CGumpScreenMain::UpdateContent()
     WISPFUN_DEBUG("c116_f2");
     if (m_Items != NULL)
         return;
-
-    //Clear();
 
     Add(new CGUIGumppicTiled(0x0E14, 0, 0, 640, 480));
 
@@ -150,9 +141,9 @@ void CGumpScreenMain::InitToolTip()
 void CGumpScreenMain::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c116_f4");
-    if (serial == ID_MS_QUIT) //x button
+    if (serial == ID_MS_QUIT)
         g_MainScreen.CreateSmoothAction(CMainScreen::ID_SMOOTH_MS_QUIT);
-    else if (serial == ID_MS_ARROW_NEXT) //> button
+    else if (serial == ID_MS_ARROW_NEXT)
         g_MainScreen.CreateSmoothAction(CMainScreen::ID_SMOOTH_MS_CONNECT);
 }
 

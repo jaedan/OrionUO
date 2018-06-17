@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpTip.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -19,23 +12,23 @@ CGumpTip::CGumpTip(uint serial, short x, short y, string str, bool updates)
 
     Add(new CGUIPage(2));
 
-    if (Updates) //Updates text gump
+    if (Updates)
     {
         Add(new CGUIGumppic(0x09D2, 112, 35));
 
         m_ButtonPrevGump = NULL;
         m_ButtonNextGump = NULL;
     }
-    else //Tips text gump
+    else
     {
         Add(new CGUIGumppic(0x09CA, 127, 33));
 
-        m_ButtonPrevGump = (CGUIButton *)Add(
-            new CGUIButton(ID_GT_PREV_GUMP, 0x09CC, 0x09CC, 0x09CC, 35, Height)); //Previous gump
+        m_ButtonPrevGump =
+            (CGUIButton *)Add(new CGUIButton(ID_GT_PREV_GUMP, 0x09CC, 0x09CC, 0x09CC, 35, Height));
         m_ButtonPrevGump->CheckPolygone = true;
-        //m_ButtonRemoveGump = (CGUIButton*)Add(new CGUIButton(ID_GT_REMOVE_GUMP, 0x0823, 0x0823, 0x0823, 18, Height + 34)); //+/- gump
-        m_ButtonNextGump = (CGUIButton *)Add(
-            new CGUIButton(ID_GT_NEXT_GUMP, 0x09CD, 0x09CD, 0x09CD, 251, Height)); //Next gump
+
+        m_ButtonNextGump =
+            (CGUIButton *)Add(new CGUIButton(ID_GT_NEXT_GUMP, 0x09CD, 0x09CD, 0x09CD, 251, Height));
         m_ButtonNextGump->CheckPolygone = true;
     }
 
@@ -56,7 +49,7 @@ void CGumpTip::UpdateHeight()
     if (!Updates)
     {
         m_ButtonPrevGump->SetY(Height);
-        //m_ButtonRemoveGump->SetY(Height + 34);
+
         m_ButtonNextGump->SetY(Height);
     }
 }
@@ -94,9 +87,8 @@ bool CGumpTip::OnLeftMouseButtonDoubleClick()
 void CGumpTip::SendTipRequest(uchar flag)
 {
     WISPFUN_DEBUG("c131_f5");
-    //Отправляем запрос диалога Tip/Updates
+
     CPacketTipRequest((ushort)Serial, flag).Send();
 
-    //Удаляем использованный гамп
     RemoveMark = true;
 }

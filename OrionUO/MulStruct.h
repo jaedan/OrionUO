@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MulStruct.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef MULSTRUCT_H
 #define MULSTRUCT_H
@@ -353,7 +346,7 @@ typedef struct SOUND_BLOCK
     unsigned int Unknown2;
     unsigned int Unknown3;
     unsigned int Unknown4;
-    //Data;
+
 } * PSOUND_BLOCK;
 
 #pragma pack(pop)

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CustomHousesManager.h
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef CUSTOMHOUSESMANAGER_H
 #define CUSTOMHOUSESMANAGER_H

@@ -1,16 +1,8 @@
-﻿/***********************************************************************************
-**
-** ClickObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef CLICKOBJECT_H
 #define CLICKOBJECT_H
 
-//!Объект клика мышкой
 class CClickObject
 {
 public:
@@ -30,6 +22,6 @@ public:
     void Init(CRenderObject *obj, CGump *gump = NULL);
 };
 
-extern CClickObject g_ClickObject; //Ссылка на объект клика
+extern CClickObject g_ClickObject;
 
 #endif

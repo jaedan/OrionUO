@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SelectTownScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,10 +13,6 @@ CSelectTownScreen::~CSelectTownScreen()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CSelectTownScreen::Init()
 {
     WISPFUN_DEBUG("c167_f1");
@@ -44,11 +33,6 @@ void CSelectTownScreen::Init()
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CSelectTownScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c167_f2");

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpCombatBook.cpp
-**
-** Copyright (C) December 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -564,7 +557,7 @@ void CGumpCombatBook::GUMP_BUTTON_EVENT_C
         LockMoving = !LockMoving;
     else if (serial >= ID_GCB_ICON)
     {
-        if (Page < DictionaryPagesCount) //List of spells
+        if (Page < DictionaryPagesCount)
             newPage = DictionaryPagesCount + ((serial - ID_GCB_ICON) * 2);
     }
 
@@ -657,17 +650,12 @@ void CGumpCombatBook::ChangePage(int newPage)
 }
 
 const string CGumpCombatBook::m_AbilityName[MAX_ABILITIES_COUNT]{
-    "Armor Ignore",       "Bleed Attack",    "Concussion Blow",
-    "Crushing Blow",      "Disarm",          "Dismount",
-    "Double Strike",      "Infecting",       "Mortal Strike",
-    "Moving Shot",        "Paralyzing Blow", "Shadow Strike",
-    "Whirlwind Attack",
-    "Riding Swipe", //CV_500a
-    "Frenzied Whirlwind", "Block",           "Defense Mastery",
-    "Nerve Strike",       "Talon Strike",    "Feint",
-    "Dual Wield",         "Double Shot",     "Armor Pierce",
-    "Bladeweave",         "Force Arrow",     "Lightning Arrow",
-    "Psychic Attack",     "Serpent Arrow",   "Force of Nature",
-    "Infused Throw", //CV_7000
-    "Mystic Arc",         "Disrobe"
+    "Armor Ignore",     "Bleed Attack",    "Concussion Blow",    "Crushing Blow",
+    "Disarm",           "Dismount",        "Double Strike",      "Infecting",
+    "Mortal Strike",    "Moving Shot",     "Paralyzing Blow",    "Shadow Strike",
+    "Whirlwind Attack", "Riding Swipe",    "Frenzied Whirlwind", "Block",
+    "Defense Mastery",  "Nerve Strike",    "Talon Strike",       "Feint",
+    "Dual Wield",       "Double Shot",     "Armor Pierce",       "Bladeweave",
+    "Force Arrow",      "Lightning Arrow", "Psychic Attack",     "Serpent Arrow",
+    "Force of Nature",  "Infused Throw",   "Mystic Arc",         "Disrobe"
 };

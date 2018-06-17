@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** UseItemsList.cpp
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -38,9 +31,9 @@ void CUseItemActions::Process()
 
         if (g_World->FindWorldObject(serial) != NULL)
         {
-            if (serial < 0x40000000) //NPC
+            if (serial < 0x40000000)
                 g_Orion.PaperdollReq(serial);
-            else //item
+            else
                 g_Orion.DoubleClick(serial);
         }
     }

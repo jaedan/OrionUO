@@ -1,4 +1,4 @@
-﻿#include "StackWalker.h"
+#include "StackWalker.h"
 #include "Wisp/WispLogger.h"
 
 class OrionStackWalker : public StackWalker

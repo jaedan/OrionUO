@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpRacialAbilitiesBook.cpp
-**
-** Copyright (C) December 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -293,7 +286,7 @@ void CGumpRacialAbilitiesBook::GUMP_BUTTON_EVENT_C
         LockMoving = !LockMoving;
     else if (serial >= ID_GRAB_DICTIONARY_ICON)
     {
-        if (Page < DictionaryPagesCount) //List of spells
+        if (Page < DictionaryPagesCount)
             newPage = DictionaryPagesCount + (serial - ID_GRAB_DICTIONARY_ICON);
     }
 

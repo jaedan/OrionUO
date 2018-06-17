@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpDrag.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -54,7 +47,7 @@ void CGumpDrag::UpdateContent()
 void CGumpDrag::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c94_f2");
-    if (serial == ID_GD_OKAY) //Button Okay
+    if (serial == ID_GD_OKAY)
         OnOkayPressed();
 }
 

@@ -43,7 +43,7 @@ string EncodeUTF8(const wstring &wstr)
     {
         result.resize(size + 1);
         WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &result[0], size, NULL, NULL);
-        result.resize(size); // result[size] = 0;
+        result.resize(size);
     }
 
     return result;
@@ -58,7 +58,7 @@ wstring DecodeUTF8(const string &str)
     {
         result.resize(size + 1);
         MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &result[0], size);
-        result.resize(size); // result[size] = 0;
+        result.resize(size);
     }
 
     return result;
@@ -116,7 +116,7 @@ string ToString(const wstring &wstr)
     {
         str.resize(newSize + 1);
         ::WideCharToMultiByte(GetACP(), 0, wstr.c_str(), size, &str[0], newSize, NULL, NULL);
-        str.resize(newSize); // str[newSize] = 0;
+        str.resize(newSize);
     }
 
     return str;
@@ -131,7 +131,7 @@ wstring ToWString(const string &str)
     {
         wstr.resize(size + 1);
         MultiByteToWideChar(GetACP(), 0, str.c_str(), size, &wstr[0], size);
-        wstr.resize(size); // wstr[size] = 0;
+        wstr.resize(size);
     }
 
     return wstr;

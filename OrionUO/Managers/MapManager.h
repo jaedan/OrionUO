@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MapManager.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef MAPMANAGER_H
 #define MAPMANAGER_H
@@ -27,16 +20,13 @@ public:
 
 typedef vector<CIndexMap> MAP_INDEX_LIST;
 
-//!Класс менеджера карт
 class CMapManager : public CBaseQueue
 {
 public:
-    //!Максимальный индекс блока для текущей карты
     uint MaxBlockIndex = 0;
     int PatchesCount = 0;
 
 protected:
-    //!Вектор ссылок на блоки карты
     CMapBlock **m_Blocks{ NULL };
 
     MAP_INDEX_LIST m_BlockData[MAX_MAPS_COUNT];
@@ -66,81 +56,28 @@ public:
 
     char CalculateNearZ(char defaultZ, int x, int y, int z);
 
-    /*!
-	Получить индекс текущей карты
-	@return 
-	*/
     int GetActualMap();
 
     void SetPatchedMapBlock(const size_t &block, const size_t &address);
 
-    /*!
-	Загрузить блок
-	@param [__inout] block Ссылка на блок для загрузки
-	@return 
-	*/
     void LoadBlock(CMapBlock *block);
 
-    /*!
-	Получить блок для радара из муллов
-	@param [__in] blockX Координата X блока
-	@param [__in] blockY Координата Y блока
-	@param [__out] mb Ссылка на блок
-	@return 
-	*/
     void GetRadarMapBlock(int blockX, int blockY, RADAR_MAP_BLOCK &mb);
 
-    /*!
-	Получить значение Z координаты для указанной точки в мире
-	@param [__in] x Координата X
-	@param [__in] y Координата Y
-	@param [__out] groundZ Значение Z коррдинаты земли
-	@param [__out] staticZ Значение Z коррдинаты статики
-	@return 
-	*/
     void GetMapZ(int x, int y, int &groundZ, int &staticZ);
 
-    /*!
-	Инициализация
-	@param [__in_opt] delayed По истечении времени на загрузку выходить из цикла
-	@return 
-	*/
     void Init(bool delayed = false);
 
-    /*!
-	Получить ссылку на блок
-	@param [__in] index Индекс блока
-	@return Ссылка на блок или NULL
-	*/
     CMapBlock *GetBlock(int index);
 
-    /*!
-	Добавить блок
-	@param [__in] index Индекс блока
-	@return Ссылка на блок или NULL
-	*/
     CMapBlock *AddBlock(int index);
 
-    /*!
-	Удалить блок
-	@param [__in] index Индекс блока
-	@return 
-	*/
     void DeleteBlock(int index);
 
-    /*!
-	Удалить неиспользуемые блоки
-	@return 
-	*/
     void ClearUnusedBlocks();
 
     void ClearUsedBlocks();
 
-    /*!
-	Добавить объект рендера
-	@param [__in] item Ссылка на объект
-	@return 
-	*/
     void AddRender(CRenderWorldObject *item);
 };
 

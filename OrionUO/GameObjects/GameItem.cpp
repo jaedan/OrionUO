@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameItem.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -54,11 +47,6 @@ void CGameItem::ClearMultiItems()
     WantUpdateMulti = true;
 }
 
-/*!
-Событие изменения картинки объекта
-@param [__in_opt] direction Направление предмета (для трупов)
-@return 
-*/
 void CGameItem::OnGraphicChange(int direction)
 {
     WISPFUN_DEBUG("c19_f4");
@@ -126,19 +114,18 @@ void CGameItem::CalculateFieldColor()
     if (!g_ConfigManager.GetChangeFieldsGraphic())
         return;
 
-    //fire field
     if (IN_RANGE(Graphic, 0x398C, 0x399F))
         FieldColor = 0x0020;
-    //paralyze field
+
     else if (IN_RANGE(Graphic, 0x3967, 0x397A))
         FieldColor = 0x0058;
-    //energy field
+
     else if (IN_RANGE(Graphic, 0x3946, 0x3964))
         FieldColor = 0x0070;
-    //poison field
+
     else if (IN_RANGE(Graphic, 0x3914, 0x3929))
         FieldColor = 0x0044;
-    //wall of stone
+
     else if (Graphic == 0x0080)
         FieldColor = 0x038A;
 }
@@ -182,7 +169,7 @@ void CGameItem::Draw(int x, int y)
                 m_DrawTextureColor[3]);
         }
 
-        if (IsCorpse()) //Трупик
+        if (IsCorpse())
             g_AnimationManager.DrawCorpse(this, x, y - 3);
         else
         {
@@ -263,14 +250,6 @@ void CGameItem::Draw(int x, int y)
     }
 }
 
-/*!
-Отрисовать предмет
-@param [__in] mode Режим рисования. true - рисование, false - выбор объектов
-@param [__in] drawX Экранная координата X объекта
-@param [__in] drawY Экранная координата Y объекта
-@param [__in] ticks Таймер рендера
-@return При выборе объектов возвращает выбранный элемент
-*/
 void CGameItem::Select(int x, int y)
 {
     WISPFUN_DEBUG("c19_f8");
@@ -286,7 +265,7 @@ void CGameItem::Select(int x, int y)
             return;
         }
 
-        if (IsCorpse()) //Трупик
+        if (IsCorpse())
         {
             if (g_AnimationManager.CorpsePixelsInXY(this, x, y - 3))
                 g_SelectedObject.Init(this);
@@ -314,10 +293,6 @@ void CGameItem::Select(int x, int y)
     }
 }
 
-/*!
-Получить индекс картинки (для анимации)
-@return Индекс картинки
-*/
 ushort CGameItem::GetMountAnimation()
 {
     WISPFUN_DEBUG("c19_f9");
@@ -327,239 +302,239 @@ ushort CGameItem::GetMountAnimation()
     {
         switch (graphic)
         {
-            case 0x3E90: // 16016 Reptalon
+            case 0x3E90:
             {
                 graphic = 0x0114;
                 break;
             }
-            case 0x3E91: // 16017
+            case 0x3E91:
             {
                 graphic = 0x0115;
                 break;
             }
-            case 0x3E92: // 16018
+            case 0x3E92:
             {
                 graphic = 0x011C;
                 break;
             }
-            case 0x3E94: // 16020
+            case 0x3E94:
             {
                 graphic = 0x00F3;
                 break;
             }
-            case 0x3E95: // 16021
+            case 0x3E95:
             {
                 graphic = 0x00A9;
                 break;
             }
-            case 0x3E97: // 16023 Ethereal Giant Beetle
+            case 0x3E97:
             {
                 graphic = 0x00C3;
                 break;
             }
-            case 0x3E98: // 16024 Ethereal Swamp Dragon
+            case 0x3E98:
             {
                 graphic = 0x00C2;
                 break;
             }
-            case 0x3E9A: // 16026 Ethereal Ridgeback
+            case 0x3E9A:
             {
                 graphic = 0x00C1;
                 break;
             }
-            case 0x3E9B: // 16027
-            case 0x3E9D: // 16029 Ethereal Unicorn
+            case 0x3E9B:
+            case 0x3E9D:
             {
                 graphic = 0x00C0;
                 break;
             }
-            case 0x3E9C: // 16028 Ethereal Kirin
+            case 0x3E9C:
             {
                 graphic = 0x00BF;
                 break;
             }
-            case 0x3E9E: // 16030
+            case 0x3E9E:
             {
                 graphic = 0x00BE;
                 break;
             }
-            case 0x3EA0: // 16032 light grey/horse3
+            case 0x3EA0:
             {
                 graphic = 0x00E2;
                 break;
             }
-            case 0x3EA1: // 16033 greybrown/horse4
+            case 0x3EA1:
             {
                 graphic = 0x00E4;
                 break;
             }
-            case 0x3EA2: // 16034 dark brown/horse
+            case 0x3EA2:
             {
                 graphic = 0x00CC;
                 break;
             }
-            case 0x3EA3: // 16035 desert ostard
+            case 0x3EA3:
             {
                 graphic = 0x00D2;
                 break;
             }
-            case 0x3EA4: // 16036 frenzied ostard (=zostrich)
+            case 0x3EA4:
             {
                 graphic = 0x00DA;
                 break;
             }
-            case 0x3EA5: // 16037 forest ostard
+            case 0x3EA5:
             {
                 graphic = 0x00DB;
                 break;
             }
-            case 0x3EA6: // 16038 Llama
+            case 0x3EA6:
             {
                 graphic = 0x00DC;
                 break;
             }
-            case 0x3EA7: // 16039 Nightmare / Vortex
+            case 0x3EA7:
             {
                 graphic = 0x0074;
                 break;
             }
-            case 0x3EA8: // 16040 Silver Steed
+            case 0x3EA8:
             {
                 graphic = 0x0075;
                 break;
             }
-            case 0x3EA9: // 16041 Nightmare
+            case 0x3EA9:
             {
                 graphic = 0x0072;
                 break;
             }
-            case 0x3EAA: // 16042 Ethereal Horse
+            case 0x3EAA:
             {
                 graphic = 0x0073;
                 break;
             }
-            case 0x3EAB: // 16043 Ethereal Llama
+            case 0x3EAB:
             {
                 graphic = 0x00AA;
                 break;
             }
-            case 0x3EAC: // 16044 Ethereal Ostard
+            case 0x3EAC:
             {
                 graphic = 0x00AB;
                 break;
             }
-            case 0x3EAD: // 16045 Kirin
+            case 0x3EAD:
             {
                 graphic = 0x0084;
                 break;
             }
-            case 0x3EAF: // 16047 War Horse (Blood Red)
+            case 0x3EAF:
             {
                 graphic = 0x0078;
                 break;
             }
-            case 0x3EB0: // 16048 War Horse (Light Green)
+            case 0x3EB0:
             {
                 graphic = 0x0079;
                 break;
             }
-            case 0x3EB1: // 16049 War Horse (Light Blue)
+            case 0x3EB1:
             {
                 graphic = 0x0077;
                 break;
             }
-            case 0x3EB2: // 16050 War Horse (Purple)
+            case 0x3EB2:
             {
                 graphic = 0x0076;
                 break;
             }
-            case 0x3EB3: // 16051 Sea Horse (Medium Blue)
+            case 0x3EB3:
             {
                 graphic = 0x0090;
                 break;
             }
-            case 0x3EB4: // 16052 Unicorn
+            case 0x3EB4:
             {
                 graphic = 0x007A;
                 break;
             }
-            case 0x3EB5: // 16053 Nightmare
+            case 0x3EB5:
             {
                 graphic = 0x00B1;
                 break;
             }
-            case 0x3EB6: // 16054 Nightmare 4
+            case 0x3EB6:
             {
                 graphic = 0x00B2;
                 break;
             }
-            case 0x3EB7: // 16055 Dark Steed
+            case 0x3EB7:
             {
                 graphic = 0x00B3;
                 break;
             }
-            case 0x3EB8: // 16056 Ridgeback
+            case 0x3EB8:
             {
                 graphic = 0x00BC;
                 break;
             }
-            case 0x3EBA: // 16058 Ridgeback, Savage
+            case 0x3EBA:
             {
                 graphic = 0x00BB;
                 break;
             }
-            case 0x3EBB: // 16059 Skeletal Mount
+            case 0x3EBB:
             {
                 graphic = 0x0319;
                 break;
             }
-            case 0x3EBC: // 16060 Beetle
+            case 0x3EBC:
             {
                 graphic = 0x0317;
                 break;
             }
-            case 0x3EBD: // 16061 SwampDragon
+            case 0x3EBD:
             {
                 graphic = 0x031A;
                 break;
             }
-            case 0x3EBE: // 16062 Armored Swamp Dragon
+            case 0x3EBE:
             {
                 graphic = 0x031F;
                 break;
             }
-            case 0x3EC3: //16067 Beetle
+            case 0x3EC3:
             {
                 graphic = 0x02D4;
                 break;
             }
-            case 0x3EC5: // 16069
-            case 0x3F3A: // 16186 snow bear ???
+            case 0x3EC5:
+            case 0x3F3A:
             {
                 graphic = 0x00D5;
                 break;
             }
-            case 0x3EC6: // 16070 Boura
+            case 0x3EC6:
             {
                 graphic = 0x01B0;
                 break;
             }
-            case 0x3EC7: // 16071 Tiger
+            case 0x3EC7:
             {
                 graphic = 0x04E6;
                 break;
             }
-            case 0x3EC8: // 16072 Tiger
+            case 0x3EC8:
             {
                 graphic = 0x04E7;
                 break;
             }
-            case 0x3EC9: // 16073
+            case 0x3EC9:
             {
                 graphic = 0x042D;
                 break;
             }
-            default: //lightbrown/horse2
+            default:
             {
                 graphic = 0x00C8;
 
@@ -609,10 +584,6 @@ void CGameItem::ClearCustomHouseMultis(int state)
     }
 }
 
-/*!
-Добавить мульти в текущий объект
-@return
-*/
 CMultiObject *
 CGameItem::AddMulti(ushort graphic, ushort color, char x, char y, char z, bool isCustomHouseMulti)
 {
@@ -629,10 +600,6 @@ CGameItem::AddMulti(ushort graphic, ushort color, char x, char y, char z, bool i
     return mo;
 }
 
-/*!
-Загрузка мульти в текущий объект
-@return 
-*/
 void CGameItem::LoadMulti(bool dropAlpha)
 {
     WISPFUN_DEBUG("c19_f10");
@@ -666,7 +633,7 @@ void CGameItem::LoadMulti(bool dropAlpha)
             return;
 
         WISP_DATASTREAM::CDataReader reader(&data[0], data.size());
-        reader.Move(8); //ID + Count
+        reader.Move(8);
 
         IFOR (i, 0, count)
         {
@@ -758,11 +725,6 @@ void CGameItem::LoadMulti(bool dropAlpha)
         minimap->LastX = 0;
 }
 
-/*!
-Добавить объекта-мульти
-@param [__in] obj Ссылка на мульти-объект
-@return 
-*/
 void CGameItem::AddMultiObject(CMultiObject *obj)
 {
     WISPFUN_DEBUG("c19_f11");
@@ -801,8 +763,6 @@ void CGameItem::AddMultiObject(CMultiObject *obj)
                     return;
                 }
             }
-
-            //Если пришли сюда - что-то пошло не так
         }
         else
         {
@@ -825,12 +785,6 @@ void CGameItem::AddMultiObject(CMultiObject *obj)
     }
 }
 
-/*!
-Получение объекта мульти в заданных координатах
-@param [__in] x Координата X
-@param [__in] y Координата Y
-@return Ссылка на мульти или NULL
-*/
 CMulti *CGameItem::GetMultiAtXY(short x, short y)
 {
     WISPFUN_DEBUG("c19_f12");
@@ -843,18 +797,12 @@ CMulti *CGameItem::GetMultiAtXY(short x, short y)
     return NULL;
 }
 
-/*!
-Найти объект внутри (рекурсивно) по типу с учетом (и без) цвета
-@param [__in] graphic Индекс картинки
-@param [__in_opt] color Цвет предмета
-@return Ссылка на найденный объект или NULL
-*/
 CGameItem *CGameItem::FindItem(ushort graphic, ushort color)
 {
     WISPFUN_DEBUG("c19_f13");
     CGameItem *item = NULL;
 
-    if (color == 0xFFFF) //Поиск по минимальному цвету
+    if (color == 0xFFFF)
     {
         WORD minColor = 0xFFFF;
 
@@ -881,7 +829,7 @@ CGameItem *CGameItem::FindItem(ushort graphic, ushort color)
             }
         }
     }
-    else //стандартный поиск
+    else
     {
         QFOR(obj, m_Items, CGameItem *)
         {

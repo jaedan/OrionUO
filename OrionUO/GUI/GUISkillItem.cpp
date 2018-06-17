@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUISkillItem.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -60,12 +53,12 @@ void CGUISkillItem::SetStatus(uchar val)
 ushort CGUISkillItem::GetStatusButtonGraphic()
 {
     WISPFUN_DEBUG("c76_f4");
-    ushort graphic = 0x0984; //Up
+    ushort graphic = 0x0984;
 
     if (m_Status == 1)
-        graphic = 0x0986; //Down
+        graphic = 0x0986;
     else if (m_Status == 2)
-        graphic = 0x082C; //Lock
+        graphic = 0x082C;
 
     return graphic;
 }
@@ -77,7 +70,6 @@ void CGUISkillItem::CreateValueText(bool showReal, bool showCap)
 
     if (skill != NULL)
     {
-        //Значение скилла (учитывая выбранный флаг отображения)
         float val = skill->BaseValue;
         if (showReal)
             val = skill->Value;

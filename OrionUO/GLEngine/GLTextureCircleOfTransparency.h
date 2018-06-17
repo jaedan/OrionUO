@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GLTextureCircleOfTransparency.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GLTEXTURECIRCLEOFTRANSPARENCY_H
 #define GLTEXTURECIRCLEOFTRANSPARENCY_H
@@ -20,16 +13,12 @@ public:
     CGLTextureCircleOfTransparency();
     virtual ~CGLTextureCircleOfTransparency();
 
-    //Создать текстуру
     static void CreatePixels(int radius, short &width, short &height, UINT_LIST &pixels);
 
-    //Создать текстуру
     bool Create(int radius);
 
-    //Отрисовать текстуру
     virtual void Draw(int x, int y, bool checktrans = false);
 
-    //Отрисовать текстуру
     void Redraw();
 };
 

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpMap.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -22,14 +15,14 @@ CGumpMap::CGumpMap(
     WISPFUN_DEBUG("c99_f1");
     Graphic = graphic;
 
-    Add(new CGUIResizepic(0, 0x1432, 0, 0, Width + 44, Height + 61)); //Map Gump
+    Add(new CGUIResizepic(0, 0x1432, 0, 0, Width + 44, Height + 61));
 
-    m_PlotCourse = (CGUIButton *)Add(new CGUIButton(
-        ID_GM_PLOT_COURSE, 0x1398, 0x1398, 0x1398, (Width - 100) / 2, 5)); //Plot Course
-    m_StopPlotting = (CGUIButton *)Add(new CGUIButton(
-        ID_GM_STOP_PLOTTING, 0x1399, 0x1399, 0x1399, (Width - 70) / 2, 5)); //Stop Plotting
-    m_ClearCourse = (CGUIButton *)Add(new CGUIButton(
-        ID_GM_CLEAR_COURSE, 0x139A, 0x139A, 0x139A, (Width - 66) / 2, Height + 37)); //Clear Course
+    m_PlotCourse = (CGUIButton *)Add(
+        new CGUIButton(ID_GM_PLOT_COURSE, 0x1398, 0x1398, 0x1398, (Width - 100) / 2, 5));
+    m_StopPlotting = (CGUIButton *)Add(
+        new CGUIButton(ID_GM_STOP_PLOTTING, 0x1399, 0x1399, 0x1399, (Width - 70) / 2, 5));
+    m_ClearCourse = (CGUIButton *)Add(
+        new CGUIButton(ID_GM_CLEAR_COURSE, 0x139A, 0x139A, 0x139A, (Width - 66) / 2, Height + 37));
 
     m_PlotCourse->Visible = (m_PlotState == 0);
     m_StopPlotting->Visible = (m_PlotState == 1);
@@ -37,7 +30,7 @@ CGumpMap::CGumpMap(
 
     m_Texture = (CGUIExternalTexture *)Add(new CGUIExternalTexture(new CGLTexture(), true, 24, 31));
 
-    Add(new CGUIGumppic(0x139D, Width - 20, Height - 20)); //N
+    Add(new CGUIGumppic(0x139D, Width - 20, Height - 20));
 
     m_DataBox = (CGUIDataBox *)Add(new CGUIDataBox());
     m_DataBox->Visible = false;
@@ -153,7 +146,6 @@ void CGumpMap::PrepareContent()
             serial++;
         }
 
-        //Если окошко захвачено для перемещения - вычислим оффсеты
         if (g_PressedObject.LeftGump == this && g_PressedObject.LeftObject != NULL && m_PlotState)
         {
             if (m_PinOnCursor == NULL)
@@ -184,8 +176,6 @@ void CGumpMap::PrepareContent()
 void CGumpMap::GenerateFrame(bool stop)
 {
     WISPFUN_DEBUG("c99_f5");
-
-    //m_Labels
 
     if (m_DataBox != NULL)
     {
@@ -320,14 +310,14 @@ CRenderObject *CGumpMap::Select()
 void CGumpMap::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c99_f7");
-    if (serial == ID_GM_PLOT_COURSE || serial == ID_GM_STOP_PLOTTING) //Plot Course /Stop Plotting
+    if (serial == ID_GM_PLOT_COURSE || serial == ID_GM_STOP_PLOTTING)
     {
         CPacketMapMessage(Serial, MM_EDIT, m_PlotState).Send();
         SetPlotState(!m_PlotState);
 
         WantRedraw = true;
     }
-    else if (serial == ID_GM_CLEAR_COURSE) //Clear Course
+    else if (serial == ID_GM_CLEAR_COURSE)
     {
         CPacketMapMessage(Serial, MM_CLEAR).Send();
 

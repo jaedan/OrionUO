@@ -1,11 +1,4 @@
-/***********************************************************************************
-**
-** OrionUO.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -269,8 +262,6 @@ bool COrion::Install()
         m_CRC_Table[i] = Reflect(m_CRC_Table[i], 32);
     }
 
-    //GetCurrentLocale();
-
     CreateDirectoryA(g_App.ExeFilePath("snapshots").c_str(), NULL);
 
     LOG("Load client config.\n");
@@ -279,10 +270,10 @@ bool COrion::Install()
 
     if (g_PacketManager.GetClientVersion() >= CV_305D)
     {
-        CGumpSpellbook::m_SpellReagents1[4] = "Sulfurous ash";                 //Magic Arrow
-        CGumpSpellbook::m_SpellReagents1[17] = "Black pearl";                  //Fireball
-        CGumpSpellbook::m_SpellReagents1[29] = "Mandrake root\nSulfurous ash"; //Lightning
-        CGumpSpellbook::m_SpellReagents1[42] = "Bloodmoss\nMandrake root";     //Explosion
+        CGumpSpellbook::m_SpellReagents1[4] = "Sulfurous ash";
+        CGumpSpellbook::m_SpellReagents1[17] = "Black pearl";
+        CGumpSpellbook::m_SpellReagents1[29] = "Mandrake root\nSulfurous ash";
+        CGumpSpellbook::m_SpellReagents1[42] = "Bloodmoss\nMandrake root";
     }
 
     LoadAutoLoginNames();
@@ -376,12 +367,8 @@ bool COrion::Install()
 
     if (!g_SoundManager.Init())
     {
-        //LOG("Error install BASS audio: %s\n", BASS_error());
-
         if (g_ShowWarnings)
             g_OrionWindow.ShowMessage("Failed to init BASS audio.", "Sound error!");
-
-        //return false;
     }
 
     LoadContaierOffsets();
@@ -394,9 +381,9 @@ bool COrion::Install()
     g_ProfessionManager.Load();
     g_ProfessionManager.Selected = (CBaseProfession *)g_ProfessionManager.m_Items;
 
-    ExecuteStaticArt(0x0EED); //gp 1
-    ExecuteStaticArt(0x0EEE); //gp 2-5
-    ExecuteStaticArt(0x0EEF); //gp 6+
+    ExecuteStaticArt(0x0EED);
+    ExecuteStaticArt(0x0EEE);
+    ExecuteStaticArt(0x0EEF);
 
     g_CreateCharacterManager.Init();
 
@@ -412,8 +399,8 @@ bool COrion::Install()
     LoadClientStartupConfig();
 
     ushort b = 0x0000;
-    ushort r = 0xFC00; // 0xFF0000FF;
-    ushort g = 0x83E0; // 0xFF00FF00;
+    ushort r = 0xFC00;
+    ushort g = 0x83E0;
 
     ushort pdwlt[2][140] = {
         { b, b, b, g, g, g, g, g, g, g, b, b, b, g, g, g, g, g, g, g, b, b, b, b, g, g, b, b,
@@ -648,37 +635,6 @@ void COrion::GetCurrentLocale()
     }
 
     LOG("Locale set to: %s\n", g_Language.c_str());
-
-    //https://msdn.microsoft.com/en-us/library/cc233982.aspx
-
-    /*wchar_t localeName[LOCALE_NAME_MAX_LENGTH] = { 0 };
-
-	if (GetSystemDefaultLocaleName(&localeName[0], LOCALE_NAME_MAX_LENGTH))
-	{
-		IFOR(i, 0, 10)
-		{
-			if (!localeName[i])
-				break;
-			else if (localeName[i] == L'-')
-			{
-				localeName[i] = 0;
-				break;
-			}
-		}
-
-		wstring locale = ToLowerW(localeName);
-
-		if (locale == L"ru")
-			g_Language = "RUS";
-		else if (locale == L"fr")
-			g_Language = "FRA";
-		else if (locale == L"de")
-			g_Language = "DEU";
-
-		LOG("Locale set to: %s\n", g_Language.c_str());
-	}
-	else
-		LOG("Locale set to default value: ENU\n");*/
 }
 
 ushort COrion::TextToGraphic(const char *text)
@@ -885,9 +841,8 @@ void COrion::LoadContaierOffsets()
 
     if (!PathFileExistsA(filePath.c_str()))
     {
-        //												Gump   OpenSnd  CloseSnd					minX minY maxX maxY
-        g_ContainerOffset.push_back(CContainerOffset(
-            0x0009, 0x0000, 0x0000, CContainerOffsetRect(20, 85, 124, 196))); //corpse
+        g_ContainerOffset.push_back(
+            CContainerOffset(0x0009, 0x0000, 0x0000, CContainerOffsetRect(20, 85, 124, 196)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x003C, 0x0048, 0x0058, CContainerOffsetRect(44, 65, 186, 159)));
         g_ContainerOffset.push_back(
@@ -918,16 +873,16 @@ void COrion::LoadContaierOffsets()
             CContainerOffset(0x004C, 0x002D, 0x002C, CContainerOffsetRect(46, 74, 196, 184)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x004D, 0x002F, 0x002E, CContainerOffsetRect(76, 12, 140, 68)));
-        g_ContainerOffset.push_back(CContainerOffset(
-            0x004E, 0x002D, 0x002C, CContainerOffsetRect(24, 96, 140, 152))); //bugged
-        g_ContainerOffset.push_back(CContainerOffset(
-            0x004F, 0x002D, 0x002C, CContainerOffsetRect(24, 96, 140, 152))); //bugged
+        g_ContainerOffset.push_back(
+            CContainerOffset(0x004E, 0x002D, 0x002C, CContainerOffsetRect(24, 96, 140, 152)));
+        g_ContainerOffset.push_back(
+            CContainerOffset(0x004F, 0x002D, 0x002C, CContainerOffsetRect(24, 96, 140, 152)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x0051, 0x002F, 0x002E, CContainerOffsetRect(16, 10, 154, 94)));
-        g_ContainerOffset.push_back(CContainerOffset(
-            0x091A, 0x0000, 0x0000, CContainerOffsetRect(1, 13, 260, 199))); //game board
-        g_ContainerOffset.push_back(CContainerOffset(
-            0x092E, 0x0000, 0x0000, CContainerOffsetRect(1, 13, 260, 199))); //backgammon game
+        g_ContainerOffset.push_back(
+            CContainerOffset(0x091A, 0x0000, 0x0000, CContainerOffsetRect(1, 13, 260, 199)));
+        g_ContainerOffset.push_back(
+            CContainerOffset(0x092E, 0x0000, 0x0000, CContainerOffsetRect(1, 13, 260, 199)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x0104, 0x002F, 0x002E, CContainerOffsetRect(0, 20, 168, 115)));
         g_ContainerOffset.push_back(
@@ -950,7 +905,7 @@ void COrion::LoadContaierOffsets()
             CContainerOffset(0x010D, 0x002F, 0x002E, CContainerOffsetRect(0, 20, 168, 115)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x010E, 0x002F, 0x002E, CContainerOffsetRect(0, 20, 168, 115)));
-        //present boxes
+
         g_ContainerOffset.push_back(
             CContainerOffset(0x0102, 0x004F, 0x0058, CContainerOffsetRect(15, 10, 245, 120)));
         g_ContainerOffset.push_back(
@@ -963,7 +918,7 @@ void COrion::LoadContaierOffsets()
             CContainerOffset(0x011E, 0x004F, 0x0058, CContainerOffsetRect(15, 10, 290, 130)));
         g_ContainerOffset.push_back(
             CContainerOffset(0x011F, 0x004F, 0x0058, CContainerOffsetRect(15, 10, 220, 120)));
-        //secret chest
+
         g_ContainerOffset.push_back(
             CContainerOffset(0x058E, 0x002D, 0x002C, CContainerOffsetRect(16, 51, 184, 124)));
     }
@@ -1217,7 +1172,7 @@ void COrion::Process(bool rendering)
     g_CtrlPressed = GetAsyncKeyState(VK_CONTROL) & 0x80000000;
     g_ShiftPressed = GetAsyncKeyState(VK_SHIFT) & 0x80000000;
 
-    if (g_GameState >= GS_GAME) // || g_GameState == GS_GAME_BLOCKED)
+    if (g_GameState >= GS_GAME)
     {
         if (g_LogoutAfterClick)
         {
@@ -1263,7 +1218,6 @@ void COrion::Process(bool rendering)
 
             canRenderSelect = true;
 
-            //Game window scope
             if (g_PressedObject.LeftGump == NULL && g_PressedObject.LeftObject != NULL &&
                 g_PressedObject.LeftObject->IsGUI())
                 canRenderSelect = false;
@@ -1532,25 +1486,6 @@ void COrion::LoadPluginConfig()
         CPluginPacketSkillsList().SendToPlugin();
         CPluginPacketSpellsList().SendToPlugin();
         CPluginPacketMacrosList().SendToPlugin();
-
-        /*g_FileManager.SendFilesInfo();
-
-		IFOR(i, 0, 0x10000)
-		{
-			CIndexObjectStatic &staticObj = m_StaticDataIndex[i];
-
-			if (staticObj.Address)
-			{
-				uint64 compressedSize = 0;
-
-				if (staticObj.UopBlock)
-					compressedSize = staticObj.UopBlock->CompressedSize;
-
-				CPluginPacketStaticArtGraphicDataInfo(i, staticObj.Address, staticObj.DataSize, compressedSize).SendToPlugin();
-			}
-		}
-
-		CPluginPacketFilesTransfered().SendToPlugin();*/
     }
 
     BringWindowToTop(g_OrionWindow.Handle);
@@ -1617,7 +1552,6 @@ void COrion::LoadLocalConfig(int serial)
         if (!g_MacroManager.Load(
                 g_App.UOFilesPath("\\macros_debug.cuo"), g_App.UOFilesPath("\\macros.txt")))
         {
-            //������� ����������� �������
         }
     }
 
@@ -1800,7 +1734,7 @@ void COrion::Connect()
     Process(true);
 
     g_ConnectionManager.Disconnect();
-    g_ConnectionManager.Init(); //Configure
+    g_ConnectionManager.Init();
 
     string login = "";
     int port;
@@ -1967,9 +1901,6 @@ void COrion::LoginComplete(bool reload)
         CPacketSkillsRequest(g_PlayerSerial).Send();
         g_UseItemActions.Add(g_PlayerSerial);
 
-        //CPacketOpenChat(L"").Send();
-        //CPacketRazorAnswer().Send();
-
         if (g_PacketManager.GetClientVersion() >= CV_306E)
             CPacketClientType().Send();
 
@@ -2030,12 +1961,10 @@ ushort COrion::GetSeasonGraphic(ushort graphic)
     {
         case ST_SPRING:
             return GetSpringGraphic(graphic);
-        //case ST_SUMMER:
-        //	return GetSummerGraphic(graphic);
+
         case ST_FALL:
             return GetFallGraphic(graphic);
-        //case ST_WINTER:
-        //	return GetWinterGraphic(graphic);
+
         case ST_DESOLATION:
             return GetDesolationGraphic(graphic);
         default:
@@ -2393,8 +2322,7 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
             if (value == -1)
                 value = g_ConfigManager.DisableNewTargetSystem;
             else
-                g_ConfigManager.DisableNewTargetSystem =
-                    (value == 0); //������ == 0!!! �.�. � ������� ��� Target System enable/disable
+                g_ConfigManager.DisableNewTargetSystem = (value == 0);
 
             break;
         }
@@ -3504,7 +3432,7 @@ void COrion::LoadIndexFiles()
             g_MultiIndexCount = MAX_MULTI_DATA_INDEX_COUNT;
     }
 
-    int maxGumpsCount = (int)(g_FileManager.m_GumpIdx.Start == nullptr ? MAX_GUMP_DATA_INDEX_COUNT : (g_FileManager.m_GumpIdx.End - g_FileManager.m_GumpIdx.Start) / sizeof(GUMP_IDX_BLOCK));
+    int maxGumpsCount=(int)(g_FileManager.m_GumpIdx.Start==nullptr?MAX_GUMP_DATA_INDEX_COUNT:(g_FileManager.m_GumpIdx.End-g_FileManager.m_GumpIdx.Start)/sizeof(GUMP_IDX_BLOCK));
 
     if (g_FileManager.m_ArtMul.Start != nullptr)
     {
@@ -3621,8 +3549,6 @@ void COrion::LoadIndexFiles()
                 index.Count = reader.ReadUInt32LE();
             }
         }
-
-        //ReadUOPIndexFile(g_MultiIndexCount, [&](int i){ return &m_MultiDataIndex[i]; }, "multicollection", 6, ".bin", g_FileManager.m_MultiCollection);
     }
 }
 
@@ -3681,16 +3607,15 @@ void COrion::InitStaticAnimList()
 
             bool isField = false;
 
-            //fire field
             if (IN_RANGE(i, 0x398C, 0x399F))
                 isField = true;
-            //paralyze field
+
             else if (IN_RANGE(i, 0x3967, 0x397A))
                 isField = true;
-            //energy field
+
             else if (IN_RANGE(i, 0x3946, 0x3964))
                 isField = true;
-            //poison field
+
             else if (IN_RANGE(i, 0x3914, 0x3929))
                 isField = true;
 
@@ -3716,14 +3641,10 @@ ushort COrion::CalculateLightColor(ushort id)
 
     if (id < 0x3E27)
     {
-        //color = ???;
     }
     else
     {
         color = 666;
-
-        //if (id > 0x3E3A)
-        //	color = ???;
     }
 
     switch (id)
@@ -3891,143 +3812,6 @@ ushort COrion::CalculateLightColor(ushort id)
     else
         color = 62;
 
-    /*ushort color = m_StaticData[id].Hue;
-
-	if (!color)
-	{
-		switch (id)
-		{
-			case 0x0B1A:
-			case 0x0B1B:
-			case 0x0B1C:
-			case 0x0B1D:
-			case 0x0B1E:
-			case 0x0B1F:
-			case 0x0B20:
-			case 0x0B21:
-			case 0x0B22:
-			case 0x0B23:
-			case 0x0B24:
-			case 0x0B25:
-			case 0x0B26:
-			case 0x0B27:
-			case 0x0B28:
-			{
-				color = 0x029A;
-				break;
-			}
-			case 0x0E2D:
-			case 0x0E2E:
-			case 0x0E2F:
-			case 0x0E30:
-			{
-				color = 0x003E;
-				break;
-			}
-			case 0x088C:
-			{
-				color = 0x001F;
-				break;
-			}
-			//fire pit
-			case 0x0FAC:
-			{
-				color = 0x001E;
-				break;
-			}
-			//forge
-			case 0x0FB1:
-			{
-				color = 0x003C;
-				break;
-			}
-			case 0x1647:
-			{
-				color = 0x003D;
-				break;
-			}
-			//blue moongate
-			case 0x0F6C:
-			//moongate
-			case 0x1FD4:
-			{
-				color = 0x0002;
-				break;
-			}
-			//brazier
-			case 0x0E31:
-			case 0x0E32:
-			case 0x0E33:
-			case 0x19BB:
-			case 0x1F2B:
-			{
-				color = 0x0028;
-				break;
-			}
-			//lava
-			case 0x3547:
-			case 0x3548:
-			case 0x3549:
-			case 0x354A:
-			case 0x354B:
-			case 0x354C:
-			{
-				color = 0x001F;
-				break;
-			}
-			default:
-				break;
-		}
-
-		if (!color)
-		{
-			//wall sconce
-			if (IN_RANGE(id, 0x09FB, 0x0A14))
-				color = 0x001E;
-			//lava
-			else if (IN_RANGE(id, 0x12EE, 0x134D) || IN_RANGE(id, 0x306A, 0x329B) || IN_RANGE(id, 0x343B, 0x346C))
-				color = 0x001F;
-			//?
-			else if (IN_RANGE(id, 0x3E27, 0x3E3A))
-				color = 0x001F;
-			//?
-			else if (IN_RANGE(id, 0x3E02, 0x3E0B))
-				color = 0x0001;
-			//fire field
-			else if (IN_RANGE(id, 0x398C, 0x399F))
-				color = 0x001F;
-			//paralyze field
-			else if (IN_RANGE(id, 0x3967, 0x397A))
-				color = 0x0006;
-			//energy field
-			else if (IN_RANGE(id, 0x3946, 0x3964))
-				color = 0x0006;
-			//poison field
-			else if (IN_RANGE(id, 0x3914, 0x3929))
-				color = 0x0001;
-			//glowing runes
-			else if (IN_RANGE(id, 0x0E5C, 0x0E6A))
-				color = 0x0006;
-			//?
-			else if (IN_RANGE(id, 0x3E02, 0x3E0B))
-				color = 0x0002;
-			else if (IN_RANGE(id, 0x3E27, 0x3E3A) || IN_RANGE(id, 0x398C, 0x399F))
-				color = 0x029A;
-			else if (IN_RANGE(id, 0x1ECD, 0x1ECF) || IN_RANGE(id, 0x1ED0, 0x1ED2))
-				color = 0x0001;
-			else if (IN_RANGE(id, 0x19AB, 0x19B6) || IN_RANGE(id, 0x197A, 0x19A9))
-				color = 0x003C;
-			else if (IN_RANGE(id, 0x1853, 0x185A) || IN_RANGE(id, 0x1849, 0x1850))
-				color = 0x003D;
-			else if (IN_RANGE(id, 0x0DE1, 0x0DEA))
-				color = 0x001F;
-			else if (IN_RANGE(id, 0x0A15, 0x0A29))
-				color = 0x029A;
-			else if (IN_RANGE(id, 0x09FB, 0x0A14))
-				color = 0x001E;
-		}
-	}*/
-
     return color;
 }
 
@@ -4086,28 +3870,6 @@ void COrion::ProcessStaticAnimList()
 void COrion::PatchFiles()
 {
     WISPFUN_DEBUG("c194_f54");
-    /*
-	-map0 = 0;
-	-staidx0 = 1;
-	-statics0 = 2;
-	+artidx = 3;
-	+art = 4;
-	-animidx = 5;
-	-anim = 6;
-	-soundidx = 7;
-	-sound = 8;
-	-texidx = 9;
-	-texmaps = 10;
-	+gumpidx = 11;
-	+gumpart = 12;
-	+multiidx = 13;
-	+multi = 14;
-	-skillsidx = 15;
-	-skills = 16;
-	+tiledata = 30;
-	-animdata = 31;
-	+hues = 32;
-	*/
 
     WISP_FILE::CMappedFile &file = g_FileManager.m_VerdataMul;
 
@@ -4125,38 +3887,38 @@ void COrion::PatchFiles()
     {
         PVERDATA_HEADER vh = (PVERDATA_HEADER)(vAddr + 4 + (i * sizeof(VERDATA_HEADER)));
 
-        if (vh->FileID == 0) //Map0
+        if (vh->FileID == 0)
         {
             g_MapManager.SetPatchedMapBlock(vh->BlockID, vAddr + vh->Position);
         }
-        else if (vh->FileID == 4) //Art
+        else if (vh->FileID == 4)
         {
-            if (vh->BlockID >= MAX_LAND_DATA_INDEX_COUNT) //Run
+            if (vh->BlockID >= MAX_LAND_DATA_INDEX_COUNT)
             {
                 ushort ID = (ushort)vh->BlockID - MAX_LAND_DATA_INDEX_COUNT;
                 m_StaticDataIndex[ID].Address = vAddr + vh->Position;
                 m_StaticDataIndex[ID].DataSize = vh->Size;
             }
-            else //Raw
+            else
             {
                 m_LandDataIndex[vh->BlockID].Address = vAddr + vh->Position;
                 m_LandDataIndex[vh->BlockID].DataSize = vh->Size;
             }
         }
-        else if (vh->FileID == 12) //Gumpart
+        else if (vh->FileID == 12)
         {
             m_GumpDataIndex[vh->BlockID].Address = vAddr + vh->Position;
             m_GumpDataIndex[vh->BlockID].DataSize = vh->Size;
             m_GumpDataIndex[vh->BlockID].Width = vh->GumpData >> 16;
             m_GumpDataIndex[vh->BlockID].Height = vh->GumpData & 0xFFFF;
         }
-        else if (vh->FileID == 14 && (int)vh->BlockID < g_MultiIndexCount) //Multi
+        else if (vh->FileID == 14 && (int)vh->BlockID < g_MultiIndexCount)
         {
             m_MultiDataIndex[vh->BlockID].Address = vAddr + vh->Position;
             m_MultiDataIndex[vh->BlockID].DataSize = vh->Size;
             m_MultiDataIndex[vh->BlockID].Count = (WORD)(vh->Size / sizeof(MULTI_IDX_BLOCK));
         }
-        else if (vh->FileID == 16 && (int)vh->BlockID < g_SkillsManager.Count) //Skills
+        else if (vh->FileID == 16 && (int)vh->BlockID < g_SkillsManager.Count)
         {
             CSkill *skill = g_SkillsManager.Get(vh->BlockID);
 
@@ -4167,7 +3929,7 @@ void COrion::PatchFiles()
                 skill->Name = reader.ReadString(vh->Size - 1);
             }
         }
-        else if (vh->FileID == 30) //Tiledata
+        else if (vh->FileID == 30)
         {
             file.ResetPtr();
             file.Move(vh->Position);
@@ -4223,7 +3985,7 @@ void COrion::PatchFiles()
                 }
             }
         }
-        else if (vh->FileID == 32) //Hues
+        else if (vh->FileID == 32)
         {
             if ((int)vh->BlockID < g_ColorManager.GetHuesCount())
             {
@@ -4231,7 +3993,7 @@ void COrion::PatchFiles()
                 g_ColorManager.SetHuesBlock(vh->BlockID, group);
             }
         }
-        else if (vh->FileID != 5 && vh->FileID != 6) //no Anim / Animidx
+        else if (vh->FileID != 5 && vh->FileID != 6)
         {
             LOG("Unused verdata block (fileID) = %i (BlockID+ %i\n", vh->FileID, vh->BlockID);
         }
@@ -4243,7 +4005,7 @@ void COrion::PatchFiles()
 void COrion::IndexReplaces()
 {
     WISPFUN_DEBUG("c194_f55");
-    if (g_PacketManager.GetClientVersion() < CV_305D) //CV_204C
+    if (g_PacketManager.GetClientVersion() < CV_305D)
         return;
 
     WISP_FILE::CTextFileParser newDataParser("", " \t,{}", "#;//", "");
@@ -4732,9 +4494,7 @@ void COrion::LoadClientStartupConfig()
     {
         if (g_PacketManager.GetClientVersion() >= CV_7000)
             PlayMusic(78);
-        else if (
-            g_PacketManager.GetClientVersion() >
-            CV_308Z) //from 4.x the music played is 0, the first one
+        else if (g_PacketManager.GetClientVersion() > CV_308Z)
             PlayMusic(0);
         else
             PlayMusic(8);
@@ -4868,7 +4628,7 @@ CGLTexture *COrion::ExecuteLandArt(ushort id)
 
     if (io.Texture == 0)
     {
-        if (!io.Address) //nodraw tiles banned
+        if (!io.Address)
             return NULL;
 
         io.Texture = g_UOFileReader.ReadArt(id, io, false);
@@ -4897,7 +4657,7 @@ CGLTexture *COrion::ExecuteStaticArt(ushort id)
 
     if (io.Texture == 0)
     {
-        if (!io.Address) //nodraw tiles banned
+        if (!io.Address)
             return NULL;
 
         io.Texture = g_UOFileReader.ReadArt(id, io, true);
@@ -5794,17 +5554,9 @@ void COrion::AddJournalMessage(CTextData *msg, const string &name)
     }
     else
     {
-        //if (msg->Type == TT_SYSTEM)
-        //	jmsg->Color = 0;
-
         jmsg->UnicodeText = ToWString(name) + jmsg->UnicodeText;
         jmsg->Font = 0;
     }
-
-    /*if (msg->Type == TT_OBJECT)
-		jmsg->GenerateTexture(214, UOFONT_INDENTION | UOFONT_BLACK_BORDER);
-	else
-		jmsg->GenerateTexture(214, UOFONT_INDENTION);*/
 
     g_Journal.Add(jmsg);
 }
@@ -5962,7 +5714,6 @@ void COrion::DoubleClick(uint serial)
 void COrion::PaperdollReq(uint serial)
 {
     WISPFUN_DEBUG("c194_f113");
-    //g_LastUseObject = serial;
 
     CPacketDoubleClickRequest(serial | 0x80000000).Send();
 }
@@ -6000,8 +5751,6 @@ void COrion::AttackReq(uint serial)
 {
     WISPFUN_DEBUG("c194_f115");
     g_LastAttackObject = serial;
-
-    //CPacketStatusRequest(serial).Send();
 
     CPacketAttackRequest(serial).Send();
 }
@@ -6103,7 +5852,6 @@ void COrion::RemoveRangedObjects()
                 {
                     if (!CheckMultiDistance(g_RemoveRangeXY, go, objectsRange))
                         ((CGameItem *)go)->ClearMultiItems();
-                    //g_World->RemoveObject(go);
                 }
                 else if (GetRemoveDistance(g_RemoveRangeXY, go) > objectsRange)
                     g_World->RemoveObject(go);
@@ -6309,14 +6057,6 @@ void COrion::OpenWorldMap()
 {
     WISPFUN_DEBUG("c194_f137");
     CPluginPacketOpenMap().SendToPlugin();
-
-    /*int x = g_ConfigManager.GameWindowX + (g_ConfigManager.GameWindowWidth / 2) - 200;
-	int y = g_ConfigManager.GameWindowY + (g_ConfigManager.GameWindowHeight / 2) - 150;
-
-	CGumpWorldMap *gump = new CGumpWorldMap(x, y);
-	gump->Called = true;
-
-	g_GumpManager.AddGump(gump);*/
 }
 
 void COrion::OpenJournal()

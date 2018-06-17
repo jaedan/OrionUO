@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SkillGroupManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -19,10 +12,6 @@ CSkillGroupManager::~CSkillGroupManager()
 {
 }
 
-/*!
-Выставить группы по-умолчанию
-@return 
-*/
 void CSkillGroupManager::MakeDefault()
 {
     WISPFUN_DEBUG("c155_f1");
@@ -79,17 +68,17 @@ void CSkillGroupManager::MakeDefaultCombat()
     group->Add(27);
 
     if (cnt > 57)
-        group->Add(57); //Throving
+        group->Add(57);
     group->Add(43);
 
     if (cnt > 50)
-        group->Add(50); //Focus
+        group->Add(50);
     if (cnt > 51)
-        group->Add(51); //Chivalry
+        group->Add(51);
     if (cnt > 52)
-        group->Add(52); //Bushido
+        group->Add(52);
     if (cnt > 53)
-        group->Add(53); //Ninjitsu
+        group->Add(53);
 
     Add(group);
 }
@@ -122,17 +111,17 @@ void CSkillGroupManager::MakeDefaultMagic()
     group->Name = "Magic";
     group->Add(16);
     if (cnt > 56)
-        group->Add(56); //Imbuing
+        group->Add(56);
     group->Add(25);
     group->Add(46);
     if (cnt > 55)
-        group->Add(55); //Mysticism
+        group->Add(55);
     group->Add(26);
     if (cnt > 54)
-        group->Add(54); //Spellweaving
+        group->Add(54);
     group->Add(32);
     if (cnt > 49)
-        group->Add(49); //Necromancy
+        group->Add(49);
 
     Add(group);
 }
@@ -182,10 +171,6 @@ void CSkillGroupManager::MakeDefaultBard()
     Add(group);
 }
 
-/*!
-Очистить список групп
-@return 
-*/
 void CSkillGroupManager::Clear()
 {
     WISPFUN_DEBUG("c155_f9");
@@ -204,11 +189,6 @@ void CSkillGroupManager::Clear()
     m_Groups = NULL;
 }
 
-/*!
-Добавить группу
-@param [__in] group Ссылка на группу
-@return
-*/
 void CSkillGroupManager::Add(CSkillGroupObject *group)
 {
     WISPFUN_DEBUG("c155_f10");
@@ -234,15 +214,10 @@ void CSkillGroupManager::Add(CSkillGroupObject *group)
     Count++;
 }
 
-/*!
-Удалить группу
-@param [__in] group Ссылка на группу
-@return 
-*/
 bool CSkillGroupManager::Remove(CSkillGroupObject *group)
 {
     WISPFUN_DEBUG("c155_f11");
-    if (group->m_Prev == NULL) //Miscellaneous
+    if (group->m_Prev == NULL)
     {
         int x = g_ConfigManager.GameWindowX + (g_ConfigManager.GameWindowWidth / 2) - 100;
         int y = g_ConfigManager.GameWindowY + (g_ConfigManager.GameWindowHeight / 2) - 62;
@@ -276,11 +251,6 @@ bool CSkillGroupManager::Remove(CSkillGroupObject *group)
     return true;
 }
 
-/*!
-Загрузка групп из файла конфига
-@param [__in] path Путь к файлу конфига
-@return 
-*/
 bool CSkillGroupManager::Load(string path)
 {
     WISPFUN_DEBUG("c155_f12");
@@ -335,11 +305,6 @@ bool CSkillGroupManager::Load(string path)
     return result;
 }
 
-/*!
-Сохранение групп в файл конфиг
-@param [__in] path Путьк  файлу конфига
-@return 
-*/
 void CSkillGroupManager::Save(string path)
 {
     WISPFUN_DEBUG("c155_f13");
@@ -347,7 +312,7 @@ void CSkillGroupManager::Save(string path)
 
     writter.Open(path);
 
-    writter.WriteUInt8(0); //version
+    writter.WriteUInt8(0);
 
     Count = 0;
     CSkillGroupObject *group = m_Groups;
@@ -357,7 +322,7 @@ void CSkillGroupManager::Save(string path)
         group = group->m_Next;
     }
 
-    writter.WriteUInt16LE(Count); //Count
+    writter.WriteUInt16LE(Count);
 
     group = m_Groups;
 
@@ -367,19 +332,19 @@ void CSkillGroupManager::Save(string path)
         size_t len = str.length() + 1;
 
         short size = (short)len + 2 + 2 + 2 + group->Count;
-        writter.WriteUInt16LE(size); //Block size
+        writter.WriteUInt16LE(size);
 
-        writter.WriteUInt16LE((short)len); //Name length
-        writter.WriteString(str, false);   //Name
+        writter.WriteUInt16LE((short)len);
+        writter.WriteString(str, false);
 
         short count = group->Count;
 
-        writter.WriteUInt16LE(count); //Skills count
+        writter.WriteUInt16LE(count);
 
         IFOR (j, 0, count)
         {
             BYTE skill = group->GetItem(j);
-            writter.WriteUInt8(skill); //Skill
+            writter.WriteUInt8(skill);
         }
 
         writter.WriteBuffer();

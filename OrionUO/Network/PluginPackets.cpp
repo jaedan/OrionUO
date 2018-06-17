@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PluginPackets.cpp
-**
-** Copyright (C) November 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -13,7 +6,7 @@ CPluginPacket::CPluginPacket()
     : WISP_DATASTREAM::CDataWritter()
 {
     WriteUInt8(0xFC);
-    WriteUInt16BE(0); //size reserved
+    WriteUInt16BE(0);
 }
 
 CPluginPacket::CPluginPacket(int size, bool autoResize)

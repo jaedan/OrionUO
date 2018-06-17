@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** UseItemsList.h
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef USEITEMSLIST_H
 #define USEITEMSLIST_H
@@ -30,4 +23,4 @@ public:
 
 extern CUseItemActions g_UseItemActions;
 
-#endif //USEITEMSLIST_H
+#endif

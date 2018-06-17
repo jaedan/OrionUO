@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpShop.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -191,12 +184,12 @@ void CGumpShop::PrepareContent()
 void CGumpShop::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c123_f5");
-    if (serial == ID_GB_BUTTON_ACCEPT) //Accept
+    if (serial == ID_GB_BUTTON_ACCEPT)
     {
         NoProcess = true;
         m_ContinueCounter = 0;
     }
-    else if (serial == ID_GB_BUTTON_CLEAR) //Clear
+    else if (serial == ID_GB_BUTTON_CLEAR)
         m_ContinueCounter = 0;
 }
 

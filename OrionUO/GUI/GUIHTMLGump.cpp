@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIHTMLGump.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -140,7 +133,7 @@ void CGUIHTMLGump::Initalize(bool menu)
             0,
             0,
             0);
-        //m_Slider->SetTextParameters(true, STP_RIGHT_CENTER, 3, 0x0021, false);
+
         m_Slider->Visible = HaveScrollbar;
 
         m_Scissor = new CGUIScissor(true, m_X, m_Y, 0, 0, offsetWidth, Height);

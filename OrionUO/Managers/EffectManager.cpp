@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** EffectManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -16,11 +9,6 @@ CEffectManager::CEffectManager()
 {
 }
 
-/*!
-Добавить эффект
-@param [__in] effect Ссылка на эффект
-@return 
-*/
 void CEffectManager::AddEffect(CGameEffect *effect)
 {
     WISPFUN_DEBUG("c141_f1");
@@ -107,11 +95,6 @@ void CEffectManager::AddEffect(CGameEffect *effect)
     }
 }
 
-/*!
-Удалить эффект
-@param [__in] effect Ссылка на эффект
-@return 
-*/
 void CEffectManager::RemoveEffect(CGameEffect *effect)
 {
     WISPFUN_DEBUG("c141_f2");
@@ -122,11 +105,6 @@ void CEffectManager::RemoveEffect(CGameEffect *effect)
     delete effect;
 }
 
-/*!
-Создать эффект взрыва
-@param [__in] effect Ссылка на эффект
-@return 
-*/
 void CEffectManager::CreateExplodeEffect(CGameEffect *effect, const EFFECT_TYPE &type)
 {
     WISPFUN_DEBUG("c141_f3");
@@ -148,10 +126,6 @@ void CEffectManager::CreateExplodeEffect(CGameEffect *effect, const EFFECT_TYPE 
     AddEffect(newEffect);
 }
 
-/*!
-Обновление эффектов
-@return 
-*/
 void CEffectManager::UpdateEffects()
 {
     WISPFUN_DEBUG("c141_f3");
@@ -165,10 +139,6 @@ void CEffectManager::UpdateEffects()
     }
 }
 
-/*!
-Удаление эффектов, вышедших за пределы экрана
-@return 
-*/
 void CEffectManager::RemoveRangedEffects()
 {
     WISPFUN_DEBUG("c141_f4");

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpTextEntryDialog.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPTEXTENTRYDIALOG_H
 #define GUMPTEXTENTRYDIALOG_H

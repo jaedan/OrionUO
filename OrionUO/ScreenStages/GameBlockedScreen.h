@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameBlockedScreen.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GAMEBLOCKEDSCREEN_H
 #define GAMEBLOCKEDSCREEN_H
@@ -13,7 +6,6 @@
 class CGameBlockedScreen : public CBaseScreen
 {
 public:
-    //!Код блокировки
     uchar Code = 0;
 
     CGump m_GameBlockedScreenGump;
@@ -21,17 +13,8 @@ public:
     CGameBlockedScreen();
     ~CGameBlockedScreen();
 
-    /*!
-	Инициализация
-	@return
-	*/
     virtual void Init();
 
-    /*!
-	Отрисовка/выбор объектов
-	@param [__in] mode true - отрисовка, false - выбор
-	@return При выборе объектов - идентификатор выбранного объекта
-	*/
     virtual void Render(bool mode);
 
     virtual void OnLeftMouseButtonDown();

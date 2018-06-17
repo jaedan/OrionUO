@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpCustomHouse.cpp
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -1757,9 +1750,6 @@ bool CGumpCustomHouse::ValidateItemPlace(
             return false;
         };
 
-        //if (existsInList(validatedFloors, WISP_GEOMETRY::CPoint2Di(item->GetX(), item->GetY())))
-        //	return false;
-
         if (ValidatePlaceStructure(
                 foundationItem,
                 foundationItem->GetMultiAtXY(item->GetX(), item->GetY()),
@@ -1945,7 +1935,7 @@ bool CGumpCustomHouse::CanEraseHere(CRenderWorldObject *place, CUSTOM_HOUSE_BUIL
 
 void CGumpCustomHouse::OnTargetWorld(CRenderWorldObject *place)
 {
-    if (place != NULL && place->IsMultiObject()) // && place->GetZ() >= MinHouseZ)
+    if (place != NULL && place->IsMultiObject())
     {
         CMultiObject *multiObject = (CMultiObject *)place;
 

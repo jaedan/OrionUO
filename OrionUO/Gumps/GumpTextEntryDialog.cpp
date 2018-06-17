@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpTextEntryDialog.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -39,12 +32,12 @@ void CGumpTextEntryDialog::PrepareContent()
     WISPFUN_DEBUG("c130_f2");
     if (m_TextField != NULL && m_Entry != NULL)
     {
-        ushort newGraphic = 0x0475; //Text field
+        ushort newGraphic = 0x0475;
 
         if (g_EntryPointer == &m_Entry->m_Entry)
-            newGraphic = 0x0477; //Text field (active)
+            newGraphic = 0x0477;
         else if (g_SelectedObject.Object == m_Entry)
-            newGraphic = 0x0476; //Text field (lighted)
+            newGraphic = 0x0476;
 
         if (m_TextField->Graphic != newGraphic)
         {
@@ -91,16 +84,16 @@ void CGumpTextEntryDialog::UpdateContent()
 void CGumpTextEntryDialog::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c130_f4");
-    if (serial == ID_GTED_BUTTON_OKAY) //Button okay
+    if (serial == ID_GTED_BUTTON_OKAY)
         SendTextEntryDialogResponse(true);
-    else if (serial == ID_GTED_BUTTON_CANCEL) //Button cancel
+    else if (serial == ID_GTED_BUTTON_CANCEL)
         SendTextEntryDialogResponse(false);
 }
 
 void CGumpTextEntryDialog::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c130_f5");
-    if (Variant == 2) //Только числа
+    if (Variant == 2)
     {
         if (wParam >= '0' && wParam <= '9')
         {
@@ -114,7 +107,7 @@ void CGumpTextEntryDialog::OnCharPress(const WPARAM &wParam, const LPARAM &lPara
                 WantRedraw = true;
         }
     }
-    else if (Variant == 1) //Что угодно, но с ограничением по длине
+    else if (Variant == 1)
     {
         if ((int)g_EntryPointer->Length() < m_MaxLength)
         {
@@ -156,13 +149,10 @@ void CGumpTextEntryDialog::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 void CGumpTextEntryDialog::SendTextEntryDialogResponse(bool mode)
 {
     WISPFUN_DEBUG("c130_f7");
-    if (!RemoveMark &&
-        m_Entry != NULL) //Непредвиденная ошибка при отсутствии поля ввода текста в гампе
+    if (!RemoveMark && m_Entry != NULL)
     {
-        //Отправляем ответ на ентри диалог
         CPacketTextEntryDialogResponse(this, &m_Entry->m_Entry, mode).Send();
     }
 
-    //Удаляем использованный гамп
     RemoveMark = true;
 }

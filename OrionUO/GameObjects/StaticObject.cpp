@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** StaticObject.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -16,24 +9,19 @@ CStaticObject::CStaticObject(int serial, ushort graphic, ushort color, short x, 
     OriginalGraphic = graphic;
     UpdateGraphicBySeason();
 
-    //if (!color)
-    //	m_Color = m_TiledataPtr->Hue;
-
     m_TextControl->MaxSize = 1;
 
 #if UO_DEBUG_INFO != 0
     g_StaticsObjectsCount++;
-#endif //UO_DEBUG_INFO!=0
+#endif
 }
 
 void CStaticObject::UpdateGraphicBySeason()
 {
     WISPFUN_DEBUG("c28_f2");
-    //ushort graphic = Graphic;
 
     Graphic = g_Orion.GetSeasonGraphic(OriginalGraphic);
 
-    //if (Graphic != graphic)
     {
         Vegetation = g_Orion.IsVegetation(Graphic);
     }

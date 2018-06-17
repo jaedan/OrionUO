@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIScrollBackground.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -40,7 +33,7 @@ CGUIScrollBackground::CGUIScrollBackground(int serial, ushort graphic, int x, in
         OffsetX = (width - th[1]->Width) / 2;
         int offset = th[0]->Width - th[3]->Width;
         BottomOffsetX = (offset / 2) + (offset / 4);
-        Width = width; // m_OffsetX + th[3]->Width;
+        Width = width;
     }
 
     UpdateHeight(Height);
@@ -88,7 +81,7 @@ void CGUIScrollBackground::Draw(bool checktrans)
             return;
     }
 
-    th[0]->Draw(m_X, m_Y, checktrans); //Top scroll
+    th[0]->Draw(m_X, m_Y, checktrans);
 
     int currentY = th[0]->Height;
     int height = Height - th[3]->Height;
@@ -118,7 +111,7 @@ void CGUIScrollBackground::Draw(bool checktrans)
         }
     }
 
-    th[3]->Draw(m_X + BottomOffsetX, m_Y + Height - th[3]->Height, checktrans); //Bottom scroll
+    th[3]->Draw(m_X + BottomOffsetX, m_Y + Height - th[3]->Height, checktrans);
 }
 
 bool CGUIScrollBackground::Select()
@@ -148,8 +141,7 @@ bool CGUIScrollBackground::Select()
     y = m_Y;
 
     select = g_Orion.GumpPixelsInXY(Graphic, m_X, y) ||
-             g_Orion.GumpPixelsInXY(
-                 Graphic + 3, m_X + BottomOffsetX, y + Height - th[3]->Height); //Top/Bottom scrolls
+             g_Orion.GumpPixelsInXY(Graphic + 3, m_X + BottomOffsetX, y + Height - th[3]->Height);
 
     x = m_X + OffsetX;
 

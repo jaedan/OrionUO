@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ObjectPripertiesManager.h
-**
-** Copyright (C) October 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef OBJECTPROPERTIESMANAGER_H
 #define OBJECTPROPERTIESMANAGER_H
@@ -54,4 +47,4 @@ public:
 
 extern CObjectPropertiesManager g_ObjectPropertiesManager;
 
-#endif //OBJECTPROPERTIESMANAGER_H
+#endif

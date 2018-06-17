@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ConnectionScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,10 +13,6 @@ CConnectionScreen::~CConnectionScreen()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CConnectionScreen::Init()
 {
     WISPFUN_DEBUG("c161_f1");
@@ -77,11 +66,6 @@ void CConnectionScreen::SetText(const string &val)
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CConnectionScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c161_f2");
@@ -98,12 +82,6 @@ void CConnectionScreen::ProcessSmoothAction(uchar action)
         CPacketDeleteCharacter(g_CharacterList.Selected).Send();
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CConnectionScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c161_f3");

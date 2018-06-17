@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenSelectProfession.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -81,19 +74,17 @@ void CGumpScreenSelectProfession::UpdateContentOld()
 
     if (!g_SelectProfessionScreen.GetSkillSelection())
     {
-        //!Используем обработку HTML-тэгов при создании текстуры текста
         g_FontManager.SetUseHTML(true);
 
         CGUIText *text = new CGUIText(0, 3, 3);
         text->CreateTextureW(1, obj->Description, 30, 195);
         htmlGump->Add(text);
 
-        //!Выключаем обработку HTML-тэгов
         g_FontManager.SetUseHTML(false);
     }
     else
     {
-        int yPtr = 4; // 20;
+        int yPtr = 4;
 
         IFOR (i, 0, g_SkillsManager.Count)
         {
@@ -119,7 +110,7 @@ void CGumpScreenSelectProfession::UpdateContentOld()
 
     htmlGump->CalculateDataSize();
 
-    if (obj->Type == PT_CATEGORY) //category
+    if (obj->Type == PT_CATEGORY)
     {
         Add(new CGUIButton(
             ID_SPS_LABEL_BACK_PROFESSION, obj->Gump, obj->Gump, obj->Gump + 1, 231, 53));
@@ -143,7 +134,7 @@ void CGumpScreenSelectProfession::UpdateContentOld()
             index++;
         }
     }
-    else if (obj->Type == PT_PROFESSION) //profession
+    else if (obj->Type == PT_PROFESSION)
     {
         Add(new CGUIButton(
             ID_SPS_LABEL_BACK_PROFESSION, obj->Gump, obj->Gump, obj->Gump + 1, 231, 53));
@@ -207,7 +198,7 @@ void CGumpScreenSelectProfession::UpdateContentOld()
                 yPtr += 32;
             }
         }
-        else //advanced
+        else
         {
             yPtr = 256;
 
@@ -290,7 +281,7 @@ void CGumpScreenSelectProfession::UpdateContentNew()
 
     Add(new CGUIGumppic(obj->Gump, 299, 53));
 
-    if (obj->Type == PT_CATEGORY) //category
+    if (obj->Type == PT_CATEGORY)
     {
         int offsX = 0;
         int offsY = 0;
@@ -336,7 +327,7 @@ void CGumpScreenSelectProfession::UpdateContentNew()
             index++;
         }
     }
-    else if (obj->Type == PT_PROFESSION) //profession
+    else if (obj->Type == PT_PROFESSION)
     {
         CProfession *profession = (CProfession *)obj;
         int statVal[3] = { profession->Str, profession->Dex, profession->Int };
@@ -344,7 +335,6 @@ void CGumpScreenSelectProfession::UpdateContentNew()
 
         int yPtr = 171;
 
-        //Stats
         IFOR (i, 0, 3)
         {
             text = (CGUIText *)Add(new CGUIText(1, 160, yPtr));
@@ -370,8 +360,6 @@ void CGumpScreenSelectProfession::UpdateContentNew()
         }
 
         yPtr = 171;
-
-        //Skills
 
         if (g_SelectProfessionScreen.GetSkillSelection())
         {
@@ -531,13 +519,13 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
     CBaseProfession *obj = g_ProfessionManager.Selected;
     CProfession *profession = (CProfession *)obj;
 
-    if (serial == ID_SPS_QUIT) //x button
+    if (serial == ID_SPS_QUIT)
         g_SelectProfessionScreen.CreateSmoothAction(CSelectProfessionScreen::ID_SMOOTH_SPS_QUIT);
-    else if (serial == ID_SPS_ARROW_PREV) //< button
+    else if (serial == ID_SPS_ARROW_PREV)
     {
         if (g_PacketManager.GetClientVersion() >= CV_308Z &&
             g_ProfessionManager.Selected->Type == PT_PROFESSION &&
-            g_ProfessionManager.Selected->DescriptionIndex == -1 /*Advanced*/)
+            g_ProfessionManager.Selected->DescriptionIndex == -1)
         {
             g_ProfessionManager.Selected =
                 g_ProfessionManager.GetParent(g_ProfessionManager.Selected);
@@ -549,13 +537,13 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
             g_SelectProfessionScreen.CreateSmoothAction(
                 CSelectProfessionScreen::ID_SMOOTH_SPS_GO_SCREEN_CHARACTER);
     }
-    else if (serial == ID_SPS_ARROW_NEXT) //> button
+    else if (serial == ID_SPS_ARROW_NEXT)
     {
         if (obj->Type == PT_PROFESSION)
         {
             bool passed = true;
 
-            if (profession->DescriptionIndex == -1) //Advanced
+            if (profession->DescriptionIndex == -1)
             {
                 int skillsCount = 3;
 
@@ -589,9 +577,7 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
                     CSelectProfessionScreen::ID_SMOOTH_SPS_GO_SCREEN_CREATE);
         }
     }
-    else if (
-        serial == ID_SPS_ARROW_BACK_PROFESSION ||
-        serial == ID_SPS_LABEL_BACK_PROFESSION) //Arrow < or General Label gump
+    else if (serial == ID_SPS_ARROW_BACK_PROFESSION || serial == ID_SPS_LABEL_BACK_PROFESSION)
     {
         g_ProfessionManager.Selected = g_ProfessionManager.GetParent(g_ProfessionManager.Selected);
         g_SelectProfessionScreen.SetSkillSelection(0);
@@ -667,7 +653,6 @@ void CGumpScreenSelectProfession::GUMP_SLIDER_MOVE_EVENT_C
     if (g_PacketManager.GetClientVersion() >= CV_70160)
         skillsCount++;
 
-    //Stats
     if (serial >= ID_SPS_STATS_SPHERE && (int)serial < ID_SPS_STATS_SPHERE + skillsCount)
     {
         if (g_PacketManager.GetClientVersion() >= CV_308Z)
@@ -681,7 +666,6 @@ void CGumpScreenSelectProfession::GUMP_SLIDER_MOVE_EVENT_C
             ShuffleStats(serial - ID_SPS_STATS_SPHERE, 65, 45);
     }
 
-    //Skills
     if (serial >= ID_SPS_SKILLS_SPHERE && (int)serial < ID_SPS_SKILLS_SPHERE + skillsCount)
         ShuffleSkills(serial - ID_SPS_SKILLS_SPHERE);
 }
@@ -712,7 +696,7 @@ void CGumpScreenSelectProfession::ShuffleStats(int id, int maxSum, int maxVal)
 
     int stat_sum = maxSum - (stats[0] + stats[1] + stats[2]);
 
-    if (stat_sum > 0) //stat will decrease
+    if (stat_sum > 0)
     {
         while (stat_sum > 0)
         {
@@ -730,7 +714,7 @@ void CGumpScreenSelectProfession::ShuffleStats(int id, int maxSum, int maxVal)
                 break;
         }
     }
-    else if (stat_sum < 0) //stat will increase
+    else if (stat_sum < 0)
     {
         while (stat_sum < 0)
         {
@@ -806,7 +790,7 @@ void CGumpScreenSelectProfession::ShuffleSkills(int id)
 
     int skills_sum = 100 - (skills[0] + skills[1] + skills[2] + skills[3]);
 
-    if (skills_sum > 0) //skill will decrease
+    if (skills_sum > 0)
     {
         while (skills_sum > 0)
         {
@@ -829,7 +813,7 @@ void CGumpScreenSelectProfession::ShuffleSkills(int id)
                 break;
         }
     }
-    else if (skills_sum < 0) //skill will increase
+    else if (skills_sum < 0)
     {
         while (skills_sum < 0)
         {

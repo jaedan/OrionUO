@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpStatusbar.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -44,51 +37,47 @@ void CGumpStatusbar::InitToolTip()
     WISPFUN_DEBUG("c128_f3");
     uint id = g_SelectedObject.Serial;
 
-    //if (Minimized && Serial == g_PlayerSerial)
-    //	g_ToolTip.Set(L"Double click to maximize the statusbar gump");
     if (id && id <= ID_GSB_TEXT_CAST_RECOVERY)
     {
-        static const wstring tooltip[ID_GSB_TEXT_CAST_RECOVERY] = {
-            L"Minimize the statusbar gump", //ID_GSB_MINIMIZE
-            L"",                            //ID_GSB_TEXT_FIELD
-            L"",                            //ID_GSB_BUTTON_HEAL_1
-            L"",                            //ID_GSB_BUTTON_HEAL_2
-            L"Remove bar from group",       //ID_GSB_BUTTON_REMOVE_FROM_GROUP
-            L"Open buff window",            //ID_GSB_BUFF_GUMP
-            L"Change strength state",       //ID_GSB_BUFF_LOCKER_STR
-            L"Change dexterity state",      //ID_GSB_BUFF_LOCKER_DEX
-            L"Change intelligence state",   //ID_GSB_BUFF_LOCKER_INT
-            L"",                            //
-            L"Strength",                    //ID_GSB_TEXT_STR
-            L"Dexterity",                   //ID_GSB_TEXT_DEX
-            L"Intelligence",                //ID_GSB_TEXT_INT
-            L"Sex",                         //ID_GSB_TEXT_SEX
-            L"Armor",                       //ID_GSB_TEXT_ARMOR
-            L"Hit Points",                  //ID_GSB_TEXT_HITS
-            L"Stamina",                     //ID_GSB_TEXT_STAM
-            L"Mana",                        //ID_GSB_TEXT_MANA
-            L"Maximum stats",               //ID_GSB_TEXT_MAX_STATS
-            L"Luck",                        //ID_GSB_TEXT_LUCK
-            L"Weight",                      //ID_GSB_TEXT_WEIGHT
-            L"Damage",                      //ID_GSB_TEXT_DAMAGE
-            L"Gold",                        //ID_GSB_TEXT_GOLD
-            L"Followers",                   //ID_GSB_TEXT_FOLLOWERS
-            L"Physical Resistance",         //ID_GSB_TEXT_RESISTANCE_PHYSICAL
-            L"Fire Resistance",             //ID_GSB_TEXT_RESISTANCE_FIRE
-            L"Cold Resistance",             //ID_GSB_TEXT_RESISTANCE_COLD
-            L"Poison Resistance",           //ID_GSB_TEXT_RESISTANCE_POISON
-            L"Energy Resistance",           //ID_GSB_TEXT_RESISTANCE_ENERGY
-            L"Tithing Points",              //ID_GSB_TEXT_TITHING_POINTS
-            L"Hit Chance Increase",         //ID_GSB_TEXT_HIT_CHANCE
-            L"Defense Chance Increase",     //ID_GSB_TEXT_DEFENCE_CHANCE
-            L"Lower Mana Cost",             //ID_GSB_TEXT_LOWER_MANA
-            L"Swing Speed Increase",        //ID_GSB_TEXT_SWING_SPEED
-            L"Weapon Damage Increase",      //ID_GSB_TEXT_WEAPON_DMG
-            L"Lower Reagent Cost",          //ID_GSB_TEXT_LOWER_REG_COST
-            L"Spell Damage Increase",       //ID_GSB_TEXT_SPELL_DMG
-            L"Faster Casting",              //ID_GSB_TEXT_FASTER_CASTING
-            L"Faster Cast Recovery"         //ID_GSB_TEXT_CAST_RECOVERY
-        };
+        static const wstring tooltip[ID_GSB_TEXT_CAST_RECOVERY] = { L"Minimize the statusbar gump",
+                                                                    L"",
+                                                                    L"",
+                                                                    L"",
+                                                                    L"Remove bar from group",
+                                                                    L"Open buff window",
+                                                                    L"Change strength state",
+                                                                    L"Change dexterity state",
+                                                                    L"Change intelligence state",
+                                                                    L"",
+                                                                    L"Strength",
+                                                                    L"Dexterity",
+                                                                    L"Intelligence",
+                                                                    L"Sex",
+                                                                    L"Armor",
+                                                                    L"Hit Points",
+                                                                    L"Stamina",
+                                                                    L"Mana",
+                                                                    L"Maximum stats",
+                                                                    L"Luck",
+                                                                    L"Weight",
+                                                                    L"Damage",
+                                                                    L"Gold",
+                                                                    L"Followers",
+                                                                    L"Physical Resistance",
+                                                                    L"Fire Resistance",
+                                                                    L"Cold Resistance",
+                                                                    L"Poison Resistance",
+                                                                    L"Energy Resistance",
+                                                                    L"Tithing Points",
+                                                                    L"Hit Chance Increase",
+                                                                    L"Defense Chance Increase",
+                                                                    L"Lower Mana Cost",
+                                                                    L"Swing Speed Increase",
+                                                                    L"Weapon Damage Increase",
+                                                                    L"Lower Reagent Cost",
+                                                                    L"Spell Damage Increase",
+                                                                    L"Faster Casting",
+                                                                    L"Faster Cast Recovery" };
 
         const wstring &text = tooltip[id - 1];
 
@@ -120,14 +109,6 @@ CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
     if (InGroup() || !Minimized)
         return NULL;
 
-    //154x59 mini-gump
-
-    /*static const int gumpWidth = 154;
-	static const int gumpHeight = 59;
-
-	const int rangeX = 77;
-	const int rangeY = 29;*/
-
     int gumpWidth = m_StatusbarDefaultWidth;
     int gumpHeight = m_StatusbarDefaultHeight;
 
@@ -149,13 +130,13 @@ CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
 
             if (x >= gumpX && x <= (gumpX + gumpWidth))
                 passed = 2;
-            else if (offsetX < rangeOffsetX) //left part of gump
+            else if (offsetX < rangeOffsetX)
                 passed = 1;
             else
             {
                 offsetX = abs(x - (gumpX + gumpWidth));
 
-                if (offsetX < rangeOffsetX) //right part of gump
+                if (offsetX < rangeOffsetX)
                     passed = -1;
                 else if (x >= (gumpX - rangeX) && x <= (gumpX + gumpWidth + rangeX))
                     passed = 2;
@@ -168,17 +149,17 @@ CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
                 if (y < (gumpY - rangeY) || y > (gumpY + gumpHeight + rangeY))
                     passed = 0;
             }
-            else if (passed == 2) //in gump range X
+            else if (passed == 2)
             {
                 int offsetY = abs(y - gumpY);
 
-                if (offsetY < rangeOffsetY) //top part of gump
+                if (offsetY < rangeOffsetY)
                     passed = 2;
                 else
                 {
                     offsetY = abs(y - (gumpY + gumpHeight));
 
-                    if (offsetY < rangeOffsetY) //bottom part of gump
+                    if (offsetY < rangeOffsetY)
                         passed = -2;
                     else
                         passed = 0;
@@ -192,22 +173,22 @@ CGumpStatusbar *CGumpStatusbar::GetNearStatusbar(int &x, int &y)
 
                 switch (passed)
                 {
-                    case -2: //gump bottom
+                    case -2:
                     {
                         testY += gumpHeight;
                         break;
                     }
-                    case -1: //gump right
+                    case -1:
                     {
                         testX += gumpWidth;
                         break;
                     }
-                    case 1: //gump left
+                    case 1:
                     {
                         testX -= gumpWidth;
                         break;
                     }
-                    case 2: //gump top
+                    case 2:
                     {
                         testY -= gumpHeight;
                         break;
@@ -259,7 +240,6 @@ bool CGumpStatusbar::GetStatusbarGroupOffset(int &x, int &y)
 
         while (gump != NULL)
         {
-            //Если гамп захватили и (может быть) двигают
             if (gump != this && g_PressedObject.LeftGump == gump && gump->CanBeMoved())
             {
                 WISP_GEOMETRY::CPoint2Di offset = g_MouseManager.LeftDroppedOffset();
@@ -293,7 +273,6 @@ void CGumpStatusbar::UpdateGroup(int x, int y)
             gump->MinimizedY += y;
 
             g_GumpManager.MoveToBack(gump);
-            //gump->WantRedraw = true;
         }
 
         gump = gump->m_GroupNext;
@@ -373,7 +352,6 @@ void CGumpStatusbar::CalculateGumpState()
     WISPFUN_DEBUG("c128_f10");
     CGump::CalculateGumpState();
 
-    //Если гамп захватили и (может быть) двигают
     if (g_GumpMovingOffset.X || g_GumpMovingOffset.Y)
     {
         if (g_Target.IsTargeting())
@@ -447,9 +425,9 @@ void CGumpStatusbar::UpdateContent()
     bool useUOPGumps = g_FileManager.UseUOPGumps;
     CGUIText *text = NULL;
 
-    if (Serial == g_PlayerSerial) //Если это статусбар игрока
+    if (Serial == g_PlayerSerial)
     {
-        if (!Minimized) //Если это "полная" версия статусбара
+        if (!Minimized)
         {
             POINT p = { 0, 0 };
 
@@ -464,14 +442,13 @@ void CGumpStatusbar::UpdateContent()
                 Add(new CGUIGumppic(0x0802, 0, 0));
             }
             int xOffset = 0;
-            //Отрисовка набора характеристик, расположение в зависимости от версии протокола, комментировать не буду...
+
             if (g_PacketManager.GetClientVersion() >= CV_308Z &&
                 !g_ConfigManager.GetOldStyleStatusbar())
             {
                 p.x = 389;
                 p.y = 152;
 
-                //Отрисуем имя игрока
                 if (g_Player->GetName().length())
                 {
                     text = (CGUIText *)Add(new CGUIText(0x0386, useUOPGumps ? 90 : 58, 50));
@@ -480,45 +457,40 @@ void CGumpStatusbar::UpdateContent()
 
                 if (g_PacketManager.GetClientVersion() >= CV_5020)
                 {
-                    //Кнопка вызова гампа бафов
                     Add(new CGUIButton(ID_GSB_BUFF_GUMP, 0x7538, 0x7538, 0x7538, 40, 50));
                 }
 
-                //Кнопочки для изменения роста/лока статов
                 if (g_DrawStatLockers)
                 {
-                    //Str
-                    uchar status = g_Player->LockStr; //Статус (вниз/вверх/замок)
+                    uchar status = g_Player->LockStr;
                     xOffset = useUOPGumps ? 28 : 40;
-                    ushort gumpID = 0x0984; //Up
+                    ushort gumpID = 0x0984;
                     if (status == 1)
-                        gumpID = 0x0986; //Down
+                        gumpID = 0x0986;
                     else if (status == 2)
-                        gumpID = 0x082C; //Lock
+                        gumpID = 0x082C;
 
                     Add(new CGUIButton(
                         ID_GSB_BUFF_LOCKER_STR, gumpID, gumpID, gumpID, xOffset, 76));
 
-                    //Dex
-                    status = g_Player->LockDex; //Статус (вниз/вверх/замок)
+                    status = g_Player->LockDex;
 
-                    gumpID = 0x0984; //Up
+                    gumpID = 0x0984;
                     if (status == 1)
-                        gumpID = 0x0986; //Down
+                        gumpID = 0x0986;
                     else if (status == 2)
-                        gumpID = 0x082C; //Lock
+                        gumpID = 0x082C;
 
                     Add(new CGUIButton(
                         ID_GSB_BUFF_LOCKER_DEX, gumpID, gumpID, gumpID, xOffset, 102));
 
-                    //Int
-                    status = g_Player->LockInt; //Статус (вниз/вверх/замок)
+                    status = g_Player->LockInt;
 
-                    gumpID = 0x0984; //Up
+                    gumpID = 0x0984;
                     if (status == 1)
-                        gumpID = 0x0986; //Down
+                        gumpID = 0x0986;
                     else if (status == 2)
-                        gumpID = 0x082C; //Lock
+                        gumpID = 0x082C;
 
                     Add(new CGUIButton(
                         ID_GSB_BUFF_LOCKER_INT, gumpID, gumpID, gumpID, xOffset, 132));
@@ -551,7 +523,7 @@ void CGumpStatusbar::UpdateContent()
                 if (useUOPGumps)
                 {
                     xOffset = 150;
-                    //Defence chance increase
+
                     text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 161));
                     text->CreateTextureA(
                         1,
@@ -561,21 +533,19 @@ void CGumpStatusbar::UpdateContent()
                 }
                 else
                     xOffset = 146;
-                //Hits
+
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 70));
                 text->CreateTextureA(1, std::to_string(g_Player->Hits), textWidth, TS_CENTER);
 
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 83));
                 text->CreateTextureA(1, std::to_string(g_Player->MaxHits), textWidth, TS_CENTER);
 
-                //Stam
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 98));
                 text->CreateTextureA(1, std::to_string(g_Player->Stam), textWidth, TS_CENTER);
 
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 111));
                 text->CreateTextureA(1, std::to_string(g_Player->MaxStam), textWidth, TS_CENTER);
 
-                //Mana
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 126));
                 text->CreateTextureA(1, std::to_string(g_Player->Mana), textWidth, TS_CENTER);
 
@@ -605,7 +575,6 @@ void CGumpStatusbar::UpdateContent()
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 105));
                 text->CreateTextureA(1, std::to_string(g_Player->Luck));
 
-                //Weights
                 text = (CGUIText *)Add(new CGUIText(0x0386, xOffset, 126));
                 text->CreateTextureA(1, std::to_string(g_Player->Weight), textWidth, TS_CENTER);
 
@@ -746,7 +715,6 @@ void CGumpStatusbar::UpdateContent()
                     p.y = 150;
                 }
 
-                //Отрисуем имя игрока
                 if (g_Player->GetName().length())
                 {
                     text = (CGUIText *)Add(new CGUIText(0x0386, 86, 42));
@@ -833,9 +801,9 @@ void CGumpStatusbar::UpdateContent()
                 Add(new CGUIHitBox(ID_GSB_MINIMIZE, p.x, p.y, 16, 16, true));
             }
         }
-        else //Это уменьшенная врсия статусбара (с полосками)
+        else
         {
-            if (g_Party.Leader != 0 && !g_ConfigManager.GetOriginalPartyStatusbar()) //inParty
+            if (g_Party.Leader != 0 && !g_ConfigManager.GetOriginalPartyStatusbar())
             {
                 CGUIGumppic *bodyGump = (CGUIGumppic *)Add(new CGUIGumppic(0x0803, 0, 0));
                 bodyGump->SelectOnly = true;
@@ -848,11 +816,10 @@ void CGumpStatusbar::UpdateContent()
 
                 int color = 0;
                 if (g_Player->Poisoned())
-                    color = 63; //Character status line (green)
+                    color = 63;
                 else if (g_Player->YellowHits())
-                    color = 353; //Character status line (yellow)
+                    color = 353;
 
-                //Hits
                 Add(new CGUIGumppic(0x0028, 34, 20));
 
                 int per = CalculatePercents(g_Player->MaxHits, g_Player->Hits, 96);
@@ -864,27 +831,25 @@ void CGumpStatusbar::UpdateContent()
                     gumppic->Color = color;
                 }
 
-                //Mana
                 Add(new CGUIGumppic(0x0028, 34, 33));
 
                 per = CalculatePercents(g_Player->MaxMana, g_Player->Mana, 96);
 
                 if (per > 0)
                 {
-                    CGUIGumppic *gumppic = (CGUIGumppic *)Add(new CGUIGumppicTiled(
-                        0x0029, 34, 33, per, 0)); //0x0170 green //0x0035 yellow
+                    CGUIGumppic *gumppic =
+                        (CGUIGumppic *)Add(new CGUIGumppicTiled(0x0029, 34, 33, per, 0));
                     gumppic->Color = 0x0482;
                 }
 
-                //Stam
                 Add(new CGUIGumppic(0x0028, 34, 45));
 
                 per = CalculatePercents(g_Player->MaxStam, g_Player->Stam, 96);
 
                 if (per > 0)
                 {
-                    CGUIGumppic *gumppic = (CGUIGumppic *)Add(new CGUIGumppicTiled(
-                        0x0029, 34, 45, per, 0)); //0x0170 green //0x0035 yellow
+                    CGUIGumppic *gumppic =
+                        (CGUIGumppic *)Add(new CGUIGumppicTiled(0x0029, 34, 45, per, 0));
                     gumppic->Color = 0x0075;
                 }
 
@@ -893,27 +858,25 @@ void CGumpStatusbar::UpdateContent()
             else
             {
                 if (g_Player->Warmode)
-                    Add(new CGUIGumppic(0x0807, 0, 0)); //Версия с включенным вармодом
+                    Add(new CGUIGumppic(0x0807, 0, 0));
                 else
-                    Add(new CGUIGumppic(0x0803, 0, 0)); //Гамп статусбара
+                    Add(new CGUIGumppic(0x0803, 0, 0));
 
-                //Hits
                 Add(new CGUIGumppic(0x0805, 34, 12));
 
                 int per = CalculatePercents(g_Player->MaxHits, g_Player->Hits, 109);
 
                 if (per > 0)
                 {
-                    ushort gumpid = 0x0806; //Character status line (blue)
+                    ushort gumpid = 0x0806;
                     if (g_Player->Poisoned())
-                        gumpid = 0x0808; //Character status line (green)
+                        gumpid = 0x0808;
                     else if (g_Player->YellowHits())
-                        gumpid = 0x0809; //Character status line (yellow)
+                        gumpid = 0x0809;
 
                     Add(new CGUIGumppicTiled(gumpid, 34, 12, per, 0));
                 }
 
-                //Mana
                 Add(new CGUIGumppic(0x0805, 34, 25));
 
                 per = CalculatePercents(g_Player->MaxMana, g_Player->Mana, 109);
@@ -921,7 +884,6 @@ void CGumpStatusbar::UpdateContent()
                 if (per > 0)
                     Add(new CGUIGumppicTiled(0x0806, 34, 25, per, 0));
 
-                //Stam
                 Add(new CGUIGumppic(0x0805, 34, 38));
 
                 per = CalculatePercents(g_Player->MaxStam, g_Player->Stam, 109);
@@ -936,7 +898,7 @@ void CGumpStatusbar::UpdateContent()
             m_StatusbarUnlocker->Visible = InGroup();
         }
     }
-    else //Чужой статусбар
+    else
     {
         if (g_Party.Contains(Serial) && !g_ConfigManager.GetOriginalPartyStatusbar())
         {
@@ -995,14 +957,14 @@ void CGumpStatusbar::UpdateContent()
                     }
                     int color = 0;
                     if (member.Character->Poisoned())
-                        color = 63; //Character status line (green)
+                        color = 63;
                     else if (member.Character->YellowHits())
-                        color = 353; //Character status line (yellow)
+                        color = 353;
 
                     if (outofRange)
                         color = 912;
                     Add(new CGUIShader(&g_ColorizerShader, true));
-                    //Hits
+
                     CGUIGumppic *g = new CGUIGumppic(0x0028, 34, 20);
                     g->Color = outofRange ? color : 0;
                     Add(g);
@@ -1017,7 +979,6 @@ void CGumpStatusbar::UpdateContent()
                         gumppic->Color = color;
                     }
 
-                    //Mana
                     g = new CGUIGumppic(0x0028, 34, 33);
                     g->Color = outofRange ? color : 0;
                     Add(g);
@@ -1026,12 +987,11 @@ void CGumpStatusbar::UpdateContent()
 
                     if (per > 0)
                     {
-                        CGUIGumppic *gumppic = (CGUIGumppic *)Add(new CGUIGumppicTiled(
-                            0x0029, 34, 33, per, 0)); //0x0170 green //0x0035 yellow
+                        CGUIGumppic *gumppic =
+                            (CGUIGumppic *)Add(new CGUIGumppicTiled(0x0029, 34, 33, per, 0));
                         gumppic->Color = outofRange ? color : 0x0482;
                     }
 
-                    //Stam
                     g = new CGUIGumppic(0x0028, 34, 45);
                     g->Color = outofRange ? color : 0;
                     Add(g);
@@ -1040,8 +1000,8 @@ void CGumpStatusbar::UpdateContent()
 
                     if (per > 0)
                     {
-                        CGUIGumppic *gumppic = (CGUIGumppic *)Add(new CGUIGumppicTiled(
-                            0x0029, 34, 45, per, 0)); //0x0170 green //0x0035 yellow
+                        CGUIGumppic *gumppic =
+                            (CGUIGumppic *)Add(new CGUIGumppicTiled(0x0029, 34, 45, per, 0));
                         gumppic->Color = outofRange ? color : 0x0075;
                     }
 
@@ -1065,7 +1025,7 @@ void CGumpStatusbar::UpdateContent()
             if (obj != NULL)
             {
                 hitsColor = 0;
-                //Вычисляем цвет статусбара
+
                 color = g_ConfigManager.GetColorByNotoriety(obj->Notoriety);
 
                 if (obj->Notoriety == NT_CRIMINAL || obj->Notoriety == NT_SOMEONE_GRAY)
@@ -1095,11 +1055,11 @@ void CGumpStatusbar::UpdateContent()
 
                 if (per > 0)
                 {
-                    ushort gumpid = 0x0806; //Character status line (blue)
+                    ushort gumpid = 0x0806;
                     if (obj->Poisoned())
-                        gumpid = 0x0808; //Character status line (green)
+                        gumpid = 0x0808;
                     else if (obj->YellowHits())
-                        gumpid = 0x0809; //Character status line (yellow)
+                        gumpid = 0x0809;
 
                     Add(new CGUIGumppicTiled(gumpid, 34, 38, per, 0));
                 }
@@ -1146,7 +1106,6 @@ void CGumpStatusbar::OnLeftMouseButtonDown()
     if (g_GeneratedMouseDown)
         return;
 
-    //Проверим, может быть есть таргет, который нужно повесить на данного чара
     if (g_Target.IsTargeting())
     {
         g_Target.SendTargetObject(Serial);
@@ -1164,7 +1123,6 @@ void CGumpStatusbar::GUMP_BUTTON_EVENT_C
 
     if (serial == ID_GSB_MINIMIZE && Serial == g_PlayerSerial)
     {
-        //Кнопка минимизации на полной версии гампа
         Minimized = true;
         WantUpdateContent = true;
     }
@@ -1230,7 +1188,6 @@ bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
 
     if (!g_PressedObject.LeftSerial && Serial == g_PlayerSerial && Minimized)
     {
-        //Если это статусбар игрока (с полосками) то развернем его до полной версии
         Minimized = false;
 
         if (InGroup())
@@ -1256,15 +1213,14 @@ bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
     else if (Serial != g_PlayerSerial)
     {
         if (g_Player->Warmode)
-            g_Orion.Attack(Serial); //Если в вармоде - атакуем
+            g_Orion.Attack(Serial);
         else
-            g_Orion.DoubleClick(Serial); //Или используем предмет
+            g_Orion.DoubleClick(Serial);
 
         return true;
     }
     else if (!Minimized)
     {
-        //По даблклику по полной версии статусбара теперь открывается папердолл
         g_Orion.PaperdollReq(Serial);
 
         return true;
@@ -1276,8 +1232,8 @@ bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
 void CGumpStatusbar::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c128_f16");
-    //Изменение имени существа
-    if (Serial != g_PlayerSerial) //Только чужие статусбары
+
+    if (Serial != g_PlayerSerial)
     {
         string str = g_EntryPointer->c_str();
 
@@ -1302,10 +1258,9 @@ void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     {
         case VK_RETURN:
         {
-            //Если всё впорядке - изменяем имя
             if (g_EntryPointer->Length())
                 SendRenameRequest();
-            else //Нельзя изменить имя на пустое
+            else
             {
                 CGameObject *obj = g_World->FindWorldObject(Serial);
 
@@ -1318,7 +1273,7 @@ void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             else
                 g_EntryPointer = &g_GameConsole;
 
-            WantRedraw = true; //Перерисуем
+            WantRedraw = true;
 
             break;
         }
@@ -1336,8 +1291,6 @@ void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         }
         case VK_ESCAPE:
         {
-            //По тыку на Esc можно выйти из редактирования имени существа
-
             CGameObject *obj = g_World->FindWorldObject(Serial);
             if (obj != NULL)
                 g_EntryPointer->SetText(obj->GetName());
@@ -1347,7 +1300,7 @@ void CGumpStatusbar::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
             else
                 g_EntryPointer = &g_GameConsole;
 
-            WantRedraw = true; //Перерисуем
+            WantRedraw = true;
 
             break;
         }
@@ -1366,9 +1319,8 @@ void CGumpStatusbar::SendRenameRequest()
 
         CEntryText *entry = &((CGUITextEntry *)item)->m_Entry;
 
-        if (entry->Length()) //Если в поле для ввода текста что-то есть
+        if (entry->Length())
         {
-            //Отправляем запрос на изменение имени
             CPacketRenameRequest(Serial, entry->c_str()).Send();
         }
     }

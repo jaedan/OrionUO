@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIComboBox.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -160,7 +153,7 @@ void CGUIComboBox::Draw(bool checktrans)
     if (Text != NULL)
         Text->m_Texture.Draw(m_X + Text->GetX(), m_Y + Text->GetY() + TextOffsetY, checktrans);
 
-    if (g_PressedObject.LeftObject == this) //maximized
+    if (g_PressedObject.LeftObject == this)
     {
         int currentX = m_X + 3;
         int currentY = m_Y + 3;
@@ -312,7 +305,7 @@ bool CGUIComboBox::Select()
     ListingDirection = 0;
     bool select = false;
 
-    if (g_PressedObject.LeftObject == this) //maximized
+    if (g_PressedObject.LeftObject == this)
     {
         int currentX = m_X + 3;
         int currentY = m_Y + 3;
@@ -357,7 +350,7 @@ CBaseGUI *CGUIComboBox::SelectedItem()
     WISPFUN_DEBUG("c49_f10");
     CBaseGUI *select = this;
 
-    if (g_PressedObject.LeftObject == this) //maximized
+    if (g_PressedObject.LeftObject == this)
     {
         int currentX = m_X + 3;
         int currentY = m_Y + 3;
@@ -402,7 +395,7 @@ int CGUIComboBox::IsSelectedItem()
     WISPFUN_DEBUG("c49_f11");
     int select = -1;
 
-    if (g_PressedObject.LeftObject == this) //maximized
+    if (g_PressedObject.LeftObject == this)
     {
         CBaseGUI *start = SkipToStart();
         int count = 0;

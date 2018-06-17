@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenCharacterList.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -154,17 +147,17 @@ void CGumpScreenCharacterList::InitToolTip()
 void CGumpScreenCharacterList::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c112_f3");
-    if (serial == ID_CS_QUIT) //x button
+    if (serial == ID_CS_QUIT)
         g_CharacterListScreen.CreateSmoothAction(CCharacterListScreen::ID_SMOOTH_CLS_QUIT);
-    else if (serial == ID_CS_ARROW_PREV) //< button
+    else if (serial == ID_CS_ARROW_PREV)
         g_CharacterListScreen.CreateSmoothAction(CCharacterListScreen::ID_SMOOTH_CLS_CONNECT);
-    else if (serial == ID_CS_ARROW_NEXT) //> button
+    else if (serial == ID_CS_ARROW_NEXT)
         g_CharacterListScreen.CreateSmoothAction(
             CCharacterListScreen::ID_SMOOTH_CLS_SELECT_CHARACTER);
-    else if (serial == ID_CS_NEW) //New button
+    else if (serial == ID_CS_NEW)
         g_CharacterListScreen.CreateSmoothAction(
             CCharacterListScreen::ID_SMOOTH_CLS_GO_SCREEN_PROFESSION_SELECT);
-    else if (serial == ID_CS_DELETE) //Delete button
+    else if (serial == ID_CS_DELETE)
         g_CharacterListScreen.CreateSmoothAction(
             CCharacterListScreen::ID_SMOOTH_CLS_GO_SCREEN_DELETE);
 }
@@ -189,10 +182,6 @@ void CGumpScreenCharacterList::GUMP_TEXT_ENTRY_EVENT_C
     }
 }
 
-/*!
-Двойной клик левой кнопкой мыши
-@return true при успешной обработке
-*/
 bool CGumpScreenCharacterList::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c112_f5");

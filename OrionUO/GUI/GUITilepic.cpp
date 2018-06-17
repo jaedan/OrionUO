@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUITilepic.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -56,8 +49,7 @@ void CGUITilepic::Draw(bool checktrans)
 bool CGUITilepic::Select()
 {
     WISPFUN_DEBUG("c80_f4");
-    //if (CGUIDrawObject::Select())
-    //	return true;
+
     CGLTexture *th = g_Orion.m_StaticDataIndex[Graphic].Texture;
 
     if (th != NULL)

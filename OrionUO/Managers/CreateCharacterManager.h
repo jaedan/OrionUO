@@ -1,29 +1,17 @@
-﻿/***********************************************************************************
-**
-** CreateCharacterManager.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef CREATECHARACTERMANAGER_H
 #define CREATECHARACTERMANAGER_H
 
-//!Информация о волосеном покрове
 struct CC_HAIR_STYLE
 {
-    //!Индекс гампа
     ushort GumpID;
 
-    //!Индекс картинки из Art.mul
     ushort GraphicID;
 
-    //!Название
     string Name;
 };
 
-//!Класс менеджера создания персонажей
 class CCreateCharacterManager
 {
 protected:
@@ -68,7 +56,6 @@ public:
     static const int GARGOYLE_HAIR_COLOR_COUNT = 18;
 
 private:
-    //!Перечень стилей причесок и бороды
     static const CC_HAIR_STYLE m_HumanMaleHairStyleTable[HUMAN_MALE_HAIR_COUNT];
     static const CC_HAIR_STYLE m_HumanFemaleHairStyleTable[HUMAN_FEMALE_HAIR_COUNT];
     static const CC_HAIR_STYLE m_HumanBeardStyleTable[HUMAN_MALE_FACIAL_HAIR_COUNT];
@@ -92,16 +79,8 @@ public:
     CCreateCharacterManager();
     ~CCreateCharacterManager();
 
-    /*!
-	Инициализация
-	@return
-	*/
     void Init();
 
-    /*!
-	Очистка
-	@return
-	*/
     void Clear();
 
     int GetCurrentHairCount();
@@ -120,22 +99,11 @@ public:
 
     pushort GetHairColorPtr();
 
-    /*!
-	Получить стиль волос
-	@param [__in] pos Индекс волос
-	@return Структура с данными о волосах
-	*/
     CC_HAIR_STYLE GetHair(uchar pos) const;
 
-    /*!
-	Получить стиль бороды
-	@param [__in] pos Индекс бороды
-	@return Структура с данными о бороде
-	*/
     CC_HAIR_STYLE GetBeard(uchar pos) const;
 };
 
-//!Менеджер создания мерсонажа
 extern CCreateCharacterManager g_CreateCharacterManager;
 
 #endif

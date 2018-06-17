@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameCharacter.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -40,7 +33,7 @@ CGameCharacter::CGameCharacter(int serial)
 CGameCharacter::~CGameCharacter()
 {
     WISPFUN_DEBUG("c15_f2");
-    //!Чистим память
+
     m_Steps.clear();
 
     m_HitsTexture.Clear();
@@ -51,16 +44,14 @@ CGameCharacter::~CGameCharacter()
         g_GumpManager.CloseGump(serial, 0, GT_STATUSBAR);
     else
     {
-        //!Если стянут статусбар - обновим его
         g_GumpManager.UpdateContent(serial, 0, GT_STATUSBAR);
     }
 
-    //!Если стянут статусбар таргет системы - обновим его
     g_GumpManager.UpdateContent(serial, 0, GT_TARGET_SYSTEM);
 
     if (!IsPlayer())
         g_GumpManager.CloseGump(serial, 0, GT_PAPERDOLL);
-    //Чистим если находился в пати.
+
     if (g_Party.Contains(serial))
     {
         IFOR (i, 0, 10)
@@ -124,10 +115,6 @@ void CGameCharacter::UpdateHitsTexture(uchar hits)
     }
 }
 
-/*!
-Сидит ли персонаж
-@return Индекс объекта из таблицы, на котором он восседает
-*/
 int CGameCharacter::IsSitting()
 {
     WISPFUN_DEBUG("c15_f4");
@@ -146,7 +133,7 @@ int CGameCharacter::IsSitting()
 
         while (obj != NULL && !result)
         {
-            if (obj->IsStaticGroupObject() && abs(m_Z - obj->GetZ()) <= 1) //m_Z == obj->GetZ()
+            if (obj->IsStaticGroupObject() && abs(m_Z - obj->GetZ()) <= 1)
             {
                 ushort graphic = obj->Graphic;
 
@@ -279,14 +266,6 @@ int CGameCharacter::IsSitting()
     return result;
 }
 
-/*!
-Отрисовать персонажа
-@param [__in] mode Режим рисования. true - рисование, false - выбор объектов
-@param [__in] drawX Экранная координата X объекта
-@param [__in] drawY Экранная координата Y объекта
-@param [__in] ticks Таймер рендера
-@return При выборе объектов возвращает выбранный элемент
-*/
 void CGameCharacter::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c15_f5");
@@ -302,7 +281,7 @@ void CGameCharacter::Draw(int x, int y)
     if (!IsPlayer() && g_Player->Warmode && g_SelectedObject.Object == this)
         g_StatusbarUnderMouse = Serial;
 
-    g_AnimationManager.DrawCharacter(this, x, y); //Draw character
+    g_AnimationManager.DrawCharacter(this, x, y);
 
     g_StatusbarUnderMouse = lastSBsel;
 
@@ -316,15 +295,10 @@ void CGameCharacter::Select(int x, int y)
         g_SelectedObject.Init(this);
 }
 
-/*!
-Обновить информацию о поле персонажа, обновление гампов
-@param [__in_opt] direction Направление персонажа
-@return 
-*/
 void CGameCharacter::OnGraphicChange(int direction)
 {
     WISPFUN_DEBUG("c15_f7");
-    //!Обновления пола и расы в зависимости от индекса картинки персонажа
+
     switch (Graphic)
     {
         case 0x0190:
@@ -380,16 +354,6 @@ void CGameCharacter::OnGraphicChange(int direction)
     }
 }
 
-/*!
-Установка анимации от сервера
-@param [__in] id Группа анимаци
-@param [__in_opt] interval Задержка между кадрами
-@param [__in_opt] frameCount Количество кадлов анимации
-@param [__in_opt] repeatCount Количество повторов анимации
-@param [__in_opt] repeat Зациклено или нет
-@param [__out_opt] frameDirection Направление прокрутки кадров (вперед/назад)
-@return 
-*/
 void CGameCharacter::SetAnimation(
     uchar id, uchar interval, uchar frameCount, uchar repeatCount, bool repeat, bool frameDirection)
 {
@@ -407,11 +371,6 @@ void CGameCharacter::SetAnimation(
     TimeToRandomFidget = g_Ticks + RANDOM_FIDGET_ANIMATION_DELAY;
 }
 
-/*!
-Установка группы анимации
-@param [__in] val Новое значение группы анимации
-@return
-*/
 void CGameCharacter::ResetAnimationGroup(uchar val)
 {
     WISPFUN_DEBUG("c15_f11");
@@ -425,10 +384,6 @@ void CGameCharacter::ResetAnimationGroup(uchar val)
     AnimationGroup = val;
 }
 
-/*!
-Установка случайной анимации (при длительном простое)
-@return 
-*/
 void CGameCharacter::SetRandomFidgetAnimation()
 {
     WISPFUN_DEBUG("c15_f12");
@@ -454,12 +409,6 @@ void CGameCharacter::SetRandomFidgetAnimation()
     }
 }
 
-/*!
-Скорректировать отношение анимаций
-@param [__in] group Группа анимации
-@param [__inout] animation Индекс группы анимации
-@return
-*/
 void CGameCharacter::GetAnimationGroup(ANIMATION_GROUPS group, uchar &animation)
 {
     WISPFUN_DEBUG("c15_f13");
@@ -505,13 +454,6 @@ void CGameCharacter::GetAnimationGroup(ANIMATION_GROUPS group, uchar &animation)
         animation = animAssociateTable[animation][group - 1];
 }
 
-/*!
-Скорректировать отношение индексов групп анимаций
-@param [__in] graphic Индекс картинки
-@param [__in] group Группа анимаций
-@param [__inout] animation Индекс анимации в группе
-@return 
-*/
 void CGameCharacter::CorrectAnimationGroup(ushort graphic, ANIMATION_GROUPS group, uchar &animation)
 {
     WISPFUN_DEBUG("c15_f14");
@@ -571,11 +513,6 @@ void CGameCharacter::CorrectAnimationGroup(ushort graphic, ANIMATION_GROUPS grou
     }
 }
 
-/*!
-Проверка на возможность изменения направления персонажа при движении в сидячем положении
-@param [__in] group Индекс группы анимации
-@return Можно изменять направление или нет
-*/
 bool CGameCharacter::TestStepNoChangeDirection(uchar group)
 {
     WISPFUN_DEBUG("c15_f15");
@@ -606,11 +543,6 @@ bool CGameCharacter::TestStepNoChangeDirection(uchar group)
     return result;
 }
 
-/*!
-Получить текущую группу анимации
-@param [__in_opt] graphic Индекс картинки персонажа
-@return Индекс группы анимации
-*/
 uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
 {
     WISPFUN_DEBUG("c15_f16");
@@ -672,7 +604,6 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
             AnimIndex = 0;
         }
 
-        //!Глюченный дельфин на всех клиентах
         if (graphic == 151)
             result++;
     }
@@ -733,13 +664,6 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
 
             AnimIndex = 0;
         }
-        //62 gg flying walk
-        //63 gg flying run
-        //64 gg flying idle
-        //65 gg flying warmode on
-        //66 gg flying taking1 dmg?
-        //67 same as 60/61
-        //68 gg flying taking dmg
 
         if (Race == RT_GARGOYLE)
         {
@@ -802,10 +726,6 @@ void CGameCharacter::ProcessGargoyleAnims(int &animGroup)
     }
 }
 
-/*!
-Получить индекс картинки для вычисления картинки анимации
-@return Индекс картинки персонажа
-*/
 ushort CGameCharacter::GetMountAnimation()
 {
     WISPFUN_DEBUG("c15_f17");
@@ -813,8 +733,8 @@ ushort CGameCharacter::GetMountAnimation()
 
     switch (graphic)
     {
-        case 0x0192: //male ghost
-        case 0x0193: //female ghost
+        case 0x0192:
+        case 0x0193:
         {
             graphic -= 2;
 
@@ -827,12 +747,6 @@ ushort CGameCharacter::GetMountAnimation()
     return graphic;
 }
 
-/*!
-не подписанная функция
-@param [__inout] dir не подписанный параметр
-@param [__in] canChange Можно ли изменять состояние стека хотьбы или нет
-@return 
-*/
 void CGameCharacter::UpdateAnimationInfo(BYTE &dir, bool canChange)
 {
     WISPFUN_DEBUG("c15_f18");
@@ -904,7 +818,7 @@ void CGameCharacter::UpdateAnimationInfo(BYTE &dir, bool canChange)
             {
                 directionChange = true;
 
-                removeStep = true; //direction change
+                removeStep = true;
             }
 
             if (removeStep)
@@ -925,7 +839,6 @@ void CGameCharacter::UpdateAnimationInfo(BYTE &dir, bool canChange)
                     if (m_Z - wd.Z >= 22)
                     {
                         g_Orion.CreateTextMessage(TT_OBJECT, g_PlayerSerial, 3, 0, "Ouch!");
-                        //play sound (5) ?
                     }
 
                     if (g_Walker.m_Step[g_Walker.CurrentWalkSequence].Accepted)

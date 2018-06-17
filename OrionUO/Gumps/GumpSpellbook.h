@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpSpellbook.h
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSPELLBOOK_H
 #define GUMPSPELLBOOK_H
@@ -69,7 +62,6 @@ private:
     static const SPELL_REQURIES m_SpellRequries4[SPELLBOOK_4_SPELLS_COUNT];
     static const SPELL_REQURIES m_SpellRequries5[SPELLBOOK_5_SPELLS_COUNT];
     static const SPELL_REQURIES m_SpellRequries6[SPELLBOOK_6_SPELLS_COUNT];
-    //static const SPELL_REQURIES m_SpellRequries7[SPELLBOOK_7_SPELLS_COUNT];
 
     int m_SpellCount{ 0 };
     uchar m_Spells[MAX_SPELLS_COUNT];

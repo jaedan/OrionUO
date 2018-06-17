@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SkillsManager.h
-**
-** Copyright (C) Obtober 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef SKILLSMANAGER_H
 #define SKILLSMANAGER_H
@@ -59,4 +52,4 @@ public:
 
 extern CSkillsManager g_SkillsManager;
 
-#endif //SKILLSMANAGER_H
+#endif

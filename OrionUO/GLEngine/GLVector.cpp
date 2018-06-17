@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GLVector.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -74,7 +67,6 @@ void CVector::Normalize()
 
     double result = X * X + Y * Y + Z * Z;
 
-    //if (result)
     {
         result = sqrtl(result);
 

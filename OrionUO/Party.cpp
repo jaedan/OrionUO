@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Party.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -57,10 +50,10 @@ void CParty::ParsePacketData(WISP_DATASTREAM::CDataReader &reader)
 
     switch (code)
     {
-        case 1: //Add member
+        case 1:
         {
         }
-        case 2: //Remove member
+        case 2:
         {
             uchar count = reader.ReadUInt8();
 
@@ -132,8 +125,8 @@ void CParty::ParsePacketData(WISP_DATASTREAM::CDataReader &reader)
 
             break;
         }
-        case 3: //Private party message
-        case 4: //Party message
+        case 3:
+        case 4:
         {
             uint serial = reader.ReadUInt32BE();
             wstring name = reader.ReadWString(0, true);
@@ -153,7 +146,7 @@ void CParty::ParsePacketData(WISP_DATASTREAM::CDataReader &reader)
 
             break;
         }
-        case 7: //Party invition
+        case 7:
         {
             g_Party.Inviter = reader.ReadUInt32BE();
 

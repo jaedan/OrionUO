@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpPartyManifest.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -137,13 +130,11 @@ void CGumpPartyManifest::GUMP_BUTTON_EVENT_C
             g_Orion.CreateTextMessage(TT_SYSTEM, 0xFFFFFFFF, 3, 0, "You are not in a party.");
         else
         {
-            //???????????????
             IFOR (i, 0, 10)
             {
                 if (g_Party.Member[i].Serial != 0)
                     CPacketPartyRemoveRequest(g_Party.Member[i].Serial).Send();
             }
-            //???????????????
         }
     }
     else if (serial == ID_GPM_BUTTON_ADD)

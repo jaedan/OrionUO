@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpCustomHouse.h
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPCUSTOMHOUSE_H
 #define GUMPCUSTOMHOUSE_H
@@ -207,4 +200,4 @@ public:
 
 extern CGumpCustomHouse *g_CustomHouseGump;
 
-#endif //GUMPCUSTOMHOUSE_H
+#endif

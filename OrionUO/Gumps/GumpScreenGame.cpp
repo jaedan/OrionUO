@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenGame.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -31,7 +24,7 @@ void CGumpScreenGame::UpdateContent()
     {
         WISP_GEOMETRY::CPoint2Di offset = g_MouseManager.LeftDroppedOffset();
 
-        if (g_PressedObject.LeftObject == m_Items) //resizer
+        if (g_PressedObject.LeftObject == m_Items)
         {
             g_RenderBounds.GameWindowWidth += offset.X;
             g_RenderBounds.GameWindowHeight += offset.Y;
@@ -58,7 +51,7 @@ void CGumpScreenGame::UpdateContent()
                     std::to_wstring(g_RenderBounds.GameWindowHeight));
             }
         }
-        else //scope
+        else
         {
             g_RenderBounds.GameWindowPosX += offset.X;
             g_RenderBounds.GameWindowPosY += offset.Y;
@@ -95,7 +88,7 @@ void CGumpScreenGame::InitToolTip()
 void CGumpScreenGame::Draw()
 {
     WISPFUN_DEBUG("c115_f4");
-    //Рамка игрового окна
+
     g_Orion.DrawGump(
         0x0A8D,
         0,
@@ -126,11 +119,11 @@ void CGumpScreenGame::Draw()
         g_RenderBounds.GameWindowWidth + 8,
         0);
 
-    ushort resizeGumpID = 0x0837; //button
+    ushort resizeGumpID = 0x0837;
     if (g_ConfigManager.LockResizingGameWindow)
-        resizeGumpID = 0x082C; //lock
+        resizeGumpID = 0x082C;
     else if (g_SelectedObject.Object == m_Items)
-        resizeGumpID++; //lighted button
+        resizeGumpID++;
 
     g_Orion.DrawGump(
         resizeGumpID,
@@ -190,7 +183,6 @@ CRenderObject *CGumpScreenGame::Select()
 void CGumpScreenGame::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c115_f6");
-    //CGump::OnLeftMouseButtonDown();
 
     if (g_GumpConsoleType != NULL)
         g_GumpManager.MoveToBack(g_GumpConsoleType);
@@ -201,7 +193,7 @@ void CGumpScreenGame::OnLeftMouseButtonUp()
     WISPFUN_DEBUG("c115_f7");
     WISP_GEOMETRY::CPoint2Di offset = g_MouseManager.LeftDroppedOffset();
 
-    if (g_PressedObject.LeftObject == m_Items) //resizer
+    if (g_PressedObject.LeftObject == m_Items)
     {
         g_ConfigManager.GameWindowWidth = g_ConfigManager.GameWindowWidth + offset.X;
         g_ConfigManager.GameWindowHeight = g_ConfigManager.GameWindowHeight + offset.Y;
@@ -221,7 +213,7 @@ void CGumpScreenGame::OnLeftMouseButtonUp()
         if (g_PacketManager.GetClientVersion() >= CV_200)
             CPacketGameWindowSize().Send();
     }
-    else //scope
+    else
     {
         g_ConfigManager.GameWindowX = g_ConfigManager.GameWindowX + offset.X;
         g_ConfigManager.GameWindowY = g_ConfigManager.GameWindowY + offset.Y;

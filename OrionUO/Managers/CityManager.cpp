@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CityManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -83,7 +76,6 @@ void CCityManager::Init()
     }
     else
     {
-        //!Названия городов
         static const string cityNames[9] = { "Yew",      "Minoc",      "Britain",
                                              "Moonglow", "Trinsic",    "Magincia",
                                              "Jhelom",   "Skara Brae", "Vesper" };
@@ -103,11 +95,6 @@ CCityManager::~CCityManager()
     Clear();
 }
 
-/*!
-Получить указатель на город
-@param [__in] name Имя города
-@return Ссылка на город или NULL
-*/
 CCity CCityManager::GetCity(const string &name)
 {
     WISPFUN_DEBUG("c134_f2");

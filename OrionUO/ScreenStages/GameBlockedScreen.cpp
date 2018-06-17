@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameBlockedScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,20 +13,11 @@ CGameBlockedScreen::~CGameBlockedScreen()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CGameBlockedScreen::Init()
 {
     Code = 0;
 }
 
-/*!
-Отрисовка/выбор объектов
-@param [__in] mode true - отрисовка, false - выбор
-@return При выборе объектов - идентификатор выбранного объекта
-*/
 void CGameBlockedScreen::Render(bool mode)
 {
     WISPFUN_DEBUG("c163_f1");
@@ -43,7 +27,7 @@ void CGameBlockedScreen::Render(bool mode)
 
         InitToolTip();
 
-        g_MouseManager.Draw(0x2073); //Main Gump mouse cursor
+        g_MouseManager.Draw(0x2073);
     }
     else
     {
@@ -64,10 +48,6 @@ void CGameBlockedScreen::Render(bool mode)
     }
 }
 
-/*!
-Нажатие левой кнопки мыши
-@return 
-*/
 void CGameBlockedScreen::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c163_f2");
@@ -75,10 +55,6 @@ void CGameBlockedScreen::OnLeftMouseButtonDown()
         g_GumpManager.OnLeftMouseButtonDown(true);
 }
 
-/*!
-Отпускание левой кнопки мыши
-@return 
-*/
 void CGameBlockedScreen::OnLeftMouseButtonUp()
 {
     WISPFUN_DEBUG("c163_f3");
@@ -86,12 +62,6 @@ void CGameBlockedScreen::OnLeftMouseButtonUp()
         g_GumpManager.OnLeftMouseButtonUp(true);
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CGameBlockedScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c163_f4");
@@ -101,12 +71,6 @@ void CGameBlockedScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     g_GumpManager.OnCharPress(wParam, lParam, true);
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CGameBlockedScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c163_f5");

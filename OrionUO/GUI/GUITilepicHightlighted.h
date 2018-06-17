@@ -1,23 +1,12 @@
-﻿/***********************************************************************************
-**
-** GUITilepicHightlighted.h
-**
-** Компонента для отображения картинки статики с возможностью подсветки
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUITILEPICHIGHTLIGHTED_H
 #define GUITILEPICHIGHTLIGHTED_H
 
 class CGUITilepicHightlighted : public CGUITilepic
 {
-    //!Цвет выбранной компоненты
     ushort SelectedColor = 0;
 
-    //!Дублировать картинку при отображении
     bool DoubleDraw = false;
 
 public:

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CorpseManager.h
-**
-** Copyright (C) August 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef CORPSEMANAGER_H
 #define CORPSEMANAGER_H
@@ -29,7 +22,6 @@ public:
     ~CCorpse() {}
 };
 
-//!Класс менеджера трупов
 class CCorpseManager
 {
 private:
@@ -50,7 +42,6 @@ public:
     void Clear() { m_List.clear(); }
 };
 
-//!Менеджер трупов
 extern CCorpseManager g_CorpseManager;
 
-#endif //CORPSEMANAGER_H
+#endif

@@ -1,20 +1,17 @@
-﻿
+
 #ifndef WISPDEFINITIONS_H
 #define WISPDEFINITIONS_H
 
-//0 - disable debugging
-//1 - debugging with queue (very slow run mode)
-//2 - debugging with function name (normal run mode)
 #define USE_WISP_DEBUG_FUNCTION_NAMES 0
 
 #if USE_WISP_DEBUG_FUNCTION_NAMES == 1
 #define WISPFUN_DEBUG(name)                                                                        \
-    CWispFunDebug wispfunctiondebugname("w_" __FUNCTION__);                                        \
+    CWispFunDebug wispfunctiondebugname("w_"__FUNCTION__);                                         \
     (void)wispfunctiondebugname
-//static const std::string wispfunctiondebugname("w_" name);
+
 #elif USE_WISP_DEBUG_FUNCTION_NAMES == 2
 extern char *g_WispCurrentFunctionName;
-#define WISPFUN_DEBUG(name) g_WispCurrentFunctionName = "w_" __FUNCTION__
+#define WISPFUN_DEBUG(name) g_WispCurrentFunctionName = "w_"__FUNCTION__
 #else
 #define WISPFUN_DEBUG(name)
 #endif
@@ -76,9 +73,8 @@ void DebugDump(puchar data, int size);
         ptr = NULL;                                                                                \
     }
 
-//!Incremented ordinary for
 #define IFOR(var, start, stop) for (intptr_t var = start; var < (intptr_t)stop; var++)
-//!Decremented ordinary for
+
 #define DFOR(var, start, stop) for (intptr_t var = start; var >= (intptr_t)stop; var--)
 
 #define IN_RANGE(name, id1, id2) ((name) >= (id1) && (name) <= (id2))

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MultiObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -19,24 +12,22 @@ CMultiObject::CMultiObject(ushort graphic, short x, short y, char z, int flags)
 
 #if UO_DEBUG_INFO != 0
     g_MultiObjectsCount++;
-#endif //UO_DEBUG_INFO!=0
+#endif
 }
 
 CMultiObject::~CMultiObject()
 {
 #if UO_DEBUG_INFO != 0
     g_MultiObjectsCount--;
-#endif //UO_DEBUG_INFO!=0
+#endif
 }
 
 void CMultiObject::UpdateGraphicBySeason()
 {
     WISPFUN_DEBUG("c25_f2");
-    //ushort graphic = Graphic;
 
     Graphic = g_Orion.GetSeasonGraphic(OriginalGraphic);
 
-    //if (Graphic != graphic)
     {
         Vegetation = g_Orion.IsVegetation(Graphic);
     }
@@ -79,7 +70,7 @@ void CMultiObject::Draw(int x, int y)
     g_RenderedObjectsCountInGameWindow++;
 #endif
 
-    if (OnTarget) //Мульти на таргете
+    if (OnTarget)
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);

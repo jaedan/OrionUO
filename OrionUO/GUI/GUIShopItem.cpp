@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIShopItem.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -278,8 +271,6 @@ void CGUIShopItem::Draw(bool checktrans)
                 g_GL.GL1_Draw(tex, 2, m_ImageOffset);
 
                 tex.Texture = 0;
-
-                //originalTexture.Draw(2, m_ImageOffset, checktrans);
             }
         }
     }

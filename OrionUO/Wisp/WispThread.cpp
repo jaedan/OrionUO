@@ -43,7 +43,6 @@ unsigned __stdcall CThreadLoopSynchronizedDelay(void *arg)
 {
     WISPFUN_DEBUG("c_trdlpsd");
     CThread *parent = (CThread *)arg;
-    //timeBeginPeriod(1);
 
     while (parent->IsActive())
     {
@@ -75,8 +74,6 @@ unsigned __stdcall CThreadLoopSynchronizedDelay(void *arg)
         }
     }
 
-    //timeEndPeriod(1);
-
     parent->OnDestroy();
     delete parent;
 
@@ -88,14 +85,14 @@ unsigned __stdcall CThreadLoopSynchronizedDelay(void *arg)
 CThread::CThread()
 {
     WISPFUN_DEBUG("c12_f1");
-    //DebugMsg("CThread\n");
+
     InitializeCriticalSection(&m_CriticalSection);
 }
 
 CThread::~CThread()
 {
     WISPFUN_DEBUG("c12_f2");
-    //DebugMsg("~CThread\n");
+
     DeleteCriticalSection(&m_CriticalSection);
 
     if (m_Handle != 0)

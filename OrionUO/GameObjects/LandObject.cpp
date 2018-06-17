@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** LandObject.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -29,7 +22,7 @@ CLandObject::CLandObject(int serial, ushort graphic, ushort color, short x, shor
 
 #if UO_DEBUG_INFO != 0
     g_LandObjectsCount++;
-#endif //UO_DEBUG_INFO!=0
+#endif
 }
 
 CLandObject::~CLandObject()
@@ -95,10 +88,8 @@ void CLandObject::UpdateZ(int zTop, int zRight, int zBottom)
     WISPFUN_DEBUG("c23_f6");
     if (IsStretched)
     {
-        //Сохраним среднее значение Z-координаты
         Serial = ((m_Z + zTop + zRight + zBottom) / 4);
 
-        //Значения для рендера
         m_Rect.left = m_Z * 4 + 1;
         m_Rect.top = zTop * 4;
         m_Rect.right = zRight * 4;
@@ -109,7 +100,6 @@ void CLandObject::UpdateZ(int zTop, int zRight, int zBottom)
         else
             AverageZ = (zBottom + zTop) >> 1;
 
-        //Минимальная Z-координата из всех
         MinZ = m_Z;
 
         if (zTop < MinZ)

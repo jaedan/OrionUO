@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpBook.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -22,7 +15,7 @@ CGumpBook::CGumpBook(uint serial, short x, short y, short pageCount, bool writab
     Draw2Page = true;
 
     Add(new CGUIPage(-1));
-    Add(new CGUIGumppic(0x01FE, 0, 0)); //Body
+    Add(new CGUIGumppic(0x01FE, 0, 0));
     m_PrevPage = (CGUIButton *)Add(new CGUIButton(ID_GB_BUTTON_PREV, 0x01FF, 0x01FF, 0x01FF, 0, 0));
     m_PrevPage->Visible = (Page != 0);
     m_NextPage =
@@ -139,17 +132,6 @@ CGumpBook::~CGumpBook()
 void CGumpBook::PrepareContent()
 {
     WISPFUN_DEBUG("c87_f2.1");
-    /*if (!m_PageDataReceived[Page])
-	{
-		CPacketBookPageDataRequest(Serial, Page).Send();
-		m_PageDataReceived[Page] = true;
-	}
-
-	if (Page + 1 <= PageCount && !m_PageDataReceived[Page + 1])
-	{
-		CPacketBookPageDataRequest(Serial, Page + 1).Send();
-		m_PageDataReceived[Page + 1] = true;
-	}*/
 }
 
 CGUITextEntry *CGumpBook::GetEntry(int page)
@@ -227,9 +209,9 @@ void CGumpBook::GUMP_BUTTON_EVENT_C
     {
         int newPage = -1;
 
-        if (serial == ID_GB_BUTTON_PREV) //Prev
+        if (serial == ID_GB_BUTTON_PREV)
         {
-            if (Page > 0) //Если не было запроса на клик
+            if (Page > 0)
             {
                 newPage = Page - 2;
 
@@ -237,9 +219,9 @@ void CGumpBook::GUMP_BUTTON_EVENT_C
                     newPage = 0;
             }
         }
-        else if (serial == ID_GB_BUTTON_NEXT) //Next
+        else if (serial == ID_GB_BUTTON_NEXT)
         {
-            if (Page < PageCount) //Если не было запроса на клик
+            if (Page < PageCount)
             {
                 newPage = Page + 2;
 
@@ -260,19 +242,16 @@ void CGumpBook::GUMP_BUTTON_EVENT_C
 bool CGumpBook::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c87_f8");
-    if (g_PressedObject.LeftSerial == ID_GB_BUTTON_PREV) //Prev
+    if (g_PressedObject.LeftSerial == ID_GB_BUTTON_PREV)
     {
-        //Был нажат уголок "Назад", при даблклике устанавливаем 1 страницу
         ChangePage(0);
 
-        //Перерисуем гамп
         WantRedraw = true;
 
         return true;
     }
-    else if (g_PressedObject.LeftSerial == ID_GB_BUTTON_NEXT) //Next
+    else if (g_PressedObject.LeftSerial == ID_GB_BUTTON_NEXT)
     {
-        //Был нажат уголок "Вперед", при даблклике устанавливаем последнюю страницу
         int page = PageCount;
 
         if (PageCount % 2)
@@ -280,7 +259,6 @@ bool CGumpBook::OnLeftMouseButtonDoubleClick()
 
         ChangePage(page);
 
-        //Перерисуем гамп
         WantRedraw = true;
 
         return true;
@@ -343,10 +321,8 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
 
                     int current = g_EntryPointer->Pos();
 
-                    //if we have to paste last line from text entry on the next page and flip back
                     bool goBack = true;
 
-                    //get info with last line of text on current page
                     PMULTILINES_FONT_INFO info = Unicode ? g_FontManager.GetInfoW(
                                                                1,
                                                                g_EntryPointer->GetTextW().c_str(),
@@ -381,11 +357,9 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
 
                     m_ChangedPage[page] = true;
 
-                    //determine if we're staying on a new page or going back to the current
                     if (g_EntryPointer->Pos() >= info->CharStart)
                         goBack = false;
 
-                    //remove characters which do not fit on current page
                     if (info->CharCount == 0)
                         g_EntryPointer->RemoveSequence(g_EntryPointer->Length() - 1, 1);
                     else
@@ -403,12 +377,10 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
                     if (pageLimitExceeded)
                         return;
 
-                    //go to the next page and set position for text entry there
                     if (newPage % 2 == 0)
                         ChangePage(newPage, !goBack);
                     SetPagePos(0, newPage);
 
-                    //insert data on the next page
                     if (info->Data.size() == 0 || addNewLine)
                         InsertInContent('\n');
                     IFOR (i, 0, info->Data.size())
@@ -416,7 +388,6 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
 
                     if (goBack)
                     {
-                        //go back to initial position on your current page
                         m_ChangedPage[page + 1] = true;
                         ChangePage(page % 2 == 0 ? page : page - 1, false);
                         SetPagePos(current, page);
@@ -446,7 +417,6 @@ void CGumpBook::InsertInContent(const WPARAM &wparam, bool isCharPress)
             m_ChangedPage[page] = true;
             WantRedraw = true;
         }
-        //page
     }
 }
 
@@ -520,13 +490,11 @@ void CGumpBook::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 
 void CGumpBook::SetPagePos(int val, int page)
 {
-    //safety
     if (page < 0)
         page = 0;
     if (page > PageCount)
         page = PageCount;
 
-    //set position of caret
     CGUITextEntry *newEntry = GetEntry(page);
     g_EntryPointer = &newEntry->m_Entry;
 

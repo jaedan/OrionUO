@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CityList.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,14 +13,10 @@ CCityItem::~CCityItem()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CCityItem::InitCity()
 {
     WISPFUN_DEBUG("c183_f1");
-    //!Линкуем город
+
     m_City = g_CityManager.GetCity(Name);
 }
 
@@ -50,11 +39,6 @@ CCityList::~CCityList()
     Clear();
 }
 
-/*!
-Получить ссылку на город
-@param [__in] index Индекс города
-@return
-*/
 CCityItem *CCityList::GetCity(int index)
 {
     WISPFUN_DEBUG("c184_f2");
@@ -65,11 +49,6 @@ CCityItem *CCityList::GetCity(int index)
     return NULL;
 }
 
-/*!
-Получить ссылку на город
-@param [__in] index Индекс города
-@return
-*/
 void CCityList::Clear()
 {
     WISPFUN_DEBUG("c184_f3");

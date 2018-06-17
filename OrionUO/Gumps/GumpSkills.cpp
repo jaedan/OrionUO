@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpSkills.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -29,7 +22,7 @@ CGumpSkills::CGumpSkills(short x, short y, bool minimized, int height)
     Add(new CGUIGumppic(0x0839, 0, 0));
 
     Add(new CGUIPage(2));
-    Add(new CGUIGumppic(0x0834, 82, 34)); //Skills text gump
+    Add(new CGUIGumppic(0x0834, 82, 34));
 
     CGUIText *text = (CGUIText *)Add(new CGUIText(0x0386, 180, 33));
     text->CreateTextureA(1, "Show:   Real    Cap");
@@ -41,16 +34,15 @@ CGumpSkills::CGumpSkills(short x, short y, bool minimized, int height)
         (CGUICheckbox *)Add(new CGUICheckbox(ID_GS_SHOW_CAP, 0x0938, 0x0939, 0x0938, 280, 34));
     m_CheckboxShowCap->Checked = m_ShowCap;
 
-    Add(new CGUIGumppic(0x082B, 30, 60));                                        //Top line
-    m_BottomLine = (CGUIGumppic *)Add(new CGUIGumppic(0x082B, 31, Height - 48)); //Bottom line
-    m_Comment = (CGUIGumppic *)Add(new CGUIGumppic(0x0836, 30, Height - 35)); //Skills comment gump
-    m_CreateGroup = (CGUIButton *)Add(new CGUIButton(
-        ID_GS_BUTTON_NEW_GROUP, 0x083A, 0x083A, 0x083A, 60, Height - 3)); //New Group gump
+    Add(new CGUIGumppic(0x082B, 30, 60));
+    m_BottomLine = (CGUIGumppic *)Add(new CGUIGumppic(0x082B, 31, Height - 48));
+    m_Comment = (CGUIGumppic *)Add(new CGUIGumppic(0x0836, 30, Height - 35));
+    m_CreateGroup = (CGUIButton *)Add(
+        new CGUIButton(ID_GS_BUTTON_NEW_GROUP, 0x083A, 0x083A, 0x083A, 60, Height - 3));
 
     m_SkillSum = (CGUIText *)Add(new CGUIText(0x0065, 235, Height - 6));
     UpdateSkillsSum();
 
-    //Если игрок присутствует
     if (g_Player != NULL)
     {
         int currentIndex = 0;
@@ -70,9 +62,9 @@ CGumpSkills::CGumpSkills(short x, short y, bool minimized, int height)
 
             IFOR (i, 0, count)
             {
-                uchar index = group->GetItem(i); //Получаем индекс скилла по порядковому номеру
+                uchar index = group->GetItem(i);
 
-                if (index < g_SkillsManager.Count) //Он валиден
+                if (index < g_SkillsManager.Count)
                     skillGroup->Add(new CGUISkillItem(
                         ID_GS_SKILL + index,
                         ID_GS_SKILL_BUTTON + index,
@@ -158,9 +150,9 @@ void CGumpSkills::UpdateHeight()
     WISPFUN_DEBUG("c125_f3");
     CGumpBaseScroll::UpdateHeight();
 
-    m_BottomLine->SetY(Height - 48); //Bottom line
-    m_Comment->SetY(Height - 35);    //Skills comment gump
-    m_CreateGroup->SetY(Height - 3); //New Group gump
+    m_BottomLine->SetY(Height - 48);
+    m_Comment->SetY(Height - 35);
+    m_CreateGroup->SetY(Height - 3);
     m_SkillSum->SetY(Height - 6);
 }
 
@@ -279,7 +271,7 @@ void CGumpSkills::UpdateSkillsSum()
 void CGumpSkills::Init()
 {
     WISPFUN_DEBUG("c125_f10");
-    //Свернем все доступные группы
+
     QFOR(group, g_SkillGroupManager.m_Groups, CSkillGroupObject *)
     group->Maximized = false;
 }
@@ -420,18 +412,11 @@ CSkillGroupObject *CGumpSkills::GetGroupUnderCursor(int &index)
     WISPFUN_DEBUG("c125_f13");
     index = 0;
 
-    //Получить группу под курсором
     int mouseY = g_MouseManager.Position.Y;
 
-    //mouse.X -= m_X + m_HTMLGump->GetX();
     mouseY -= m_Y + m_HTMLGump->GetY();
 
-    //Если вышли за пределы гампа по оси X
-    //if (mouse.X < 0 || mouse.X > m_HTMLGump->Width)
-    //	return NULL; //Exit from bounds on X
-
-    //Если назодимся в пределах гампа по оси Y
-    if (mouseY >= 0 && mouseY < m_HTMLGump->Height) //Bounds of Y
+    if (mouseY >= 0 && mouseY < m_HTMLGump->Height)
     {
         int drawY = m_HTMLGump->DataOffset.Y - m_HTMLGump->CurrentOffset.Y;
         CSkillGroupObject *group = g_SkillGroupManager.m_Groups;
@@ -455,7 +440,6 @@ CSkillGroupObject *CGumpSkills::GetGroupUnderCursor(int &index)
         }
     }
 
-    //Ничего не нашлось
     return NULL;
 }
 
@@ -546,7 +530,7 @@ void CGumpSkills::OnLeftMouseButtonUp()
 void CGumpSkills::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c125_f17");
-    if (serial == ID_GBS_BUTTON_MINIMIZE) //Сворачиваем гамп
+    if (serial == ID_GBS_BUTTON_MINIMIZE)
     {
         Minimized = true;
         Page = 1;
@@ -554,7 +538,7 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
     }
     else if (serial == ID_GS_LOCK_MOVING)
         LockMoving = !LockMoving;
-    else if (serial == ID_GS_BUTTON_NEW_GROUP) //Создание новой группы
+    else if (serial == ID_GS_BUTTON_NEW_GROUP)
     {
         CSkillGroupObject *group = new CSkillGroupObject();
         group->Name = "New Group";
@@ -566,9 +550,9 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
 
         UpdateGroupPositions();
     }
-    else if (serial >= ID_GS_GROUP_MINIMIZE) //Операции со скиллами
+    else if (serial >= ID_GS_GROUP_MINIMIZE)
     {
-        if (serial >= ID_GS_SKILL_STATE) //Изменение статуса
+        if (serial >= ID_GS_SKILL_STATE)
         {
             int index = serial - ID_GS_SKILL_STATE;
 
@@ -598,7 +582,7 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
                     skillItem->SetStatus(status);
             }
         }
-        else if (serial >= ID_GS_SKILL_BUTTON) //Выбор кнопки для использования скилла
+        else if (serial >= ID_GS_SKILL_BUTTON)
         {
             int index = serial - ID_GS_SKILL_BUTTON;
 
@@ -607,7 +591,7 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
 
             g_Orion.UseSkill(index);
         }
-        else if (serial >= ID_GS_GROUP_MINIMIZE) //Скрыть/раскрыть группу
+        else if (serial >= ID_GS_GROUP_MINIMIZE)
         {
             int index = serial - ID_GS_GROUP_MINIMIZE;
             int currentIndex = 0;
@@ -640,14 +624,14 @@ void CGumpSkills::GUMP_BUTTON_EVENT_C
 void CGumpSkills::GUMP_CHECKBOX_EVENT_C
 {
     WISPFUN_DEBUG("c125_f18");
-    if (serial == ID_GS_SHOW_REAL) //Показать реальное значение
+    if (serial == ID_GS_SHOW_REAL)
     {
         m_ShowReal = state;
         m_ShowCap = false;
         m_CheckboxShowCap->Checked = false;
         UpdateSkillValues();
     }
-    else if (serial == ID_GS_SHOW_CAP) //Показать доступный предел прокачки
+    else if (serial == ID_GS_SHOW_CAP)
     {
         m_ShowCap = state;
         m_ShowReal = false;
@@ -678,7 +662,7 @@ void CGumpSkills::GUMP_TEXT_ENTRY_EVENT_C
 bool CGumpSkills::OnLeftMouseButtonDoubleClick()
 {
     WISPFUN_DEBUG("c125_f20");
-    if (Minimized) //При даблклике по мини-гампу - раскрываем его
+    if (Minimized)
     {
         Minimized = false;
         Page = 2;
@@ -738,10 +722,9 @@ void CGumpSkills::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 
                                 IFOR (i, 0, count)
                                 {
-                                    uchar index = groupItem->GetItem(
-                                        i); //Получаем индекс скилла по порядковому номеру
+                                    uchar index = groupItem->GetItem(i);
 
-                                    if (index < g_SkillsManager.Count) //Он валиден
+                                    if (index < g_SkillsManager.Count)
                                         first->Add(new CGUISkillItem(
                                             ID_GS_SKILL + index,
                                             ID_GS_SKILL_BUTTON + index,
@@ -776,7 +759,6 @@ void CGumpSkills::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         return;
     }
 
-    //Обработчик нажатия клавиш
     switch (wParam)
     {
         case VK_RETURN:

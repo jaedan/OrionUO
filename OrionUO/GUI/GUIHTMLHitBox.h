@@ -1,13 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIHTMLHitBox.h
-**
-** Компонента выбора зоны для HTMLGump'а
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUIHTMLHITBOX_H
 #define GUIHTMLHITBOX_H
@@ -15,7 +6,6 @@
 class CGUIHTMLHitBox : public CGUIHitBox
 {
 private:
-    //!Гамп-родитель
     class CGUIHTMLGump *m_HTMLGump{ NULL };
 
 public:
@@ -29,7 +19,6 @@ public:
         bool callOnMouseUp = false);
     virtual ~CGUIHTMLHitBox();
 
-    //!Функция прокрутки
     void Scroll(bool up, int delay);
 
     virtual bool IsControlHTML() { return true; }

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** OptionsMacroManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,10 +13,6 @@ COptionsMacroManager::~COptionsMacroManager()
 {
 }
 
-/*!
-Загрузить из списка макросов
-@return 
-*/
 void COptionsMacroManager::LoadFromMacro()
 {
     WISPFUN_DEBUG("c149_f1");

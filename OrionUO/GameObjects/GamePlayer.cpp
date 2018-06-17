@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GamePlayer.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -36,10 +29,6 @@ void CPlayer::CloseBank()
     }
 }
 
-/*!
-Поиск бинтов в сумке (и подсумках)
-@return Ссылка на бинт или NULL
-*/
 CGameItem *CPlayer::FindBandage()
 {
     WISPFUN_DEBUG("c21_f11");
@@ -101,85 +90,85 @@ void CPlayer::UpdateAbilities()
         {
             switch (graphics[i])
             {
-                case 0x0901: // Gargish Cyclone
+                case 0x0901:
                     g_Ability[0] = AT_MOVING_SHOT;
                     g_Ability[1] = AT_INFUSED_THROW;
                     break;
-                case 0x0902: // Gargish Dagger
+                case 0x0902:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
-                case 0x0905: // Glass Staff
+                case 0x0905:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x0906: // serpentstone staff
+                case 0x0906:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x090C: // Glass Sword
+                case 0x090C:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x0DF0:
-                case 0x0DF1: // Black Staves
+                case 0x0DF1:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
                 case 0x0DF2:
                 case 0x0DF3:
                 case 0x0DF4:
-                case 0x0DF5: // Wands Type A-D
+                case 0x0DF5:
                     g_Ability[0] = AT_DISMOUNT;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0E81:
-                case 0x0E82: // Shepherd's Crooks
+                case 0x0E82:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0E85:
-                case 0x0E86: // Pickaxes
+                case 0x0E86:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0E87:
-                case 0x0E88: // Pitchforks
+                case 0x0E88:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
                 case 0x0E89:
-                case 0x0E8A: // Quarter Staves
+                case 0x0E8A:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
                 case 0x0EC2:
-                case 0x0EC3: // Cleavers
+                case 0x0EC3:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_INFECTING;
                     break;
                 case 0x0EC4:
-                case 0x0EC5: // Skinning Knives
+                case 0x0EC5:
                     g_Ability[0] = AT_SHADOW_STRIKE;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0F43:
-                case 0x0F44: // Hatchets
+                case 0x0F44:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0F45:
-                case 0x0F46: // Double Axes
+                case 0x0F46:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x0F47:
-                case 0x0F48: // Battle Axes
+                case 0x0F48:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
                 case 0x0F49:
-                case 0x0F4A: // Axes
+                case 0x0F4A:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
@@ -189,37 +178,37 @@ void CPlayer::UpdateAbilities()
                     g_Ability[1] = AT_WHIRLWIND_ATTACK;
                     break;
                 case 0x0F4D:
-                case 0x0F4E: // Bardiches
+                case 0x0F4E:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
                 case 0x0F4F:
-                case 0x0F50: // Crossbows
+                case 0x0F50:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x0F51:
-                case 0x0F52: // Daggers
+                case 0x0F52:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
                 case 0x0F5C:
-                case 0x0F5D: // Maces
+                case 0x0F5D:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x0F5E:
-                case 0x0F5F: // Broadswords
+                case 0x0F5F:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_ARMOR_IGNORE;
                     break;
                 case 0x0F60:
-                case 0x0F61: // Longswords
+                case 0x0F61:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
                 case 0x0F62:
-                case 0x0F63: // Spears
+                case 0x0F63:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
@@ -228,492 +217,492 @@ void CPlayer::UpdateAbilities()
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
                 case 0x13AF:
-                case 0x13B0: // War Axes
+                case 0x13B0:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_BLEED_ATTACK;
                     break;
                 case 0x13B1:
-                case 0x13B2: // Bows
+                case 0x13B2:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x13B3:
-                case 0x13B4: // Clubs
+                case 0x13B4:
                     g_Ability[0] = AT_SHADOW_STRIKE;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
                 case 0x13B7:
-                case 0x13B8: // Scimitars
+                case 0x13B8:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
                 case 0x13B9:
-                case 0x13BA: // Viking Swords
+                case 0x13BA:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x13FD: // Heavy Crossbows
+                case 0x13FD:
                     g_Ability[0] = AT_MOVING_SHOT;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x13E3: // Smith's Hammers
+                case 0x13E3:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
-                case 0x13F6: // Butcher Knives
+                case 0x13F6:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_DISARM;
                     break;
-                case 0x13F8: // Gnarled Staves
+                case 0x13F8:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x13FB: // Large Battle Axes
+                case 0x13FB:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_BLEED_ATTACK;
                     break;
-                case 0x13FF: // Katana
+                case 0x13FF:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_ARMOR_IGNORE;
                     break;
-                case 0x1401: // Kryss
+                case 0x1401:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_INFECTING;
                     break;
                 case 0x1402:
-                case 0x1403: // Short Spears
+                case 0x1403:
                     g_Ability[0] = AT_SHADOW_STRIKE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x1404:
-                case 0x1405: // War Forks
+                case 0x1405:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_DISARM;
                     break;
                 case 0x1406:
-                case 0x1407: // War Maces
+                case 0x1407:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_BLEED_ATTACK;
                     break;
                 case 0x1438:
-                case 0x1439: // War Hammers
+                case 0x1439:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
                 case 0x143A:
-                case 0x143B: // Mauls
+                case 0x143B:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
                 case 0x143C:
-                case 0x143D: // Hammer Picks
+                case 0x143D:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
                 case 0x143E:
-                case 0x143F: // Halberds
+                case 0x143F:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
                 case 0x1440:
-                case 0x1441: // Cutlasses
+                case 0x1441:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
                 case 0x1442:
-                case 0x1443: // Two Handed Axes
+                case 0x1443:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
-                case 0x26BA: // Scythes
+                case 0x26BA:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x26BB: // Bone Harvesters
+                case 0x26BB:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26BC: // Scepters
+                case 0x26BC:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26BD: // Bladed Staves
+                case 0x26BD:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x26BE: // Pikes
+                case 0x26BE:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x26BF: // Double Bladed Staff
+                case 0x26BF:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x26C0: // Lances
+                case 0x26C0:
                     g_Ability[0] = AT_DISMOUNT;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x26C1: // Crescent Blades
+                case 0x26C1:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26C2: // Composite Bows
+                case 0x26C2:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_MOVING_SHOT;
                     break;
-                case 0x26C3: // Repeating Crossbows
+                case 0x26C3:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_MOVING_SHOT;
                     break;
-                case 0x26C4: // also Scythes
+                case 0x26C4:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x26C5: // also Bone Harvesters
+                case 0x26C5:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26C6: // also Scepters
+                case 0x26C6:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26C7: // also Bladed Staves
+                case 0x26C7:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x26C8: // also Pikes
+                case 0x26C8:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x26C9: // also Double Bladed Staff
+                case 0x26C9:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x26CA: // also Lances
+                case 0x26CA:
                     g_Ability[0] = AT_DISMOUNT;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x26CB: // also Crescent Blades
+                case 0x26CB:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x26CC: // also Composite Bows
+                case 0x26CC:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_MOVING_SHOT;
                     break;
-                case 0x26CD: // also Repeating Crossbows
+                case 0x26CD:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_MOVING_SHOT;
                     break;
-                case 0x27A2: // No-Dachi
+                case 0x27A2:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_RIDING_SWIPE;
                     break;
-                case 0x27A3: // Tessen
+                case 0x27A3:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_BLOCK;
                     break;
-                case 0x27A4: // Wakizashi
+                case 0x27A4:
                     g_Ability[0] = AT_FRENZIED_WHIRLWIND;
                     g_Ability[1] = AT_DOUBLE_STRIKE;
                     break;
-                case 0x27A5: // Yumi
+                case 0x27A5:
                     g_Ability[0] = AT_ARMOR_PIERCE;
                     g_Ability[1] = AT_DOUBLE_SHOT;
                     break;
-                case 0x27A6: // Tetsubo
+                case 0x27A6:
                     g_Ability[0] = AT_FRENZIED_WHIRLWIND;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x27A7: // Lajatang
+                case 0x27A7:
                     g_Ability[0] = AT_DEFENSE_MASTERY;
                     g_Ability[1] = AT_FRENZIED_WHIRLWIND;
                     break;
-                case 0x27A8: // Bokuto
+                case 0x27A8:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_NERVE_STRIKE;
                     break;
-                case 0x27A9: // Daisho
+                case 0x27A9:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_DOUBLE_STRIKE;
                     break;
-                case 0x27AA: // Fukya
+                case 0x27AA:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x27AB: // Tekagi
+                case 0x27AB:
                     g_Ability[0] = AT_DUAL_WIELD;
                     g_Ability[1] = AT_TALON_STRIKE;
                     break;
-                case 0x27AD: // Kama
+                case 0x27AD:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_DEFENSE_MASTERY;
                     break;
-                case 0x27AE: // Nunchaku
+                case 0x27AE:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_FEINT;
                     break;
-                case 0x27AF: // Sai
+                case 0x27AF:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_ARMOR_PIERCE;
                     break;
-                case 0x27ED: // also No-Dachi
+                case 0x27ED:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_RIDING_SWIPE;
                     break;
-                case 0x27EE: // also Tessen
+                case 0x27EE:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_BLOCK;
                     break;
-                case 0x27EF: // also Wakizashi
+                case 0x27EF:
                     g_Ability[0] = AT_FRENZIED_WHIRLWIND;
                     g_Ability[1] = AT_DOUBLE_STRIKE;
                     break;
-                case 0x27F0: // also Yumi
+                case 0x27F0:
                     g_Ability[0] = AT_ARMOR_PIERCE;
                     g_Ability[1] = AT_DOUBLE_SHOT;
                     break;
-                case 0x27F1: // also Tetsubo
+                case 0x27F1:
                     g_Ability[0] = AT_FRENZIED_WHIRLWIND;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x27F2: // also Lajatang
+                case 0x27F2:
                     g_Ability[0] = AT_DEFENSE_MASTERY;
                     g_Ability[1] = AT_FRENZIED_WHIRLWIND;
                     break;
-                case 0x27F3: // also Bokuto
+                case 0x27F3:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_NERVE_STRIKE;
                     break;
-                case 0x27F4: // also Daisho
+                case 0x27F4:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_DOUBLE_STRIKE;
                     break;
-                case 0x27F5: // also Fukya
+                case 0x27F5:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x27F6: // also Tekagi
+                case 0x27F6:
                     g_Ability[0] = AT_DUAL_WIELD;
                     g_Ability[1] = AT_TALON_STRIKE;
                     break;
-                case 0x27F8: // Kama
+                case 0x27F8:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_DEFENSE_MASTERY;
                     break;
-                case 0x27F9: // Nunchaku
+                case 0x27F9:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_FEINT;
                     break;
-                case 0x27FA: // Sai
+                case 0x27FA:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_ARMOR_PIERCE;
                     break;
-                case 0x2D1E: // Elven Composite Longbows
+                case 0x2D1E:
                     g_Ability[0] = AT_FORCE_ARROW;
                     g_Ability[1] = AT_SERPENT_ARROW;
                     break;
-                case 0x2D1F: // Magical Shortbows
+                case 0x2D1F:
                     g_Ability[0] = AT_LIGHTNING_ARROW;
                     g_Ability[1] = AT_PSYCHIC_ATTACK;
                     break;
-                case 0x2D20: // Elven Spellblades
+                case 0x2D20:
                     g_Ability[0] = AT_PSYCHIC_ATTACK;
                     g_Ability[1] = AT_BLEED_ATTACK;
                     break;
-                case 0x2D21: // Assassin Spikes
+                case 0x2D21:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
-                case 0x2D22: // Leafblades
+                case 0x2D22:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_ARMOR_IGNORE;
                     break;
-                case 0x2D23: // War Cleavers
+                case 0x2D23:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D24: // Diamond Maces
+                case 0x2D24:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x2D25: // Wild Staves
+                case 0x2D25:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_FORCE_OF_NATURE;
                     break;
-                case 0x2D26: // Rune Blades
+                case 0x2D26:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D27: // Radiant Scimitars
+                case 0x2D27:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D28: // Ornate Axes
+                case 0x2D28:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x2D29: // Elven Machetes
+                case 0x2D29:
                     g_Ability[0] = AT_DEFENSE_MASTERY;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D2A: // also Elven Composite Longbows
+                case 0x2D2A:
                     g_Ability[0] = AT_FORCE_ARROW;
                     g_Ability[1] = AT_SERPENT_ARROW;
                     break;
-                case 0x2D2B: // also Magical Shortbows
+                case 0x2D2B:
                     g_Ability[0] = AT_LIGHTNING_ARROW;
                     g_Ability[1] = AT_PSYCHIC_ATTACK;
                     break;
-                case 0x2D2C: // also Elven Spellblades
+                case 0x2D2C:
                     g_Ability[0] = AT_PSYCHIC_ATTACK;
                     g_Ability[1] = AT_BLEED_ATTACK;
                     break;
-                case 0x2D2D: // also Assassin Spikes
+                case 0x2D2D:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_SHADOW_STRIKE;
                     break;
-                case 0x2D2E: // also Leafblades
+                case 0x2D2E:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_ARMOR_IGNORE;
                     break;
-                case 0x2D2F: // also War Cleavers
+                case 0x2D2F:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D30: // also Diamond Maces
+                case 0x2D30:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x2D31: // also Wild Staves
+                case 0x2D31:
                     g_Ability[0] = AT_BLOCK;
                     g_Ability[1] = AT_FORCE_OF_NATURE;
                     break;
-                case 0x2D32: // also Rune Blades
+                case 0x2D32:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D33: // also Radiant Scimitars
+                case 0x2D33:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x2D34: // also Ornate Axes
+                case 0x2D34:
                     g_Ability[0] = AT_DISARM;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x2D35: // also Elven Machetes
+                case 0x2D35:
                     g_Ability[0] = AT_DEFENSE_MASTERY;
                     g_Ability[1] = AT_BLADEWEAVE;
                     break;
-                case 0x4067: // Boomerang
+                case 0x4067:
                     g_Ability[0] = AT_MYSTIC_ARC;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x4068: // Dual Short Axes
+                case 0x4068:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x406B: // Soul Glaive
+                case 0x406B:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x406C: // Cyclone
+                case 0x406C:
                     g_Ability[0] = AT_MOVING_SHOT;
                     g_Ability[1] = AT_INFUSED_THROW;
                     break;
-                case 0x406D: // Dual Pointed Spear
+                case 0x406D:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_DISARM;
                     break;
-                case 0x406E: // Disc Mace
+                case 0x406E:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_DISARM;
                     break;
-                case 0x4072: // Blood Blade
+                case 0x4072:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x4074: // Dread Sword
+                case 0x4074:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x4075: // Gargish Talwar
+                case 0x4075:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x4076: // Shortblade
+                case 0x4076:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x48AE: // Gargish Cleaver
+                case 0x48AE:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x48B0: // Gargish Battle Axe
+                case 0x48B0:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x48B2: // Gargish Axe
+                case 0x48B2:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x48B4: // Gargish Bardiche
+                case 0x48B4:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_DISMOUNT;
                     break;
-                case 0x48B6: // Gargish Butcher Knife
+                case 0x48B6:
                     g_Ability[0] = AT_INFECTING;
                     g_Ability[1] = AT_DISARM;
                     break;
-                case 0x48B8: // Gargish Gnarled Staff
+                case 0x48B8:
                     g_Ability[0] = AT_CONCUSSION_BLOW;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x48BA: // Gargish Katana
+                case 0x48BA:
                     g_Ability[0] = AT_DOUBLE_STRIKE;
                     g_Ability[1] = AT_ARMOR_IGNORE;
                     break;
-                case 0x48BC: // Gargish Kryss
+                case 0x48BC:
                     g_Ability[0] = AT_ARMOR_IGNORE;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x48BE: // Gargish War Fork
+                case 0x48BE:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_DISARM;
                     break;
-                case 0x48CA: // Gargish Lance
+                case 0x48CA:
                     g_Ability[0] = AT_DISMOUNT;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x48C0: // Gargish War Hammer
+                case 0x48C0:
                     g_Ability[0] = AT_WHIRLWIND_ATTACK;
                     g_Ability[1] = AT_CRUSHING_BLOW;
                     break;
-                case 0x48C2: // Gargish Maul
+                case 0x48C2:
                     g_Ability[0] = AT_CRUSHING_BLOW;
                     g_Ability[1] = AT_CONCUSSION_BLOW;
                     break;
-                case 0x48C4: // Gargish Scyte
+                case 0x48C4:
                     g_Ability[0] = AT_BLEED_ATTACK;
                     g_Ability[1] = AT_PARALYZING_BLOW;
                     break;
-                case 0x48C6: // Gargish Bone Harvester
+                case 0x48C6:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_MORTAL_STRIKE;
                     break;
-                case 0x48C8: // Gargish Pike
+                case 0x48C8:
                     g_Ability[0] = AT_PARALYZING_BLOW;
                     g_Ability[1] = AT_INFECTING;
                     break;
-                case 0x48CD: // Gargish Tessen
+                case 0x48CD:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_BLOCK;
                     break;
-                case 0x48CE: // Gargish Tekagi
+                case 0x48CE:
                     g_Ability[0] = AT_DUAL_WIELD;
                     g_Ability[1] = AT_TALON_STRIKE;
                     break;
-                case 0x48D0: // Gargish Daisho
+                case 0x48D0:
                     g_Ability[0] = AT_FEINT;
                     g_Ability[1] = AT_DOUBLE_STRIKE;
                     break;

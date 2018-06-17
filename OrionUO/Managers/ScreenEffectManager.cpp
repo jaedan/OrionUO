@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ScreenEffectManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -116,7 +109,7 @@ bool CScreenEffectManager::Use(
 
         if (mode == SEM_SUNSET)
             Alpha = 0.0f;
-        else //if (mode == SEM_SUNRISE)
+        else
             Alpha = 1.0f;
 
         static const float colorTable[5] = { 0.0f, 1.0f, 1.0f, 1.0f, 0.0f };

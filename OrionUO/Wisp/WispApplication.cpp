@@ -58,7 +58,6 @@ int CApplication::Run(HINSTANCE hinstance)
 
 string CApplication::GetFileVersion(uint *numericVerion)
 {
-    //File version info
     wchar_t szFilename[MAX_PATH] = { 0 };
 
     if (GetModuleFileName(Hinstance, &szFilename[0], sizeof(szFilename)))

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpBuff.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -201,7 +194,7 @@ void CGumpBuff::GetGumpStatus(
 
     switch (Graphic)
     {
-        case 0x757F: //v
+        case 0x757F:
         {
             ball.X = 0;
             ball.Y = 0;
@@ -212,7 +205,7 @@ void CGumpBuff::GetGumpStatus(
             useX = false;
             break;
         }
-        case 0x7581: //^
+        case 0x7581:
         {
             ball.X = 34;
             ball.Y = 78;
@@ -223,7 +216,7 @@ void CGumpBuff::GetGumpStatus(
             useX = false;
             break;
         }
-        case 0x7582: //<
+        case 0x7582:
         {
             ball.X = 76;
             ball.Y = 36;
@@ -234,7 +227,7 @@ void CGumpBuff::GetGumpStatus(
             useX = true;
             break;
         }
-        case 0x7580: //>
+        case 0x7580:
         default:
         {
             ball.X = -2;
@@ -327,18 +320,15 @@ void CGumpBuff::UpdateContent()
 
     GetGumpStatus(ballCoordinates, startCoordinates, useX, decX, decY, startGump, endGump);
 
-    //Body
     CBaseGUI *gui = (CBaseGUI *)m_Items;
     gui->Graphic = Graphic;
 
-    //Selection zone
     gui = (CBaseGUI *)gui->m_Next;
     gui->SetX(startGump.X);
     gui->SetY(startGump.Y);
     ((CGUIPolygonal *)gui)->Width = endGump.Width;
     ((CGUIPolygonal *)gui)->Height = endGump.Height;
 
-    //Crystall ball
     gui = (CBaseGUI *)gui->m_Next;
     gui->SetX(ballCoordinates.X);
     gui->SetY(ballCoordinates.Y);
@@ -377,7 +367,6 @@ void CGumpBuff::UpdateContent()
         }
     }
 
-    //Выключение прозрачности в задницу очереди
     if (gui != NULL)
         MoveToBack(gui);
 }

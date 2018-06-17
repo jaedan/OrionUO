@@ -1,19 +1,7 @@
-﻿/***********************************************************************************
-**
-** GumpRacialAbilitiesBook.h
-**
-** Copyright (C) December 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPRACIALABILITIESBOOK_H
 #define GUMPRACIALABILITIESBOOK_H
-/*
-graphic = 0x2B02;
-minimizedGraphic = 0x2B05;
-iconStartGraphic = 0x5200;
-*/
 
 class CGumpRacialAbilitiesBook : public CGump
 {

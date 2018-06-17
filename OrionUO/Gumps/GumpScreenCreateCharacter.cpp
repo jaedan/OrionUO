@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenCreateCharacter.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -479,12 +472,12 @@ void CGumpScreenCreateCharacter::InitToolTip()
 void CGumpScreenCreateCharacter::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c114_f3");
-    if (serial == ID_CCS_QUIT) //x button
+    if (serial == ID_CCS_QUIT)
         g_CreateCharacterScreen.CreateSmoothAction(CCreateCharacterScreen::ID_SMOOTH_CCS_QUIT);
-    else if (serial == ID_CCS_ARROW_PREV) //< button
+    else if (serial == ID_CCS_ARROW_PREV)
         g_CreateCharacterScreen.CreateSmoothAction(
             CCreateCharacterScreen::ID_SMOOTH_CCS_GO_SCREEN_CHARACTER);
-    else if (serial == ID_CCS_ARROW_NEXT) //> button
+    else if (serial == ID_CCS_ARROW_NEXT)
     {
         if (g_EntryPointer->Length() < 2)
             g_CreateCharacterScreen.CreateSmoothAction(

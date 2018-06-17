@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CharacterListScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,10 +13,6 @@ CCharacterListScreen::~CCharacterListScreen()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CCharacterListScreen::Init()
 {
     WISPFUN_DEBUG("c160_f1");
@@ -46,11 +35,6 @@ void CCharacterListScreen::Init()
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка события после перехода
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CCharacterListScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c160_f2");
@@ -80,12 +64,6 @@ void CCharacterListScreen::ProcessSmoothAction(uchar action)
     }
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return
-*/
 void CCharacterListScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c160_f3");

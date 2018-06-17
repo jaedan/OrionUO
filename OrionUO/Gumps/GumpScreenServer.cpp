@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenServer.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -185,11 +178,11 @@ void CGumpScreenServer::InitToolTip()
 void CGumpScreenServer::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c119_f3");
-    if (serial == ID_SS_QUIT) //x button
+    if (serial == ID_SS_QUIT)
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_QUIT);
-    else if (serial == ID_SS_ARROW_PREV) //< button
+    else if (serial == ID_SS_ARROW_PREV)
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_GO_SCREEN_MAIN);
-    else if (serial == ID_SS_ARROW_NEXT || serial == ID_SS_EARTH) //> button
+    else if (serial == ID_SS_ARROW_NEXT || serial == ID_SS_EARTH)
     {
         g_ServerScreen.SelectionServerTempValue = g_ServerList.LastServerIndex;
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_SELECT_SERVER);
@@ -199,7 +192,7 @@ void CGumpScreenServer::GUMP_BUTTON_EVENT_C
 void CGumpScreenServer::GUMP_TEXT_ENTRY_EVENT_C
 {
     WISPFUN_DEBUG("c119_f4");
-    if (serial >= ID_SS_SERVER_LIST) //Server selection
+    if (serial >= ID_SS_SERVER_LIST)
     {
         g_ServerScreen.SelectionServerTempValue = serial - ID_SS_SERVER_LIST;
         g_ServerScreen.CreateSmoothAction(CServerScreen::ID_SMOOTH_SS_SELECT_SERVER);

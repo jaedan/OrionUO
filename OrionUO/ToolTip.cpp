@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ToolTip.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -78,7 +71,7 @@ void CToolTip::Set(const wstring &str, int maxWidth)
 
     CRenderObject *object = g_SelectedObject.Object;
 
-    if (object == m_Object || object == NULL) //Уже забиндено или нет объекта для бинда
+    if (object == m_Object || object == NULL)
         return;
 
     Timer = g_Ticks + g_ConfigManager.ToolTipsDelay;
@@ -105,7 +98,7 @@ void CToolTip::Set(int clilocID, const string &str, int maxWidth, bool toCamelCa
 void CToolTip::Draw(int cursorWidth, int cursorHeight)
 {
     WISPFUN_DEBUG("c213_f5");
-    if (!Use /*|| !g_ConfigManager.UseToolTips*/)
+    if (!Use)
         return;
 
     if (Texture.Empty())
@@ -125,13 +118,11 @@ void CToolTip::Draw(int cursorWidth, int cursorHeight)
         if (y < 0)
         {
             y = Position.Y;
-            //y = g_MouseManager.Position.Y + cursorHeight;
         }
 
         if (x < 0)
         {
             x = Position.X;
-            //x = g_MouseManager.Position.X + cursorWidth;
         }
 
         glEnable(GL_BLEND);

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MainScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -28,10 +21,6 @@ CMainScreen::~CMainScreen()
     delete m_Password;
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CMainScreen::Init()
 {
     WISPFUN_DEBUG("c165_f3");
@@ -67,11 +56,6 @@ void CMainScreen::Init()
     m_Gump.PrepareTextures();
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CMainScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c165_f4");
@@ -114,12 +98,6 @@ void CMainScreen::Paste()
         g_EntryPointer->Paste();
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c165_f7");
@@ -128,7 +106,7 @@ void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     else if (g_EntryPointer == NULL)
         g_EntryPointer = m_MainGump.m_PasswordFake;
 
-    if (g_EntryPointer->Length() < 16) //add char to text field
+    if (g_EntryPointer->Length() < 16)
     {
         if (g_EntryPointer == m_MainGump.m_PasswordFake)
         {
@@ -142,12 +120,6 @@ void CMainScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     m_Gump.WantRedraw = true;
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CMainScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c165_f8");
@@ -185,11 +157,6 @@ void CMainScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     m_Gump.WantRedraw = true;
 }
 
-/*!
-Получить код конфига по ключу
-@param [__in] key Ключ
-@return 
-*/
 int CMainScreen::GetConfigKeyCode(const string &key)
 {
     WISPFUN_DEBUG("c165_f9");
@@ -211,10 +178,6 @@ int CMainScreen::GetConfigKeyCode(const string &key)
     return result;
 }
 
-/*!
-Загрузка кастомного пути к папке с УО файлами
-@return
-*/
 void CMainScreen::LoadCustomPath()
 {
     WISPFUN_DEBUG("c165_f14");
@@ -241,10 +204,6 @@ void CMainScreen::LoadCustomPath()
     }
 }
 
-/*!
-Загрузка конфига
-@return 
-*/
 void CMainScreen::LoadGlobalConfig()
 {
     WISPFUN_DEBUG("c165_f10");
@@ -342,10 +301,6 @@ void CMainScreen::LoadGlobalConfig()
     }
 }
 
-/*!
-Сохранение конфига
-@return 
-*/
 void CMainScreen::SaveGlobalConfig()
 {
     WISPFUN_DEBUG("c165_f11");
@@ -397,12 +352,6 @@ void CMainScreen::SaveGlobalConfig()
     fclose(uo_cfg);
 }
 
-/*!
-Шифрование пароля для сохранения в конфиг
-@param [__in] buf Не зашифрованный пароль
-@param [__in] len Длина пароля
-@return Зашифрованный пароль
-*/
 string CMainScreen::CryptPW(const char *buf, int len)
 {
     WISPFUN_DEBUG("c165_f12");
@@ -424,12 +373,6 @@ string CMainScreen::CryptPW(const char *buf, int len)
     return ret;
 }
 
-/*!
-Расшифровка пароля
-@param [__in] buf Зашифрованный пароль
-@param [__in] len Длина пароля
-@return Расшифрованный пароль
-*/
 string CMainScreen::DecryptPW(const char *buf, int len)
 {
     WISPFUN_DEBUG("c165_f13");

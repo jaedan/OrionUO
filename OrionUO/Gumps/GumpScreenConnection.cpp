@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenConnection.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -44,7 +37,7 @@ void CGumpScreenConnection::UpdateContent()
     if (g_ConnectionScreen.GetType() != CST_CONLOST)
         Add(new CGUIResizepic(0, 0x0A28, 142, 134, 356, 212));
 
-    g_ConnectionScreen.CursorGraphic = 0x2073; //Main Gump mouse cursor
+    g_ConnectionScreen.CursorGraphic = 0x2073;
 
     if (g_ConnectionScreen.GetType() == CST_CHARACTER_LIST)
     {
@@ -117,7 +110,7 @@ void CGumpScreenConnection::UpdateContent()
                 g_ClilocManager.Cliloc(g_Language)->GetA(3000001, false, "Entering Britannia..."),
                 2);
 
-            g_ConnectionScreen.CursorGraphic = 0x2077; //Waiting mouse cursor
+            g_ConnectionScreen.CursorGraphic = 0x2077;
         }
     }
     else if (g_ConnectionScreen.GetType() == CST_GAME_LOGIN)
@@ -180,7 +173,7 @@ void CGumpScreenConnection::UpdateContent()
 
         Add(new CGUIButton(ID_CS_OK, 0x0481, 0x0482, 0x0483, 297, 257));
 
-        g_ConnectionScreen.CursorGraphic = 0x2077; //Waiting mouse cursor
+        g_ConnectionScreen.CursorGraphic = 0x2077;
     }
     else
     {
@@ -221,7 +214,7 @@ void CGumpScreenConnection::UpdateContent()
 
             CreateText(189, 178, text[g_ConnectionScreen.GetConnected()], 2);
 
-            g_ConnectionScreen.CursorGraphic = 0x2077; //Waiting mouse cursor
+            g_ConnectionScreen.CursorGraphic = 0x2077;
         }
     }
 }
@@ -229,7 +222,7 @@ void CGumpScreenConnection::UpdateContent()
 void CGumpScreenConnection::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c113_f3");
-    if (serial == ID_CS_OK) //v button
+    if (serial == ID_CS_OK)
     {
         if (g_ConnectionScreen.GetType() == CST_CHARACTER_LIST)
         {
@@ -251,6 +244,6 @@ void CGumpScreenConnection::GUMP_BUTTON_EVENT_C
             g_ConnectionScreen.GetType() == CST_CONLOST || g_ConnectionScreen.GetConnectionFailed())
             g_ConnectionScreen.CreateSmoothAction(CConnectionScreen::ID_SMOOTH_CS_GO_SCREEN_MAIN);
     }
-    else if (serial == ID_CS_CANCEL) //Button x
+    else if (serial == ID_CS_CANCEL)
         g_ConnectionScreen.CreateSmoothAction(CConnectionScreen::ID_SMOOTH_CS_GO_SCREEN_CHARACTER);
 }

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpPropertyIcon.h
-**
-** Copyright (C) November 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPPROPERTYICON_H
 #define GUMPPROPERTYICON_H
@@ -39,4 +32,4 @@ public:
     virtual bool OnLeftMouseButtonDoubleClick();
 };
 
-#endif //GUMPPROPERTYICON_H
+#endif

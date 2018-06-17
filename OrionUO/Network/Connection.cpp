@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Connection.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -67,10 +60,10 @@ bool CSocket::Connect(const string &address, int port)
         {
             LOG("Proxy Server Version 5 Selected\n");
             char str[255] = { 0 };
-            str[0] = 5; //Proxy Version
-            str[1] = 2; //Number of authentication method
-            str[2] = 0; //No auth required
-            str[3] = 2; //Username/Password auth
+            str[0] = 5;
+            str[1] = 2;
+            str[2] = 0;
+            str[3] = 2;
             ::send(m_Socket, str, 4, 0);
             int num = ::recv(m_Socket, str, 255, 0);
             if ((str[0] != 5) || (num != 2))

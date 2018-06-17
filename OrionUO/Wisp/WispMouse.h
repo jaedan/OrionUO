@@ -1,4 +1,4 @@
-﻿
+
 #ifndef WISPMOUSE_H
 #define WISPMOUSE_H
 
@@ -17,7 +17,7 @@ public:
     bool RightButtonPressed = false;
     bool MidButtonPressed = false;
     bool Dragging = false;
-    int DoubleClickDelay = 350 /*GetDoubleClickTime()*/;
+    int DoubleClickDelay = 350;
     bool CancelDoubleClick = false;
 
     uint LastLeftButtonClickTimer = 0;

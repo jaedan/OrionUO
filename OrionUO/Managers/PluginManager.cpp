@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PluginManager.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -14,7 +7,6 @@ CPluginManager g_PluginManager;
 bool __cdecl PluginRecvFunction(puchar buf, const int &size)
 {
     WISPFUN_DEBUG("c_plgrcvfnc");
-    //SendMessage(g_OrionWindow.Handle, UOMSG_RECV, (WPARAM)buf, size);
 
     g_PacketManager.SavePluginReceivePacket(buf, size);
 
@@ -24,7 +16,6 @@ bool __cdecl PluginRecvFunction(puchar buf, const int &size)
 bool __cdecl PluginSendFunction(puchar buf, const int &size)
 {
     WISPFUN_DEBUG("c_plgsndfnc");
-    //SendMessage(g_OrionWindow.Handle, UOMSG_SEND, (WPARAM)buf, size);
 
     uint ticks = g_Ticks;
     g_TotalSendSize += size;
@@ -91,10 +82,6 @@ LRESULT CPluginManager::WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lp
         if (plugin->CanWindowProc() && plugin->m_PPS->WindowProc != NULL)
         {
             result = plugin->m_PPS->WindowProc(hWnd, msg, wparam, lparam);
-            /*bool funRet = plugin->m_PPS->WindowProc(hWnd, msg, wparam, lparam);
-
-			if (result)
-				result = funRet;*/
         }
     }
 

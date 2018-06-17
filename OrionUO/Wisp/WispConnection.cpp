@@ -128,7 +128,6 @@ bool CConnection::Read(int maxSize)
 
         if (size > 0)
         {
-            //LOG("CConnection::Read size=%i\n", size);
             data.resize(size);
 
             data = Decompression(data);
@@ -154,8 +153,6 @@ int CConnection::Send(puchar data, int size)
 
     int sent = send(m_Socket, (char *)data, size, 0);
 
-    //LOG("CConnection::Send=>%i\n", sent);
-
     return sent;
 }
 
@@ -165,8 +162,6 @@ int CConnection::Send(const UCHAR_LIST &data)
     if (data.size())
     {
         int sent = Send((puchar)&data[0], (int)data.size());
-
-        //LOG("CConnection::Send=>%i\n", sent);
 
         return sent;
     }

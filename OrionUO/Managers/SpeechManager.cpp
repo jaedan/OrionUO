@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SpeechManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -26,8 +19,6 @@ CSpeechItem::CSpeechItem(ushort code, const wstring &data)
         CheckStart = true;
         Data.erase(Data.begin());
     }
-
-    //LOG(L"[0x%04X]=(cs=%i, ce=%i) %s\n", m_Code, m_CheckStart, m_CheckEnd, m_Data.c_str());
 }
 
 CSpeechManager::CSpeechManager()
@@ -41,10 +32,6 @@ CSpeechManager::~CSpeechManager()
     m_LangCodes.clear();
 }
 
-/*!
-Загрузка данных из Speech.mul
-@return true при успешной загрузке
-*/
 bool CSpeechManager::LoadSpeech()
 {
     WISPFUN_DEBUG("c157_f2");
@@ -167,10 +154,6 @@ bool CSpeechManager::LoadSpeech()
     return true;
 }
 
-/*!
-Загрузка данных из Langcode.iff
-@return true при успешной загрузке
-*/
 bool CSpeechManager::LoadLangCodes()
 {
     WISPFUN_DEBUG("c157_f3");
@@ -179,7 +162,6 @@ bool CSpeechManager::LoadLangCodes()
 
     WISP_FILE::CMappedFile &file = g_FileManager.m_LangcodeIff;
 
-    //скипаем заголовок файла
     file.ReadString(36);
 
     while (!file.IsEOF())
@@ -194,7 +176,6 @@ bool CSpeechManager::LoadLangCodes()
         langCodeData.Language = file.ReadString(0);
         langCodeData.Country = file.ReadString(0);
 
-        //длинна LangName и LangCountry + null terminator всегда являются четным количеством в файле.
         if ((langCodeData.Language.length() + langCodeData.Country.length() + 2) % 2)
         {
             int nullTerminator = file.ReadUInt8();
@@ -206,11 +187,7 @@ bool CSpeechManager::LoadLangCodes()
         }
 
         m_LangCodes.push_back(langCodeData);
-        //LOG("[0x%04X]: %s\n", langCodeData.Code, langCodeData.Abbreviature.c_str());
     }
-
-    //if (m_LangCodes.size() != 135)
-    //	return false;
 
     return true;
 }
@@ -218,13 +195,11 @@ bool CSpeechManager::LoadLangCodes()
 void CSpeechManager::GetKeywords(const wchar_t *text, UINT_LIST &codes)
 {
     WISPFUN_DEBUG("c157_f4");
-    if (!m_Loaded ||
-        g_PacketManager.GetClientVersion() < CV_305D) //Но по факту с 2.0.7 версии клиента
+    if (!m_Loaded || g_PacketManager.GetClientVersion() < CV_305D)
         return;
 
     size_t size = m_SpeechEntries.size();
     wstring input = ToLowerW(text);
-    //to lower, case insensitive approach.
 
     IFOR (i, 0, size)
     {

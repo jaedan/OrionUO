@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenSelectTown.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -16,7 +9,6 @@ CGumpScreenSelectTown::CGumpScreenSelectTown()
     NoMove = true;
     NoClose = true;
 
-    //!Список точек для отображения кнопок городов
     m_TownButtonText.push_back(WISP_GEOMETRY::CPoint2Di(105, 130));
     m_TownButtonText.push_back(WISP_GEOMETRY::CPoint2Di(245, 90));
     m_TownButtonText.push_back(WISP_GEOMETRY::CPoint2Di(165, 200));
@@ -47,7 +39,6 @@ void CGumpScreenSelectTown::UpdateContent()
 
     if (city->IsNewCity())
     {
-        //!Получаем строку клилока с описанием города
         description = g_ClilocManager.Cliloc(g_Language)->GetW(((CCityItemNew *)city)->Cliloc);
         map = ((CCityItemNew *)city)->MapIndex;
     }
@@ -77,13 +68,11 @@ void CGumpScreenSelectTown::UpdateContent()
     m_HTMLGump = (CGUIHTMLGump *)Add(
         new CGUIHTMLGump(ID_STS_HTML_GUMP, 0x0BB8, 452, 60, 175, 367, true, true));
 
-    //!Используем обработку HTML-тэгов при создании текстуры текста
     g_FontManager.SetUseHTML(true);
 
     m_Description = (CGUIText *)m_HTMLGump->Add(new CGUIText(0, 3, 3));
     m_Description->CreateTextureW(1, description, 30, 150);
 
-    //!Выключаем обработку HTML-тэгов
     g_FontManager.SetUseHTML(false);
 
     m_HTMLGump->CalculateDataSize();
@@ -123,7 +112,7 @@ void CGumpScreenSelectTown::UpdateContent()
 
         y -= 20;
 
-        if (i == 3) //Moonglow
+        if (i == 3)
             x -= 60;
 
         CGUITextEntry *entry = (CGUITextEntry *)Add(
@@ -138,11 +127,11 @@ void CGumpScreenSelectTown::UpdateContent()
 void CGumpScreenSelectTown::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c118_f3");
-    if (serial == ID_STS_QUIT) //x button
+    if (serial == ID_STS_QUIT)
         g_SelectTownScreen.CreateSmoothAction(CSelectTownScreen::ID_SMOOTH_STS_QUIT);
-    else if (serial == ID_STS_ARROW_PREV) //< button
+    else if (serial == ID_STS_ARROW_PREV)
         g_SelectTownScreen.CreateSmoothAction(CSelectTownScreen::ID_SMOOTH_STS_GO_SCREEN_CHARACTER);
-    else if (serial == ID_STS_ARROW_NEXT || serial >= ID_STS_TOWN) //> button
+    else if (serial == ID_STS_ARROW_NEXT || serial >= ID_STS_TOWN)
         g_SelectTownScreen.CreateSmoothAction(
             CSelectTownScreen::ID_SMOOTH_STS_GO_SCREEN_GAME_CONNECT);
 }
@@ -167,18 +156,15 @@ void CGumpScreenSelectTown::GUMP_TEXT_ENTRY_EVENT_C
 
                 if (city->IsNewCity())
                 {
-                    //!Получаем строку клилока с описанием города
                     description =
                         g_ClilocManager.Cliloc(g_Language)->GetW(((CCityItemNew *)city)->Cliloc);
                 }
 
-                //!Используем обработку HTML-тэгов при создании текстуры текста
                 g_FontManager.SetUseHTML(true);
 
                 if (m_Description != NULL)
                     m_Description->CreateTextureW(1, description, 30, 150);
 
-                //!Выключаем обработку HTML-тэгов
                 g_FontManager.SetUseHTML(false);
 
                 if (m_HTMLGump != NULL)

@@ -1,15 +1,7 @@
-﻿/***********************************************************************************
-**
-** GumpSpellbook.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
-//!Названия кругов заклинаний
 string CGumpSpellbook::m_SpellCircleName[8] = { "First Circle",   "Second Circle", "Third Circle",
                                                 "Fourth Circle",  "Fifth Circle",  "Sixth Circle",
                                                 "Seventh Circle", "Eighth Circle" };
@@ -153,11 +145,7 @@ void CGumpSpellbook::UpdateGraphic(ushort parentGraphic)
             BookType = ST_SPELL_WEAVING;
             break;
         }
-        /*case 0x????:
-		{
-			BookType = ST_MYSTICISM;
-			break;
-		}*/
+
         default:
         {
             BookType = ST_MAGE;
@@ -395,7 +383,7 @@ void CGumpSpellbook::GetTooltipBookInfo(int &dictionaryPagesCount, int &tooltipO
 
             break;
         }
-        case ST_MYSTICISM: //?
+        case ST_MYSTICISM:
         {
             maxSpellsCount = SPELLBOOK_7_SPELLS_COUNT;
             tooltipOffset = 0;
@@ -484,7 +472,7 @@ void CGumpSpellbook::GetSummaryBookInfo(
 
             break;
         }
-        case ST_MYSTICISM: //?
+        case ST_MYSTICISM:
         {
             maxSpellsCount = SPELLBOOK_7_SPELLS_COUNT;
             graphic = 0;
@@ -668,9 +656,6 @@ void CGumpSpellbook::UpdateContent()
     }
 
     PageCount = dictionaryPagesCount + m_SpellCount;
-
-    //if (m_SpellCount % 2)
-    //	PageCount--;
 
     int offs = 0;
 
@@ -905,7 +890,7 @@ void CGumpSpellbook::GUMP_BUTTON_EVENT_C
             minimizedGraphic,
             iconStartGraphic);
 
-        if (Page < dictionaryPagesCount) //List of spells
+        if (Page < dictionaryPagesCount)
         {
             IFOR (j, 0, 2)
             {
@@ -1000,7 +985,6 @@ bool CGumpSpellbook::OnLeftMouseButtonDoubleClick()
             {
                 int spellIndex = g_PressedObject.LeftSerial - ID_GSB_SPELL_ICON_RIGHT + 1;
 
-                //Было использовано заклинание
                 if (g_PressedObject.LeftSerial < ID_GSB_SPELL_ICON_RIGHT)
                     spellIndex = g_PressedObject.LeftSerial - ID_GSB_SPELL_ICON_LEFT + 1;
 
@@ -1011,7 +995,6 @@ bool CGumpSpellbook::OnLeftMouseButtonDoubleClick()
                 else
                     g_Orion.CastSpell(spellIndex);
 
-                //Сворачиваем книгу
                 Minimized = true;
                 WantUpdateContent = true;
 
@@ -1303,36 +1286,3 @@ const SPELL_REQURIES CGumpSpellbook::m_SpellRequries6[SPELLBOOK_6_SPELLS_COUNT] 
     { 24, 0 },  { 24, 0 },  { 32, 10 }, { 24, 0 },  { 32, 10 }, { 24, 0 },  { 10, 38 }, { 10, 38 },
     { 34, 24 }, { 50, 66 }, { 40, 52 }, { 40, 52 }, { 32, 24 }, { 50, 80 }, { 70, 38 }, { 50, 24 }
 };
-
-//?!?!?
-/*"Enchanted Summoning",
-"Anticipate Hit",
-"Warcry",
-"Intuition",
-"Rejuvenate",
-"Holy Fist",
-"Shadow",
-"White Tiger Form",
-"Thrust",
-"Pierce",
-"Stagger",
-"Toughness",
-"Onslaught",
-"Focused Eye",
-"Elemental Fury",
-"Called Shot",
-"Saving Throw",
-"Shield Bash",
-"Bodyguard",
-"Heighten Senses",
-"Tolerance",
-"Injected Strike",
-"Potency",
-"Rampage",
-"Fists of Fury",
-"Knockout",
-"Whispering",
-"Combat Training",
-"Boarding",
-"Flaming Shot",
-"Playing The Odds"*/

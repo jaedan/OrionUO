@@ -4,4 +4,4 @@
 
 LONG __stdcall OrionUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo);
 
-#endif //EXCEPTIONFILTER_H
+#endif

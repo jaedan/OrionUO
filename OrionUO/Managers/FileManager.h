@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** FileManager.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
@@ -14,12 +7,9 @@ class CUopBlockHeader
 {
 public:
     uint64 Offset = 0;
-    //uint HeaderSize = 0;
+
     uint CompressedSize = 0;
     uint DecompressedSize = 0;
-    //uint64 Hash = 0;
-    //uint Unknown = 0;
-    //ushort Flags = 0;
 
     CUopBlockHeader() {}
     CUopBlockHeader(
@@ -66,7 +56,6 @@ public:
 
     AutoResetEvent m_AutoResetEvent;
 
-    //!Адреса файлов в памяти
     WISP_FILE::CMappedFile m_AnimIdx[6];
     WISP_FILE::CMappedFile m_ArtIdx;
     WISP_FILE::CMappedFile m_GumpIdx;
@@ -99,7 +88,6 @@ public:
     WISP_FILE::CMappedFile m_SpeechMul;
     WISP_FILE::CMappedFile m_LangcodeIff;
 
-    //UOP
     CUopMappedFile m_ArtLegacyMUL;
     CUopMappedFile m_GumpartLegacyMUL;
     CUopMappedFile m_SoundLegacyMUL;
@@ -110,7 +98,6 @@ public:
     CUopMappedFile m_AnimationSequence;
     CUopMappedFile m_MultiCollection;
 
-    //Map patches
     WISP_FILE::CMappedFile m_MapDifl[6];
     WISP_FILE::CMappedFile m_MapDif[6];
 
@@ -123,13 +110,11 @@ public:
     void Unload();
     void TryReadUOPAnimations();
 
-    //Чтение сжатых данных с кадрами из УОП аним файла.
     static char *ReadUOPDataFromFileStream(UOPAnimationData &animData);
 
     void
     ReadAnimMulDataFromFileStream(vector<char> &animData, CTextureAnimationDirection &direction);
 
-    //Разжатие данных с кадрами из УОП аним файла.
     static bool
     DecompressUOPFileData(UOPAnimationData &animData, UCHAR_LIST &decLayoutData, char *buf);
 

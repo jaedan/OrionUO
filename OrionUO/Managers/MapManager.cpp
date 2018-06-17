@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MapManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -53,7 +46,6 @@ void CMapManager::CreateBlockTable(int map)
 
     int maxBlockCount = size.Width * size.Height;
 
-    //Return and error notification?
     if (maxBlockCount < 1)
         return;
 
@@ -169,7 +161,6 @@ void CMapManager::ResetPatchesInBlockTable()
 
         int maxBlockCount = size.Width * size.Height;
 
-        //Return and error notification?
         if (maxBlockCount < 1)
             return;
 
@@ -399,13 +390,6 @@ char CMapManager::CalculateNearZ(char defaultZ, int x, int y, int z)
     return defaultZ;
 }
 
-/*!
-Получить блок для радара из муллов
-@param [__in] blockX Координата X блока
-@param [__in] blockY Координата Y блока
-@param [__out] mb Ссылка на блок
-@return 
-*/
 void CMapManager::GetRadarMapBlock(int blockX, int blockY, RADAR_MAP_BLOCK &mb)
 {
     WISPFUN_DEBUG("c146_f10");
@@ -440,9 +424,6 @@ void CMapManager::GetRadarMapBlock(int blockX, int blockY, RADAR_MAP_BLOCK &mb)
             {
                 RADAR_MAP_CELLS &outCell = mb.Cells[sb->X][sb->Y];
 
-                //int pos = (sb->GetY() * 8) + sb->GetX();
-                //if (pos > 64) continue;
-
                 if (outCell.Z <= sb->Z)
                 {
                     outCell.Graphic = sb->Color;
@@ -456,14 +437,6 @@ void CMapManager::GetRadarMapBlock(int blockX, int blockY, RADAR_MAP_BLOCK &mb)
     }
 }
 
-/*!
-Получить значение Z координаты для указанной точки в мире
-@param [__in] x Координата X
-@param [__in] y Координата Y
-@param [__out] groundZ Значение Z коррдинаты земли
-@param [__out] staticZ Значение Z коррдинаты статики
-@return 
-*/
 void CMapManager::GetMapZ(int x, int y, int &groundZ, int &staticZ)
 {
     WISPFUN_DEBUG("c146_f11");
@@ -497,10 +470,6 @@ void CMapManager::GetMapZ(int x, int y, int &groundZ, int &staticZ)
     }
 }
 
-/*!
-Удалить неиспользуемые блоки
-@return 
-*/
 void CMapManager::ClearUnusedBlocks()
 {
     WISPFUN_DEBUG("c146_f12");
@@ -545,11 +514,6 @@ void CMapManager::ClearUsedBlocks()
     }
 }
 
-/*!
-Инициализация
-@param [__in_opt] delayed По истечении времени на загрузку выходить из цикла
-@return 
-*/
 void CMapManager::Init(bool delayed)
 {
     WISPFUN_DEBUG("c146_f14");
@@ -577,7 +541,7 @@ void CMapManager::Init(bool delayed)
         memset(&m_StaticPatchCount[0], 0, sizeof(m_StaticPatchCount));
     }
 
-    const int XY_Offset = 30; //70;
+    const int XY_Offset = 30;
 
     int minBlockX = (g_Player->GetX() - XY_Offset) / 8 - 1;
     int minBlockY = (g_Player->GetY() - XY_Offset) / 8 - 1;
@@ -626,11 +590,6 @@ void CMapManager::Init(bool delayed)
     }
 }
 
-/*!
-Загрузить блок
-@param [__inout] block Ссылка на блок для загрузки
-@return 
-*/
 void CMapManager::LoadBlock(CMapBlock *block)
 {
     WISPFUN_DEBUG("c146_f15");
@@ -691,10 +650,6 @@ void CMapManager::LoadBlock(CMapBlock *block)
     block->CreateLandTextureRect();
 }
 
-/*!
-Получить индекс текущей карты
-@return
-*/
 int CMapManager::GetActualMap()
 {
     WISPFUN_DEBUG("c146_f16");
@@ -706,11 +661,6 @@ int CMapManager::GetActualMap()
     return g_CurrentMap;
 }
 
-/*!
-Добавить объект рендера
-@param [__in] item Ссылка на объект
-@return 
-*/
 void CMapManager::AddRender(CRenderWorldObject *item)
 {
     WISPFUN_DEBUG("c146_f17");
@@ -741,11 +691,6 @@ void CMapManager::AddRender(CRenderWorldObject *item)
     }
 }
 
-/*!
-Получить ссылку на блок
-@param [__in] index Индекс блока
-@return Ссылка на блок или NULL
-*/
 CMapBlock *CMapManager::GetBlock(int index)
 {
     WISPFUN_DEBUG("c146_f18");
@@ -762,11 +707,6 @@ CMapBlock *CMapManager::GetBlock(int index)
     return block;
 }
 
-/*!
-Добавить блок
-@param [__in] index Индекс блока
-@return Ссылка на блок или NULL
-*/
 CMapBlock *CMapManager::AddBlock(int index)
 {
     WISPFUN_DEBUG("c146_f19");
@@ -777,11 +717,6 @@ CMapBlock *CMapManager::AddBlock(int index)
     return block;
 }
 
-/*!
-Удалить блок
-@param [__in] index Индекс блока
-@return 
-*/
 void CMapManager::DeleteBlock(int index)
 {
     WISPFUN_DEBUG("c146_f20");

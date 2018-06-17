@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpOptions.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPOPTIONS_H
 #define GUMPOPTIONS_H
@@ -19,16 +12,16 @@ private:
 
     static const int m_MacroListMaxCount = 20;
 
-    void DrawPage1();  //Sound and Music
-    void DrawPage2();  //Pop-up Help
-    void DrawPage3();  //Language
-    void DrawPage4();  //Chat
-    void DrawPage5();  //Macro Options
-    void DrawPage6();  //Interface
-    void DrawPage7();  //Display
-    void DrawPage8();  //Reputation System
-    void DrawPage9();  //Miscellaneous
-    void DrawPage10(); //Filter Options
+    void DrawPage1();
+    void DrawPage2();
+    void DrawPage3();
+    void DrawPage4();
+    void DrawPage5();
+    void DrawPage6();
+    void DrawPage7();
+    void DrawPage8();
+    void DrawPage9();
+    void DrawPage10();
 
     void ApplyPageChanges();
 
@@ -134,7 +127,7 @@ private:
     static const int ID_GO_P5_LEFT_BOX = 510;
     static const int ID_GO_P5_RIGHT_BOX = 520;
     static const int ID_GO_P5_EMPTY_BOX = 530;
-    ///////////////////////////////////////////
+
     static const int ID_GO_P5_MACRO_SELECTION = 2000;
     static const int ID_GO_P5_ACTION_SELECTION = 10000;
 

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SoundManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -87,7 +80,7 @@ bool CSoundManager::Init()
 {
     WISPFUN_DEBUG("c156_f1");
     LOG("Initializing bass sound system.\n");
-    // initialize default output device
+
     if (!BASS_Init(-1, 48000, BASS_DEVICE_3D, g_OrionWindow.Handle, NULL))
     {
         LOG("Can't initialize device: %s\n", BASS_ErrorGetDescription());
@@ -96,7 +89,7 @@ bool CSoundManager::Init()
     else
     {
         LOG("Sound init successfull.\n");
-        BASS_SetConfig(BASS_CONFIG_SRC, 3); // interpolation method
+        BASS_SetConfig(BASS_CONFIG_SRC, 3);
 
         if (!BASS_SetConfig(BASS_CONFIG_3DALGORITHM, BASS_3DALG_FULL))
             LOG("Error setting 3d sound: %s\n", BASS_ErrorGetDescription());
@@ -127,11 +120,6 @@ void CSoundManager::ResumeSound()
     BASS_Start();
 }
 
-/// <summary>Расчитывает громкость звука с учетом громкости в клиенте
-/// и возможной дистанции для эффетов.</summary>
-/// <param name="distance">расстояние для эффектов.
-///При значении -1 расстояние не учитывается.</param>
-/// <returns>громкость для BASS библиотеки.</returns>
 float CSoundManager::GetVolumeValue(int distance, bool music)
 {
     WISPFUN_DEBUG("c156_f5");
@@ -151,10 +139,6 @@ float CSoundManager::GetVolumeValue(int distance, bool music)
     }
 }
 
-/// <summary>Создаёт в памяти 16 битный wave файл для последующего
-/// проигрывания.</summary>
-/// <param name="is">ссылка на запись звука в MUL файле</param>
-/// <returns>Wave файл в виде вектора байтов</returns>
 UCHAR_LIST CSoundManager::CreateWaveFile(CIndexSound &is)
 {
     WISPFUN_DEBUG("c156_f6");
@@ -222,8 +206,6 @@ void CSoundManager::PlaySoundEffect(HSTREAM hStream, float volume)
         LOG("Bass sound play error: %s\n", BASS_ErrorGetDescription());
 }
 
-/// <summary>Очистка звукового потока и высвобождение памяти.</summary>
-/// <param name="hSteam">stream handle</param>
 bool CSoundManager::FreeStream(HSTREAM hSteam)
 {
     WISPFUN_DEBUG("c156_f9");

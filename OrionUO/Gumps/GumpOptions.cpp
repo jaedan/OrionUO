@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpOptions.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -65,43 +58,36 @@ void CGumpOptions::UpdateContent()
     WISPFUN_DEBUG("c104_f3");
     Clear();
 
-    //Body
     Add(new CGUIResizepic(0, 0x0A28, 40, 0, 550, 450));
 
-    //Left page buttons
-
-    //Sound and Music
     CGUIButton *button =
         (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_1, 0x00DA, 0x00DA, 0x00DA, 0, 45));
     button->ToPage = 1;
-    //Orion's configuration
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_2, 0x00DC, 0x00DC, 0x00DC, 0, 111));
     button->ToPage = 2;
-    //Language
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_3, 0x00DE, 0x00DE, 0x00DE, 0, 177));
     button->ToPage = 3;
-    //Chat
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_4, 0x00E0, 0x00E0, 0x00E0, 0, 243));
     button->ToPage = 4;
-    //Macro Options
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_5, 0x00ED, 0x00ED, 0x00ED, 0, 309));
     button->ToPage = 5;
 
-    //Right page buttons
-
-    //Interface
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_6, 0x00E2, 0x00E2, 0x00E2, 576, 45));
     button->ToPage = 6;
-    //Display
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_7, 0x00E4, 0x00E4, 0x00E4, 576, 111));
     button->ToPage = 7;
-    //Reputation System
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_8, 0x00E6, 0x00E6, 0x00E6, 576, 177));
     button->ToPage = 8;
-    //Miscellaneous
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_9, 0x00E8, 0x00E8, 0x00E8, 576, 243));
     button->ToPage = 9;
-    //Filter Options
+
     button = (CGUIButton *)Add(new CGUIButton(ID_GO_PAGE_10, 0x00EB, 0x00EB, 0x00EB, 576, 309));
     button->ToPage = 10;
 
@@ -110,16 +96,16 @@ void CGumpOptions::UpdateContent()
     Add(new CGUIButton(ID_GO_DEFAULT, 0x00F6, 0x00F5, 0x00F4, 346, 405));
     Add(new CGUIButton(ID_GO_OKAY, 0x00F9, 0x00F7, 0x00F8, 443, 405));
 
-    DrawPage1();  //Sound and Music
-    DrawPage2();  //Orion's configuration
-    DrawPage3();  //Language
-    DrawPage4();  //Chat
-    DrawPage5();  //Macro Options
-    DrawPage6();  //Interface
-    DrawPage7();  //Display
-    DrawPage8();  //Reputation System
-    DrawPage9();  //Miscellaneous
-    DrawPage10(); //Filter Options
+    DrawPage1();
+    DrawPage2();
+    DrawPage3();
+    DrawPage4();
+    DrawPage5();
+    DrawPage6();
+    DrawPage7();
+    DrawPage8();
+    DrawPage9();
+    DrawPage10();
 
     RedrawMacroData();
 }
@@ -833,7 +819,7 @@ void CGumpOptions::InitToolTip()
 void CGumpOptions::DrawPage1()
 {
     WISPFUN_DEBUG("c104_f6");
-    //Sound and Music
+
     Add(new CGUIPage(1));
 
     Add(new CGUIGumppic(0x00D9, 0, 45));
@@ -915,7 +901,7 @@ void CGumpOptions::DrawPage1()
 void CGumpOptions::DrawPage2()
 {
     WISPFUN_DEBUG("c104_f7");
-    //Orion's configuration
+
     Add(new CGUIPage(2));
 
     Add(new CGUIGumppic(0x00DB, 0, 111));
@@ -1305,7 +1291,7 @@ void CGumpOptions::DrawPage2()
 void CGumpOptions::DrawPage3()
 {
     WISPFUN_DEBUG("c104_f8");
-    //Language
+
     Add(new CGUIPage(3));
 
     Add(new CGUIGumppic(0x00DD, 0, 177));
@@ -1368,7 +1354,7 @@ void CGumpOptions::DrawPage3()
 void CGumpOptions::DrawPage4()
 {
     WISPFUN_DEBUG("c104_f9");
-    //Chat
+
     Add(new CGUIPage(4));
 
     Add(new CGUIGumppic(0x00DF, 0, 243));
@@ -1742,7 +1728,7 @@ void CGumpOptions::RedrawMacroData()
 
         if (macroCount >= maxMacroDraw)
             m_MacroDataBox->Add(
-                new CGUIButton(ID_GO_P5_BUTTON_DOWN, 0x0985, 0x0986, 0x0986, 415, y /*295 /*269*/));
+                new CGUIButton(ID_GO_P5_BUTTON_DOWN, 0x0985, 0x0986, 0x0986, 415, y));
     }
 }
 
@@ -1770,7 +1756,6 @@ void CGumpOptions::DrawPage5()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 134, 82));
     text->CreateTextureW(0, L"Keystroke");
 
-    //KeyBox
     Add(new CGUIGumppic(0x098B, 133, 112));
     Add(new CGUIHitBox(ID_GO_P5_KEY_BOX, 133, 112, 63, 23));
     m_MacroKey = (CGUITextEntry *)Add(new CGUITextEntry(
@@ -1780,7 +1765,6 @@ void CGumpOptions::DrawPage5()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 200, 111));
     text->CreateTextureW(0, L"Key");
 
-    //Shift checkbox
     m_MacroCheckboxShift = (CGUICheckbox *)Add(
         new CGUICheckbox(ID_GO_P5_BUTTON_SHIFT, 0x0867, 0x0869, 0x0867, 248, 79));
     m_MacroCheckboxShift->GraphicSelected = 0x0868;
@@ -1788,7 +1772,6 @@ void CGumpOptions::DrawPage5()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 280, 82));
     text->CreateTextureW(0, L"Shift");
 
-    //Alt checkbox
     m_MacroCheckboxAlt = (CGUICheckbox *)Add(
         new CGUICheckbox(ID_GO_P5_BUTTON_ALT, 0x0867, 0x0869, 0x0867, 248, 107));
     m_MacroCheckboxAlt->GraphicSelected = 0x0868;
@@ -1796,7 +1779,6 @@ void CGumpOptions::DrawPage5()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 280, 111));
     text->CreateTextureW(0, L"Alt");
 
-    //Ctrl checkbox
     m_MacroCheckboxCtrl = (CGUICheckbox *)Add(
         new CGUICheckbox(ID_GO_P5_BUTTON_CTRL, 0x0867, 0x0869, 0x0867, 248, 135));
     m_MacroCheckboxCtrl->GraphicSelected = 0x0868;
@@ -1813,7 +1795,7 @@ void CGumpOptions::DrawPage5()
 void CGumpOptions::DrawPage6()
 {
     WISPFUN_DEBUG("c104_f12");
-    //Interface
+
     Add(new CGUIPage(6));
 
     Add(new CGUIGumppic(0x00E1, 576, 45));
@@ -1983,7 +1965,7 @@ void CGumpOptions::DrawPage6()
 void CGumpOptions::DrawPage7()
 {
     WISPFUN_DEBUG("c104_f13");
-    //Display
+
     Add(new CGUIPage(7));
 
     Add(new CGUIGumppic(0x00E3, 576, 111));
@@ -2173,7 +2155,7 @@ void CGumpOptions::DrawPage7()
 void CGumpOptions::DrawPage8()
 {
     WISPFUN_DEBUG("c104_f14");
-    //Reputation System
+
     Add(new CGUIPage(8));
 
     Add(new CGUIGumppic(0x00E5, 576, 177));
@@ -2287,7 +2269,7 @@ void CGumpOptions::DrawPage8()
 void CGumpOptions::DrawPage9()
 {
     WISPFUN_DEBUG("c104_f15");
-    //Miscellaneous
+
     Add(new CGUIPage(9));
 
     Add(new CGUIGumppic(0x00E7, 576, 243));
@@ -2361,7 +2343,7 @@ void CGumpOptions::DrawPage9()
 void CGumpOptions::DrawPage10()
 {
     WISPFUN_DEBUG("c104_f16");
-    //Filter Options
+
     Add(new CGUIPage(10));
 
     Add(new CGUIGumppic(0x00EA, 576, 309));
@@ -2586,14 +2568,14 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
         m_GameWindowWidth->m_Entry.SetText(std::to_string(g_OptionsConfig.GameWindowWidth));
         m_GameWindowHeight->m_Entry.SetText(std::to_string(g_OptionsConfig.GameWindowHeight));
     }
-    else if (serial == ID_GO_CANCEL) //Cancel
+    else if (serial == ID_GO_CANCEL)
     {
         g_OptionsMacroManager.Clear();
         RemoveMark = true;
     }
-    else if (serial == ID_GO_APPLY) //Apply
+    else if (serial == ID_GO_APPLY)
         ApplyPageChanges();
-    else if (serial == ID_GO_DEFAULT) //Default
+    else if (serial == ID_GO_DEFAULT)
     {
         switch (Page)
         {
@@ -2652,14 +2634,8 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
 
         WantUpdateContent = true;
     }
-    else if (serial == ID_GO_OKAY) //Okay
+    else if (serial == ID_GO_OKAY)
     {
-        /*IFOR(i, 0, 10)
-		{
-			Page = i;
-			ApplyPageChanges();
-		}*/
-
         ApplyPageChanges();
         g_OptionsMacroManager.Clear();
 
@@ -2669,40 +2645,40 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
     {
         switch (Page)
         {
-            case 1: //Sound and Music
+            case 1:
             {
                 break;
             }
-            case 2: //Orion's configuration
+            case 2:
             {
                 break;
             }
-            case 3: //Language
+            case 3:
             {
-                if (serial == ID_GO_P3_TEXT_COLOR) //Color of Tool-tip text
+                if (serial == ID_GO_P3_TEXT_COLOR)
                     g_GumpManager.AddGump(new CGumpSelectColor(0, 100, 100, SCGS_OPT_TOOLTIP_TEXT));
-                else if (serial == ID_GO_P3_TEXT_FONT) //Font
+                else if (serial == ID_GO_P3_TEXT_FONT)
                     g_GumpManager.AddGump(new CGumpSelectFont(0, 320, 240, SFGS_OPT_TOOLTIP));
 
                 break;
             }
-            case 4: //Chat
+            case 4:
             {
-                if (serial >= ID_GO_P4_TEXT_COLOR) //Input text color
+                if (serial >= ID_GO_P4_TEXT_COLOR)
                     g_GumpManager.AddGump(new CGumpSelectColor(
                         0,
                         100,
                         100,
                         (SELECT_COLOR_GUMP_STATE)(
                             SCGS_OPT_CHAT_INPUT_TEXT + (serial - ID_GO_P4_TEXT_COLOR))));
-                else if (serial == ID_GO_P4_TEXT_FONT) //Font
+                else if (serial == ID_GO_P4_TEXT_FONT)
                     g_GumpManager.AddGump(new CGumpSelectFont(0, 320, 240, SFGS_OPT_CHAT));
 
                 break;
             }
-            case 5: //Macro Options
+            case 5:
             {
-                if (serial == ID_GO_P5_BUTTON_ADD) //Add button
+                if (serial == ID_GO_P5_BUTTON_ADD)
                 {
                     m_MacroPointer = CMacro::CreateBlankMacro();
                     m_MacroObjectPointer = (CMacroObject *)m_MacroPointer->m_Items;
@@ -2712,7 +2688,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
 
                     RedrawMacroData();
                 }
-                else if (serial == ID_GO_P5_BUTTON_DELETE) //Delete button
+                else if (serial == ID_GO_P5_BUTTON_DELETE)
                 {
                     if (m_LastChangeMacroTime < g_Ticks)
                     {
@@ -2739,7 +2715,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
                         m_LastChangeMacroTime = g_Ticks + CHANGE_MACRO_DELAY;
                     }
                 }
-                else if (serial == ID_GO_P5_BUTTON_PREVEOUS) //Preveous button
+                else if (serial == ID_GO_P5_BUTTON_PREVEOUS)
                 {
                     if (m_MacroPointer->m_Prev != NULL && m_LastChangeMacroTime < g_Ticks)
                     {
@@ -2751,8 +2727,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
                         m_LastChangeMacroTime = g_Ticks + CHANGE_MACRO_DELAY;
                     }
                 }
-                else if (
-                    serial == ID_GO_P5_BUTTON_NEXT && m_LastChangeMacroTime < g_Ticks) //Next button
+                else if (serial == ID_GO_P5_BUTTON_NEXT && m_LastChangeMacroTime < g_Ticks)
                 {
                     if (m_MacroPointer->m_Next != NULL)
                     {
@@ -2764,7 +2739,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
                         m_LastChangeMacroTime = g_Ticks + CHANGE_MACRO_DELAY;
                     }
                 }
-                else if (serial == ID_GO_P5_BUTTON_UP) //Up button
+                else if (serial == ID_GO_P5_BUTTON_UP)
                 {
                     if (m_MacroObjectPointer->m_Prev != NULL)
                     {
@@ -2772,7 +2747,7 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
                         RedrawMacroData();
                     }
                 }
-                else if (serial == ID_GO_P5_BUTTON_DOWN) //Down button
+                else if (serial == ID_GO_P5_BUTTON_DOWN)
                 {
                     if (m_MacroObjectPointer->m_Next != NULL)
                     {
@@ -2783,14 +2758,13 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
 
                 break;
             }
-            case 6: //Interface
+            case 6:
             {
                 break;
             }
-            case 7: //Display
+            case 7:
             {
-                if (serial >= ID_GO_P7_SPEECH_COLOR &&
-                    serial <= ID_GO_P7_ALLIANCE_MESSAGE_COLOR) //Speech color
+                if (serial >= ID_GO_P7_SPEECH_COLOR && serial <= ID_GO_P7_ALLIANCE_MESSAGE_COLOR)
                     g_GumpManager.AddGump(new CGumpSelectColor(
                         0,
                         100,
@@ -2800,10 +2774,9 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
 
                 break;
             }
-            case 8: //Reputation System
+            case 8:
             {
-                if (serial >= ID_GO_P8_INNOCENT_COLOR &&
-                    serial <= ID_GO_P8_MURDERER_COLOR) //Innocent highlight color
+                if (serial >= ID_GO_P8_INNOCENT_COLOR && serial <= ID_GO_P8_MURDERER_COLOR)
                     g_GumpManager.AddGump(new CGumpSelectColor(
                         0,
                         100,
@@ -2813,14 +2786,14 @@ void CGumpOptions::GUMP_BUTTON_EVENT_C
 
                 break;
             }
-            case 9: //Miscellaneous
+            case 9:
             {
-                if (serial == ID_GO_P9_SPEECH_FONT) //Speech Font
+                if (serial == ID_GO_P9_SPEECH_FONT)
                     g_GumpManager.AddGump(new CGumpSelectFont(0, 320, 240, SFGS_OPT_MISCELLANEOUS));
 
                 break;
             }
-            case 10: //Filter Options
+            case 10:
             {
                 break;
             }
@@ -2835,27 +2808,25 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
     WISPFUN_DEBUG("c104_f19");
     switch (Page)
     {
-        case 1: //Sound and Music
+        case 1:
         {
-            if (serial == ID_GO_P1_SOUND_ON_OFF) //Sound on/off
+            if (serial == ID_GO_P1_SOUND_ON_OFF)
                 g_OptionsConfig.SetSound(state);
-            else if (serial == ID_GO_P1_MUSIC_ON_OFF) //Music on/off
+            else if (serial == ID_GO_P1_MUSIC_ON_OFF)
                 g_OptionsConfig.SetMusic(state);
-            else if (serial == ID_GO_P1_PLAY_FOOTSTEP_SOUNDS) //Play footstep sounds
+            else if (serial == ID_GO_P1_PLAY_FOOTSTEP_SOUNDS)
                 g_OptionsConfig.FootstepsSound = state;
-            else if (serial == ID_GO_P1_PLAY_COMBAT_MUSIC) //Play combat music
+            else if (serial == ID_GO_P1_PLAY_COMBAT_MUSIC)
                 g_OptionsConfig.CombatMusic = state;
-            else if (serial == ID_GO_P1_BACKGROUND_SOUND) //Play sounds in background
+            else if (serial == ID_GO_P1_BACKGROUND_SOUND)
                 g_OptionsConfig.BackgroundSound = state;
             break;
         }
-        case 2: //Orion's configuration
+        case 2:
         {
-            if (serial == ID_GO_P2_ENABLE_SCALING) //Use scaling in game window
+            if (serial == ID_GO_P2_ENABLE_SCALING)
                 g_OptionsConfig.SetUseScaling(state);
-            else if (
-                serial ==
-                ID_GO_P2_REMOVE_TEXT_WITH_BLENDING) //Remove object's text with alpha-blending
+            else if (serial == ID_GO_P2_REMOVE_TEXT_WITH_BLENDING)
                 g_OptionsConfig.RemoveTextWithBlending = state;
             else if (serial == ID_GO_P2_DRAW_STUMPS)
                 g_OptionsConfig.SetDrawStumps(state);
@@ -2865,17 +2836,15 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.SetNoVegetation(state);
             else if (serial == ID_GO_P2_NO_ANIMATE_FIELDS)
                 g_OptionsConfig.SetNoAnimateFields(state);
-            else if (
-                serial == ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW) //Reduce FPS when Window is Unactive
+            else if (serial == ID_GO_P2_REDUCE_FPS_UNACTIVE_WINDOW)
                 g_OptionsConfig.SetReduceFPSUnactiveWindow(state);
-            else if (
-                serial == ID_GO_P2_CHARACTERS_ANIMATION_DELAY) //Standard characters animation delay
+            else if (serial == ID_GO_P2_CHARACTERS_ANIMATION_DELAY)
                 g_OptionsConfig.StandartCharactersAnimationDelay = state;
-            else if (serial == ID_GO_P2_ITEMS_ANIMATION_DELAY) //Standard items animation delay
+            else if (serial == ID_GO_P2_ITEMS_ANIMATION_DELAY)
                 g_OptionsConfig.StandartItemsAnimationDelay = state;
-            else if (serial == ID_GO_P2_LOCK_GUMP_MOVING) //Lock gump moving
+            else if (serial == ID_GO_P2_LOCK_GUMP_MOVING)
                 g_OptionsConfig.LockGumpsMoving = state;
-            else if (serial == ID_GO_P2_CONSOLE_ENTER) //Console need press 'Enter' to activate it.
+            else if (serial == ID_GO_P2_CONSOLE_ENTER)
                 g_OptionsConfig.SetConsoleNeedEnter(state);
             else if (serial == ID_GO_P2_USE_HIDDEN_MODE_ONLY_FOR_SELF)
                 g_OptionsConfig.UseHiddenModeOnlyForSelf = state;
@@ -2928,105 +2897,93 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
 
             break;
         }
-        case 3: //Language
+        case 3:
         {
-            if (serial == ID_GO_P3_USE_TOOLTIP) //Use Tool-tips
+            if (serial == ID_GO_P3_USE_TOOLTIP)
                 g_OptionsConfig.UseToolTips = state;
 
             break;
         }
-        case 4: //Chat
+        case 4:
         {
             break;
         }
-        case 5: //Macro Options
+        case 5:
         {
-            if (serial == ID_GO_P5_BUTTON_SHIFT) //Shift checkbox
+            if (serial == ID_GO_P5_BUTTON_SHIFT)
                 m_MacroPointer->Shift = state;
-            else if (serial == ID_GO_P5_BUTTON_ALT) //Alt checkbox
+            else if (serial == ID_GO_P5_BUTTON_ALT)
                 m_MacroPointer->Alt = state;
-            else if (serial == ID_GO_P5_BUTTON_CTRL) //Ctrl checkbox
+            else if (serial == ID_GO_P5_BUTTON_CTRL)
                 m_MacroPointer->Ctrl = state;
 
             break;
         }
-        case 6: //Interface
+        case 6:
         {
-            if (serial == ID_GO_P6_ENABLE_PATHFINDING) //Enable pathfinding with double-right-click
+            if (serial == ID_GO_P6_ENABLE_PATHFINDING)
                 g_OptionsConfig.EnablePathfind = state;
-            else if (
-                serial ==
-                ID_GO_P6_HOLD_TAB_FOR_COMBAT) //Hold down TAB key for combat, instead of tapping it to toggle combat mode
+            else if (serial == ID_GO_P6_HOLD_TAB_FOR_COMBAT)
                 g_OptionsConfig.HoldTabForCombat = state;
-            else if (
-                serial ==
-                ID_GO_P6_OFFSET_INTERFACE_WINDOWS) //Offset interface windows rather than perfectly stacking them
+            else if (serial == ID_GO_P6_OFFSET_INTERFACE_WINDOWS)
                 g_OptionsConfig.OffsetInterfaceWindows = state;
-            else if (
-                serial ==
-                ID_GO_P6_AUTO_ARRANGE_MINIMIZED_WINDOWS) //Automatically arrange minimized windows
+            else if (serial == ID_GO_P6_AUTO_ARRANGE_MINIMIZED_WINDOWS)
                 g_OptionsConfig.AutoArrange = state;
-            else if (
-                serial == ID_GO_P6_ALWAYS_RUN) //Your character will always run if this is checked
+            else if (serial == ID_GO_P6_ALWAYS_RUN)
                 g_OptionsConfig.AlwaysRun = state;
-            else if (serial == ID_GO_P6_DISABLE_MENUBAR) //Disable the Menu Bar
+            else if (serial == ID_GO_P6_DISABLE_MENUBAR)
                 g_OptionsConfig.DisableMenubar = state;
-            else if (serial == ID_GO_P6_GRAY_OUT_OF_RANGE_OBJECTS) //Gray out of range objects
+            else if (serial == ID_GO_P6_GRAY_OUT_OF_RANGE_OBJECTS)
                 g_OptionsConfig.GrayOutOfRangeObjects = state;
-            else if (serial == ID_GO_P6_DISABLE_NEW_TARGET_SYSTEM) //Disable New Target System
+            else if (serial == ID_GO_P6_DISABLE_NEW_TARGET_SYSTEM)
                 g_OptionsConfig.DisableNewTargetSystem = state;
-            else if (serial == ID_GO_P6_OBJECT_HANDLES) //Object Handles
+            else if (serial == ID_GO_P6_OBJECT_HANDLES)
                 g_OptionsConfig.ObjectHandles = state;
-            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_ICON) //Display Item Properties Icon
+            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_ICON)
                 g_OptionsConfig.SetItemPropertiesIcon(state);
-            else if (serial == ID_GO_P6_HOLD_SHIFT_FOR_CONTEXT_MENUS) //Hold Shift For Context Menus
+            else if (serial == ID_GO_P6_HOLD_SHIFT_FOR_CONTEXT_MENUS)
                 g_OptionsConfig.HoldShiftForContextMenus = state;
-            else if (
-                serial ==
-                ID_GO_P6_HOLD_SHIFT_FOR_ENABLE_PATHFINDING) //Hold Shift For Enable Pathfinding
+            else if (serial == ID_GO_P6_HOLD_SHIFT_FOR_ENABLE_PATHFINDING)
                 g_OptionsConfig.HoldShiftForEnablePathfind = state;
 
             break;
         }
-        case 7: //Display
+        case 7:
         {
-            if (serial == ID_GO_P7_SCALE_SPEECH_DURATION) //Scale speech duration based on length
+            if (serial == ID_GO_P7_SCALE_SPEECH_DURATION)
                 g_OptionsConfig.ScaleSpeechDelay = state;
-            else if (serial == ID_GO_P7_IGNORE_GUILD_MESSAGE) //Ignore Guild Messages
+            else if (serial == ID_GO_P7_IGNORE_GUILD_MESSAGE)
                 g_OptionsConfig.IgnoreGuildMessage = state;
-            else if (serial == ID_GO_P7_IGNORE_ALLIANCE_MESSAGE) //Ignore Alliance Messages
+            else if (serial == ID_GO_P7_IGNORE_ALLIANCE_MESSAGE)
                 g_OptionsConfig.IgnoreAllianceMessage = state;
-            else if (serial == ID_GO_P7_DARK_NIGHTS) //Dark Nights
+            else if (serial == ID_GO_P7_DARK_NIGHTS)
                 g_OptionsConfig.DarkNights = state;
-            else if (serial == ID_GO_P7_COLORED_LIGHTING) //Colored Lighting
+            else if (serial == ID_GO_P7_COLORED_LIGHTING)
                 g_OptionsConfig.ColoredLighting = state;
-            else if (serial == ID_GO_P7_LOCK_GAME_WINDOW_RESIZING) //Lock game window resizing
+            else if (serial == ID_GO_P7_LOCK_GAME_WINDOW_RESIZING)
                 g_OptionsConfig.LockResizingGameWindow = state;
 
             break;
         }
-        case 8: //Reputation System
+        case 8:
         {
-            if (serial ==
-                ID_GO_P8_QUERY_CRIMINAL_ACTIONS) //Query before performing criminal actions
+            if (serial == ID_GO_P8_QUERY_CRIMINAL_ACTIONS)
                 g_OptionsConfig.CriminalActionsQuery = state;
 
             break;
         }
-        case 9: //Miscellaneous
+        case 9:
         {
-            if (serial == ID_GO_P9_SHOW_APPROACHING_NAMES) //Show Names of Approaching Players
+            if (serial == ID_GO_P9_SHOW_APPROACHING_NAMES)
                 g_OptionsConfig.ShowIncomingNames = state;
-            else if (serial == ID_GO_P9_USE_CIRCLE_OF_TRANSPARENCY) //Use circle of transparency
+            else if (serial == ID_GO_P9_USE_CIRCLE_OF_TRANSPARENCY)
                 g_OptionsConfig.UseCircleTrans = state;
-            else if (
-                serial ==
-                ID_GO_P9_INFORM_STATS) //Inform me of increases in strength, dexterity, and intelligence.
+            else if (serial == ID_GO_P9_INFORM_STATS)
                 g_OptionsConfig.StatReport = state;
 
             break;
         }
-        case 10: //Filter Options
+        case 10:
         {
             break;
         }
@@ -3043,17 +3000,17 @@ void CGumpOptions::GUMP_RADIO_EVENT_C
 
     switch (Page)
     {
-        case 1: //Sound and Music
+        case 1:
         {
             break;
         }
-        case 2: //Orion's configuration
+        case 2:
         {
-            if (serial == ID_GO_P2_NO_DRAW_CHARACTERS_STATUS) //No draw
+            if (serial == ID_GO_P2_NO_DRAW_CHARACTERS_STATUS)
                 g_OptionsConfig.SetDrawStatusState(DCSS_NO_DRAW);
-            else if (serial == ID_GO_P2_DRAW_CHARACTERS_STATUS_TOP) //Above character
+            else if (serial == ID_GO_P2_DRAW_CHARACTERS_STATUS_TOP)
                 g_OptionsConfig.SetDrawStatusState(DCSS_ABOVE);
-            else if (serial == ID_GO_P2_DRAW_CHARACTERS_STATUS_BOTTOM) //Under character
+            else if (serial == ID_GO_P2_DRAW_CHARACTERS_STATUS_BOTTOM)
                 g_OptionsConfig.SetDrawStatusState(DCSS_UNDER);
             else if (serial == ID_GO_P2_HIDDEN_CHARACTES_MODE_1)
                 g_OptionsConfig.HiddenCharactersRenderMode = HCRM_ORIGINAL;
@@ -3092,52 +3049,52 @@ void CGumpOptions::GUMP_RADIO_EVENT_C
 
             break;
         }
-        case 3: //Language
+        case 3:
         {
             break;
         }
-        case 4: //Chat
+        case 4:
         {
             break;
         }
-        case 5: //Macro Options
+        case 5:
         {
             break;
         }
-        case 6: //Interface
+        case 6:
         {
-            if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_AT_ICON) //At Icon
+            if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_AT_ICON)
                 g_OptionsConfig.SetItemPropertiesMode(OPM_AT_ICON);
-            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_ALWAYS_UP) //Always Up
+            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_ALWAYS_UP)
                 g_OptionsConfig.SetItemPropertiesMode(OPM_ALWAYS_UP);
-            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_FOLLOW_MOUSE) //Follow Mouse
+            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_FOLLOW_MOUSE)
                 g_OptionsConfig.SetItemPropertiesMode(OPM_FOLLOW_MOUSE);
-            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_SINGLE_CLICK) //Single Click
+            else if (serial == ID_GO_P6_DISPLAY_ITEM_PROPERTIES_MODE_SINGLE_CLICK)
                 g_OptionsConfig.SetItemPropertiesMode(OPM_SINGLE_CLICK);
-            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_DEFAULT) //Default
+            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_DEFAULT)
                 g_OptionsConfig.SetCharacterBackpackStyle(CBS_DEFAULT);
-            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_SUEDE) //Suede
+            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_SUEDE)
                 g_OptionsConfig.SetCharacterBackpackStyle(CBS_SUEDE);
-            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_POLAR_BEAR) //Polar Bear
+            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_POLAR_BEAR)
                 g_OptionsConfig.SetCharacterBackpackStyle(CBS_POLAR_BEAR);
-            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_GHOUL_SKIN) //Ghoul Skin
+            else if (serial == ID_GO_P6_CHARACTER_BACKPACK_STYLE_GHOUL_SKIN)
                 g_OptionsConfig.SetCharacterBackpackStyle(CBS_GHOUL_SKIN);
 
             break;
         }
-        case 7: //Display
+        case 7:
         {
             break;
         }
-        case 8: //Reputation System
+        case 8:
         {
             break;
         }
-        case 9: //Miscellaneous
+        case 9:
         {
             break;
         }
-        case 10: //Filter Options
+        case 10:
         {
             break;
         }
@@ -3157,7 +3114,7 @@ void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
     WISPFUN_DEBUG("c104_f22");
     switch (Page)
     {
-        case 1: //Sound and Music
+        case 1:
         {
             if (serial == ID_GO_P1_SOUND_VOLUME)
                 g_OptionsConfig.SetSoundVolume(m_SliderSound->Value);
@@ -3166,7 +3123,7 @@ void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
 
             break;
         }
-        case 2: //Orion's configuration
+        case 2:
         {
             if (serial == ID_GO_P2_CLIENT_FPS)
                 g_OptionsConfig.SetClientFPS(m_SliderClientFPS->Value);
@@ -3181,37 +3138,37 @@ void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
 
             break;
         }
-        case 3: //Language
+        case 3:
         {
             if (serial == ID_GO_P3_DELAY_BEFORE_TOOLTIP)
                 g_OptionsConfig.ToolTipsDelay = m_SliderTooltipDelay->Value;
 
             break;
         }
-        case 4: //Chat
+        case 4:
         {
             break;
         }
-        case 5: //Macro Options
+        case 5:
         {
             break;
         }
-        case 6: //Interface
+        case 6:
         {
             break;
         }
-        case 7: //Display
+        case 7:
         {
             if (serial == ID_GO_P7_AJUST_LONG_SPEECH)
                 g_OptionsConfig.SpeechDelay = m_SliderSpeechDuration->Value;
 
             break;
         }
-        case 8: //Reputation System
+        case 8:
         {
             break;
         }
-        case 9: //Miscellaneous
+        case 9:
         {
             if (serial == ID_GO_P9_TRANSPARENCY_RADIUS)
                 g_OptionsConfig.CircleTransRadius = m_SliderCircleTransparency->Value;
@@ -3219,7 +3176,7 @@ void CGumpOptions::GUMP_SLIDER_MOVE_EVENT_C
                 g_OptionsConfig.SkillReport = m_SliderInformSkills->Value;
             break;
         }
-        case 10: //Filter Options
+        case 10:
         {
             break;
         }
@@ -3479,18 +3436,14 @@ void CGumpOptions::ApplyPageChanges()
     WISPFUN_DEBUG("c104_f26");
     switch (Page)
     {
-        case 1: //Sound and Music
+        case 1:
         {
-            //Меняем громкость звука эффектам и текущим эффектам
             g_ConfigManager.SetSoundVolume(g_OptionsConfig.GetSoundVolume());
 
-            //Меняем громкость звука музыке и текущей музыке
             g_ConfigManager.SetMusicVolume(g_OptionsConfig.GetMusicVolume());
 
-            //Выключаем звук эффектов.
             g_ConfigManager.SetSound(g_OptionsConfig.GetSound());
 
-            //Выключаем звук музыки.
             g_ConfigManager.SetMusic(g_OptionsConfig.GetMusic());
 
             g_ConfigManager.FootstepsSound = g_OptionsConfig.FootstepsSound;
@@ -3500,7 +3453,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 2: //Orion's configuration
+        case 2:
         {
             g_ConfigManager.SetClientFPS(g_OptionsConfig.GetClientFPS());
             g_ConfigManager.SetUseScaling(g_OptionsConfig.GetUseScaling());
@@ -3557,7 +3510,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 3: //Language
+        case 3:
         {
             g_ConfigManager.UseToolTips = g_OptionsConfig.UseToolTips;
             g_ConfigManager.ToolTipsTextColor = g_OptionsConfig.ToolTipsTextColor;
@@ -3566,7 +3519,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 4: //Chat
+        case 4:
         {
             g_ConfigManager.ChatColorInputText = g_OptionsConfig.ChatColorInputText;
             g_ConfigManager.ChatColorMenuOption = g_OptionsConfig.ChatColorMenuOption;
@@ -3591,12 +3544,12 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 5: //Macro Options
+        case 5:
         {
             g_MacroManager.LoadFromOptions();
             break;
         }
-        case 6: //Interface
+        case 6:
         {
             g_ConfigManager.EnablePathfind = g_OptionsConfig.EnablePathfind;
             g_ConfigManager.HoldTabForCombat = g_OptionsConfig.HoldTabForCombat;
@@ -3638,7 +3591,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 7: //Display
+        case 7:
         {
             int curX = 0;
 
@@ -3684,7 +3637,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 8: //Reputation System
+        case 8:
         {
             g_ConfigManager.InnocentColor = g_OptionsConfig.InnocentColor;
             g_ConfigManager.FriendlyColor = g_OptionsConfig.FriendlyColor;
@@ -3702,7 +3655,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 9: //Miscellaneous
+        case 9:
         {
             g_ConfigManager.ShowIncomingNames = g_OptionsConfig.ShowIncomingNames;
             g_ConfigManager.UseCircleTrans = g_OptionsConfig.UseCircleTrans;
@@ -3715,7 +3668,7 @@ void CGumpOptions::ApplyPageChanges()
 
             break;
         }
-        case 10: //Filter Options
+        case 10:
         {
             break;
         }
@@ -3724,261 +3677,259 @@ void CGumpOptions::ApplyPageChanges()
     }
 }
 
-const char *CGumpOptions::m_HotkeyText[0x100] = {
-    "",               //0x00
-    "Left Mouse",     //0x01
-    "Right Mouse",    //0x02
-    "Ctrl-Break",     //0x03
-    "Middle Mouse",   //0x04
-    "0x05",           //0x05
-    "0x06",           //0x06
-    "0x07",           //0x07
-    "Backspace",      //0x08
-    "Tab",            //0x09
-    "0x0a",           //0x0a
-    "0x0b",           //0x0b
-    "Clear",          //0x0c
-    "Enter",          //0x0d
-    "0x0e",           //0x0e
-    "0x0f",           //0x0f
-    "Shift",          //0x10
-    "Ctrl",           //0x11
-    "Alt",            //0x12
-    "Pause",          //0x13
-    "Caps Lock",      //0x14
-    "0x15",           //0x15
-    "0x16",           //0x16
-    "0x17",           //0x17
-    "0x18",           //0x18
-    "0x19",           //0x19
-    "0x1a",           //0x1a
-    "Esc",            //0x1b
-    "0x1c",           //0x1c
-    "0x1d",           //0x1d
-    "0x1e",           //0x1e
-    "0x1f",           //0x1f
-    "Space",          //0x20
-    "Page Up",        //0x21
-    "Page Down",      //0x22
-    "End",            //0x23
-    "Home",           //0x24
-    "Left Arrow",     //0x25
-    "Up Arrow",       //0x26
-    "Right Arrow",    //0x27
-    "Down Arrow",     //0x28
-    "Select",         //0x29
-    "OEM 2A",         //0x2a
-    "Execute",        //0x2b
-    "Print Screen",   //0x2c
-    "Ins",            //0x2d
-    "Del",            //0x2e
-    "Help",           //0x2f
-    "0",              //0x30
-    "1",              //0x31
-    "2",              //0x32
-    "3",              //0x33
-    "4",              //0x34
-    "5",              //0x35
-    "6",              //0x36
-    "7",              //0x37
-    "8",              //0x38
-    "9",              //0x39
-    "0x3a",           //0x3a
-    "0x3b",           //0x3b
-    "0x3c",           //0x3c
-    "0x3d",           //0x3d
-    "0x3e",           //0x3e
-    "0x3f",           //0x3f
-    "0x40",           //0x40
-    "A",              //0x41
-    "B",              //0x42
-    "C",              //0x43
-    "D",              //0x44
-    "E",              //0x45
-    "F",              //0x46
-    "G",              //0x47
-    "H",              //0x48
-    "I",              //0x49
-    "J",              //0x4a
-    "K",              //0x4b
-    "L",              //0x4c
-    "M",              //0x4d
-    "N",              //0x4e
-    "O",              //0x4f
-    "P",              //0x50
-    "Q",              //0x51
-    "R",              //0x52
-    "S",              //0x53
-    "T",              //0x54
-    "U",              //0x55
-    "V",              //0x56
-    "W",              //0x57
-    "X",              //0x58
-    "Y",              //0x59
-    "Z",              //0x5a
-    "Left Win",       //0x5b
-    "Right Win",      //0x5c
-    "Apps",           //0x5d
-    "0x5e",           //0x5e
-    "0x5f",           //0x5f
-    "Num 0",          //0x60
-    "Num 1",          //0x61
-    "Num 2",          //0x62
-    "Num 3",          //0x63
-    "Num 4",          //0x64
-    "Num 5",          //0x65
-    "Num 6",          //0x66
-    "Num 7",          //0x67
-    "Num 8",          //0x68
-    "Num 9",          //0x69
-    "Num *",          //0x6a
-    "Num +",          //0x6b
-    "Separator",      //0x6c
-    "Num -",          //0x6d
-    "Num .",          //0x6e
-    "Num /",          //0x6f
-    "F1",             //0x70
-    "F2",             //0x71
-    "F3",             //0x72
-    "F4",             //0x73
-    "F5",             //0x74
-    "F6",             //0x75
-    "F7",             //0x76
-    "F8",             //0x77
-    "F9",             //0x78
-    "F10",            //0x79
-    "F11",            //0x7a
-    "F12",            //0x7b
-    "Wheel Click",    //"F13",	//0x7c
-    "Wheel Up",       //"F14",	//0x7d
-    "Wheel Down",     //"F15",	//0x7e
-    "Mouse+ Forward", //"F16",	//0x7f
-    "Mouse+ Back",    //"F17",	//0x80
-    "F18",            //0x81
-    "F19",            //0x82
-    "F20",            //0x83
-    "F21",            //0x84
-    "F22",            //0x85
-    "F23",            //0x86
-    "F24",            //0x87
-    "0x88",           //0x88
-    "0x89",           //0x89
-    "0x8a",           //0x8a
-    "0x8b",           //0x8b
-    "0x8c",           //0x8c
-    "0x8d",           //0x8d
-    "0x8e",           //0x8e
-    "0x8f",           //0x8f
-    "Num Lock",       //0x90
-    "Scroll Lock",    //0x91
-    "0x92",           //0x92
-    "0x93",           //0x93
-    "0x94",           //0x94
-    "0x95",           //0x95
-    "0x96",           //0x96
-    "0x97",           //0x97
-    "0x98",           //0x98
-    "0x99",           //0x99
-    "0x9a",           //0x9a
-    "0x9b",           //0x9b
-    "0x9c",           //0x9c
-    "0x9d",           //0x9d
-    "0x9e",           //0x9e
-    "0x9f",           //0x9f
-    "0xa0",           //0xa0
-    "0xa1",           //0xa1
-    "0xa2",           //0xa2
-    "0xa3",           //0xa3
-    "0xa4",           //0xa4
-    "0xa5",           //0xa5
-    "0xa6",           //0xa6
-    "0xa7",           //0xa7
-    "0xa8",           //0xa8
-    "0xa9",           //0xa9
-    "0xaa",           //0xaa
-    "0xab",           //0xab
-    "0xac",           //0xac
-    "0xad",           //0xad
-    "0xae",           //0xae
-    "0xaf",           //0xaf
-    "0xb0",           //0xb0
-    "0xb1",           //0xb1
-    "0xb2",           //0xb2
-    "0xb3",           //0xb3
-    "0xb4",           //0xb4
-    "0xb5",           //0xb5
-    "0xb6",           //0xb6
-    "0xb7",           //0xb7
-    "0xb8",           //0xb8
-    "0xb9",           //0xb9
-    ";",              //0xba
-    "=",              //0xbb
-    ",",              //0xbc
-    "-",              //0xbd
-    ".",              //0xbe
-    "/",              //0xbf
-    "`",              //0xc0
-    "0xc1",           //0xc1
-    "0xc2",           //0xc2
-    "0xc3",           //0xc3
-    "0xc4",           //0xc4
-    "0xc5",           //0xc5
-    "0xc6",           //0xc6
-    "0xc7",           //0xc7
-    "0xc8",           //0xc8
-    "0xc9",           //0xc9
-    "0xca",           //0xca
-    "0xcb",           //0xcb
-    "0xcc",           //0xcc
-    "0xcd",           //0xcd
-    "0xce",           //0xce
-    "0xcf",           //0xcf
-    "0xd0",           //0xd0
-    "0xd1",           //0xd1
-    "0xd2",           //0xd2
-    "0xd3",           //0xd3
-    "0xd4",           //0xd4
-    "0xd5",           //0xd5
-    "0xd6",           //0xd6
-    "0xd7",           //0xd7
-    "0xd8",           //0xd8
-    "0xd9",           //0xd9
-    "0xda",           //0xda
-    "[",              //0xdb
-    "\\",             //0xdc
-    "]",              //0xdd
-    "'",              //0xde
-    "OEM DF",         //0xdf
-    "OEM E0",         //0xe0
-    "OEM E1",         //0xe1
-    "OEM E2",         //0x32
-    "OEM E3",         //0xe3
-    "OEM E4",         //0xe4
-    "0xe5",           //0xe5
-    "OEM E6",         //0xe6
-    "0xe7",           //0xe7
-    "0xe8",           //0xe8
-    "OEM E9",         //0xe9
-    "OEM EA",         //0xea
-    "OEM EB",         //0xeb
-    "OEM EC",         //0xec
-    "OEM ED",         //0xed
-    "OEM EE",         //0xee
-    "OEM EF",         //0xef
-    "OEM F0",         //0xf0
-    "OEM F1",         //0xf1
-    "OEM F2",         //0xf2
-    "OEM F3",         //0xf3
-    "OEM F4",         //0xf4
-    "OEM F5",         //0xf5
-    "Attn",           //0xf6
-    "Crsel",          //0xf7
-    "Exsel",          //0xf8
-    "Erase EOF",      //0xf9
-    "Play",           //0xfa
-    "Zoom",           //0xfb
-    "0xfc",           //0xfc
-    "PA1",            //0xfd
-    "Clear",          //0xfe
-    "0xff"            //0xff
-};
+const char *CGumpOptions::m_HotkeyText[0x100] = { "",
+                                                  "Left Mouse",
+                                                  "Right Mouse",
+                                                  "Ctrl-Break",
+                                                  "Middle Mouse",
+                                                  "0x05",
+                                                  "0x06",
+                                                  "0x07",
+                                                  "Backspace",
+                                                  "Tab",
+                                                  "0x0a",
+                                                  "0x0b",
+                                                  "Clear",
+                                                  "Enter",
+                                                  "0x0e",
+                                                  "0x0f",
+                                                  "Shift",
+                                                  "Ctrl",
+                                                  "Alt",
+                                                  "Pause",
+                                                  "Caps Lock",
+                                                  "0x15",
+                                                  "0x16",
+                                                  "0x17",
+                                                  "0x18",
+                                                  "0x19",
+                                                  "0x1a",
+                                                  "Esc",
+                                                  "0x1c",
+                                                  "0x1d",
+                                                  "0x1e",
+                                                  "0x1f",
+                                                  "Space",
+                                                  "Page Up",
+                                                  "Page Down",
+                                                  "End",
+                                                  "Home",
+                                                  "Left Arrow",
+                                                  "Up Arrow",
+                                                  "Right Arrow",
+                                                  "Down Arrow",
+                                                  "Select",
+                                                  "OEM 2A",
+                                                  "Execute",
+                                                  "Print Screen",
+                                                  "Ins",
+                                                  "Del",
+                                                  "Help",
+                                                  "0",
+                                                  "1",
+                                                  "2",
+                                                  "3",
+                                                  "4",
+                                                  "5",
+                                                  "6",
+                                                  "7",
+                                                  "8",
+                                                  "9",
+                                                  "0x3a",
+                                                  "0x3b",
+                                                  "0x3c",
+                                                  "0x3d",
+                                                  "0x3e",
+                                                  "0x3f",
+                                                  "0x40",
+                                                  "A",
+                                                  "B",
+                                                  "C",
+                                                  "D",
+                                                  "E",
+                                                  "F",
+                                                  "G",
+                                                  "H",
+                                                  "I",
+                                                  "J",
+                                                  "K",
+                                                  "L",
+                                                  "M",
+                                                  "N",
+                                                  "O",
+                                                  "P",
+                                                  "Q",
+                                                  "R",
+                                                  "S",
+                                                  "T",
+                                                  "U",
+                                                  "V",
+                                                  "W",
+                                                  "X",
+                                                  "Y",
+                                                  "Z",
+                                                  "Left Win",
+                                                  "Right Win",
+                                                  "Apps",
+                                                  "0x5e",
+                                                  "0x5f",
+                                                  "Num 0",
+                                                  "Num 1",
+                                                  "Num 2",
+                                                  "Num 3",
+                                                  "Num 4",
+                                                  "Num 5",
+                                                  "Num 6",
+                                                  "Num 7",
+                                                  "Num 8",
+                                                  "Num 9",
+                                                  "Num *",
+                                                  "Num +",
+                                                  "Separator",
+                                                  "Num -",
+                                                  "Num .",
+                                                  "Num /",
+                                                  "F1",
+                                                  "F2",
+                                                  "F3",
+                                                  "F4",
+                                                  "F5",
+                                                  "F6",
+                                                  "F7",
+                                                  "F8",
+                                                  "F9",
+                                                  "F10",
+                                                  "F11",
+                                                  "F12",
+                                                  "Wheel Click",
+                                                  "Wheel Up",
+                                                  "Wheel Down",
+                                                  "Mouse+ Forward",
+                                                  "Mouse+ Back",
+                                                  "F18",
+                                                  "F19",
+                                                  "F20",
+                                                  "F21",
+                                                  "F22",
+                                                  "F23",
+                                                  "F24",
+                                                  "0x88",
+                                                  "0x89",
+                                                  "0x8a",
+                                                  "0x8b",
+                                                  "0x8c",
+                                                  "0x8d",
+                                                  "0x8e",
+                                                  "0x8f",
+                                                  "Num Lock",
+                                                  "Scroll Lock",
+                                                  "0x92",
+                                                  "0x93",
+                                                  "0x94",
+                                                  "0x95",
+                                                  "0x96",
+                                                  "0x97",
+                                                  "0x98",
+                                                  "0x99",
+                                                  "0x9a",
+                                                  "0x9b",
+                                                  "0x9c",
+                                                  "0x9d",
+                                                  "0x9e",
+                                                  "0x9f",
+                                                  "0xa0",
+                                                  "0xa1",
+                                                  "0xa2",
+                                                  "0xa3",
+                                                  "0xa4",
+                                                  "0xa5",
+                                                  "0xa6",
+                                                  "0xa7",
+                                                  "0xa8",
+                                                  "0xa9",
+                                                  "0xaa",
+                                                  "0xab",
+                                                  "0xac",
+                                                  "0xad",
+                                                  "0xae",
+                                                  "0xaf",
+                                                  "0xb0",
+                                                  "0xb1",
+                                                  "0xb2",
+                                                  "0xb3",
+                                                  "0xb4",
+                                                  "0xb5",
+                                                  "0xb6",
+                                                  "0xb7",
+                                                  "0xb8",
+                                                  "0xb9",
+                                                  ";",
+                                                  "=",
+                                                  ",",
+                                                  "-",
+                                                  ".",
+                                                  "/",
+                                                  "`",
+                                                  "0xc1",
+                                                  "0xc2",
+                                                  "0xc3",
+                                                  "0xc4",
+                                                  "0xc5",
+                                                  "0xc6",
+                                                  "0xc7",
+                                                  "0xc8",
+                                                  "0xc9",
+                                                  "0xca",
+                                                  "0xcb",
+                                                  "0xcc",
+                                                  "0xcd",
+                                                  "0xce",
+                                                  "0xcf",
+                                                  "0xd0",
+                                                  "0xd1",
+                                                  "0xd2",
+                                                  "0xd3",
+                                                  "0xd4",
+                                                  "0xd5",
+                                                  "0xd6",
+                                                  "0xd7",
+                                                  "0xd8",
+                                                  "0xd9",
+                                                  "0xda",
+                                                  "[",
+                                                  "\\",
+                                                  "]",
+                                                  "'",
+                                                  "OEM DF",
+                                                  "OEM E0",
+                                                  "OEM E1",
+                                                  "OEM E2",
+                                                  "OEM E3",
+                                                  "OEM E4",
+                                                  "0xe5",
+                                                  "OEM E6",
+                                                  "0xe7",
+                                                  "0xe8",
+                                                  "OEM E9",
+                                                  "OEM EA",
+                                                  "OEM EB",
+                                                  "OEM EC",
+                                                  "OEM ED",
+                                                  "OEM EE",
+                                                  "OEM EF",
+                                                  "OEM F0",
+                                                  "OEM F1",
+                                                  "OEM F2",
+                                                  "OEM F3",
+                                                  "OEM F4",
+                                                  "OEM F5",
+                                                  "Attn",
+                                                  "Crsel",
+                                                  "Exsel",
+                                                  "Erase EOF",
+                                                  "Play",
+                                                  "Zoom",
+                                                  "0xfc",
+                                                  "PA1",
+                                                  "Clear",
+                                                  "0xff" };

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ClilocManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -37,11 +30,6 @@ CCliloc::~CCliloc()
     m_ClilocSupport.clear();
 }
 
-/*!
-Загрузить клилок
-@param [__in] id Индекс клилока
-@return Результат загрузки или сообщение с ошибкой
-*/
 string CCliloc::Load(uint &id)
 {
     WISPFUN_DEBUG("c135_f3");
@@ -92,12 +80,6 @@ wstring CCliloc::CamelCaseTest(bool toCamelCase, const string &result)
     return DecodeUTF8(result);
 }
 
-/*!
-Получить ASCII строку по id (и загрузить при необходимости)
-@param [__in] id Индекс клилока
-@param [__in] result Стандартное сообщение, если клилок не был найден
-@return Полученный результат, замена или сообщение с ошибкой
-*/
 wstring CCliloc::Get(int id, bool toCamelCase, string result)
 {
     WISPFUN_DEBUG("c135_f4");
@@ -146,12 +128,6 @@ string CCliloc::GetA(int id, bool toCamelCase, string result)
     return ToString(Get(id, toCamelCase, result));
 }
 
-/*!
-Получить Unicode строку по id (и загрузить при необходимости)
-@param [__in] id Индекс клилока
-@param [__in] result Стандартное сообщение, если клилок не был найден
-@return Полученный результат, замена или сообщение с ошибкой
-*/
 wstring CCliloc::GetW(int id, bool toCamelCase, string result)
 {
     WISPFUN_DEBUG("c135_f5");
@@ -169,11 +145,6 @@ CClilocManager::~CClilocManager()
     m_LastCliloc = NULL;
 }
 
-/*!
-Получить ссылку на объект клилока (и загрузить при необходимости)
-@param [__in] lang Расширение клилока
-@return Ссылка на клилок
-*/
 CCliloc *CClilocManager::Cliloc(const string &lang)
 {
     WISPFUN_DEBUG("c136_f1");

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpSpell.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -16,15 +9,12 @@ CGumpSpell::CGumpSpell(uint serial, short x, short y, ushort graphic, SPELLBOOK_
     WISPFUN_DEBUG("c126_f1");
     Graphic = graphic;
     m_Locker.Serial = ID_GS_LOCK_MOVING;
-    BigIcon = false; // (graphic >= 0x5300 && graphic < 0x5500);
+    BigIcon = false;
 
     m_Blender = (CGUIAlphaBlending *)Add(new CGUIAlphaBlending(
         g_ConfigManager.TransparentSpellIcons, g_ConfigManager.GetSpellIconAlpha() / 255.0f));
     Add(new CGUIGumppic(Graphic, 0, 0));
 
-    /*if (BigIcon)
-		m_SpellUnlocker = (CGUIButton*)Add(new CGUIButton(ID_GS_BUTTON_REMOVE_FROM_GROUP, 0x082C, 0x082C, 0x082C, 56, 30));
-	else*/
     m_SpellUnlocker = (CGUIButton *)Add(
         new CGUIButton(ID_GS_BUTTON_REMOVE_FROM_GROUP, 0x082C, 0x082C, 0x082C, 30, 16));
 
@@ -106,7 +96,7 @@ void CGumpSpell::GetTooltipSpellInfo(int &tooltipOffset, int &spellIndexOffset)
 
             break;
         }
-        case ST_MYSTICISM: //?
+        case ST_MYSTICISM:
         {
             tooltipOffset = 0;
             spellIndexOffset = 0;
@@ -192,13 +182,13 @@ CGumpSpell *CGumpSpell::GetNearSpell(int &x, int &y)
 
             if (x >= gumpX && x <= (gumpX + gumpWidth))
                 passed = 2;
-            else if (offsetX < rangeOffsetX) //left part of gump
+            else if (offsetX < rangeOffsetX)
                 passed = 1;
             else
             {
                 offsetX = abs(x - (gumpX + gumpWidth));
 
-                if (offsetX < rangeOffsetX) //right part of gump
+                if (offsetX < rangeOffsetX)
                     passed = -1;
                 else if (x >= (gumpX - rangeX) && x <= (gumpX + gumpWidth + rangeX))
                     passed = 2;
@@ -211,17 +201,17 @@ CGumpSpell *CGumpSpell::GetNearSpell(int &x, int &y)
                 if (y < (gumpY - rangeY) || y > (gumpY + gumpHeight + rangeY))
                     passed = 0;
             }
-            else if (passed == 2) //in gump range X
+            else if (passed == 2)
             {
                 int offsetY = abs(y - gumpY);
 
-                if (offsetY < rangeOffsetY) //top part of gump
+                if (offsetY < rangeOffsetY)
                     passed = 2;
                 else
                 {
                     offsetY = abs(y - (gumpY + gumpHeight));
 
-                    if (offsetY < rangeOffsetY) //bottom part of gump
+                    if (offsetY < rangeOffsetY)
                         passed = -2;
                     else
                         passed = 0;
@@ -235,22 +225,22 @@ CGumpSpell *CGumpSpell::GetNearSpell(int &x, int &y)
 
                 switch (passed)
                 {
-                    case -2: //gump bottom
+                    case -2:
                     {
                         testY += gumpHeight;
                         break;
                     }
-                    case -1: //gump right
+                    case -1:
                     {
                         testX += gumpWidth;
                         break;
                     }
-                    case 1: //gump left
+                    case 1:
                     {
                         testX -= gumpWidth;
                         break;
                     }
-                    case 2: //gump top
+                    case 2:
                     {
                         testY -= gumpHeight;
                         break;
@@ -299,7 +289,6 @@ bool CGumpSpell::GetSpellGroupOffset(int &x, int &y)
 
         while (gump != NULL)
         {
-            //Если гамп захватили и (может быть) двигают
             if (gump != this && g_PressedObject.LeftGump == gump && gump->CanBeMoved())
             {
                 WISP_GEOMETRY::CPoint2Di offset = g_MouseManager.LeftDroppedOffset();
@@ -333,7 +322,6 @@ void CGumpSpell::UpdateGroup(int x, int y)
             gump->SetY(gump->GetY() + y);
 
             g_GumpManager.MoveToBack(gump);
-            //gump->WantRedraw = true;
         }
 
         gump = gump->m_GroupNext;
@@ -413,7 +401,6 @@ void CGumpSpell::CalculateGumpState()
     WISPFUN_DEBUG("c126_f12");
     CGump::CalculateGumpState();
 
-    //Если гамп захватили и (может быть) двигают
     if (g_GumpMovingOffset.X || g_GumpMovingOffset.Y)
     {
         if (!InGroup())

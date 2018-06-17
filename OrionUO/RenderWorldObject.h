@@ -1,16 +1,8 @@
-﻿/***********************************************************************************
-**
-** RenderWorldObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef RENDERWORLDOBJECT_H
 #define RENDERWORLDOBJECT_H
 
-//Класс для работы с объектами рендера
 class CRenderWorldObject : public CRenderObject
 {
 protected:
@@ -38,44 +30,33 @@ public:
         char z);
     virtual ~CRenderWorldObject();
 
-    //Ссылка на компонентный состав текстуры
     uchar m_DrawTextureColor[4];
 
     bool ProcessAlpha(int maxAlpha);
 
     bool RemovedFromRender();
 
-    //Добавить текст в контейнер
     virtual void AddText(CTextData *td) {}
 
-    //Проверить, может ли текст быть прозрачным
     virtual bool TextCanBeTransparent(CRenderTextObject *text) { return false; }
 
-    //Проверка прозрачности (для круга прозрачности)
     virtual bool TranparentTest(int playerZ) { return false; }
 
-    //Ссылки на предыдущий и следующий элементы в очереди рендера
     CRenderWorldObject *m_NextXY{ NULL };
     CRenderWorldObject *m_PrevXY{ NULL };
 
-    //Получить указатель на объект ландшафта в данных координатах
     class CLandObject *GetLand();
 
-    //Получить индекс света объекта
     virtual ushort GetLightID() { return 0; }
 
-    //Отрисовать объект
     virtual void Draw(int x, int y) {}
 
-    //Выбрать объект
     virtual void Select(int x, int y) {}
 
     virtual void UpdateGraphicBySeason() {}
 
-    //Удалить объект из очереди рендера
     void RemoveRender();
 
-    //Стандартные состояния по флагам из тайлдаты (вердаты)
     virtual bool IsBackground() { return false; }
     virtual bool IsWeapon() { return false; }
     virtual bool IsTransparent() { return false; }
@@ -111,10 +92,8 @@ public:
 
     virtual bool IsWorldObject() { return true; }
 
-    //Если это объект группы статики
     virtual bool IsStaticGroupObject() { return false; }
 
-    //Идентификация объектов
     virtual bool IsLandObject() { return false; }
     virtual bool IsStaticObject() { return false; }
     virtual bool IsMultiObject() { return false; }

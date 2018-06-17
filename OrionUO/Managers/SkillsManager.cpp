@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** SkillsManager.cpp
-**
-** Copyright (C) Obtober 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -18,8 +11,6 @@ CSkill::CSkill(bool haveButton, const string &name)
         Name = name;
     else
         Name = "NoNameSkill";
-
-    //LOG("Skill loaded (button:%i): %s\n", m_Button, m_Name.c_str());
 }
 
 bool CSkillsManager::Load()
@@ -82,12 +73,10 @@ CSkill *CSkillsManager::Get(int index)
 
 bool CSkillsManager::CompareName(const string &str1, const string &str2)
 {
-    //Вычисляем минимальную длину строки для сравнения
     size_t len = min(str1.length(), str2.length());
 
     bool result = false;
 
-    //Пройдемся по всем символам этой строки, сравнивая их друг с другом
     IFOR (i, 0, len)
     {
         char c1 = str1.at(i);
@@ -99,7 +88,6 @@ bool CSkillsManager::CompareName(const string &str1, const string &str2)
             return false;
     }
 
-    //Вернем что получилось
     return result;
 }
 
@@ -108,28 +96,21 @@ void CSkillsManager::Sort()
     m_SortedTable.resize(Count, 0xFF);
     UCHAR_LIST bufTable(Count, 0xFF);
 
-    //Установим первый элемент нулем и количество обработанных навыков - 1
     int parsed = 1;
     bufTable[0] = 0;
 
-    //Пройдемся по всем нвыкам (кроме первого)
     IFOR (i, 1, Count)
     {
-        //Пройдемся по обработанным
         IFOR (j, 0, parsed)
         {
-            //Если можно вставить в текущую позицию -
             if (CompareName(m_Skills[bufTable[j]].Name, m_Skills[i].Name))
             {
-                //Запомним индекс навыка
                 uchar buf = bufTable[j];
-                //Перезапишем
+
                 bufTable[j] = (uchar)i;
 
-                //К следующему навыку
                 j++;
 
-                //Посмотрим остальные обработанные и перезапишем индекс при необходимости
                 for (; j < parsed; j++)
                 {
                     uchar ptr = bufTable[j];
@@ -137,10 +118,8 @@ void CSkillsManager::Sort()
                     buf = ptr;
                 }
 
-                //Запишем индекс в текущий обработанный
                 bufTable[parsed] = buf;
 
-                //Увеличиваем счетчик
                 parsed++;
 
                 break;

@@ -251,14 +251,14 @@ LONG __stdcall OrionUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *excepti
             ZeroMemory(&pi, sizeof(pi));
             bool reportSent = CreateProcessA(
                 "OrionCrashReporter.exe",
-                &crashlogPath[0], // Command line
-                NULL,             // Process handle not inheritable
-                NULL,             // Thread handle not inheritable
-                FALSE,            // Set handle inheritance to FALSE
-                0,                // No creation flags
-                NULL,             // Use parent's environment block
-                NULL,             // Use parent's starting directory
-                &si,              // Pointer to STARTUPINFO structure
+                &crashlogPath[0],
+                NULL,
+                NULL,
+                FALSE,
+                0,
+                NULL,
+                NULL,
+                &si,
                 &pi);
 
             g_Orion.Uninstall();
@@ -286,6 +286,5 @@ LONG __stdcall OrionUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *excepti
             DumpCurrentRegistersInformation(exceptionInfo->ContextRecord);
     }
 
-    //	return EXCEPTION_CONTINUE_SEARCH;
     return EXCEPTION_CONTINUE_EXECUTION;
 }

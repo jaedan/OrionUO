@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIMinMaxButtons.cpp
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -60,7 +53,7 @@ void CGUIMinMaxButtons::UpdateText()
                     break;
                 }
                 case STP_LEFT:
-                    //textY -= 4;
+
                 case STP_LEFT_CENTER:
                 {
                     textX -= Text.Width - DefaultTextOffset;
@@ -68,7 +61,7 @@ void CGUIMinMaxButtons::UpdateText()
                     break;
                 }
                 case STP_RIGHT:
-                    //textY -= 4;
+
                 case STP_RIGHT_CENTER:
                 {
                     textX += 36 + DefaultTextOffset;

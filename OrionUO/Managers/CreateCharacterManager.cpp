@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CreateCharacterManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -179,10 +172,6 @@ void CCreateCharacterManager::SetRace(RACE_TYPE newRace)
     BeardColor = (*ptr) + 1;
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CCreateCharacterManager::Init()
 {
     WISPFUN_DEBUG("c140_f3");
@@ -202,10 +191,6 @@ void CCreateCharacterManager::Init()
         g_Orion.ExecuteGump(m_ElfFemaleHairStyleTable[i].GumpID);
 }
 
-/*!
-Очистка
-@return 
-*/
 void CCreateCharacterManager::Clear()
 {
     WISPFUN_DEBUG("c140_f4");
@@ -293,11 +278,6 @@ pushort CCreateCharacterManager::GetHairColorPtr()
     return ptr[m_Race - 1];
 }
 
-/*!
-Получить стиль волос
-@param [__in] pos Индекс волос
-@return Структура с данными о волосах
-*/
 CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
 {
     WISPFUN_DEBUG("c140_f13");
@@ -344,11 +324,6 @@ CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
     return m_HumanMaleHairStyleTable[0];
 }
 
-/*!
-Получить стиль бороды
-@param [__in] pos Индекс бороды
-@return Структура с данными о бороде
-*/
 CC_HAIR_STYLE CCreateCharacterManager::GetBeard(uchar pos) const
 {
     WISPFUN_DEBUG("c140_f14");

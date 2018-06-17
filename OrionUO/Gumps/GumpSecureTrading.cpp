@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpSecureTrading.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -88,11 +81,11 @@ void CGumpSecureTrading::UpdateContent()
     CGameObject *selobj = g_World->FindWorldObject(Serial);
 
     if (selobj == NULL)
-        return; //Объект, к которому привязан гамп - исчез
+        return;
 
     if (m_Items == NULL)
     {
-        Add(new CGUIGumppic(0x0866, 0, 0)); //Trade Gump
+        Add(new CGUIGumppic(0x0866, 0, 0));
 
         if (g_PacketManager.GetClientVersion() < CV_500A)
         {
@@ -139,7 +132,6 @@ void CGumpSecureTrading::UpdateContent()
         m_OpponentDataBox->Clear();
     }
 
-    //Отрисовка нашего товара (при наличии товара)
     CGameObject *container = g_World->FindWorldObject(ID);
 
     if (container != NULL && container->m_Items != NULL)
@@ -168,7 +160,6 @@ void CGumpSecureTrading::UpdateContent()
         }
     }
 
-    //Отрисовка нашего опонента (при наличии товара)
     container = g_World->FindWorldObject(ID2);
     if (container != NULL && container->m_Items != NULL)
     {
@@ -203,7 +194,7 @@ void CGumpSecureTrading::Draw()
     CGameObject *selobj = g_World->FindWorldObject(Serial);
 
     if (selobj == NULL)
-        return; //Объект, к которому привязан гамп - исчез
+        return;
 
     if (g_GumpPressed)
         WantRedraw = true;
@@ -227,7 +218,7 @@ CRenderObject *CGumpSecureTrading::Select()
     CGameObject *selobj = g_World->FindWorldObject(Serial);
 
     if (selobj == NULL)
-        return NULL; //Объект, к которому привязан гамп - исчез
+        return NULL;
 
     CRenderObject *selected = CGump::Select();
 
@@ -245,7 +236,7 @@ CRenderObject *CGumpSecureTrading::Select()
 void CGumpSecureTrading::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c120_f7");
-    if (serial == ID_GST_CHECKBOX) //Изменение состояния чекбокса
+    if (serial == ID_GST_CHECKBOX)
     {
         StateMy = !StateMy;
 
@@ -280,7 +271,6 @@ void CGumpSecureTrading::OnLeftMouseButtonUp()
 
         if (g_Orion.PolygonePixelsInXY(x + 45, y + 70, 110, 80))
         {
-            //if (GetTopObjDistance(g_Player, g_World->FindWorldObject(ID2)) <= DRAG_ITEMS_DISTANCE)
             {
                 x = g_MouseManager.Position.X - x - 45;
                 y = g_MouseManager.Position.Y - y - 70;
@@ -311,8 +301,6 @@ void CGumpSecureTrading::OnLeftMouseButtonUp()
                 g_Orion.DropItem(ID, x, y, 0);
                 g_MouseManager.CancelDoubleClick = true;
             }
-            //else
-            //	g_Orion.PlaySoundEffect(0x0051);
         }
     }
     else if (
@@ -327,9 +315,9 @@ void CGumpSecureTrading::OnLeftMouseButtonUp()
 void CGumpSecureTrading::SendTradingResponse(int code)
 {
     WISPFUN_DEBUG("c120_f9");
-    //Ответ на трэйд окно
+
     CPacketTradeResponse(this, code).Send();
 
-    if (code == 1) //Закрываем окно
+    if (code == 1)
         RemoveMark = true;
 }

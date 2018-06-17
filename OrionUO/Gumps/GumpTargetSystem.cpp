@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpTargetSystem.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -28,14 +21,6 @@ bool CGumpTargetSystem::CanBeDisplayed()
 
 void CGumpTargetSystem::PrepareContent()
 {
-    //Если гамп захватили и (может быть) двигают
-    /*if (g_Target.IsTargeting())
-	{
-		if (g_GumpMovingOffsetX &&)
-			g_GeneratedMouseDown = true;
-		else if (g_GumpMovingOffsetY && Target.IsTargeting())
-			g_GeneratedMouseDown = true;
-	}*/
 }
 
 void CGumpTargetSystem::UpdateContent()
@@ -55,7 +40,6 @@ void CGumpTargetSystem::UpdateContent()
 
     if (obj != NULL)
     {
-        //Вычисляем цвет статусбара
         ushort color = 0;
         CGameCharacter *character = NULL;
 
@@ -73,7 +57,6 @@ void CGumpTargetSystem::UpdateContent()
         if (color)
             m_DataBox->Add(new CGUIShader(&g_ColorizerShader, true));
 
-        //Гамп статус бара
         CGUIGumppic *gumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x0804, 0, 0));
         gumppic->Color = color;
 
@@ -93,7 +76,6 @@ void CGumpTargetSystem::UpdateContent()
         CGUIText *text = (CGUIText *)m_DataBox->Add(new CGUIText(0x0386, 16, 14));
         text->CreateTextureA(1, OldName, 150, TS_LEFT, UOFONT_FIXED);
 
-        //Hits
         m_DataBox->Add(new CGUIGumppic(0x0805, 34, 38));
 
         if (character != NULL)
@@ -102,25 +84,23 @@ void CGumpTargetSystem::UpdateContent()
 
             if (per > 0)
             {
-                WORD gumpid = 0x0806; //Character status line (blue)
+                WORD gumpid = 0x0806;
                 if (obj->Poisoned())
-                    gumpid = 0x0808; //Character status line (green)
+                    gumpid = 0x0808;
                 else if (obj->YellowHits())
-                    gumpid = 0x0809; //Character status line (yellow)
+                    gumpid = 0x0809;
 
                 m_DataBox->Add(new CGUIGumppicTiled(gumpid, 34, 38, per, 0));
             }
         }
     }
-    else //Серенький статус
+    else
     {
         m_DataBox->Add(new CGUIShader(&g_ColorizerShader, true));
 
-        //Гамп статус бара
         CGUIGumppic *gumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x0804, 0, 0));
         gumppic->Color = 0x0386;
 
-        //Hits
         gumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x0805, 34, 38));
         gumppic->Color = 0x0386;
 
@@ -139,7 +119,6 @@ void CGumpTargetSystem::OnLeftMouseDown()
 
     if (!g_PressedObject.LeftSerial)
     {
-        //Проверим, может быть есть таргет, который нужно повесить на данного чара
         if (g_Target.IsTargeting())
         {
             g_Target.SendTargetObject(g_NewTargetSystem.Serial);
@@ -174,10 +153,10 @@ bool CGumpTargetSystem::OnLeftMouseButtonDoubleClick()
         if (g_Player->Warmode)
         {
             if (serial < 0x40000000)
-                g_Orion.Attack(serial); //Если в вармоде - атакуем
+                g_Orion.Attack(serial);
         }
         else
-            g_Orion.DoubleClick(serial); //Или используем предмет
+            g_Orion.DoubleClick(serial);
 
         return true;
     }

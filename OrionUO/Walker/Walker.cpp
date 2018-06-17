@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Walker.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -35,18 +28,6 @@ void CWalker::DenyWalk(uchar sequence, int x, int y, char z)
     g_Player->OffsetZ = 0;
 
     Reset();
-
-    /*if (sequence == 0xFF)
-	{
-	g_Player->GameObject.GameObject.X = g_PlayerX;
-	g_Player->GameObject.GameObject.Y = g_PlayerY;
-	(*((void(**)(void))g_Player->GameObject.GameObject.VTable + UO_ROFUN_UPDATE_RENDER_AND_DRAW_POS))();
-	RenderScene_1();
-	(*((void(**)(void))g_Player->GameObject.GameObject.VTable + UO_ROFUN_39))();
-	result = UpdateMaxDrawZ();
-	}
-	else{...}*/
-    //UpdatePlayerCoordinates(x, y, z, g_ServerID);
 
     if (x != -1)
     {
@@ -101,7 +82,7 @@ void CWalker::ConfirmWalk(uchar sequence)
             StepsCount--;
             CurrentWalkSequence--;
         }
-        else //if (stepIndex)
+        else
             isBadStep = true;
     }
 

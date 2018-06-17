@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameConsole.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -170,7 +163,7 @@ wstring CGameConsole::IsSystemCommand(
     type = GCTT_NORMAL;
     wstring result = L"";
 
-    if (*text == g_ConsolePrefix[GCTT_PARTY][0]) //Party
+    if (*text == g_ConsolePrefix[GCTT_PARTY][0])
     {
         string lStr = ToString(text);
         const char *cText = lStr.c_str();
@@ -186,7 +179,7 @@ wstring CGameConsole::IsSystemCommand(
 
             sscanf_s(ptr, "%i", &i);
 
-            if (i > 0 && i < 11) //Party mebmer
+            if (i > 0 && i < 11)
             {
                 char pmBuf[50] = { 0 };
 
@@ -215,15 +208,13 @@ wstring CGameConsole::IsSystemCommand(
 
             _strlwr(lBuf);
 
-            if (!memcmp(&lBuf[0], "/add", 4)) //Party add
+            if (!memcmp(&lBuf[0], "/add", 4))
                 type = GCTT_PARTY_ADD;
-            else if (
-                (!memcmp(&lBuf[0], "/quit", 5)) ||
-                (!memcmp(&lBuf[0], "/leave", 6))) //Party leave & quit
+            else if ((!memcmp(&lBuf[0], "/quit", 5)) || (!memcmp(&lBuf[0], "/leave", 6)))
                 type = GCTT_PARTY_LEAVE;
-            else if (!memcmp(&lBuf[0], "/accept", 7)) //Party accept
+            else if (!memcmp(&lBuf[0], "/accept", 7))
                 type = GCTT_PARTY_ACCEPT;
-            else if (!memcmp(&lBuf[0], "/decline", 8)) //Party decline
+            else if (!memcmp(&lBuf[0], "/decline", 8))
                 type = GCTT_PARTY_DECLINE;
         }
 
@@ -238,38 +229,37 @@ wstring CGameConsole::IsSystemCommand(
             type = GCTT_PARTY;
         }
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_YELL].c_str(), 4)) //Yell
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_YELL].c_str(), 4))
     {
         result = L"Yell:";
         type = GCTT_YELL;
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_WHISPER].c_str(), 4)) //Whisper
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_WHISPER].c_str(), 4))
     {
         result = L"Whisper:";
         type = GCTT_WHISPER;
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_EMOTE].c_str(), 4)) //Emote
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_EMOTE].c_str(), 4))
     {
         result = L"Emote:";
         type = GCTT_EMOTE;
     }
-    else if (
-        g_Player->Graphic == 0x03DB && (*text == L'=' || *text == g_ConsolePrefix[GCTT_C][0])) //C
+    else if (g_Player->Graphic == 0x03DB && (*text == L'=' || *text == g_ConsolePrefix[GCTT_C][0]))
     {
         result = L"C:";
         type = GCTT_C;
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_BROADCAST].c_str(), 4)) //Broadcast
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_BROADCAST].c_str(), 4))
     {
         result = L"Broadcast:";
         type = GCTT_BROADCAST;
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_GUILD].c_str(), 4)) //Guild
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_GUILD].c_str(), 4))
     {
         result = L"Guild:";
         type = GCTT_GUILD;
     }
-    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_ALLIANCE].c_str(), 4)) //Alliance
+    else if (!memcmp(&text[0], g_ConsolePrefix[GCTT_ALLIANCE].c_str(), 4))
     {
         result = L"Alliance:";
         type = GCTT_ALLIANCE;

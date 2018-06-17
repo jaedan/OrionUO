@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GLFrameBuffer.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,12 +13,6 @@ CGLFrameBuffer::~CGLFrameBuffer()
     Free();
 }
 
-/*!
-Инициализациия буфера
-@param [__in] width Ширина буфера
-@param [__in] height Высота буфера
-@return true в случае успеха
-*/
 bool CGLFrameBuffer::Init(int width, int height)
 {
     WISPFUN_DEBUG("c30_f3");
@@ -65,10 +52,6 @@ bool CGLFrameBuffer::Init(int width, int height)
     return result;
 }
 
-/*!
-Очистка фрэймбуфера
-@return
-*/
 void CGLFrameBuffer::Free()
 {
     WISPFUN_DEBUG("c30_f4");
@@ -83,10 +66,6 @@ void CGLFrameBuffer::Free()
     m_OldFrameBuffer = 0;
 }
 
-/*!
-Завершение использования фрэймбуфера
-@return 
-*/
 void CGLFrameBuffer::Release()
 {
     WISPFUN_DEBUG("c30_f5");
@@ -101,12 +80,6 @@ void CGLFrameBuffer::Release()
     }
 }
 
-/*!
-Проверка готовности буфера с потенциальным пересозданием
-@param [__in] width Ширина буфера
-@param [__in] height Высота буфера
-@return true в случае готовности
-*/
 bool CGLFrameBuffer::Ready(int width, int height)
 {
     WISPFUN_DEBUG("c30_f6");
@@ -121,10 +94,6 @@ bool CGLFrameBuffer::ReadyMinSize(int width, int height)
         g_GL.CanUseFrameBuffer && m_Ready && Texture.Width >= width && Texture.Height >= height);
 }
 
-/*!
-Использование буфера
-@return true в случае успеха
-*/
 bool CGLFrameBuffer::Use()
 {
     WISPFUN_DEBUG("c30_f7");
@@ -153,12 +122,6 @@ bool CGLFrameBuffer::Use()
     return result;
 }
 
-/*!
-Отрисовать текстуру буфера
-@param [__in] x Экранная координата X
-@param [__in] y Экранная координата Y
-@return 
-*/
 void CGLFrameBuffer::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c30_f8");

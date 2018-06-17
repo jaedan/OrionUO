@@ -1,4 +1,4 @@
-﻿
+
 #ifndef WISPLOGGER_H
 #define WISPLOGGER_H
 
@@ -11,14 +11,14 @@ namespace WISP_LOGGER
 #define LOG WISP_LOGGER::g_WispLogger.Print
 #if CWISPLOGGER == 2
 #define LOG_DUMP(...)
-#else //CWISPLOGGER != 2
+#else
 #define LOG_DUMP WISP_LOGGER::g_WispLogger.Dump
-#endif //CWISPLOGGER == 2
-#else  //CWISPLOGGER == 0
+#endif
+#else
 #define INITLOGGER(path)
 #define LOG(...)
 #define LOG_DUMP(...)
-#endif //CWISPLOGGER!=0
+#endif
 
 #define INITCRASHLOGGER(path) WISP_LOGGER::g_WispCrashLogger.Init(path);
 #define CRASHLOG WISP_LOGGER::g_WispCrashLogger.Print
@@ -54,4 +54,4 @@ extern CLogger g_WispLogger;
 extern CLogger g_WispCrashLogger;
 } // namespace WISP_LOGGER
 
-#endif //WISPLOGGER_H
+#endif

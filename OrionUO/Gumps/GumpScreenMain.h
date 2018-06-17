@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenMain.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSCREENMAIN_H
 #define GUMPSCREENMAIN_H
@@ -13,7 +6,6 @@
 class CGumpScreenMain : public CGump
 {
 private:
-    //!Идентификаторы кнопок
     static const int ID_MS_QUIT = 1;
     static const int ID_MS_ARROW_NEXT = 2;
     static const int ID_MS_ACCOUNT = 3;

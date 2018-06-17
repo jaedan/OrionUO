@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PathNode.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PATHNODE_H
 #define PATHNODE_H
@@ -17,20 +10,15 @@ struct PATH_POINT
     int Direction;
 };
 
-//Класс объекта в точке пути
 class CPathObject
 {
 public:
-    //Флаги
     uint Flags = 0;
 
-    //Координата Z точки
     int Z = 0;
 
-    //Координата Z точки (усредненная)
     int AverageZ = 0;
 
-    //Высота точки
     int Height = 0;
 
     CPathObject(int flags, int z, int averageZ, int height, class CRenderWorldObject *object)
@@ -46,7 +34,6 @@ public:
     class CRenderWorldObject *m_Object;
 };
 
-//Класс объекта в точке пути
 class CPathNode
 {
 public:

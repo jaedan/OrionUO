@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CustomHousesManager.cpp
-**
-** Copyright (C) September 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -125,7 +118,7 @@ void CustomHousesManager::Save(const string &path)
 
     writter.Open(path);
 
-    writter.WriteInt8(1); //version
+    writter.WriteInt8(1);
     writter.WriteBuffer();
 
     int count = 0;
@@ -163,7 +156,7 @@ void CustomHousesManager::Save(const string &path)
         }
     }
 
-    writter.WriteUInt32LE(0); //EOF
+    writter.WriteUInt32LE(0);
     writter.WriteBuffer();
 
     writter.Close();

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpGeneric.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -131,10 +124,9 @@ void CGumpGeneric::AddText(
 void CGumpGeneric::SendGumpResponse(int index)
 {
     WISPFUN_DEBUG("c96_f2");
-    //Ответ на гамп
+
     CPacketGumpResponse(this, index).Send();
 
-    //Удаляем использованный гамп
     RemoveMark = true;
 }
 
@@ -159,10 +151,8 @@ bool CGumpGeneric::OnLeftMouseButtonDoubleClick()
     if (g_PressedObject.LeftObject != NULL && g_PressedObject.LeftObject->IsGUI() &&
         ((CBaseGUI *)g_PressedObject.LeftObject)->Type == GOT_VIRTURE_GUMP)
     {
-        //Ответ на гамп
         CPacketVirtureGumpResponse(this, g_PressedObject.LeftSerial).Send();
 
-        //Удаляем использованный гамп
         RemoveMark = true;
 
         return true;

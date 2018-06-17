@@ -17,7 +17,6 @@ bool CBinaryFileWritter::Open(const string &path)
     WISPFUN_DEBUG("c2_f1");
     bool result = false;
 
-    //if (PathFileExistsA(path.c_str()))
     {
         fopen_s(&m_File, path.c_str(), "wb");
         result = (m_File != NULL);
@@ -31,7 +30,6 @@ bool CBinaryFileWritter::Open(const wstring &path)
     WISPFUN_DEBUG("c2_f2");
     bool result = false;
 
-    //if (PathFileExistsW(path.c_str()))
     {
         _wfopen_s(&m_File, path.c_str(), L"wb");
         result = (m_File != NULL);

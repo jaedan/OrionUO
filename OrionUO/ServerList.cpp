@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ServerList.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -57,7 +50,7 @@ void CServerList::ParsePacket(WISP_DATASTREAM::CDataReader &reader)
         string name = reader.ReadString(32);
         uchar fullPercent = reader.ReadUInt8();
         uchar timezone = reader.ReadUInt8();
-        uint ip = reader.ReadUInt32LE(); //little-endian!!!
+        uint ip = reader.ReadUInt32LE();
         bool selected = (name == g_ServerList.LastServerName);
 
         if (selected)

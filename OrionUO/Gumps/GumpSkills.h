@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpSkills.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSKILLS_H
 #define GUMPSKILLS_H
@@ -26,7 +19,6 @@ private:
     bool m_ShowReal{ false };
     bool m_ShowCap{ false };
 
-    //Получить группу над курсором
     class CSkillGroupObject *GetGroupUnderCursor(int &index);
 
     CGUIGumppic *m_BottomLine{ NULL };

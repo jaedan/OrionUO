@@ -1,17 +1,9 @@
-﻿/***********************************************************************************
-**
-** ProfessionManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
 CProfessionManager g_ProfessionManager;
 
-//!Ключи конфига
 const string CProfessionManager::m_Keys[m_KeyCount] = {
     "begin", "name", "truename", "desc", "toplevel", "gump", "type",     "children", "skill",
     "stat",  "str",  "int",      "dex",  "end",      "true", "category", "nameid",   "descid"
@@ -27,11 +19,6 @@ CProfessionManager::~CProfessionManager()
 {
 }
 
-/*!
-Получить код кофига по строке
-@param [__in] key Строка из файла
-@return Код конфига
-*/
 int CProfessionManager::GetKeyCode(const string &key)
 {
     WISPFUN_DEBUG("c153_f1");
@@ -47,11 +34,6 @@ int CProfessionManager::GetKeyCode(const string &key)
     return result;
 }
 
-/*!
-Обработать часть файла (загрузка профессии)
-@param [__in] file Указатель на файл
-@return true при успешной обработке
-*/
 bool CProfessionManager::ParseFilePart(WISP_FILE::CTextFileParser &file)
 {
     WISPFUN_DEBUG("c153_f2");
@@ -237,9 +219,6 @@ bool CProfessionManager::ParseFilePart(WISP_FILE::CTextFileParser &file)
             {
                 result = AddChild(parent, obj);
 
-                //if (result)
-                //	break;
-
                 parent = (CBaseProfession *)parent->m_Next;
             }
 
@@ -251,12 +230,6 @@ bool CProfessionManager::ParseFilePart(WISP_FILE::CTextFileParser &file)
     return result;
 }
 
-/*!
-Добавить ребенка в профессию
-@param [__in] parent Ссылка на родителя
-@param [__in] child Ссылка на детишку
-@return true в случае успешного добавления
-*/
 bool CProfessionManager::AddChild(CBaseProfession *parent, CBaseProfession *child)
 {
     WISPFUN_DEBUG("c153_f3");
@@ -292,10 +265,6 @@ bool CProfessionManager::AddChild(CBaseProfession *parent, CBaseProfession *chil
     return result;
 }
 
-/*!
-Загрузка профессий из файла
-@return true в случае успешной загрузки
-*/
 bool CProfessionManager::Load()
 {
     WISPFUN_DEBUG("c153_f4");
@@ -377,10 +346,6 @@ bool CProfessionManager::Load()
     return result;
 }
 
-/*!
-Загрузка описания профессий
-@return 
-*/
 void CProfessionManager::LoadProfessionDescription()
 {
     WISPFUN_DEBUG("c153_f5");
@@ -401,7 +366,7 @@ void CProfessionManager::LoadProfessionDescription()
 
                 while (ptr < end)
                 {
-                    if (!(*(ptr - 1)) && !(*ptr)) //end of names section
+                    if (!(*(ptr - 1)) && !(*ptr))
                     {
                         ptr++;
 
@@ -419,7 +384,6 @@ void CProfessionManager::LoadProfessionDescription()
                 {
                     if (!((CBaseProfession *)m_Items)->AddDescription((int)i - 1, list[i], ptr))
                     {
-                        //LOG("Failed to add description! (%s)\n", list[i].c_str());
                     }
                     ptr += strlen(ptr) + 1;
                 }
@@ -441,12 +405,6 @@ void CProfessionManager::LoadProfessionDescription()
     }
 }
 
-/*!
-Получить родителя профессии
-@param [__in] obj Ссылка на объект профессии
-@param [__in_opt] check Ссылка на проверочный объект профессии
-@return Ссылка на найденного родителя объекта профессии
-*/
 CBaseProfession *CProfessionManager::GetParent(CBaseProfession *obj, CBaseProfession *check)
 {
     WISPFUN_DEBUG("c153_f6");

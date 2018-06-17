@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GLShader.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -105,11 +98,9 @@ bool CGLShader::Init(const char *vertexShaderData, const char *fragmentShaderDat
         GLint maxLength = 0;
         glGetProgramiv(m_Shader, GL_INFO_LOG_LENGTH, &maxLength);
 
-        // The maxLength includes the NULL character
         std::vector<GLchar> infoLog(maxLength);
         glGetProgramInfoLog(m_Shader, maxLength, &maxLength, &infoLog[0]);
 
-        // The program is useless now. So delete it.
         glDeleteProgram(m_Shader);
 
         LOG("shader program failed to link\n");

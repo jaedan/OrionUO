@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CreateCharacterScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -32,10 +25,6 @@ void CCreateCharacterScreen::SetColorSelection(int val)
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CCreateCharacterScreen::Init()
 {
     WISPFUN_DEBUG("c162_f1");
@@ -52,11 +41,6 @@ void CCreateCharacterScreen::Init()
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CCreateCharacterScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c162_f2");
@@ -78,10 +62,6 @@ void CCreateCharacterScreen::ProcessSmoothAction(uchar action)
         g_Orion.InitScreen(GS_SELECT_TOWN);
 }
 
-/*!
-Нажатие левой кнопки мыши
-@return 
-*/
 void CCreateCharacterScreen::OnLeftMouseButtonDown()
 {
     WISPFUN_DEBUG("c162_f3");
@@ -97,12 +77,6 @@ void CCreateCharacterScreen::OnLeftMouseButtonDown()
     }
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CCreateCharacterScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c162_f4");
@@ -111,19 +85,13 @@ void CCreateCharacterScreen::OnCharPress(const WPARAM &wParam, const LPARAM &lPa
     else if (g_EntryPointer == NULL)
         return;
 
-    if (g_EntryPointer->Length() < 20) //add char to text field
+    if (g_EntryPointer->Length() < 20)
         g_EntryPointer->Insert((wchar_t)wParam);
 
     Name = g_EntryPointer->c_str();
     m_Gump.WantRedraw = true;
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CCreateCharacterScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c162_f5");

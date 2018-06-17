@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpPaperdoll.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -76,7 +69,6 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
             m_ButtonWarmode = (CGUIButton *)Add(
                 new CGUIButton(ID_GP_BUTTON_WARMODE, 0x07E5, 0x07E7, 0x07E6, 185, 206));
 
-        //UO->DrawGump(0x0FA1, 0, posX + 80, posY + 4); //Paperdoll mail bag
         Add(new CGUIButton(ID_GP_BUTTON_VIRTURE, 0x0071, 0x0071, 0x0071, 80, 4));
 
         if (g_PaperdollBooks)
@@ -107,9 +99,6 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
     Add(new CGUIButton(ID_GP_BUTTON_STATUS, 0x07EB, 0x07ED, 0x07EC, 185, 233));
 
     Add(new CGUIButton(ID_GP_PROFILE_SCROLL, 0x07D2, 0x07D2, 0x07D2, profileX, 196));
-
-    //if (ConnectionManager.ClientVersion >= CV_60142)
-    //	UO->DrawGump(0x2B34, 0, 156, 200);
 
     m_DataBox = (CGUIDataBox *)Add(new CGUIDataBox());
 }
@@ -302,11 +291,8 @@ void CGumpPaperdoll::PrepareContent()
 
                 if (equipment != NULL)
                 {
-                    //if (g_Target.IsTargeting())
-                    //	g_Target.SendCancelTarget();
-
                     g_Orion.PickupItem(equipment);
-                    //g_LastGumpLeftMouseDown = 0;
+
                     g_PressedObject.ClearLeft();
                     g_MouseManager.LeftDropPosition = g_MouseManager.Position;
 
@@ -347,7 +333,6 @@ void CGumpPaperdoll::PrepareContent()
 void CGumpPaperdoll::UpdateContent()
 {
     WISPFUN_DEBUG("c105_f6");
-    //Clear();
 
     CGameCharacter *obj = g_World->FindWorldCharacter(Serial);
 
@@ -367,56 +352,52 @@ void CGumpPaperdoll::UpdateContent()
 
     if (obj->Graphic == 0x0191 || obj->Graphic == 0x0193)
     {
-        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000D, 8, 19)); //Female gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000D, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
     else if (obj->Graphic == 0x025D)
     {
-        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000E, 8, 19)); //Elf Male gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000E, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
     else if (obj->Graphic == 0x025E)
     {
-        bodyGumppic =
-            (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000F, 8, 19)); //Elf Female gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000F, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
     else if (obj->Graphic == 0x029A)
     {
-        bodyGumppic =
-            (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x29A, 8, 19)); //Gargoly Male gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x29A, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
     else if (obj->Graphic == 0x029B)
     {
-        bodyGumppic =
-            (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x299, 8, 19)); //Gargoly Female gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x299, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
     else if (obj->Graphic == 0x03DB)
     {
-        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000C, 8, 19)); //Male gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000C, 8, 19));
         bodyGumppic->Color = 0x03EA;
         bodyGumppic->PartialHue = true;
 
-        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0xC72B, 8, 19)); //GM robe gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0xC72B, 8, 19));
         bodyGumppic->Color = color;
     }
-    else //if (obj->Graphic == 0x0190 || obj->Graphic == 0x0192)
+    else
     {
-        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000C, 8, 19)); //Male gump
+        bodyGumppic = (CGUIGumppic *)m_DataBox->Add(new CGUIGumppic(0x000C, 8, 19));
         bodyGumppic->PartialHue = true;
         bodyGumppic->Color = color;
     }
 
     int gumpOffset = (obj->Female ? FEMALE_GUMP_OFFSET : MALE_GUMP_OFFSET);
 
-    //Draw equipment & backpack
     CGameItem *equipment = NULL;
 
     EQUIP_CONV_BODY_MAP &equipConv = g_AnimationManager.GetEquipConv();
@@ -425,7 +406,6 @@ void CGumpPaperdoll::UpdateContent()
 
     g_ColorizerShader.Use();
 
-    //if (obj->IsHuman())
     {
         bool useSlots = g_ConfigManager.GetPaperdollSlots();
 
@@ -713,9 +693,6 @@ void CGumpPaperdoll::Draw()
     if (obj == NULL)
         return;
 
-    //if (g_LastObjectType == SOT_TEXT_OBJECT)
-    //	g_GumpPressedElement = false;
-
     CGump::Draw();
 
     if (!Minimized)
@@ -761,22 +738,22 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
     WISPFUN_DEBUG("c105_f10");
     switch (serial)
     {
-        case ID_GP_BUTTON_HELP: //Paperdoll button Help
+        case ID_GP_BUTTON_HELP:
         {
             CPacketHelpRequest().Send();
             break;
         }
-        case ID_GP_BUTTON_OPTIONS: //Paperdoll button Options
+        case ID_GP_BUTTON_OPTIONS:
         {
             g_Orion.OpenConfiguration();
             break;
         }
-        case ID_GP_BUTTON_LOGOUT: //Paperdoll button Log Out
+        case ID_GP_BUTTON_LOGOUT:
         {
             g_Orion.OpenLogOut();
             break;
         }
-        case ID_GP_BUTTON_JOURNAL_OR_QUESTS: //Paperdoll button Journal
+        case ID_GP_BUTTON_JOURNAL_OR_QUESTS:
         {
             if (g_PacketManager.GetClientVersion() >= CV_500A)
                 CPacketQuestMenuRequest().Send();
@@ -784,12 +761,12 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
                 g_Orion.OpenJournal();
             break;
         }
-        case ID_GP_BUTTON_SKILLS: //Paperdoll button Skills
+        case ID_GP_BUTTON_SKILLS:
         {
             g_Orion.OpenSkills();
             break;
         }
-        case ID_GP_BUTTON_CHAT_OR_GUILD: //Paperdoll button Chat
+        case ID_GP_BUTTON_CHAT_OR_GUILD:
         {
             if (g_PacketManager.GetClientVersion() >= CV_500A)
                 CPacketGuildMenuRequest().Send();
@@ -797,18 +774,18 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
                 g_Orion.OpenChat();
             break;
         }
-        case ID_GP_BUTTON_WARMODE: //Paperdoll button Peace/War
+        case ID_GP_BUTTON_WARMODE:
         {
             g_Orion.ChangeWarmode();
             break;
         }
-        case ID_GP_BUTTON_STATUS: //Paperdoll button Status
+        case ID_GP_BUTTON_STATUS:
         {
             g_Orion.OpenStatus(Serial);
             g_MouseManager.LastLeftButtonClickTimer = 0;
             break;
         }
-        case ID_GP_BUTTON_MINIMIZE: //Paperdoll button Minimize
+        case ID_GP_BUTTON_MINIMIZE:
         {
             Minimized = true;
             break;
@@ -852,7 +829,6 @@ void CGumpPaperdoll::OnLeftMouseButtonUp()
     if (container == NULL && serial >= ID_GP_ITEMS)
         return;
 
-    //Что-то в руке
     if ((!serial || serial >= ID_GP_ITEMS) && g_ObjectInHand.Enabled)
     {
         int layer = serial - ID_GP_ITEMS;
@@ -864,7 +840,7 @@ void CGumpPaperdoll::OnLeftMouseButtonUp()
 
         if (canWear && container != NULL)
         {
-            if (layer == OL_BACKPACK) //Ткнули на пак
+            if (layer == OL_BACKPACK)
             {
                 CGameItem *equipment = container->FindLayer(layer);
 
@@ -883,11 +859,11 @@ void CGumpPaperdoll::OnLeftMouseButtonUp()
                     return;
                 }
             }
-            else if (IsWearable(g_ObjectInHand.TiledataPtr->Flags)) //Можно одевать
+            else if (IsWearable(g_ObjectInHand.TiledataPtr->Flags))
             {
                 CGameItem *equipment = container->FindLayer(g_ObjectInHand.TiledataPtr->Layer);
 
-                if (equipment == NULL) //На этом слое ничего нет
+                if (equipment == NULL)
                 {
                     if (Serial != g_PlayerSerial)
                         g_Orion.EquipItem(container->Serial);
@@ -919,7 +895,7 @@ void CGumpPaperdoll::OnLeftMouseButtonUp()
                 g_Target.SendTargetObject(equipment->Serial);
                 g_MouseManager.CancelDoubleClick = true;
             }
-            else //Click on object
+            else
             {
                 if (!g_ClickObject.Enabled)
                 {

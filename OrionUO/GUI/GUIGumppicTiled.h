@@ -1,23 +1,12 @@
-﻿/***********************************************************************************
-**
-** GUIGumppicTiled.h
-**
-** Компонента для отображения повторяющихся гампов
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUIGUMPPICTILED_H
 #define GUIGUMPPICTILED_H
 
 class CGUIGumppicTiled : public CGUIDrawObject
 {
-    //!Ширина
     int Width = 0;
 
-    //!Высота
     int Height = 0;
 
 public:

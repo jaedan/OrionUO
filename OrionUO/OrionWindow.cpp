@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** OrionWindow.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 #include <tchar.h>
@@ -94,7 +87,7 @@ bool COrionWindow::OnCreate()
     g_GL.UpdateRect();
 
     CreateThreadedTimer(RENDER_TIMER_ID, FRAME_DELAY_ACTIVE_WINDOW, false, true, true);
-    //CreateThreadedTimer(UPDATE_TIMER_ID, 10);
+
     CreateTimer(UPDATE_TIMER_ID, 10);
 
     return true;
@@ -158,7 +151,6 @@ void COrionWindow::OnLeftMouseButtonUp()
     {
         g_CurrentScreen->Render(false);
 
-        //if ((g_SelectedObject.Object() != NULL && g_SelectedObject.Object() == g_PressedObject.LeftObject && g_SelectedObject.Serial) || g_GameState >= GS_GAME)
         if ((g_SelectedObject.Object != NULL && g_SelectedObject.Serial) || g_GameState >= GS_GAME)
         {
             g_CurrentScreen->OnLeftMouseButtonUp();
@@ -372,8 +364,7 @@ void COrionWindow::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     if (g_PluginManager.WindowProc(Handle, WM_KEYDOWN, wParam, lParam))
         return;
 
-    if (wParam != VK_RETURN && /*!iswprint(wParam) &&*/ g_CurrentScreen != NULL &&
-        g_ScreenEffectManager.Mode == SEM_NONE)
+    if (wParam != VK_RETURN && g_CurrentScreen != NULL && g_ScreenEffectManager.Mode == SEM_NONE)
         g_CurrentScreen->OnKeyDown(wParam, lParam);
 }
 
@@ -383,10 +374,10 @@ void COrionWindow::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
     if (g_PluginManager.WindowProc(Handle, WM_KEYUP, wParam, lParam))
         return;
 
-    if (/*!iswprint(wParam) &&*/ g_CurrentScreen != NULL && g_ScreenEffectManager.Mode == SEM_NONE)
+    if (g_CurrentScreen != NULL && g_ScreenEffectManager.Mode == SEM_NONE)
         g_CurrentScreen->OnKeyUp(wParam, lParam);
 
-    if (wParam == 0x2C) //Print Screen
+    if (wParam == 0x2C)
         g_ScreenshotBuilder.SaveScreen();
 }
 

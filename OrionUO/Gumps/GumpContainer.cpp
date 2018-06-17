@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpContainer.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -100,7 +93,7 @@ void CGumpContainer::PrepareTextures()
 {
     WISPFUN_DEBUG("c93_f5");
     CGump::PrepareTextures();
-    g_Orion.ExecuteGumpPart(0x0045, 2); //Corpse eyes
+    g_Orion.ExecuteGumpPart(0x0045, 2);
 }
 
 void CGumpContainer::InitToolTip()
@@ -146,9 +139,6 @@ void CGumpContainer::PrepareContent()
             }
             else if (selobj != NULL)
             {
-                //if (g_Target.IsTargeting())
-                //	g_Target.SendCancelTarget();
-
                 g_Orion.PickupItem(selobj, 0, IsGameBoard);
 
                 g_PressedObject.ClearLeft();

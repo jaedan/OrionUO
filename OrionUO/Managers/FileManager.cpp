@@ -1,11 +1,4 @@
-/***********************************************************************************
-**
-** FileManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 CFileManager g_FileManager;
@@ -164,10 +157,7 @@ bool CFileManager::LoadWithUOP()
 {
     if (true)
     {
-        //m_MainMisc
     }
-
-    //Try to use map uop files first, if we can, we will use them.
 
     if (!LoadUOPFile(m_ArtLegacyMUL, "artLegacyMUL.uop"))
     {
@@ -207,13 +197,6 @@ bool CFileManager::LoadWithUOP()
 
     LoadUOPFile(m_AnimationSequence, "AnimationSequence.uop");
     LoadUOPFile(m_Tileart, "tileart.uop");
-
-    /* Эти файлы не используются самой последней версией клиента 7.0.52.2
-	if (!m_tileart.Load(g_App.UOFilesPath("tileart.uop")))
-	return false;
-	if (!m_AnimationSequence.Load(g_App.UOFilesPath("AnimationSequence.uop")))
-	return false;
-	*/
 
     if (!m_AnimIdx[0].Load(g_App.UOFilesPath("anim.idx")))
         return false;
@@ -583,7 +566,7 @@ char *CFileManager::ReadUOPDataFromFileStream(UOPAnimationData &animData)
 {
     animData.fileStream->clear();
     animData.fileStream->seekg(animData.offset, 0);
-    //reading into buffer on the heap
+
     char *buf = new char[animData.compressedLength];
     animData.fileStream->read(buf, animData.compressedLength);
     return buf;
@@ -611,8 +594,6 @@ bool CFileManager::DecompressUOPFileData(
 
 bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
 {
-    //LOG("Loading UOP fileName: %s\n", fileName);
-
     if (!file.Load(g_App.UOFilesPath(fileName)))
         return false;
 
@@ -629,10 +610,10 @@ bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
     if (formatVersion > 5)
         LOG("WARNING!!! UOP file '%s' version is %i!\n", fileName, formatVersion);
 
-    file.Move(4); //Signature?
+    file.Move(4);
     uint64 next = file.ReadUInt64LE();
 
-    file.Move(4); //Block capacity?
+    file.Move(4);
     uint filesCount = file.ReadUInt32LE();
 
     file.ResetPtr();
@@ -675,9 +656,6 @@ bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
 
     file.ResetPtr();
 
-    //if (string("MainMisc.uop") != fileName)
-    //if (string("AnimationSequence.uop") != fileName)
-    //if (string("tileart.uop") != fileName)
     return true;
 
     for (std::unordered_map<uint64, CUopBlockHeader>::iterator i = file.m_Map.begin();
@@ -692,8 +670,6 @@ bool CFileManager::LoadUOPFile(CUopMappedFile &file, const char *fileName)
             continue;
 
         WISP_DATASTREAM::CDataReader reader(&data[0], data.size());
-
-        //LOG("%s\n", reader.ReadString(decompressedSize).c_str());
 
         LOG_DUMP(reader.Start, (int)reader.Size);
 
@@ -720,7 +696,6 @@ bool CFileManager::TryOpenFileStream(std::fstream &fileStream, std::string &file
 
 bool CFileManager::IsMulFileOpen(int idx) const
 {
-    //we only have 5 anim mul files atm
     if (idx > 5)
         return false;
     return m_AnimMul[idx].is_open();

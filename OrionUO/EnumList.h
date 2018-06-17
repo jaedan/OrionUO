@@ -1,47 +1,35 @@
-﻿/***********************************************************************************
-**
-** EnumList.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef ENUMLIST_H
 #define ENUMLIST_H
 
-//!На какой стадии находится рендер (и вообще клиент)
 enum GAME_STATE
 {
-    GS_MAIN = 0,       //!Основной гамп (клиент только запустили)
-    GS_MAIN_CONNECT,   //!Гамп коннекта к серверу авторизации
-    GS_SERVER,         //!Гамп списка серверов
-    GS_SERVER_CONNECT, //!Гамп коннекта к гейм серверу
-    GS_CHARACTER,      //!Гамп списока чаров
-    GS_DELETE,         //!Гамп удаления персонажа
-    GS_PROFESSION_SELECT, //!Гамп выбора профессии
-    GS_CREATE,            //!Гамп создания персонажа
-    GS_SELECT_TOWN,       //!Гамп выбора стартового города
-    GS_GAME_CONNECT,      //!Гамп входа в игру
-    GS_GAME,        //!Игровой гамп (отображение мира и прочего)
-    GS_GAME_BLOCKED /*!Модификация игрового гампа, всё отображается, но заблокировано
-							для кликов, перемещений и изменения чего-либо, кроме гампа (гампов)
-							вызвавшего эту стадию рендера
-							*/
+    GS_MAIN = 0,
+    GS_MAIN_CONNECT,
+    GS_SERVER,
+    GS_SERVER_CONNECT,
+    GS_CHARACTER,
+    GS_DELETE,
+    GS_PROFESSION_SELECT,
+    GS_CREATE,
+    GS_SELECT_TOWN,
+    GS_GAME_CONNECT,
+    GS_GAME,
+    GS_GAME_BLOCKED
+
 };
 
-//!Тип объекта при рендере
 enum RENDER_OBJECT_TYPE
 {
-    ROT_NO_OBJECT = 0, //Ничего не выбрано
-    ROT_GAME_OBJECT,   //Игровой объект
-    ROT_STATIC_OBJECT, //Статика
-    ROT_LAND_OBJECT,   //Ландшафт
-    ROT_MULTI_OBJECT,  //Мульти
-    ROT_EFFECT         //Эффект
+    ROT_NO_OBJECT = 0,
+    ROT_GAME_OBJECT,
+    ROT_STATIC_OBJECT,
+    ROT_LAND_OBJECT,
+    ROT_MULTI_OBJECT,
+    ROT_EFFECT
 };
 
-//!Тип объекта поиска
 enum SCAN_TYPE_OBJECT
 {
     STO_HOSTILE = 0,
@@ -51,7 +39,6 @@ enum SCAN_TYPE_OBJECT
     STO_MOBILES
 };
 
-//!Тип поиска объекта
 enum SCAN_MODE_OBJECT
 {
     SMO_NEXT = 0,
@@ -59,70 +46,65 @@ enum SCAN_MODE_OBJECT
     SMO_NEAREST
 };
 
-//!Тип эффекта
 enum EFFECT_TYPE
 {
-    EF_MOVING = 0,     //!Движется
-    EF_LIGHTING,       //!Удар молнией
-    EF_STAY_AT_POS,    //!Стоит на точке
-    EF_STAY_AT_SOURCE, //!Привязан к персонажу
-    EF_DRAG            //!Анимация перемещения предмета
+    EF_MOVING = 0,
+    EF_LIGHTING,
+    EF_STAY_AT_POS,
+    EF_STAY_AT_SOURCE,
+    EF_DRAG
 };
 
-//!Тип ускорения
 enum CHARACTER_SPEED_TYPE
 {
-    CST_NORMAL = 0,   //!Нормальная скорость перемещения
-    CST_FAST_UNMOUNT, //!Ускорение движения персонажа, если он перемещается без маунта (выставляется скорость сопоставимая с маунтом)
-    CST_CANT_RUN, //!Персонаж может только ходить, не бежать (как на маунте, так и без него)
-    CST_FAST_UNMOUNT_AND_CANT_RUN //!Совокупность предыдущих 2 вариантов (персонаж не может бежать и ускорение только при перемещении без маунта)
+    CST_NORMAL = 0,
+    CST_FAST_UNMOUNT,
+    CST_CANT_RUN,
+    CST_FAST_UNMOUNT_AND_CANT_RUN
 };
 
-//!Тип шифрования
 enum ENCRYPTION_TYPE
 {
-    ET_NOCRYPT = 0, //!Без шифрования
-    ET_OLD_BFISH,   //!Старое BlowFish
-    ET_1_25_36, //!Специальное для клиента 1.25.36 (BlowFish, изменен алгоритм логин шифрования)
-    ET_BFISH,   //!Стандартный BlowFish
-    ET_203,  //!Специальное для 2.0.3 клиента (BlowFish + TwoFish без MD5)
-    ET_TFISH //!TwoFish + MD5
+    ET_NOCRYPT = 0,
+    ET_OLD_BFISH,
+    ET_1_25_36,
+    ET_BFISH,
+    ET_203,
+    ET_TFISH
 };
 
-//!Версия клиента (для изменения в протоколе и прочих няшках)
 enum CLIENT_VERSION
 {
-    CV_OLD = 0, //Предшествующие клиенту 2.0.0, Остальные по логике, исходя из названия
-    CV_200,     //Отправляется пакет с габаритами экрана
-    //CV_204C,		//Использование *.def файлов
-    CV_305D, //Использование клилоков, количество слотов в списке персонажей равно количеству персонажей
-    CV_306E, //Добавлен пакет с типом клиента (0xBF subcmd 0x0F), использование mp3 вместо midi
-    CV_308D, //Добавлен параметр Maximum Stats в статусбар
-    CV_308J, //Добавлен параметр Followers в статусбар
-    CV_308Z, //Добавлены классы paladin, necromancer; custom houses, 5 resistances, изменено окно выбора профессии, убрана галочка Save Password
-    CV_400B, //Удаление тултипов
-    CV_405A, //Добавлены классы ninja, samurai
-    CV_4011D, //Изменение окна создания персонажа. Добавлена расса elves
-    CV_500A, //Кнопки папердолла заменены: Journal -> Quests; Chat -> Guild, использование Mega Cliloc, Убрана загрузка файла Verdata.mul
-    CV_5020, //Добавлен гамп бафов
-    CV_5090, //
-    CV_6000, //Добавлены цвета гильд/алли чата, игноры чатов. Добавлены опции новой таргет системы, вывод свойств предметов, Object Handles,
-    CV_6013, //
-    CV_6017, //
-    CV_6040, //Увеличилось количество слотов персонажей
-    CV_6060, //
-    CV_60142, //
-    CV_60144, //Изменение окна создания персонажа. Добавлена расса gargoyle
-    CV_7000,  //
-    CV_7090,  //
-    CV_70130, //
-    CV_70160, //
-    CV_70180, //
-    CV_70240, //*.mul -> *.uop
-    CV_70331  //
+    CV_OLD = 0,
+    CV_200,
+
+    CV_305D,
+    CV_306E,
+    CV_308D,
+    CV_308J,
+    CV_308Z,
+    CV_400B,
+    CV_405A,
+    CV_4011D,
+    CV_500A,
+    CV_5020,
+    CV_5090,
+    CV_6000,
+    CV_6013,
+    CV_6017,
+    CV_6040,
+    CV_6060,
+    CV_60142,
+    CV_60144,
+    CV_7000,
+    CV_7090,
+    CV_70130,
+    CV_70160,
+    CV_70180,
+    CV_70240,
+    CV_70331
 };
 
-//!На какой стадии находится окно коннекта
 enum CONNECTION_SCREEN_TYPE
 {
     CST_LOGIN = 0,
@@ -133,7 +115,6 @@ enum CONNECTION_SCREEN_TYPE
     CST_GAME
 };
 
-//!Рассы
 enum RACE_TYPE
 {
     RT_HUMAN = 1,
@@ -141,7 +122,6 @@ enum RACE_TYPE
     RT_GARGOYLE
 };
 
-//!Типы профессий
 enum PROFESSION_TYPE
 {
     PT_NO_PROF = 0,
@@ -149,7 +129,6 @@ enum PROFESSION_TYPE
     PT_PROFESSION
 };
 
-//!Состояния ClientFlag для отправки при создании персонажа
 enum CLIENT_FLAG
 {
     CF_T2A = 0x00,
@@ -164,7 +143,6 @@ enum CLIENT_FLAG
     CF_3D = 0x100
 };
 
-//!Расширения для списка персонажей
 enum CHARACTER_LIST_FLAG
 {
     CLF_UNKNOWN = 0x01,
@@ -185,7 +163,6 @@ enum CHARACTER_LIST_FLAG
     CLF_UNLOCK_FELUCCA_AREAS = 0x8000
 };
 
-//!Состояния client features
 enum LOCKED_FEATURE_FLAG
 {
     LFF_T2A = 0x01,
@@ -210,7 +187,6 @@ enum LOCKED_FEATURE_FLAG
     LFF_RUSTIC_HOUSING = 0x80000
 };
 
-//!Типы спеллбук
 enum SPELLBOOK_TYPE
 {
     ST_MAGE = 0,
@@ -222,7 +198,6 @@ enum SPELLBOOK_TYPE
     ST_MYSTICISM
 };
 
-//!Смещение для книг заклинаний
 enum SPELLBOOK_OFFSET
 {
     SO_MAGE = 1,
@@ -234,7 +209,6 @@ enum SPELLBOOK_OFFSET
     SO_MYSTICISM = 601
 };
 
-//!Состояния плавного переключения экранов
 enum SCREEN_EFFECT_MODE
 {
     SEM_NONE = 0,
@@ -242,7 +216,6 @@ enum SCREEN_EFFECT_MODE
     SEM_SUNSET
 };
 
-//!Тип плавного переключения экрана
 enum SCREEN_EFFECT_TYPE
 {
     SET_TO_BLACK,
@@ -252,7 +225,6 @@ enum SCREEN_EFFECT_TYPE
     SET_TO_BLACK_VERY_FAST
 };
 
-//!Состояния плавного переключения экранов
 enum WEATHER_TYPE
 {
     WT_RAIN = 0,
@@ -261,105 +233,103 @@ enum WEATHER_TYPE
     WT_STORM
 };
 
-//!Типы гампов
 enum GUMP_TYPE
 {
-    GT_NONE = 0,  //!Нет гампа
-    GT_PAPERDOLL, //!Папердолл 100%
-    GT_STATUSBAR, //!Статус бар (все виды) 100%
-    GT_DYE, //!Гамп выбора цвета 100% (напрямую зависит от GT_SELECT_COLOR)
-    GT_OPTIONS,   //!Опции 90%
-    GT_GENERIC,   //!Гамп от сервера 100%
-    GT_MENU,      //!Меню от сервера 100%
-    GT_GRAY_MENU, //!"Серое" меню от сервера (блокирующий) 100%
-    GT_TRADE,     //!Трэйд гамп 100%
-    GT_SHOP,      //!Гампы покупки/продажи 100% / 100%
-    GT_MINIMAP,   //!Мини-карта 100%
-    GT_MAP,       //!Карта (городов/кладов) 100%
-    GT_SKILLS,    //!Скиллы 100%
-    GT_JOURNAL,   //!Журнал 100%
-    GT_CONTAINER, //!Контейнеры 100%
-    GT_SPELLBOOK, //!Спеллбука 100%
-    GT_SPELL,     //!Иконка спелла 100%
-    GT_DRAG, //!Разделение стакуемых предметов (больше 1 штуки в стеке) 100%
-    GT_TEXT_ENTRY_DIALOG, //!Гамп ввода текста от сервера (блокирующий) 100%
-    GT_QUESTION,              //!Гамп вопроса (блокирующий) 100%
-    GT_SELECT_COLOR,          //!Гамп выбора цвета (для опций) 100%
-    GT_SELECT_FONT,           //!Гамп выбора шрифта (для опций) 100%
-    GT_NOTIFY,                //!Гамп сообщения (блокирующий) 100%
-    GT_BOOK,                  //!Гамп книг 10%
-    GT_TIP,                   //!Tip window 90%
-    GT_PARTY_MANIFEST,        //!Пати манифест гамп 100%
-    GT_MAIL,                  //!Гамп почты 0%
-    GT_PROFILE,               //!Гамп профиля 100%
-    GT_MENUBAR,               //!Гамп менюбара 90%
-    GT_BUFF,                  //!Гамп баффов 100%
-    GT_CHAT,                  //!Гамп чата 0%
-    GT_BULLETIN_BOARD,        //!Гамп доски объявлений 100%
-    GT_BULLETIN_BOARD_ITEM,   //!Гамп предмета доски объявлений 100%
-    GT_WORLD_MAP,             //!Гамп карты мира 100%
-    GT_PLUGIN,                //!Гампы плагинов 0%
-    GT_TARGET_SYSTEM,         //!Гамп таргет системы (статусбар) 100%
-    GT_POPUP_MENU,            //!Гамп всплывающего меню 100%
-    GT_CONSOLE_TYPE,          //!Гамп типа консоли 100%
-    GT_SKILL,                 //!Гамп навыка 100%
-    GT_COMBAT_BOOK,           //!Гамп книги абилок 100%
-    GT_ABILITY,               //!Гамп абилки 100%
-    GT_RACIAL_ABILITIES_BOOK, //!Гамп книги рассовых абилок 100%
-    GT_RACIAL_ABILITY,        //!Гамп рассовой абилки 100%
+    GT_NONE = 0,
+    GT_PAPERDOLL,
+    GT_STATUSBAR,
+    GT_DYE,
+    GT_OPTIONS,
+    GT_GENERIC,
+    GT_MENU,
+    GT_GRAY_MENU,
+    GT_TRADE,
+    GT_SHOP,
+    GT_MINIMAP,
+    GT_MAP,
+    GT_SKILLS,
+    GT_JOURNAL,
+    GT_CONTAINER,
+    GT_SPELLBOOK,
+    GT_SPELL,
+    GT_DRAG,
+    GT_TEXT_ENTRY_DIALOG,
+    GT_QUESTION,
+    GT_SELECT_COLOR,
+    GT_SELECT_FONT,
+    GT_NOTIFY,
+    GT_BOOK,
+    GT_TIP,
+    GT_PARTY_MANIFEST,
+    GT_MAIL,
+    GT_PROFILE,
+    GT_MENUBAR,
+    GT_BUFF,
+    GT_CHAT,
+    GT_BULLETIN_BOARD,
+    GT_BULLETIN_BOARD_ITEM,
+    GT_WORLD_MAP,
+    GT_PLUGIN,
+    GT_TARGET_SYSTEM,
+    GT_POPUP_MENU,
+    GT_CONSOLE_TYPE,
+    GT_SKILL,
+    GT_COMBAT_BOOK,
+    GT_ABILITY,
+    GT_RACIAL_ABILITIES_BOOK,
+    GT_RACIAL_ABILITY,
     GT_CUSTOM_HOUSE,
     GT_PROPERTY,
     GT_PROPERTY_ICON
 };
 
-//!Типы объектов гампов
 enum GUMP_OBJECT_TYPE
 {
-    GOT_NONE = 0,        //!Нет типа
-    GOT_PAGE,            //!Идентификатор страницы
-    GOT_GROUP,           //!Идентификатор группы (для радио-кнопок)
-    GOT_MASTERGUMP,      //!Шта?
-    GOT_RESIZEPIC,       //!Фон (лепится из 9 кусков)
-    GOT_SCOPE,           //!Рамка (лепится из 4 кусков)
-    GOT_CHECKTRANS,      //!Полупрозрачная зона на гампе
-    GOT_SCISSOR,         //!Ножницы
-    GOT_COLOREDPOLYGONE, //!Цветной прямоугольник
-    GOT_LINE,            //!Линия
-    GOT_SLIDER,          //!Ползунок
-    GOT_MINMAXBUTTONS,   //!Кнопки регулировки мин/макс значения
-    GOT_SHADER,          //!Шейдерная программа
-    GOT_HITBOX,          //!Область выделения (для текста)
-    GOT_DATABOX, //!Предметы для отрисовке (актуально использовать в гампах папердолла, контейнера и т.п, содержащих предметы мира)
-    GOT_BUTTON,  //!Кнопка
-    GOT_RESIZEBUTTON,        //!Кнопка изменения размера
-    GOT_BUTTONTILEART,       //!Кнопка с картинкой
-    GOT_BLENDING,            //!Блендинг цветов
-    GOT_GLOBAL_COLOR,        //!Глобальный цвет
-    GOT_BUFF,                //!Иконка баффа\дебаффа
-    GOT_SHOPITEM,            //!Предмет магазина
-    GOT_SHOPRESULT,          //!Предмет магазина (результат)
-    GOT_SKILLITEM,           //!Объект скиллов
-    GOT_SKILLGROUP,          //!Объект группы скиллов
-    GOT_BB_OBJECT,           //!Объект доски объявлений (Bulletin Board)
-    GOT_SCROLLBACKGROUND,    //!Фон в виде скролла
-    GOT_MENUOBJECT,          //!Объект меню
-    GOT_COMBOBOX,            //!Комбо-бокс
-    GOT_CHECKBOX,            //!Чекбокс
-    GOT_RADIO,               //!Радио-кнопка
-    GOT_EXTERNALTEXTURE,     //!Внешняя текстура
-    GOT_TILEPIC,             //!Картинка из статики
-    GOT_TILEPICHIGHTLIGHTED, //!Картинка из статики, цветная с подсветкой с серийником
-    GOT_GUMPPIC,             //!Картинка из гампа
-    GOT_GUMPPICTILED,        //!Картинка из гампа (повторяющаяся)
-    GOT_GUMPPICHIGHTLIGHTED, //!Картинка из гампа, цветная с подсветкой с серийником
-    GOT_TEXT,         //!Текст
-    GOT_HTMLTEXT,     //!Текст с поддержкой HTML разметки
-    GOT_TEXTENTRY,    //!Ввод текста
-    GOT_HTMLGUMP,     //!ХТМЛ гамп
-    GOT_XFMHTMLGUMP,  //!ХТМЛ гамп из клилока (цветной там же)
-    GOT_XFMHTMLTOKEN, //
-    GOT_TOOLTIP,      //
-    GOT_VIRTURE_GUMP  //
+    GOT_NONE = 0,
+    GOT_PAGE,
+    GOT_GROUP,
+    GOT_MASTERGUMP,
+    GOT_RESIZEPIC,
+    GOT_SCOPE,
+    GOT_CHECKTRANS,
+    GOT_SCISSOR,
+    GOT_COLOREDPOLYGONE,
+    GOT_LINE,
+    GOT_SLIDER,
+    GOT_MINMAXBUTTONS,
+    GOT_SHADER,
+    GOT_HITBOX,
+    GOT_DATABOX,
+    GOT_BUTTON,
+    GOT_RESIZEBUTTON,
+    GOT_BUTTONTILEART,
+    GOT_BLENDING,
+    GOT_GLOBAL_COLOR,
+    GOT_BUFF,
+    GOT_SHOPITEM,
+    GOT_SHOPRESULT,
+    GOT_SKILLITEM,
+    GOT_SKILLGROUP,
+    GOT_BB_OBJECT,
+    GOT_SCROLLBACKGROUND,
+    GOT_MENUOBJECT,
+    GOT_COMBOBOX,
+    GOT_CHECKBOX,
+    GOT_RADIO,
+    GOT_EXTERNALTEXTURE,
+    GOT_TILEPIC,
+    GOT_TILEPICHIGHTLIGHTED,
+    GOT_GUMPPIC,
+    GOT_GUMPPICTILED,
+    GOT_GUMPPICHIGHTLIGHTED,
+    GOT_TEXT,
+    GOT_HTMLTEXT,
+    GOT_TEXTENTRY,
+    GOT_HTMLGUMP,
+    GOT_XFMHTMLGUMP,
+    GOT_XFMHTMLTOKEN,
+    GOT_TOOLTIP,
+    GOT_VIRTURE_GUMP
 };
 
 enum SLIDER_TEXT_POSITION
@@ -376,7 +346,7 @@ enum SLIDER_TEXT_POSITION
 
 enum SELECT_COLOR_GUMP_STATE
 {
-    //SCGS_OPT_POPUP_TEXT = 0,
+
     SCGS_OPT_TOOLTIP_TEXT = 0,
     SCGS_OPT_CHAT_INPUT_TEXT,
     SCGS_OPT_CHAT_MENU_OPTION,
@@ -641,56 +611,54 @@ enum VALUE_KEY_STRING
     VKS_SPELLBOOK_7_SPELL_NAME
 };
 
-//!Типы текстовых сообщений
 enum OBJECT_LAYERS
 {
-    OL_NONE = 0,    //0
-    OL_1_HAND,      //1
-    OL_2_HAND,      //2
-    OL_SHOES,       //3
-    OL_PANTS,       //4
-    OL_SHIRT,       //5
-    OL_HELMET,      //6
-    OL_GLOVES,      //7
-    OL_RING,        //8
-    OL_TALISMAN,    //9
-    OL_NECKLACE,    //10
-    OL_HAIR,        //11
-    OL_WAIST,       //12
-    OL_TORSO,       //13
-    OL_BRACELET,    //14
-    OL_15,          //15
-    OL_BEARD,       //16
-    OL_TUNIC,       //17
-    OL_EARRINGS,    //18
-    OL_ARMS,        //19
-    OL_CLOAK,       //20
-    OL_BACKPACK,    //21
-    OL_ROBE,        //22
-    OL_SKIRT,       //23
-    OL_LEGS,        //24
-    OL_MOUNT,       //25
-    OL_BUY_RESTOCK, //26
-    OL_BUY,         //27
-    OL_SELL,        //28
-    OL_BANK         //29
+    OL_NONE = 0,
+    OL_1_HAND,
+    OL_2_HAND,
+    OL_SHOES,
+    OL_PANTS,
+    OL_SHIRT,
+    OL_HELMET,
+    OL_GLOVES,
+    OL_RING,
+    OL_TALISMAN,
+    OL_NECKLACE,
+    OL_HAIR,
+    OL_WAIST,
+    OL_TORSO,
+    OL_BRACELET,
+    OL_15,
+    OL_BEARD,
+    OL_TUNIC,
+    OL_EARRINGS,
+    OL_ARMS,
+    OL_CLOAK,
+    OL_BACKPACK,
+    OL_ROBE,
+    OL_SKIRT,
+    OL_LEGS,
+    OL_MOUNT,
+    OL_BUY_RESTOCK,
+    OL_BUY,
+    OL_SELL,
+    OL_BANK
 };
 
-//!Типы текстовых сообщений
 enum SPEECH_TYPE
 {
     ST_NORMAL = 0,
-    ST_BROADCAST,                //System
-    ST_EMOTE = 0x02,             //Emote
-    ST_SYSTEM = 0x06,            //System / Lower Corner
-    ST_SYSTEM_WHITE_NAME = 0x07, //Message / Corner With Name
-    ST_WHISPER = 0x08,           //Whisper
-    ST_YELL = 0x09,              //Yell
-    ST_SPELL = 0x0A,             //Spell
-    ST_GUILD_CHAT = 0x0D,        //Guild Chat
-    ST_ALLIANCE_CHAT = 0x0E,     //Alliance Chat
-    ST_COMMAND_PROMT = 0x0F,     //Command Prompts
-    ST_ENCODED_COMMAND = 0xC0,   //Encoded Commands
+    ST_BROADCAST,
+    ST_EMOTE = 0x02,
+    ST_SYSTEM = 0x06,
+    ST_SYSTEM_WHITE_NAME = 0x07,
+    ST_WHISPER = 0x08,
+    ST_YELL = 0x09,
+    ST_SPELL = 0x0A,
+    ST_GUILD_CHAT = 0x0D,
+    ST_ALLIANCE_CHAT = 0x0E,
+    ST_COMMAND_PROMT = 0x0F,
+    ST_ENCODED_COMMAND = 0xC0,
 };
 
 enum TEXT_TYPE
@@ -733,7 +701,6 @@ enum HTML_TAG_TYPE
     HTT_DIV
 };
 
-//!Типы промптов
 enum PROMPT_TYPE
 {
     PT_NONE = 0,
@@ -838,7 +805,6 @@ enum ORION_INTERNAL_PACKET_MESSAGE_TYPE
     OIPMT_OPEN_MAP = 103
 };
 
-//!Направления чара
 enum DIRECTION_TYPE
 {
     DT_N = 0,
@@ -957,7 +923,6 @@ enum PEOPLE_ANIMATION_GROUP
     PAG_ANIMATION_COUNT
 };
 
-//!Злобность персонажа
 enum NOTORIETY_TYPE
 {
     NT_NONE = 0,
@@ -1054,7 +1019,7 @@ enum MACRO_CODE
 enum MACRO_SUB_CODE
 {
     MSC_NONE = 0,
-    MSC_G1_NW, //Walk group
+    MSC_G1_NW,
     MSC_G1_N,
     MSC_G1_NE,
     MSC_G1_E,
@@ -1062,7 +1027,7 @@ enum MACRO_SUB_CODE
     MSC_G1_S,
     MSC_G1_SW,
     MSC_G1_W,
-    MSC_G2_CONFIGURATION, //Open/Close/Minimize/Maximize group
+    MSC_G2_CONFIGURATION,
     MSC_G2_PAPERDOLL,
     MSC_G2_STATUS,
     MSC_G2_JOURNAL,
@@ -1086,7 +1051,7 @@ enum MACRO_SUB_CODE
     MSC_G2_MYSTICISM_SPELLBOOK,
     MSC_G2_RACIAL_ABILITIES_BOOK,
     MSC_G2_BARD_SPELLBOOK,
-    MSC_G3_ANATOMY, //Skills group
+    MSC_G3_ANATOMY,
     MSC_G3_ANIMAL_LORE,
     MSC_G3_ANIMAL_TAMING,
     MSC_G3_ARMS_LORE,
@@ -1110,12 +1075,12 @@ enum MACRO_SUB_CODE
     MSC_G3_STEALTH,
     MSC_G3_TASTE_IDENTIFICATION,
     MSC_G3_TRACKING,
-    MSC_G4_LEFT_HAND, ///Arm/Disarm group
+    MSC_G4_LEFT_HAND,
     MSC_G4_RIGHT_HAND,
-    MSC_G5_HONOR, //Invoke Virture group
+    MSC_G5_HONOR,
     MSC_G5_SACRIFICE,
     MSC_G5_VALOR,
-    MSC_G6_CLUMSY, //Cast Spell group
+    MSC_G6_CLUMSY,
     MSC_G6_CREATE_FOOD,
     MSC_G6_FEEBLEMIND,
     MSC_G6_HEAL,
@@ -1258,7 +1223,7 @@ enum MACRO_SUB_CODE
     MSC_G6_PERSEVERANCE,
     MSC_G6_TRIBULATION,
     MSC_G6_DESPAIR,
-    MSC_G7_HOSTILE, //Select Next/Preveous/Nearest group
+    MSC_G7_HOSTILE,
     MSC_G7_PARTY,
     MSC_G7_FOLLOWER,
     MSC_G7_OBJECT,

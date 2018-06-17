@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpBulletinBoardItem.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPBULLETINBOARDITEM_H
 #define GUMPBULLETINBOARDITEM_H

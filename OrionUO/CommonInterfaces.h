@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** CommonInterfaces.h
-**
-** Copyright (C) September 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef COMMONINTERFACES_H
 #define COMMONINTERFACES_H
@@ -53,7 +46,6 @@ struct ORION_RAW_GUMP_INFO
     int Height;
 };
 
-//IGLEngine
 typedef void __cdecl FUNCDEF_PUSH_SCISSOR(int, int, int, int);
 typedef void __cdecl FUNCDEF_POP_SCISSOR();
 typedef void __cdecl FUNCDEF_DRAW_LINE(unsigned int, int, int, int, int);
@@ -69,7 +61,6 @@ typedef void __cdecl FUNCDEF_DRAW_RESIZEPIC_GUMP(int, int, unsigned short, int, 
 typedef void __cdecl FUNCDEF_DRAW_GUMP(int, int, unsigned short, unsigned short);
 typedef void __cdecl FUNCDEF_DRAW_GUMPPIC(int, int, unsigned short, unsigned short, int, int);
 
-//IUltimaOnline
 typedef unsigned __int64 __cdecl FUNCDEF_GET_LAND_FLAGS(unsigned short);
 typedef unsigned __int64 __cdecl FUNCDEF_GET_STATIC_FLAGS(unsigned short);
 typedef int __cdecl FUNCDEF_GET_VALUE_INT(VALUE_KEY_INT, int);
@@ -92,12 +83,10 @@ typedef void __cdecl FUNCDEF_LOGOUT();
 typedef void __cdecl FUNCDEF_SECURE_TRADING_CHECK_STATE(unsigned int, bool);
 typedef void __cdecl FUNCDEF_SECURE_TRADING_CLOSE(unsigned int);
 
-//IClilocManager
 typedef IOrionString *__cdecl FUNCDEF_GET_CLILOC_A(unsigned int, const char *);
 typedef IOrionString *__cdecl FUNCDEF_GET_CLILOC_W(unsigned int, const char *);
 typedef IOrionString *__cdecl FUNCDEF_GET_CLILOC_ARGUMENTS(unsigned int, const wchar_t *);
 
-//IColorManager
 typedef int __cdecl FUNCDEF_GET_HUES_COUNT();
 typedef unsigned short __cdecl FUNCDEF_GET_COLOR32TO16(unsigned int &);
 typedef unsigned int __cdecl FUNCDEF_GET_COLOR16TO32(unsigned short &);
@@ -106,14 +95,12 @@ typedef unsigned int __cdecl FUNCDEF_GET_POLYGONE_COLOR(unsigned short, unsigned
 typedef unsigned int __cdecl FUNCDEF_GET_COLOR(unsigned short &, unsigned short);
 typedef unsigned int __cdecl FUNCDEF_GET_PARTIAL_HUE_COLOR(unsigned short &, unsigned short);
 
-//IPathFinder
 typedef bool __cdecl FUNCDEF_GET_CAN_WALK(unsigned char &, int &, int &, char &);
 typedef bool __cdecl FUNCDEF_GET_WALK(bool, unsigned char);
 typedef bool __cdecl FUNCDEF_GET_WALK_TO(int, int, int, int);
 typedef void __cdecl FUNCDEF_GET_STOP_AUTOWALK();
 typedef bool __cdecl FUNCDEF_GET_AUTOWALKING();
 
-//IFileManager
 typedef void __cdecl FUNCDEF_GET_FILE_INFO(unsigned int, ORION_RAW_FILE_INFO &);
 typedef void __cdecl FUNCDEF_GET_LAND_ART_INFO(unsigned short, ORION_RAW_ART_INFO &);
 typedef void __cdecl FUNCDEF_GET_STATIC_ART_INFO(unsigned short, ORION_RAW_ART_INFO &);

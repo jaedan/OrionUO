@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpGrayMenu.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -51,7 +44,6 @@ void CGumpGrayMenu::GUMP_BUTTON_EVENT_C
             }
         }
 
-        //Ничего не выбрали
         g_Orion.CreateTextMessage(
             TT_SYSTEM, 0xFFFFFFFF, 3, 0x0021, "You must choose the section of menu.");
     }
@@ -60,9 +52,8 @@ void CGumpGrayMenu::GUMP_BUTTON_EVENT_C
 void CGumpGrayMenu::SendMenuResponse(int index)
 {
     WISPFUN_DEBUG("c97_f3");
-    //Ответ на меню
+
     CPacketGrayMenuResponse(this, index).Send();
 
-    //Удаляем использованный гамп
     RemoveMark = true;
 }

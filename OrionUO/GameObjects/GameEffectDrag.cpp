@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameEffectDrag.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -18,10 +11,6 @@ CGameEffectDrag::~CGameEffectDrag()
 {
 }
 
-/*!
-Обновить эффект
-@return
-*/
 void CGameEffectDrag::Update(CGameObject *parent)
 {
     WISPFUN_DEBUG("c17_f1");

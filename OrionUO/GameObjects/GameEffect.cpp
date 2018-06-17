@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GameEffect.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -18,14 +11,6 @@ CGameEffect::~CGameEffect()
 {
 }
 
-/*!
-Отрисовать эффект
-@param [__in] mode Режим рисования. true - рисование, false - выбор объектов
-@param [__in] drawX Экранная координата X объекта
-@param [__in] drawY Экранная координата Y объекта
-@param [__in] ticks Таймер рендера
-@return При выборе объектов возвращает выбранный элемент
-*/
 void CGameEffect::Draw(int x, int y)
 {
     WISPFUN_DEBUG("c16_f1");
@@ -102,10 +87,6 @@ void CGameEffect::Update(CGameObject *parent)
     }
 }
 
-/*!
-Вычислить текущий индекс картинки
-@return Индекс картинки
-*/
 ushort CGameEffect::CalculateCurrentGraphic()
 {
     WISPFUN_DEBUG("c16_f3");
@@ -129,51 +110,43 @@ ushort CGameEffect::CalculateCurrentGraphic()
     return Graphic + Increment;
 }
 
-/*!
-Получить текущий индекс картинки
-@return Индекс картинки
-*/
 ushort CGameEffect::GetCurrentGraphic()
 {
     WISPFUN_DEBUG("c16_f4");
     return Graphic + Increment;
 }
 
-/*!
-Применение режима отображения
-@return 
-*/
 void CGameEffect::ApplyRenderMode()
 {
     WISPFUN_DEBUG("c16_f5");
     switch (RenderMode)
     {
-        case 1: //ok
+        case 1:
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_ZERO, GL_SRC_COLOR);
             break;
         }
-        case 2: //ok
-        case 3: //ok
+        case 2:
+        case 3:
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             break;
         }
-        case 4: //?
+        case 4:
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
             break;
         }
-        case 5: //?
+        case 5:
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
             break;
         }
-        case 6: //ok
+        case 6:
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
@@ -185,18 +158,14 @@ void CGameEffect::ApplyRenderMode()
     }
 }
 
-/*!
-Отмена режима отображения
-@return 
-*/
 void CGameEffect::RemoveRenderMode()
 {
     WISPFUN_DEBUG("c16_f6");
     switch (RenderMode)
     {
-        case 1: //ok
-        case 2: //ok
-        case 3: //ok
+        case 1:
+        case 2:
+        case 3:
         {
             glDisable(GL_BLEND);
             break;
@@ -211,7 +180,7 @@ void CGameEffect::RemoveRenderMode()
             glDisable(GL_BLEND);
             break;
         }
-        case 6: //ok
+        case 6:
         {
             glDisable(GL_BLEND);
             glBlendEquation(GL_FUNC_ADD);

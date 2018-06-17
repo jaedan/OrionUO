@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenServer.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSCREENSERVER_H
 #define GUMPSCREENSERVER_H
@@ -13,7 +6,6 @@
 class CGumpScreenServer : public CGump
 {
 private:
-    //!Идентификаторы кнопок
     static const int ID_SS_QUIT = 1;
     static const int ID_SS_ARROW_PREV = 2;
     static const int ID_SS_ARROW_NEXT = 3;

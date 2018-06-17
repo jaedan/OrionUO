@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpMinimap.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -39,63 +32,6 @@ void CGumpMinimap::GenerateMap()
 {
     WISPFUN_DEBUG("c102_f4");
 
-    /*const WISP_GEOMETRY::CPoint2Di foliageOffsetTable[17 * 3] =
-	{
-		WISP_GEOMETRY::CPoint2Di(0, 0),
-		WISP_GEOMETRY::CPoint2Di(-2, 1),
-		WISP_GEOMETRY::CPoint2Di(-2, -2),
-		WISP_GEOMETRY::CPoint2Di(-1, -1),
-		WISP_GEOMETRY::CPoint2Di(-1, 0),
-		WISP_GEOMETRY::CPoint2Di(-1, 1),
-		WISP_GEOMETRY::CPoint2Di(-1, 2),
-		WISP_GEOMETRY::CPoint2Di(-1, -1),
-		WISP_GEOMETRY::CPoint2Di(0, 1),
-		WISP_GEOMETRY::CPoint2Di(0, 2),
-		WISP_GEOMETRY::CPoint2Di(0, -2),
-		WISP_GEOMETRY::CPoint2Di(1, -1),
-		WISP_GEOMETRY::CPoint2Di(1, 0),
-		WISP_GEOMETRY::CPoint2Di(1, 1),
-		WISP_GEOMETRY::CPoint2Di(1, -1),
-		WISP_GEOMETRY::CPoint2Di(2, 0),
-		WISP_GEOMETRY::CPoint2Di(2, 0),
-
-		WISP_GEOMETRY::CPoint2Di(0, -1),
-		WISP_GEOMETRY::CPoint2Di(-2, 0),
-		WISP_GEOMETRY::CPoint2Di(-2, -1),
-		WISP_GEOMETRY::CPoint2Di(-1, 0),
-		WISP_GEOMETRY::CPoint2Di(-1, 1),
-		WISP_GEOMETRY::CPoint2Di(-1, 2),
-		WISP_GEOMETRY::CPoint2Di(-1, -2),
-		WISP_GEOMETRY::CPoint2Di(0, -1),
-		WISP_GEOMETRY::CPoint2Di(0, 1),
-		WISP_GEOMETRY::CPoint2Di(0, 2),
-		WISP_GEOMETRY::CPoint2Di(0, -2),
-		WISP_GEOMETRY::CPoint2Di(1, -1),
-		WISP_GEOMETRY::CPoint2Di(1, 0),
-		WISP_GEOMETRY::CPoint2Di(1, 1),
-		WISP_GEOMETRY::CPoint2Di(1, 0),
-		WISP_GEOMETRY::CPoint2Di(2, 1),
-		WISP_GEOMETRY::CPoint2Di(2, 0),
-
-		WISP_GEOMETRY::CPoint2Di(0, -1),
-		WISP_GEOMETRY::CPoint2Di(-2, 1),
-		WISP_GEOMETRY::CPoint2Di(-2, -2),
-		WISP_GEOMETRY::CPoint2Di(-1, -1),
-		WISP_GEOMETRY::CPoint2Di(-1, 0),
-		WISP_GEOMETRY::CPoint2Di(-1, 1),
-		WISP_GEOMETRY::CPoint2Di(-1, 2),
-		WISP_GEOMETRY::CPoint2Di(-1, -1),
-		WISP_GEOMETRY::CPoint2Di(0, 1),
-		WISP_GEOMETRY::CPoint2Di(0, -2),
-		WISP_GEOMETRY::CPoint2Di(1, -1),
-		WISP_GEOMETRY::CPoint2Di(1, 0),
-		WISP_GEOMETRY::CPoint2Di(1, 1),
-		WISP_GEOMETRY::CPoint2Di(1, 2),
-		WISP_GEOMETRY::CPoint2Di(1, -1),
-		WISP_GEOMETRY::CPoint2Di(2, 1),
-		WISP_GEOMETRY::CPoint2Di(2, 0)
-	};*/
-
     const WISP_GEOMETRY::CPoint2Di originalOffsetTable[2] = { WISP_GEOMETRY::CPoint2Di(0, 0),
                                                               WISP_GEOMETRY::CPoint2Di(0, 1) };
 
@@ -123,9 +59,6 @@ void CGumpMinimap::GenerateMap()
 
     int gumpCenterX = gumpWidth / 2;
     int gumpCenterY = gumpHeight / 2;
-
-    //0xFF080808 - pixel32
-    //0x8421 - pixel16
 
     int minBlockX = (LastX - blockOffsetX) / 8 - 1;
     int minBlockY = (LastY - blockOffsetY) / 8 - 1;
@@ -193,12 +126,6 @@ void CGumpMinimap::GenerateMap()
 
                     int tableSize = 2;
                     const WISP_GEOMETRY::CPoint2Di *table = &originalOffsetTable[0];
-
-                    /*if (color > 0x4000 && ::IsFoliage(g_Orion.GetStaticFlags(color - 0x4000)))
-					{
-						tableSize = 17;
-						table = &foliageOffsetTable[((color - 0x4000) % 3) * tableSize];
-					}*/
 
                     color = 0x8000 | g_ColorManager.GetRadarColorData(color);
 
@@ -304,7 +231,7 @@ void CGumpMinimap::UpdateContent()
         QFOR(go, g_World->m_Items, CGameObject *)
         {
             if (go->Container != 0xFFFFFFFF || ((CGameItem *)go)->MultiBody)
-                continue; //multi
+                continue;
 
             if (go->NPC && !go->IsPlayer())
             {

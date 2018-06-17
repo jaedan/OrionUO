@@ -64,10 +64,8 @@ uchar g_PersonalLightLevel = 0;
 
 char g_SelectedCharName[30] = { 0 };
 
-//!Индекс текущей карты
 uchar g_CurrentMap = 0;
 
-//!Время сервера
 uchar g_ServerTimeHour = 0;
 uchar g_ServerTimeMinute = 0;
 uchar g_ServerTimeSecond = 0;
@@ -107,7 +105,7 @@ CHARACTER_SPEED_TYPE g_SpeedMode = CST_NORMAL;
 
 uint g_DeathScreenTimer = 0;
 
-float g_AnimCharactersDelayValue = 80.0f; //0x50
+float g_AnimCharactersDelayValue = 80.0f;
 
 WISP_GEOMETRY::CPoint2Di g_RemoveRangeXY;
 
@@ -185,7 +183,7 @@ void TileOffsetOnMonitorToXY(int &ofsX, int &ofsY, int &x, int &y)
         x = ofsX / 2;
         y = -x;
     }
-    else //if (ofsX && ofsY)
+    else
     {
         int absX = abs(ofsX);
         int absY = abs(ofsY);

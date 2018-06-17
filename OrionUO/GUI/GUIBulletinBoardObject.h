@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUIBulletinBoardObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUIBULLETINBOARDOBJECT_H
 #define GUIBULLETINBOARDOBJECT_H

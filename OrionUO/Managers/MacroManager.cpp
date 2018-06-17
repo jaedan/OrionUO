@@ -1,20 +1,11 @@
-﻿/***********************************************************************************
-**
-** MacroManager.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
 CMacroManager g_MacroManager;
 
-uchar CMacroManager::m_SkillIndexTable[24] = { 1,  2,  35, 4,  6,  12,
-                                               14, 15, 16, 19, 21, 0xFF /*imbuing*/,
-                                               23, 3,  46, 9,  30, 22,
-                                               48, 32, 33, 47, 36, 38 };
+uchar CMacroManager::m_SkillIndexTable[24] = { 1,  2, 35, 4, 6,  12, 14, 15, 16, 19, 21, 0xFF,
+                                               23, 3, 46, 9, 30, 22, 48, 32, 33, 47, 36, 38 };
 
 CMacroManager::CMacroManager()
     : CBaseQueue()
@@ -25,11 +16,6 @@ CMacroManager::~CMacroManager()
 {
 }
 
-/*!
-Конвертирование строки в виртуальный код клавиши
-@param [__in] strings Исходные строки, при склейке получим входную строку
-@return Ключ
-*/
 ushort CMacroManager::ConvertStringToKeyCode(const STRING_LIST &strings)
 {
     WISPFUN_DEBUG("c145_f1");
@@ -125,18 +111,12 @@ ushort CMacroManager::ConvertStringToKeyCode(const STRING_LIST &strings)
     return key;
 }
 
-/*!
-Сконвертировать файл макросов оригинального клиента
-@param [__in] path Путь к файлу с макросами
-@return true при успешном конвертировании
-*/
 bool CMacroManager::Convert(const string &path)
 {
     WISPFUN_DEBUG("c145_f2");
     WISP_FILE::CTextFileParser file(path, "", "", "");
     WISP_FILE::CTextFileParser unicodeParser("", " ", "", "");
 
-    //Позиции доп. кнопок в списке, индексация с конца, т.е. strings.size() - position
     const int MACRO_POSITION_ALT = 2;
     const int MACRO_POSITION_CTRL = 3;
     const int MACRO_POSITION_SHIFT = 1;
@@ -156,7 +136,6 @@ bool CMacroManager::Convert(const string &path)
             continue;
         }
 
-        //TPRINT("Key: %s [alt=%i ctrl=%i shift=%i]\n", strings[0].c_str(), atoi(strings[MACRO_ALT_POSITION].c_str()), atoi(strings[MACRO_CTRL_POSITION].c_str()), atoi(strings[MACRO_SHIFT_POSITION].c_str()));
         bool macroAdded = false;
 
         CMacro *macro = new CMacro(
@@ -177,7 +156,7 @@ bool CMacroManager::Convert(const string &path)
             TestLine = "";
             if (!data.size())
                 continue;
-            //Конец секции макросов
+
             if (*data[0].c_str() == '#')
             {
                 macroAdded = true;
@@ -201,7 +180,6 @@ bool CMacroManager::Convert(const string &path)
                 {
                     code = (MACRO_CODE)i;
 
-                    //LOG("Action found (%i): %s\n", i, CMacro::m_MacroActionName[i]);
                     break;
                 }
             }
@@ -209,7 +187,7 @@ bool CMacroManager::Convert(const string &path)
             if (code != MC_NONE)
             {
                 CMacroObject *obj = CMacro::CreateMacro(code);
-                if (obj->HaveString()) //Аргументы - строка
+                if (obj->HaveString())
                 {
                     if (data.size() > 1)
                     {
@@ -218,12 +196,10 @@ bool CMacroManager::Convert(const string &path)
                         IFOR (i, 2, (int)data.size())
                             args += " " + data[i];
 
-                        //LOG("\tSub action string is: %s\n", args.c_str());
-
                         ((CMacroObjectString *)obj)->String = args;
                     }
                 }
-                else if (data.size() > 1) //Аргументы - код (значение), либо просто код макроса
+                else if (data.size() > 1)
                 {
                     upData = data[1];
 
@@ -238,8 +214,6 @@ bool CMacroManager::Convert(const string &path)
                         {
                             obj->SubCode = (MACRO_SUB_CODE)i;
 
-                            //LOG("\tSub action found (%i): %s\n", i, CMacro::m_MacroAction[i]);
-
                             break;
                         }
                     }
@@ -248,8 +222,6 @@ bool CMacroManager::Convert(const string &path)
             }
         }
 
-        //LOG("Cycle ends with add: %i\n", macroAdded);
-
         if (!macroAdded)
             Add(macro);
     }
@@ -257,11 +229,6 @@ bool CMacroManager::Convert(const string &path)
     return PathFileExistsA(path.c_str());
 }
 
-/*!
-Загрузить макросы из конфига
-@param [__in] path Путь к файлу конфига
-@return 
-*/
 bool CMacroManager::Load(const string &path, const string &originalPath)
 {
     WISPFUN_DEBUG("c145_f3");
@@ -289,18 +256,13 @@ bool CMacroManager::Load(const string &path, const string &originalPath)
     return result;
 }
 
-/*!
-Сохранить макросы в конфиг
-@param [__in] path Путь к файлу конфига
-@return 
-*/
 void CMacroManager::Save(const string &path)
 {
     WISPFUN_DEBUG("c145_f4");
     WISP_FILE::CBinaryFileWritter writter;
     writter.Open(path);
 
-    writter.WriteUInt8(0); //verison
+    writter.WriteUInt8(0);
 
     short count = GetItemsCount();
 
@@ -310,20 +272,12 @@ void CMacroManager::Save(const string &path)
     QFOR(obj, m_Items, CMacro *)
     obj->Save(writter);
 
-    writter.WriteUInt32LE(0); //EOF
+    writter.WriteUInt32LE(0);
     writter.WriteBuffer();
 
     writter.Close();
 }
 
-/*!
-Поиск макроса
-@param [__in] key Индекс кнопки
-@param [__in] alt Зажатый альт
-@param [__in] ctrl Зажатый контрол
-@param [__in] shift Зажатый шифт
-@return Ссылку на макрос или NULL
-*/
 CMacro *CMacroManager::FindMacro(ushort key, bool alt, bool ctrl, bool shift)
 {
     WISPFUN_DEBUG("c145_f5");
@@ -340,10 +294,6 @@ CMacro *CMacroManager::FindMacro(ushort key, bool alt, bool ctrl, bool shift)
     return obj;
 }
 
-/*!
-Загрузить макросы из опций
-@return 
-*/
 void CMacroManager::LoadFromOptions()
 {
     WISPFUN_DEBUG("c145_f6");
@@ -365,10 +315,6 @@ void CMacroManager::ChangePointer(CMacroObject *macro)
     }
 }
 
-/*!
-Начать выполнение макроса
-@return 
-*/
 void CMacroManager::Execute()
 {
     WISPFUN_DEBUG("c145_f7");
@@ -394,10 +340,6 @@ void CMacroManager::Execute()
     }
 }
 
-/*!
-Выполнить команды подменю
-@return 
-*/
 void CMacroManager::ProcessSubMenu()
 {
     WISPFUN_DEBUG("c145_f8");
@@ -592,8 +534,6 @@ void CMacroManager::ProcessSubMenu()
                 case MSC_G2_SPELL_WEAVING_SPELLBOOK:
                 case MSC_G2_MYSTICISM_SPELLBOOK:
                 {
-                    //gump = g_GumpManager.GetGump(0, 0, GT_SPELLBOOK);
-
                     QFOR(item, g_GumpManager.m_Items, CGump *)
                     {
                         if (item->GumpType == GT_SPELLBOOK)
@@ -648,7 +588,7 @@ void CMacroManager::ProcessSubMenu()
                                     }
                                     case MSC_G2_MYSTICISM_SPELLBOOK:
                                     {
-                                        if (gi->Graphic == 0) //??????????
+                                        if (gi->Graphic == 0)
                                             gump = item;
 
                                         break;
@@ -730,10 +670,6 @@ void CMacroManager::ProcessSubMenu()
     }
 }
 
-/*!
-Выполнить действие макроса (или набор действий)
-@return Код выполнения
-*/
 MACRO_RETURN_CODE CMacroManager::Process()
 {
     MACRO_RETURN_CODE result = MRC_PARSE_NEXT;
@@ -1195,7 +1131,6 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         case MC_BANDAGE_SELF:
         case MC_BANDAGE_TARGET:
         {
-            //На самом деле с 5.0.4a
             if (g_PacketManager.GetClientVersion() < CV_5020)
             {
                 if (WaitingBandageTarget)

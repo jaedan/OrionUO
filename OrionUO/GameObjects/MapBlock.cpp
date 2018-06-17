@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** MapBlock.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -15,7 +8,7 @@ CMapBlock::CMapBlock(int index)
     , LastAccessTime(GetTickCount())
 {
     WISPFUN_DEBUG("c24_f1");
-    //Обнуляем блок
+
     IFOR (i, 0, 8)
     {
         IFOR (j, 0, 8)
@@ -26,7 +19,7 @@ CMapBlock::CMapBlock(int index)
 CMapBlock::~CMapBlock()
 {
     WISPFUN_DEBUG("c24_f2");
-    //При удалении блока очищаем список отрисовки блока и удаляем элементы
+
     IFOR (i, 0, 8)
     {
         IFOR (j, 0, 8)
@@ -78,11 +71,9 @@ ushort CMapBlock::GetRadarColor(int x, int y)
     WISPFUN_DEBUG("c24_f4");
     CRenderWorldObject *obj = Block[x][y];
 
-    //Получаем указатель на последний элемент списка
     while (obj != NULL && obj->m_NextXY != NULL)
         obj = obj->m_NextXY;
 
-    //Пройдемся по списку с конца до начала и вернем первый подходящий ИД
     for (; obj != NULL; obj = obj->m_PrevXY)
     {
         if (obj->NoDrawTile)
@@ -100,22 +91,19 @@ ushort CMapBlock::GetRadarColor(int x, int y)
         }
     }
 
-    //Вернем входящий цвет, если не нашлось ничего подходящего
     return 0;
 }
 
 void CMapBlock::CreateLandTextureRect()
 {
     WISPFUN_DEBUG("c24_f5");
-    //Подкорректируем индекс карты
+
     int map = g_MapManager.GetActualMap();
 
-    //И пройдемся по всем позициям ландшафта блока
     IFOR (x, 0, 8)
     {
         IFOR (y, 0, 8)
         {
-            //Указатель на землю
             CLandObject *obj = GetLand((int)x, (int)y);
 
             if (obj != NULL)
@@ -126,7 +114,6 @@ void CMapBlock::CreateLandTextureRect()
 
                 CGLTexture *th = g_Orion.ExecuteTexture(obj->Graphic);
 
-                //Если это тайл воды с отсутствующей текстурой или все Z-координаты равны - укажем что это тайл из артов
                 if (obj->IsStretched || th == NULL ||
                     !TestStretched(tileX, tileY, tileZ1, map, true))
                 {
@@ -134,7 +121,7 @@ void CMapBlock::CreateLandTextureRect()
 
                     obj->MinZ = tileZ1;
                 }
-                else //Или же - текстура
+                else
                 {
                     obj->IsStretched = true;
 
@@ -309,7 +296,6 @@ char CMapBlock::GetLandZ(int x, int y, int map)
 
     CIndexMap *blockIndex = g_MapManager.GetIndex(map, x / 8, y / 8);
 
-    //Проверки актуальности данных
     if (blockIndex == NULL || blockIndex->MapAddress == 0)
         return -125;
 
@@ -324,10 +310,8 @@ CLandObject *CMapBlock::GetLand(int x, int y)
     WISPFUN_DEBUG("c24_f8");
     CMapObject *obj = Block[x][y];
 
-    //Пройдемся по MapObject'ам блока
     while (obj != NULL)
     {
-        //Если земля - можно прервать поиск
         if (obj->IsLandObject())
             break;
 
@@ -355,8 +339,6 @@ void CMapBlock::AddRender(CRenderWorldObject *item, int x, int y)
     {
         if (item->IsGameObject())
         {
-            //priorityZ++;
-
             if (((CGameObject *)item)->NPC || ((CGameObject *)item)->IsCorpse())
                 priorityZ++;
             else
@@ -432,7 +414,6 @@ CRenderWorldObject *CMapBlock::GetRender(int x, int y)
     WISPFUN_DEBUG("c24_f11");
     CRenderWorldObject *obj = Block[x][y];
 
-    //Найдем указатель на первый элемент списка рендера
     while (obj != NULL && obj->m_PrevXY != NULL)
         obj = obj->m_PrevXY;
 

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpBulletinBoardItem.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -134,21 +127,21 @@ CGumpBulletinBoardItem::CGumpBulletinBoardItem(
     {
         case 0:
         {
-            Add(new CGUIGumppic(0x0883, 97, 12)); //NEW MESSAGE
+            Add(new CGUIGumppic(0x0883, 97, 12));
             m_ButtonPost = (CGUIButton *)Add(
-                new CGUIButton(ID_GBBI_POST, 0x0886, 0x0886, 0x0886, 37, Height - 22)); //Post
+                new CGUIButton(ID_GBBI_POST, 0x0886, 0x0886, 0x0886, 37, Height - 22));
             m_ButtonPost->CheckPolygone = true;
 
             break;
         }
         case 2:
             m_ButtonRemove = (CGUIButton *)Add(
-                new CGUIButton(ID_GBBI_REMOVE, 0x0885, 0x0885, 0x0885, 235, Height - 22)); //Remove
+                new CGUIButton(ID_GBBI_REMOVE, 0x0885, 0x0885, 0x0885, 235, Height - 22));
             m_ButtonRemove->CheckPolygone = true;
         case 1:
         {
             m_ButtonReply = (CGUIButton *)Add(
-                new CGUIButton(ID_GBBI_REPLY, 0x0884, 0x0884, 0x0884, 37, Height - 22)); //Reply
+                new CGUIButton(ID_GBBI_REPLY, 0x0884, 0x0884, 0x0884, 37, Height - 22));
             m_ButtonReply->CheckPolygone = true;
 
             m_EntrySubject->ReadOnly = true;
@@ -171,13 +164,13 @@ void CGumpBulletinBoardItem::UpdateHeight()
     CGumpBaseScroll::UpdateHeight();
 
     if (m_ButtonPost != NULL)
-        m_ButtonPost->SetY(Height - 22); //Post
+        m_ButtonPost->SetY(Height - 22);
 
     if (m_ButtonRemove != NULL)
-        m_ButtonRemove->SetY(Height - 22); //Remove
+        m_ButtonRemove->SetY(Height - 22);
 
     if (m_ButtonReply != NULL)
-        m_ButtonReply->SetY(Height - 22); //Reply
+        m_ButtonReply->SetY(Height - 22);
 }
 
 void CGumpBulletinBoardItem::RecalculateHeight()
@@ -221,8 +214,6 @@ void CGumpBulletinBoardItem::GUMP_BUTTON_EVENT_C
         else if (serial == ID_GBBI_REMOVE)
         {
             CPacketBulletinBoardRemoveMessage(ID, Serial).Send();
-
-            //GumpManager->CloseGump(Serial, ID, GT_BULLETIN_BOARD_ITEM);
         }
     }
 }

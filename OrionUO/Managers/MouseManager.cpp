@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ColorManager.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -44,25 +37,11 @@ ushort g_CursorData[2][16] = { { 0x206A,
                                  0x2061,
                                  0x2062 } };
 
-/*!
-Конвертирование значения направления
-@param [__in] val Значение направления
-@return Смещение
-*/
 int CMouseManager::Sgn(int val)
 {
     return (0 < val) - (val < 0);
 }
 
-/*!
-Получить направление курсора относительно центра игрового окна
-@param [__in] x1 Координата X центра
-@param [__in] y1 Координата Y центра
-@param [__in] to_x Координата X мыши
-@param [__in] to_y Координата Y мыши
-@param [__in] current_facing Текущее направление
-@return Направление курсора
-*/
 int CMouseManager::GetFacing(int x1, int y1, int to_x, int to_y, int current_facing)
 {
     WISPFUN_DEBUG("c147_f1");
@@ -92,37 +71,37 @@ int CMouseManager::GetFacing(int x1, int y1, int to_x, int to_y, int current_fac
     switch (hashf)
     {
         case 111:
-            return DT_W; // W
+            return DT_W;
         case 112:
-            return DT_NW; // NW
+            return DT_NW;
         case 113:
-            return DT_N; // N
+            return DT_N;
         case 120:
-            return DT_W; // W
+            return DT_W;
         case 131:
-            return DT_W; // W
+            return DT_W;
         case 132:
-            return DT_SW; // SW
+            return DT_SW;
         case 133:
-            return DT_S; // S
+            return DT_S;
         case 210:
-            return DT_N; // N
+            return DT_N;
         case 230:
-            return DT_S; // S
+            return DT_S;
         case 311:
-            return DT_E; // E
+            return DT_E;
         case 312:
-            return DT_NE; // NE
+            return DT_NE;
         case 313:
-            return DT_N; // N
+            return DT_N;
         case 320:
-            return DT_E; // E
+            return DT_E;
         case 331:
-            return DT_E; // E
+            return DT_E;
         case 332:
-            return DT_SE; // SE
+            return DT_SE;
         case 333:
-            return DT_S; // S
+            return DT_S;
         default:
             break;
     }
@@ -130,25 +109,19 @@ int CMouseManager::GetFacing(int x1, int y1, int to_x, int to_y, int current_fac
     return current_facing;
 }
 
-/*!
-Получить индекс картинки игрового курсора
-@return Индекс картинки
-*/
 ushort CMouseManager::GetGameCursor()
 {
     WISPFUN_DEBUG("c147_f2");
     int war = (int)(g_Player != NULL && g_Player->Warmode);
-    ushort result = g_CursorData[war][9]; //Main Gump mouse cursor
+    ushort result = g_CursorData[war][9];
 
     if (g_Target.IsTargeting() && !g_ObjectInHand.Enabled)
-        return g_CursorData[war][12]; //Targetting cursor
+        return g_CursorData[war][12];
 
     bool mouseInWindow =
         !(Position.X < g_ConfigManager.GameWindowX || Position.Y < g_ConfigManager.GameWindowY ||
           Position.X > (g_ConfigManager.GameWindowX + g_ConfigManager.GameWindowWidth) ||
           Position.Y > (g_ConfigManager.GameWindowY + g_ConfigManager.GameWindowHeight));
-
-    //bool gumpChecked = (g_LastSelectedGump || (g_LastSelectedObject && g_LastObjectType != SOT_GAME_OBJECT && g_LastObjectType != SOT_STATIC_OBJECT && g_LastObjectType != SOT_LAND_OBJECT && g_LastObjectType != SOT_TEXT_OBJECT));
 
     if (!mouseInWindow || g_SelectedObject.Gump != NULL || g_PressedObject.LeftGump != NULL)
         return result;
@@ -160,10 +133,6 @@ ushort CMouseManager::GetGameCursor()
                        [GetFacing(gameWindowCenterX, gameWindowCenterY, Position.X, Position.Y, 1)];
 }
 
-/*!
-Обработка движения персонажа
-@return 
-*/
 void CMouseManager::ProcessWalking()
 {
     WISPFUN_DEBUG("c147_f3");
@@ -202,10 +171,6 @@ void CMouseManager::ProcessWalking()
     }
 }
 
-/*!
-Загрузка текстур курсора
-@return true при успешной загрузке
-*/
 bool CMouseManager::LoadCursorTextures()
 {
     WISPFUN_DEBUG("c147_f4");
@@ -311,13 +276,13 @@ bool CMouseManager::LoadCursorTextures()
                             break;
                     }
 
-                    m_CursorOffset[0][j] = (int)OffsX; //X
-                    m_CursorOffset[1][j] = (int)OffsY; //Y
+                    m_CursorOffset[0][j] = (int)OffsX;
+                    m_CursorOffset[1][j] = (int)OffsY;
                 }
                 else
                 {
-                    m_CursorOffset[0][j] = 0; //X
-                    m_CursorOffset[1][j] = 0; //Y
+                    m_CursorOffset[0][j] = 0;
+                    m_CursorOffset[1][j] = 0;
                 }
             }
         }
@@ -326,11 +291,6 @@ bool CMouseManager::LoadCursorTextures()
     return result;
 }
 
-/*!
-Отрисовать курсор
-@param [__in] id Индекс картинки курсора
-@return 
-*/
 void CMouseManager::Draw(ushort id)
 {
     WISPFUN_DEBUG("c147_f5");

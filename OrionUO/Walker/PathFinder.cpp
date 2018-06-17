@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PathFinder.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -38,7 +31,6 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
         block->X = blockX;
         block->Y = blockY;
         g_MapManager.LoadBlock(block);
-        //return false;
     }
 
     int bx = x % 8;
@@ -111,8 +103,7 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
 
                     canBeAdd = false;
                 }
-                else if (
-                    ((CGameItem *)obj)->MultiBody || obj->IsInternal()) //isMulti || InternalItem
+                else if (((CGameItem *)obj)->MultiBody || obj->IsInternal())
                     canBeAdd = false;
                 else if (
                     stepState == PSS_DEAD_OR_GM &&
@@ -257,13 +248,13 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
         stepState = PSS_DEAD_OR_GM;
     else
     {
-        if (g_Player->Flying()) // && no mount?
+        if (g_Player->Flying())
             stepState = PSS_FLYING;
         else
         {
             CGameItem *mount = g_Player->FindLayer(OL_MOUNT);
 
-            if (mount != NULL && mount->Graphic == 0x3EB3) //Sea horse
+            if (mount != NULL && mount->Graphic == 0x3EB3)
                 stepState = PSS_ON_SEA_HORSE;
         }
     }
@@ -449,11 +440,11 @@ bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
 
     bool passed = CalculateNewZ(newX, newY, newZ, direction);
 
-    if ((char)direction % 2) //diagonal
+    if ((char)direction % 2)
     {
         const char dirOffset[2] = { 1, -1 };
 
-        if (passed) //test angleowner tiles
+        if (passed)
         {
             IFOR (i, 0, 2 && passed)
             {
@@ -468,7 +459,7 @@ bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
             }
         }
 
-        if (!passed) //test neary tiles
+        if (!passed)
         {
             IFOR (i, 0, 2 && !passed)
             {
@@ -510,8 +501,8 @@ bool CPathFinder::Walk(bool run, uchar direction)
 {
     WISPFUN_DEBUG("c177_f7");
     if (BlockMoving || g_Walker.WalkingFailed || g_Walker.LastStepRequestTime > g_Ticks ||
-        g_Walker.StepsCount >= MAX_STEPS_COUNT || g_Player == NULL ||
-        /*!g_Player->Frozen() ||*/ g_DeathScreenTimer || g_GameState != GS_GAME)
+        g_Walker.StepsCount >= MAX_STEPS_COUNT || g_Player == NULL || g_DeathScreenTimer ||
+        g_GameState != GS_GAME)
         return false;
 
     if (g_SpeedMode >= CST_CANT_RUN)
@@ -544,7 +535,7 @@ bool CPathFinder::Walk(bool run, uchar direction)
     if (FastRotation)
         walkTime = TURN_DELAY_FAST;
 
-    if ((oldDirection & 7) == (direction & 7)) //Повернуты куда надо
+    if ((oldDirection & 7) == (direction & 7))
     {
         uchar newDir = direction;
         int newX = x;
@@ -639,7 +630,6 @@ bool CPathFinder::Walk(bool run, uchar direction)
     static int lastDelta = 0;
     static int lastStepTime = 0;
 
-    //Высчитываем актуальную дельту с помощью разници во времени между прошлым и текущим шагом.
     int nowDelta = 0;
 
     if (lastDir == direction && lastMount == onMount && lastRun == run)
@@ -744,7 +734,6 @@ int CPathFinder::AddNodeToList(
 
                         node.m_Parent = parentNode;
 
-                        //if (x == m_EndX && y == m_EndY)
                         if (GetDistance(m_EndPoint, p) <= m_PathFindDistance)
                         {
                             m_GoalFound = true;
@@ -948,10 +937,10 @@ bool CPathFinder::FindPath(int maxNodes)
 bool CPathFinder::WalkTo(int x, int y, int z, int distance)
 {
     WISPFUN_DEBUG("c177_f15");
-    IFOR (i, 0, PATHFINDER_MAX_NODES) //m_ActiveOpenNodes)
+    IFOR (i, 0, PATHFINDER_MAX_NODES)
         m_OpenList[i].Reset();
 
-    IFOR (i, 0, PATHFINDER_MAX_NODES) //m_ActiveClosedNodes)
+    IFOR (i, 0, PATHFINDER_MAX_NODES)
         m_ClosedList[i].Reset();
 
     m_StartPoint.X = g_Player->GetX();

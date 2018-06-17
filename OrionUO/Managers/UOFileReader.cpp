@@ -1,21 +1,9 @@
-﻿/***********************************************************************************
-**
-** UOFileReader.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
 UOFileReader g_UOFileReader;
 
-/*!
-Получить массив пикселей гампа
-@param [__in] io Ссылка на данные о гампе
-@return Массив пикселей или NULL
-*/
 USHORT_LIST UOFileReader::GetGumpPixels(CIndexObject &io)
 {
     WISPFUN_DEBUG("c148_f1");
@@ -73,11 +61,6 @@ USHORT_LIST UOFileReader::GetGumpPixels(CIndexObject &io)
     return pixels;
 }
 
-/*!
-Прочитать гамп и сгенерировать текстуру
-@param [__in] io Ссылка на данные о гампе
-@return Ссылка на данные о текстуре
-*/
 CGLTexture *UOFileReader::ReadGump(CIndexObject &io)
 {
     WISPFUN_DEBUG("c148_f2");
@@ -105,7 +88,7 @@ UOFileReader::GetArtPixels(ushort id, CIndexObject &io, bool run, short &width, 
 
     USHORT_LIST pixels;
 
-    if (!run) //raw tile
+    if (!run)
     {
         width = 44;
         height = 44;
@@ -150,7 +133,7 @@ UOFileReader::GetArtPixels(ushort id, CIndexObject &io, bool run, short &width, 
             }
         }
     }
-    else //run tile
+    else
     {
         int stumpIndex = 0;
 
@@ -273,8 +256,7 @@ UOFileReader::GetArtPixels(ushort id, CIndexObject &io, bool run, short &width, 
                 }
             }
 
-            if ((id >= 0x2053 && id <= 0x2062) ||
-                (id >= 0x206A && id <= 0x2079)) //Убираем рамку (если это курсор мышки)
+            if ((id >= 0x2053 && id <= 0x2062) || (id >= 0x206A && id <= 0x2079))
             {
                 IFOR (i, 0, width)
                 {
@@ -328,12 +310,6 @@ UOFileReader::GetArtPixels(ushort id, CIndexObject &io, bool run, short &width, 
     return pixels;
 }
 
-/*!
-Прочитать арт и сгенерировать текстуру
-@param [__in] ID Индекс арта
-@param [__in] io Ссылка на данные о арте
-@return Ссылка на данные о текстуре
-*/
 CGLTexture *UOFileReader::ReadArt(ushort id, CIndexObject &io, bool run)
 {
     WISPFUN_DEBUG("c148_f2");
@@ -426,11 +402,6 @@ CGLTexture *UOFileReader::ReadArt(ushort id, CIndexObject &io, bool run)
     return texture;
 }
 
-/*!
-Прочитать текстуру ландшафта и сгенерировать тексруту
-@param [__in] io Ссылка на данные о текстуре ландшафта
-@return Ссылка на данные о текстуре
-*/
 CGLTexture *UOFileReader::ReadTexture(CIndexObject &io)
 {
     WISPFUN_DEBUG("c148_f7");
@@ -484,11 +455,6 @@ CGLTexture *UOFileReader::ReadTexture(CIndexObject &io)
     return th;
 }
 
-/*!
-Прочитать освещение и сгенерировать текстуру
-@param [__in] io Ссылка на данные о освещении
-@return Ссылка на данные о текстуре
-*/
 CGLTexture *UOFileReader::ReadLight(CIndexObject &io)
 {
     WISPFUN_DEBUG("c148_f8");

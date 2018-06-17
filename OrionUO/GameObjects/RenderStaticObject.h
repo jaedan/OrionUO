@@ -1,16 +1,8 @@
-﻿/***********************************************************************************
-**
-** RenderStaticObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef RENDERSTATICOBJECT_H
 #define RENDERSTATICOBJECT_H
 
-//Класс обобщенного объекта группы статики
 class CRenderStaticObject : public CMapObject
 {
 public:
@@ -22,7 +14,6 @@ public:
     ushort RenderColor = 0;
 
 protected:
-    //Указатель на структуру данных тайлдаты
     STATIC_TILES *m_TiledataPtr{ NULL };
 
 public:
@@ -36,37 +27,29 @@ public:
         char z);
     virtual ~CRenderStaticObject();
 
-    CTextContainer *m_TextControl{ NULL }; //Ссылка на контейнер для текста
+    CTextContainer *m_TextControl{ NULL };
 
     virtual void UpdateTextCoordinates();
     virtual void FixTextCoordinates();
 
     static bool IsNoDrawTile(ushort graphic);
 
-    //Отрисовать объект
     virtual void Draw(int x, int y);
 
-    //Выбрать объект
     virtual void Select(int x, int y);
 
-    //Добавить текст в контейнер
     virtual void AddText(CTextData *td);
 
-    //Проверка прозрачности (для круга прозрачности)
     virtual bool TranparentTest(int playerZPlus5);
 
-    //Проверка, может ли текст быть прозрачным
     bool TextCanBeTransparent(CRenderTextObject *text);
 
     STATIC_TILES *GetStaticData() { return m_TiledataPtr; }
 
-    //Получить высоту объекта (по данным из тайлдаты)
     uchar GetStaticHeight() { return m_TiledataPtr->Height; }
 
-    //Получить индекс света
-    ushort GetLightID() { return m_TiledataPtr->Layer /*LightIndex*/; } //m_TiledataPtr->Layer
+    ushort GetLightID() { return m_TiledataPtr->Layer; }
 
-    //Стандартные состояния по флагам из тайлдаты (вердаты)
     bool IsBackground() { return (m_TiledataPtr->Flags & 0x00000001); }
     bool IsWeapon() { return (m_TiledataPtr->Flags & 0x00000002); }
     bool IsTransparent() { return (m_TiledataPtr->Flags & 0x00000004); }
@@ -100,7 +83,6 @@ public:
     bool IsStairBack() { return (m_TiledataPtr->Flags & 0x40000000); }
     bool IsStairRight() { return (m_TiledataPtr->Flags & 0x80000000); }
 
-    //Это объект группы объектов статики
     bool IsStaticGroupObject() { return true; }
 
     virtual CRenderStaticObject *StaticGroupObjectPtr() { return this; }

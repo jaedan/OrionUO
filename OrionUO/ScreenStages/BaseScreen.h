@@ -1,20 +1,11 @@
-﻿/***********************************************************************************
-**
-** BaseScreen.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef BASESCREEN_H
 #define BASESCREEN_H
 
-//Базовый класс стадий окна клиента
 class CBaseScreen : public CBaseQueue
 {
 public:
-    //!Индекс действия, которое необходимо совершить после окончания плавного перехода затемненного состояния экрана
     uchar SmoothScreenAction = 0;
     ushort CursorGraphic = 0x2073;
 
@@ -29,49 +20,18 @@ public:
 
     virtual void UpdateContent() { m_Gump.UpdateContent(); }
 
-    /*!
-	Инициализация
-	@return 
-	*/
     virtual void Init() {}
 
-    /*!
-	Инициализация всплывающих подсказок
-	@return 
-	*/
     virtual void InitToolTip() { m_Gump.InitToolTip(); }
 
-    /*!
-	Отрисовка/выбор объектов
-	@param [__in] mode true - отрисовка, false - выбор
-	@return При выборе объектов - идентификатор выбранного объекта
-	*/
     virtual void Render(bool mode);
 
-    /*!
-	Создание плавного затемнения экрана
-	@param [__in] action Идентификатор действия
-	@return 
-	*/
     virtual void CreateSmoothAction(uchar action);
 
-    /*!
-	Обработка события после перехода
-	@param [__in_opt] action Идентификатор действия
-	@return 
-	*/
     virtual void ProcessSmoothAction(uchar action = 0xFF) {}
 
-    /*!
-	Вычисление состояния перехода
-	@return Индекс состояния
-	*/
     virtual int DrawSmoothMonitor();
 
-    /*!
-	Наложение эффекта перехода
-	@return 
-	*/
     virtual void DrawSmoothMonitorEffect();
 
     virtual void OnLeftMouseButtonDown() { m_Gump.OnLeftMouseButtonDown(); }
@@ -103,7 +63,6 @@ public:
     }
 };
 
-//!Указатель на текущий экран
 extern CBaseScreen *g_CurrentScreen;
 
 #endif

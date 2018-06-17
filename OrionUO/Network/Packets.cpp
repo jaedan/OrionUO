@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Packets.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -81,22 +74,21 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     WriteUInt8(0x00);
     WriteString(name.c_str(), 30, false);
 
-    //Move(30); //На самом деле, клиент пихает сюда пароль на 30 байт, но по какой-то причине (мб мусор в памяти) - идет то что идет
-    WriteUInt16BE(0x0000); //?
+    WriteUInt16BE(0x0000);
 
     uint clientFlag = 0;
 
     IFOR (i, 0, g_CharacterList.ClientFlag)
         clientFlag |= (1 << i);
 
-    WriteUInt32BE(clientFlag); //clientflag
-    WriteUInt32BE(0x00000001); //?
-    WriteUInt32BE(0x00000000); //logincount
+    WriteUInt32BE(clientFlag);
+    WriteUInt32BE(0x00000001);
+    WriteUInt32BE(0x00000000);
 
     CProfession *profession = (CProfession *)g_ProfessionManager.Selected;
     uchar val = (uchar)profession->DescriptionIndex;
-    WriteUInt8(val); //profession
-    Move(15);        //?
+    WriteUInt8(val);
+    Move(15);
 
     if (g_PacketManager.GetClientVersion() < CV_4011D)
         val = (uchar)g_CreateCharacterManager.GetFemale();
@@ -123,7 +115,6 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
         val = profession->GetSkillIndex((int)i);
         if (val == 0xFF)
         {
-            //error, skill is not selected
             WriteUInt16BE(0x0000);
         }
         else
@@ -145,14 +136,14 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     if (server != NULL)
         serverIndex = (uchar)server->Index;
 
-    WriteUInt8(serverIndex); //server index
+    WriteUInt8(serverIndex);
 
     uchar location = g_SelectTownScreen.m_City->LocationIndex;
 
     if (g_PacketManager.GetClientVersion() < CV_70130)
         location--;
 
-    WriteUInt8(location); //location
+    WriteUInt8(location);
 
     uint slot = 0xFFFFFFFF;
     IFOR (i, 0, g_CharacterList.Count)
@@ -175,7 +166,7 @@ CPacketDeleteCharacter::CPacketDeleteCharacter(int charIndex)
     : CPacket(39)
 {
     WriteUInt8(0x83);
-    Move(30); //character password
+    Move(30);
     WriteUInt32BE(charIndex);
     WriteDataBE(g_ConnectionManager.GetClientIP(), 4);
 }
@@ -347,7 +338,6 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
     UINT_LIST codes;
     g_SpeechManager.GetKeywords(text, codes);
 
-    //encoded
     bool encoded = codes.size() > 0;
     string utf8string = "";
     vector<uchar> codeBytes;
@@ -358,7 +348,7 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
         utf8string = EncodeUTF8(wstring(text)).c_str();
         len = (int)utf8string.length();
         size += len;
-        size += 1; //null terminator
+        size += 1;
 
         int length = (int)codes.size();
         codeBytes.push_back(length >> 4);
@@ -392,7 +382,7 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
     else
     {
         size += len * 2;
-        size += 2; //null terminator
+        size += 2;
     }
 
     Resize(size, true);
@@ -404,7 +394,6 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
     WriteUInt16BE(font);
     WriteDataLE(language, 4);
 
-    //Sallos aka PlayUO algorithm
     if (encoded)
     {
         IFOR (i, 0, (int)codeBytes.size())
@@ -412,7 +401,6 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
             WriteUInt8(codeBytes[i]);
         }
         WriteString(utf8string, len, true);
-        // в данном случае надо посылать как utf8, так читает сервер.
     }
     else
     {
@@ -632,12 +620,12 @@ CPacketTradeResponse::CPacketTradeResponse(CGumpSecureTrading *gump, int code)
     WriteUInt8(0x6F);
     WriteUInt16BE(17);
 
-    if (code == 1) //Закрываем окно
+    if (code == 1)
     {
         WriteUInt8(0x01);
         WriteUInt32BE(gump->ID);
     }
-    else if (code == 2) //Ткнули на чекбокс
+    else if (code == 2)
     {
         WriteUInt8(0x02);
         WriteUInt32BE(gump->ID);
@@ -818,12 +806,12 @@ CPacketPartyMessage::CPacketPartyMessage(const wchar_t *text, size_t len, uint s
     WriteUInt16BE((ushort)size);
     WriteUInt16BE(0x0006);
 
-    if (serial) //Private message to member
+    if (serial)
     {
         WriteUInt8(0x03);
         WriteUInt32BE(serial);
     }
-    else //Message to full party
+    else
         WriteUInt8(0x04);
 
     WriteWString(text, len, true, false);
@@ -1102,7 +1090,7 @@ CPacketMegaClilocRequestOld::CPacketMegaClilocRequestOld(int serial)
     : CPacket(9)
 {
     WriteUInt8(0xBF);
-    WriteUInt16BE(9); //size
+    WriteUInt16BE(9);
     WriteUInt16BE(0x0010);
     WriteUInt32BE(serial);
 }

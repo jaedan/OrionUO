@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** Profession.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PROFESSION_H
 #define PROFESSION_H
@@ -26,7 +19,6 @@ public:
     CBaseProfession();
     virtual ~CBaseProfession();
 
-    //Добавить описание профессии
     bool AddDescription(int desc, string name, const char *val);
 };
 

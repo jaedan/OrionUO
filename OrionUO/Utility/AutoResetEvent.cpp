@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 AutoResetEvent::AutoResetEvent(bool initial)
     : flag_(initial)
@@ -21,9 +21,9 @@ void AutoResetEvent::Reset()
 bool AutoResetEvent::WaitOne()
 {
     std::unique_lock<std::mutex> lk(protect_);
-    while (!flag_) // prevent spurious wakeups from doing harm
+    while (!flag_)
         signal_.wait(lk);
-    flag_ = false; // waiting resets the flag
+    flag_ = false;
     return true;
 }
 

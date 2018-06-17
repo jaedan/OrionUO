@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PingThread.h
-**
-** Copyright (C) December 2017 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PINGTHREAD_H
 #define PINGTHREAD_H
@@ -39,4 +32,4 @@ public:
     virtual void OnExecute(uint nowTime);
 };
 
-#endif //PINGTHREAD_H
+#endif

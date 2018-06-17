@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** PathFinder.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef PATHFINDER_H
 #define PATHFINDER_H
@@ -28,11 +21,9 @@ enum PATH_OBJECT_FLAGS
     POF_NO_DIAGONAL = 0x00000008
 };
 
-//Класс для поиска пути и теста шага на точку
 class CPathFinder
 {
 public:
-    //Автоматической передвижение (не сложными махинациями с мышкой)
     bool AutoWalking = false;
     bool PathFindidngCanBeCancelled = false;
     bool BlockMoving = false;
@@ -40,14 +31,11 @@ public:
     bool IgnoreStaminaCheck = false;
 
 protected:
-    //Вычисление новой Z координаты
     bool CalculateNewZ(int x, int y, char &z, int direction);
 
-    //Вычисление минимальной и максимальной Z координат
     int CalculateMinMaxZ(
         int &minZ, int &maxZ, int newX, int newY, int currentZ, int newDirection, int stepState);
 
-    //Создание списка предметов, участвующих в поиске в указанных координатах
     bool CreateItemsList(vector<CPathObject> &list, int x, int y, int stepState);
 
     WISP_GEOMETRY::CPoint2Di m_StartPoint{ WISP_GEOMETRY::CPoint2Di() };
@@ -64,13 +52,10 @@ protected:
     CPathNode m_OpenList[PATHFINDER_MAX_NODES];
     CPathNode m_ClosedList[PATHFINDER_MAX_NODES];
 
-    //Список точек пути
     CPathNode *m_Path[PATHFINDER_MAX_NODES];
 
-    //Текущая точка пути
     int m_PointIndex{ 0 };
 
-    //Размер точек пути
     int m_PathSize{ 0 };
 
     int GetGoalDistCost(const WISP_GEOMETRY::CPoint2Di &p, int cost);
@@ -92,22 +77,16 @@ public:
     CPathFinder();
     virtual ~CPathFinder();
 
-    //Вычисление новых XY координат
     void GetNewXY(uchar direction, int &x, int &y);
 
-    //Проверка на возможность сделать шаг в указанные координаты
     bool CanWalk(uchar &direction, int &x, int &y, char &z);
 
-    //Пойти в указанные координаты
     bool Walk(bool run, uchar direction);
 
-    //Переместиться в указанные координаты
     bool WalkTo(int x, int y, int z, int distance);
 
-    //Обработка пути
     void ProcessAutowalk();
 
-    //Остановить автоматическую ходилку
     void StopAutoWalk();
 
     int GetWalkSpeed(bool run, bool onMount);

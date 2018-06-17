@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GUICheckbox.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -81,7 +74,7 @@ void CGUICheckbox::UpdateTextPosition()
                 break;
             }
             case STP_LEFT:
-                //textY -= 4;
+
             case STP_LEFT_CENTER:
             {
                 textX -= Text.Width - DefaultTextOffset;
@@ -89,7 +82,7 @@ void CGUICheckbox::UpdateTextPosition()
                 break;
             }
             case STP_RIGHT:
-                //textY -= 4;
+
             case STP_RIGHT_CENTER:
             {
                 textX += th->Width + DefaultTextOffset;

@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** BaseScreen.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -17,11 +10,6 @@ CBaseScreen::CBaseScreen(CGump &gump)
 {
 }
 
-/*!
-Отрисовка/выбор объектов
-@param [__in] mode true - отрисовка, false - выбор
-@return При выборе объектов - идентификатор выбранного объекта
-*/
 void CBaseScreen::Render(bool mode)
 {
     WISPFUN_DEBUG("c159_f1");
@@ -66,10 +54,6 @@ void CBaseScreen::Render(bool mode)
     }
 }
 
-/*!
-Вычисление состояния перехода
-@return Индекс состояния
-*/
 int CBaseScreen::DrawSmoothMonitor()
 {
     WISPFUN_DEBUG("c159_f2");
@@ -85,21 +69,12 @@ int CBaseScreen::DrawSmoothMonitor()
     return 0;
 }
 
-/*!
-Наложение эффекта перехода
-@return 
-*/
 void CBaseScreen::DrawSmoothMonitorEffect()
 {
     WISPFUN_DEBUG("c159_f3");
     g_ScreenEffectManager.Draw();
 }
 
-/*!
-Создание плавного затемнения экрана
-@param [__in] action Идентификатор действия
-@return 
-*/
 void CBaseScreen::CreateSmoothAction(BYTE action)
 {
     WISPFUN_DEBUG("c159_f4");

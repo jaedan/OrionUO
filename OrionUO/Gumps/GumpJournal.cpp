@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpJournal.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -29,9 +22,9 @@ CGumpJournal::CGumpJournal(short x, short y, bool minimized, int height)
     Add(new CGUIGumppic(0x0830, 0, 0));
 
     Add(new CGUIPage(2));
-    Add(new CGUIGumppic(0x082A, 111, 32));                                       //Journal text gump
-    Add(new CGUIGumppic(0x082B, 30, 58));                                        //Top line
-    m_BottomLine = (CGUIGumppic *)Add(new CGUIGumppic(0x082B, 31, Height - 26)); //Bottom line
+    Add(new CGUIGumppic(0x082A, 111, 32));
+    Add(new CGUIGumppic(0x082B, 30, 58));
+    m_BottomLine = (CGUIGumppic *)Add(new CGUIGumppic(0x082B, 31, Height - 26));
 
     m_TextLocker = (CGUIButton *)Add(
         new CGUIButton(ID_GJ_BUTTON_LOCK, 0x082C, 0x082C, 0x082C, 242, Height - 27));
@@ -120,7 +113,7 @@ void CGumpJournal::UpdateHeight()
     WISPFUN_DEBUG("c98_f3");
     CGumpBaseScroll::UpdateHeight();
 
-    m_BottomLine->SetY(Height - 26); //Bottom line
+    m_BottomLine->SetY(Height - 26);
 
     m_TextLocker->SetY(Height - 27);
 

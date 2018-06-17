@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpQuestion.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -37,9 +30,9 @@ CGumpQuestion::~CGumpQuestion()
 void CGumpQuestion::GUMP_BUTTON_EVENT_C
 {
     WISPFUN_DEBUG("c109_f2");
-    if (serial == ID_GQ_BUTTON_CANCEL) //Button cancel
+    if (serial == ID_GQ_BUTTON_CANCEL)
         RemoveMark = true;
-    else if (serial == ID_GQ_BUTTON_OKAY) //Button okay
+    else if (serial == ID_GQ_BUTTON_OKAY)
     {
         if (Variant == ID_GQ_STATE_QUIT)
             g_GameScreen.CreateSmoothAction(CGameScreen::ID_SMOOTH_GS_LOGOUT);

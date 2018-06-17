@@ -1,16 +1,8 @@
-﻿/***********************************************************************************
-**
-** RenderObject.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef RENDEROBJECT_H
 #define RENDEROBJECT_H
 
-//Класс для работы с объектами рендера
 class CRenderObject : public CBaseQueueItem
 {
 public:
@@ -40,11 +32,7 @@ public:
     CRenderObject(int serial, ushort graphic, ushort color, short x, short y);
     virtual ~CRenderObject();
 
-    //Подготовка текстур
     virtual void PrepareTextures() {}
-
-    //Отрисовка
-    //virtual int Draw(bool &mode) {return 0;}
 
     virtual void OnMouseEnter() {}
     virtual void OnMouseExit() {}

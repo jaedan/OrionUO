@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** GumpScreenGame.h
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #ifndef GUMPSCREENGAME_H
 #define GUMPSCREENGAME_H
@@ -13,7 +6,6 @@
 class CGumpScreenGame : public CGump
 {
 private:
-    //!Идентификаторы кнопок
     static const int ID_GS_RESIZE = 1;
 
 public:

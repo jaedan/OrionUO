@@ -1,11 +1,4 @@
-﻿/***********************************************************************************
-**
-** ServerScreen.cpp
-**
-** Copyright (C) August 2016 Hotride
-**
-************************************************************************************
-*/
+
 
 #include "stdafx.h"
 
@@ -20,10 +13,6 @@ CServerScreen::~CServerScreen()
 {
 }
 
-/*!
-Инициализация
-@return 
-*/
 void CServerScreen::Init()
 {
     WISPFUN_DEBUG("c168_f1");
@@ -36,12 +25,6 @@ void CServerScreen::Init()
     m_Gump.WantUpdateContent = true;
 }
 
-/*!
-Обработка нажатия клавиши
-@param [__in] wparam не подписанный параметр
-@param [__in] lparam не подписанный параметр
-@return 
-*/
 void CServerScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c168_f2");
@@ -54,11 +37,6 @@ void CServerScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     }
 }
 
-/*!
-Обработка события после плавного затемнения экрана
-@param [__in_opt] action Идентификатор действия
-@return 
-*/
 void CServerScreen::ProcessSmoothAction(uchar action)
 {
     WISPFUN_DEBUG("c168_f3");
