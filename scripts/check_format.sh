@@ -8,6 +8,13 @@ set -e
 
 rc=0
 
+if hash dos2unix; then
+	echo -n "Verifying Unix line endings..."
+	git ls-files '*.[ch]' '*.cpp' '*.cc' '*.cxx' '*.hh' '*.hpp' ':!OrionUO/Resource.h' ':!*Dependencies/*' | \
+		xargs -n8 -P8 dos2unix -q
+	echo " OK"
+fi
+
 if hash clang-format; then
 	echo -n "Checking coding style..."
 	rm -f format.log
