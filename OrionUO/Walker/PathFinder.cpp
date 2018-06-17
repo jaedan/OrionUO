@@ -239,6 +239,21 @@ int CPathFinder::CalculateMinMaxZ(
     return maxZ;
 }
 
+static int compareFunction(const void *obj1, const void *obj2)
+{
+    int result = 0;
+
+    if (obj1 != NULL && obj2 != NULL)
+    {
+        result = ((CPathObject *)obj1)->Z - ((CPathObject *)obj2)->Z;
+
+        if (!result)
+            result = (((CPathObject *)obj1)->Height - ((CPathObject *)obj2)->Height);
+    }
+
+    return result;
+};
+
 bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 {
     WISPFUN_DEBUG("c177_f3");
@@ -282,20 +297,6 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
 
     if (!CreateItemsList(list, x, y, stepState) || !list.size())
         return false;
-
-    auto compareFunction = [](const void *obj1, const void *obj2) {
-        int result = 0;
-
-        if (obj1 != NULL && obj2 != NULL)
-        {
-            result = ((CPathObject *)obj1)->Z - ((CPathObject *)obj2)->Z;
-
-            if (!result)
-                result = (((CPathObject *)obj1)->Height - ((CPathObject *)obj2)->Height);
-        }
-
-        return result;
-    };
 
     std::qsort(&list[0], list.size(), sizeof(CPathObject), compareFunction);
 
