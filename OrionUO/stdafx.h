@@ -104,7 +104,6 @@ class CGump;
 #include "ImageBounds.h"
 #include "MulStruct.h"
 #include "TextureObject.h"
-#include "Utility/AutoResetEvent.h"
 #include "Managers/FileManager.h"
 #include "IndexObject.h"
 #include "Macro.h"

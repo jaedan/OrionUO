@@ -363,13 +363,6 @@ bool COrion::Install()
 
     InitScreen(GS_MAIN);
 
-    if (g_PacketManager.GetClientVersion() >= CV_7000)
-    {
-        LOG("Waiting for FileManager to try & load AnimationFrame files\n");
-        g_FileManager.m_AutoResetEvent.WaitOne();
-        LOG("FileManager.TryReadUOPAnimations() done!\n");
-    }
-
     LOG("Installation completed!\n");
 
     return true;
