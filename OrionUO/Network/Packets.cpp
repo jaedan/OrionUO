@@ -1332,10 +1332,14 @@ CPacketResend::CPacketResend()
     WriteUInt8(0x22);
 }
 
-CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence)
+CPacketWalkRequest::CPacketWalkRequest(uchar direction, uchar sequence, bool run)
     : CPacket(7)
 {
     WriteUInt8(0x02);
+    if (run)
+    {
+        direction |= 0x80;
+    }
     WriteUInt8(direction);
     WriteUInt8(sequence);
     WriteUInt32BE(0);

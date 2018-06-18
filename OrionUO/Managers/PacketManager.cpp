@@ -889,7 +889,10 @@ PACKET_HANDLER(EnterWorld)
     g_Player->SetX(ReadUInt16BE());
     g_Player->SetY(ReadUInt16BE());
     g_Player->SetZ((char)ReadUInt16BE());
-    g_Player->Direction = ReadUInt8();
+
+    uchar dir = ReadUInt8();
+    g_Player->Dir = (Direction)(dir & 0x7);
+    g_Player->Run = dir & 0x80;
 
     g_RemoveRangeXY.X = g_Player->GetX();
     g_RemoveRangeXY.Y = g_Player->GetY();
@@ -2750,15 +2753,13 @@ PACKET_HANDLER(DenyWalk)
 
     g_Ping = 0;
 
-    uchar sequence = ReadUInt8();
-    ushort x = ReadUInt16BE();
-    ushort y = ReadUInt16BE();
-    uchar direction = ReadUInt8();
-    char z = ReadUInt8();
+    uint8_t sequence = ReadUInt8();
+    uint16_t x = ReadUInt16BE();
+    uint16_t y = ReadUInt16BE();
+    Direction dir = (Direction)(ReadUInt8() & 0x7);
+    uint8_t z = ReadUInt8();
 
-    g_Player->DenyWalk(sequence, x, y, z);
-
-    g_Player->Direction = direction;
+    g_Player->DenyWalk(sequence, dir, x, y, z);
 
     g_World->MoveToTop(g_Player);
 }
@@ -2794,11 +2795,15 @@ PACKET_HANDLER(Target)
     WISPFUN_DEBUG("c150_f51");
     g_Target.SetData(*this);
 
-    if (g_Player->m_CastingSpell)
+    if (g_Player->m_MovementState == PlayerMovementState::CASTING_SPELL)
     {
-        g_Player->m_HoldingSpellTarget = true;
-        g_Player->m_CastingSpell = false;
-    }
+        LOG("Target cursor while casting. State transition to HOLDING_SPELL_TARGET.\n");
+        g_Player->m_MovementState = PlayerMovementState::HOLDING_SPELL_TARGET;
+	}
+	else if (g_Player->m_MovementState == PlayerMovementState::HOLDING_SPELL_TARGET) {
+		LOG("Target cancellation. State transition to AWAITING_NEXT_CONFIRMATION.\n");
+		g_Player->m_MovementState = PlayerMovementState::AWAITING_NEXT_CONFIRMATION;
+	}
 
     if (g_PartyHelperTimer > g_Ticks && g_PartyHelperTarget)
     {
@@ -3537,7 +3542,7 @@ PACKET_HANDLER(DisplayDeath)
     g_World->ReplaceObject(owner, serial);
 
     if (corpseSerial)
-        g_CorpseManager.Add(CCorpse(corpseSerial, serial, owner->Direction, running != 0));
+        g_CorpseManager.Add(CCorpse(corpseSerial, serial, owner->Dir, running != 0));
 
     uchar group = g_AnimationManager.GetDieGroupIndex(owner->Graphic, running != 0);
 
@@ -5847,7 +5852,7 @@ PACKET_HANDLER(MovePlayer)
         return;
 
     uchar direction = ReadUInt8();
-    g_Player->Walk(direction & 0x80, direction & 7);
+    g_Player->Walk((Direction)(direction & 0x7), direction & 0x80);
 }
 
 PACKET_HANDLER(Pathfinding)

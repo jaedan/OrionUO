@@ -155,19 +155,17 @@ void CMouseManager::ProcessWalking()
             g_ConfigManager.GameWindowY + (g_ConfigManager.GameWindowHeight / 2);
 
         int facing = GetFacing(gameWindowCenterX, gameWindowCenterY, Position.X, Position.Y, 1);
+        if (!facing)
+            facing = 8;
 
         float mouse_range = std::hypotf(
             (float)(gameWindowCenterX - Position.X), (float)(gameWindowCenterY - Position.Y));
 
-        int dir = facing;
-
-        if (!dir)
-            dir = 8;
-
+        Direction dir = (Direction)(facing - 1);
         bool run = ((mouse_range >= 190.0f) ? true : false);
 
         if (!g_PathFinder.AutoWalking)
-            g_Player->Walk(run, dir - 1);
+            g_Player->Walk(dir, run);
     }
 }
 

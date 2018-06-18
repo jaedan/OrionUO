@@ -40,7 +40,7 @@ public:
     int X = 0;
     int Y = 0;
     int Z = 0;
-    int Direction = 0;
+    Direction Dir = DIR_NORTH;
     bool Used = false;
     int Cost = 0;
     int DistFromStartCost = 0;

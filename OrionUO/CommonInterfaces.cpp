@@ -337,67 +337,6 @@ unsigned int __cdecl FUNCBODY_GetPartialHueColor(unsigned short &c, unsigned sho
     return g_ColorManager.GetPartialHueColor(c, color);
 }
 
-bool __cdecl FUNCBODY_GetCanWalk(unsigned char &direction, int &x, int &y, char &z)
-{
-    return g_PathFinder.CanWalk(direction, x, y, z);
-}
-
-bool __cdecl FUNCBODY_GetWalk(bool run, unsigned char direction)
-{
-    return SendMessage(g_OrionWindow.Handle, UOMSG_WALK, run, direction);
-}
-
-bool __cdecl FUNCBODY_GetWalkTo(int x, int y, int z, int distance)
-{
-    if (g_Player == NULL)
-        return false;
-
-    int startX, startY;
-    char startZ;
-    uchar startDir;
-
-    g_Player->GetEndPosition(startX, startY, startZ, startDir);
-
-    WISP_GEOMETRY::CPoint2Di startPoint(startX, startY);
-
-    if (GetDistance(startPoint, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance)
-        return true;
-
-    bool result = SendMessage(
-        g_OrionWindow.Handle,
-        UOMSG_PATHFINDING,
-        ((x << 16) & 0xFFFF0000) | (y & 0xFFFF),
-        ((x << 16) & 0xFFFF0000) | (distance & 0xFFFF));
-
-    if (result)
-    {
-        while (g_PathFinder.AutoWalking)
-            Sleep(100);
-
-        if (g_Player == NULL)
-            return false;
-
-        g_Player->GetEndPosition(startX, startY, startZ, startDir);
-
-        WISP_GEOMETRY::CPoint2Di p(startX, startY);
-
-        result = (GetDistance(p, WISP_GEOMETRY::CPoint2Di(x, y)) <= distance);
-    }
-
-    return result;
-}
-
-void __cdecl FUNCBODY_GetStopAutowalk()
-{
-    if (g_PathFinder.PathFindidngCanBeCancelled)
-        g_PathFinder.StopAutoWalk();
-}
-
-bool __cdecl FUNCBODY_GetAutowalking()
-{
-    return g_PathFinder.AutoWalking;
-}
-
 void __cdecl FUNCBODY_GetFileInfo(unsigned int index, ORION_RAW_FILE_INFO &info)
 {
     WISP_FILE::CMappedFile *file = NULL;
@@ -703,14 +642,6 @@ IColorManager g_Interface_ColorManager = { 0,
                                            FUNCBODY_GetPolygoneColor,
                                            FUNCBODY_GetColor,
                                            FUNCBODY_GetPartialHueColor };
-
-IPathFinder g_Interface_PathFinder = { 0,
-                                       sizeof(IPathFinder),
-                                       FUNCBODY_GetCanWalk,
-                                       FUNCBODY_GetWalk,
-                                       FUNCBODY_GetWalkTo,
-                                       FUNCBODY_GetStopAutowalk,
-                                       FUNCBODY_GetAutowalking };
 
 IFileManager g_Interface_FileManager = { 0,
                                          sizeof(IFileManager),

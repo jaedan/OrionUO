@@ -48,7 +48,7 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
 
             if (gc->FindLayer(OL_MOUNT) != NULL)
             {
-                if (gc->m_Steps.back().Direction & 0x80)
+                if (gc->m_Steps.back().run)
                 {
                     soundID = 0x0129;
                     delaySound = 150;
@@ -1012,6 +1012,9 @@ void CGameWorld::UpdateMobile(
     CGameCharacter *character = NULL;
     CGameObject *obj = FindWorldObject(serial);
 
+    Direction dir = (Direction)(direction & 0x7);
+    bool run = direction & 0x80;
+
     bool created = false;
 
     if (obj == NULL)
@@ -1030,7 +1033,8 @@ void CGameWorld::UpdateMobile(
         obj = character;
         character->Graphic = graphic + graphicIncrement;
         character->OnGraphicChange(1000);
-        character->Direction = direction;
+        character->Dir = dir;
+        character->Run = run;
         character->Color = g_ColorManager.FixColor(color, (color & 0x8000));
         character->SetX(x);
         character->SetY(y);
@@ -1050,14 +1054,15 @@ void CGameWorld::UpdateMobile(
 
     graphic += graphicIncrement;
 
-    bool found = character->QueueStep(x, y, z, direction);
+    bool found = character->QueueStep(x, y, z, dir, run);
 
     if (!found)
     {
         character->SetX(x);
         character->SetY(y);
         character->SetZ(z);
-        character->Direction = direction;
+        character->Dir = dir;
+        character->Run = run;
 
         character->m_Steps.clear();
 
@@ -1078,7 +1083,7 @@ void CGameWorld::UpdateMobile(
         obj->GetY(),
         obj->GetZ(),
         obj->GetFlags(),
-        character->Direction,
+        character->Dir,
         character->Notoriety);
 
     if (created && g_ConfigManager.ShowIncomingNames && !obj->Clicked && !obj->GetName().length())
@@ -1106,32 +1111,43 @@ void CGameWorld::UpdatePlayer(
         return;
     }
 
-    int endX;
-    int endY;
+    Direction dir = (Direction)(direction & 0x7);
+    bool run = direction & 0x80;
+
+    int endX, endY;
     char endZ;
-    uchar endDir;
+    Direction endDir;
 
     g_Player->GetEndPosition(endX, endY, endZ, endDir);
 
-    LOG("Update Player - New Position: (%d, %d, %d, %x)\n", x, y, z, direction);
-    LOG("Update Player - Previous Target Position: (%d, %d, %d, %x)\n", endX, endY, endZ, endDir);
-
     g_Player->SequenceNumber = 0;
 
-    if (endX != x || endY != y || endZ != z)
+    if (endX == x && endY == y)
     {
-        LOG("Positions do not match. Forcing new position.\n");
+        /* The player was moving toward this location anyway. */
+        if (endDir != dir)
+        {
+            g_Player->m_RequestedSteps.clear();
+            g_Player->QueueStep(x, y, z, dir, run);
+        }
+    }
+    else
+    {
+        LOG("Player was moving to (%d, %d, %d, %x) but UpdatePlayer is snapping to (%d, %d, %d, %x)\n",
+            endX,
+            endY,
+            endZ,
+            endDir,
+            x,
+            y,
+            z,
+            dir);
         g_Player->ResetSteps();
         g_Player->SetX(x);
         g_Player->SetY(y);
         g_Player->SetZ(z);
-        g_Player->Direction = direction;
-    }
-    else if ((endDir & 7) != (direction & 7))
-    {
-        LOG("Position matches but direction does not.\n");
-        LOG("Queueing Step to (%d, %d, %d, %x)\n", endX, endY, endZ, endDir);
-        g_Player->QueueStep(endX, endY, endZ, direction);
+        g_Player->Dir = dir;
+        g_Player->Run = run;
     }
 
     g_Player->CloseBank();

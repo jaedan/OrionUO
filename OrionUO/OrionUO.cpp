@@ -1456,7 +1456,6 @@ void COrion::LoadPluginConfig()
     g_PluginClientInterface.UO = &g_Interface_UO;
     g_PluginClientInterface.ClilocManager = &g_Interface_ClilocManager;
     g_PluginClientInterface.ColorManager = &g_Interface_ColorManager;
-    g_PluginClientInterface.PathFinder = &g_Interface_PathFinder;
     g_PluginClientInterface.FileManager = &g_Interface_FileManager;
 
     for (auto &plugin : m_Plugins)
@@ -5731,9 +5730,8 @@ void COrion::CastSpell(int index)
     {
         g_LastSpellIndex = index;
 
-        LOG("Spell cast starting. No longer animating immediately.\n");
-        g_Player->m_AnimateImmediately = false;
-        g_Player->m_CastingSpell = true;
+        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
+        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
         CPacketCastSpell(index).Send();
     }
 }
@@ -5745,9 +5743,8 @@ void COrion::CastSpellFromBook(int index, uint serial)
     {
         g_LastSpellIndex = index;
 
-        LOG("Spell cast starting. No longer animating immediately.\n");
-        g_Player->m_AnimateImmediately = false;
-        g_Player->m_CastingSpell = true;
+        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
+        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
         CPacketCastSpellFromBook(index, serial).Send();
     }
 }
