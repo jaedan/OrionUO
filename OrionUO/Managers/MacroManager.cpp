@@ -742,18 +742,18 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_WALK:
         {
-            uchar dt = (uchar)DT_NW;
+            Direction dt = (Direction)DT_NW;
 
             if (macro->SubCode != MSC_G1_NW)
             {
-                dt = (uchar)(macro->Code - 2);
+                dt = (Direction)(macro->Code - 2);
 
-                if (dt > 7)
-                    dt = 0;
+                if (dt >= DIR_INVALID)
+                    dt = DIR_NORTH;
             }
 
             if (!g_PathFinder.AutoWalking)
-                g_Player->Walk(false, dt);
+                g_Player->Walk(dt, false);
 
             break;
         }

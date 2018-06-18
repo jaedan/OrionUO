@@ -95,12 +95,6 @@ typedef unsigned int __cdecl FUNCDEF_GET_POLYGONE_COLOR(unsigned short, unsigned
 typedef unsigned int __cdecl FUNCDEF_GET_COLOR(unsigned short &, unsigned short);
 typedef unsigned int __cdecl FUNCDEF_GET_PARTIAL_HUE_COLOR(unsigned short &, unsigned short);
 
-typedef bool __cdecl FUNCDEF_GET_CAN_WALK(unsigned char &, int &, int &, char &);
-typedef bool __cdecl FUNCDEF_GET_WALK(bool, unsigned char);
-typedef bool __cdecl FUNCDEF_GET_WALK_TO(int, int, int, int);
-typedef void __cdecl FUNCDEF_GET_STOP_AUTOWALK();
-typedef bool __cdecl FUNCDEF_GET_AUTOWALKING();
-
 typedef void __cdecl FUNCDEF_GET_FILE_INFO(unsigned int, ORION_RAW_FILE_INFO &);
 typedef void __cdecl FUNCDEF_GET_LAND_ART_INFO(unsigned short, ORION_RAW_ART_INFO &);
 typedef void __cdecl FUNCDEF_GET_STATIC_ART_INFO(unsigned short, ORION_RAW_ART_INFO &);
@@ -176,17 +170,6 @@ UOInterface IColorManager
     FUNCDEF_GET_PARTIAL_HUE_COLOR *GetPartialHueColor;
 };
 
-UOInterface IPathFinder
-{
-    int Version;
-    int Size;
-    FUNCDEF_GET_CAN_WALK *CanWalk;
-    FUNCDEF_GET_WALK *Walk;
-    FUNCDEF_GET_WALK_TO *WalkTo;
-    FUNCDEF_GET_STOP_AUTOWALK *StopAutowalk;
-    FUNCDEF_GET_AUTOWALKING *GetAutowalking;
-};
-
 UOInterface IFileManager
 {
     int Version;
@@ -201,7 +184,6 @@ extern IGLEngine g_Interface_GL;
 extern IUltimaOnline g_Interface_UO;
 extern IClilocManager g_Interface_ClilocManager;
 extern IColorManager g_Interface_ColorManager;
-extern IPathFinder g_Interface_PathFinder;
 extern IFileManager g_Interface_FileManager;
 
 typedef struct PLUGIN_CLIENT_INTERFACE
@@ -212,7 +194,6 @@ typedef struct PLUGIN_CLIENT_INTERFACE
     IUltimaOnline *UO;
     IClilocManager *ClilocManager;
     IColorManager *ColorManager;
-    IPathFinder *PathFinder;
     IFileManager *FileManager;
 } * PPLUGIN_CLIENT_INTERFACE;
 

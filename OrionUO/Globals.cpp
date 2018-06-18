@@ -292,7 +292,7 @@ int GetRemoveDistance(const WISP_GEOMETRY::CPoint2Di &current, CGameObject *targ
         {
             int x, y;
             char z;
-            uchar dir;
+            Direction dir;
 
             ((CGameCharacter *)target)->GetEndPosition(x, y, z, dir);
             targetPoint = WISP_GEOMETRY::CPoint2Di(x, y);

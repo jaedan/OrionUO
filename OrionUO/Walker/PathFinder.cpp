@@ -384,50 +384,50 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     return (resultZ != -128);
 }
 
-void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
+void CPathFinder::GetNewXY(Direction direction, int &x, int &y)
 {
     WISPFUN_DEBUG("c177_f4");
-    switch (direction & 7)
+    switch (direction)
     {
-        case 0:
+        case DIR_NORTH:
         {
             y--;
             break;
         }
-        case 1:
+        case DIR_NORTHEAST:
         {
             x++;
             y--;
             break;
         }
-        case 2:
+        case DIR_EAST:
         {
             x++;
             break;
         }
-        case 3:
+        case DIR_SOUTHEAST:
         {
             x++;
             y++;
             break;
         }
-        case 4:
+        case DIR_SOUTH:
         {
             y++;
             break;
         }
-        case 5:
+        case DIR_SOUTHWEST:
         {
             x--;
             y++;
             break;
         }
-        case 6:
+        case DIR_WEST:
         {
             x--;
             break;
         }
-        case 7:
+        case DIR_NORTHWEST:
         {
             x--;
             y--;
@@ -436,7 +436,7 @@ void CPathFinder::GetNewXY(uchar direction, int &x, int &y)
     }
 }
 
-bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
+bool CPathFinder::CanWalk(Direction &direction, int &x, int &y, char &z)
 {
     WISPFUN_DEBUG("c177_f5");
 
@@ -448,7 +448,7 @@ bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
         int newX = x;
         int newY = y;
         char newZ = z;
-        uchar newDirection = (direction + directions[i]) % 8;
+        Direction newDirection = (Direction)((direction + directions[i]) % 8);
 
         GetNewXY(newDirection, newX, newY);
         allowed = CalculateNewZ(newX, newY, newZ, newDirection);
@@ -467,7 +467,7 @@ bool CPathFinder::CanWalk(uchar &direction, int &x, int &y, char &z)
                 int testX = x;
                 int testY = y;
                 char testZ = z;
-                uchar testDirection = (newDirection + adjacents[j]) % 8;
+                Direction testDirection = (Direction)((newDirection + adjacents[j]) % 8);
 
                 GetNewXY(testDirection, testX, testY);
                 allowed = CalculateNewZ(testX, testY, testZ, testDirection);
@@ -554,7 +554,7 @@ int CPathFinder::AddNodeToList(
                     {
                         node.Used = true;
 
-                        node.Direction = direction;
+                        node.Dir = (Direction)direction;
                         node.X = x;
                         node.Y = y;
                         node.Z = z;
@@ -621,7 +621,7 @@ int CPathFinder::AddNodeToList(
                 node.DistFromGoalCost = parentNode->DistFromGoalCost;
                 node.DistFromStartCost = parentNode->DistFromStartCost;
                 node.Cost = node.DistFromGoalCost + node.DistFromStartCost;
-                node.Direction = parentNode->Direction;
+                node.Dir = parentNode->Dir;
                 node.X = parentNode->X;
                 node.Y = parentNode->Y;
                 node.Z = parentNode->Z;
@@ -643,9 +643,9 @@ bool CPathFinder::OpenNodes(CPathNode *node)
     WISPFUN_DEBUG("c177_f12");
     bool found = false;
 
-    IFOR (i, 0, 8)
+    for (uint8_t i = 0; i < DIR_INVALID; i++)
     {
-        uchar direction = (uchar)i;
+        Direction direction = (Direction)i;
         int x = node->X;
         int y = node->Y;
         char z = (char)node->Z;
@@ -661,7 +661,7 @@ bool CPathFinder::OpenNodes(CPathNode *node)
 
             if (diagonal)
             {
-                uchar wantDirection = (uchar)i;
+                Direction wantDirection = (Direction)i;
                 int wantX = node->X;
                 int wantY = node->Y;
 
@@ -814,14 +814,14 @@ void CPathFinder::ProcessAutowalk()
 
             int x, y;
             char z;
-            uchar olddir;
+            Direction olddir;
 
             g_Player->GetEndPosition(x, y, z, olddir);
 
-            if ((olddir & 7) == p->Direction)
+            if (olddir == p->Dir)
                 m_PointIndex++;
 
-            if (!g_Player->Walk(g_ConfigManager.AlwaysRun, p->Direction))
+            if (!g_Player->Walk(p->Dir, g_ConfigManager.AlwaysRun))
                 StopAutoWalk();
         }
         else

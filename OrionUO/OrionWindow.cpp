@@ -503,17 +503,6 @@ LRESULT COrionWindow::OnUserMessages(int message, const WPARAM &wParam, const LP
 
             return S_OK;
         }
-        case UOMSG_PATHFINDING:
-            return (
-                g_PathFinder.WalkTo(
-                    (wParam >> 16) & 0xFFFF,
-                    wParam & 0xFFFF,
-                    (lParam >> 16) & 0xFFFF,
-                    lParam & 0xFFFF) ?
-                    1 :
-                    S_OK);
-        case UOMSG_WALK:
-            return (g_Player->Walk((bool)(wParam != 0), (uchar)lParam) ? 1 : S_OK);
         case UOMSG_MENU_RESPONSE:
         {
             PUOI_MENU_RESPONSE data = (PUOI_MENU_RESPONSE)wParam;

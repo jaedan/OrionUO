@@ -135,7 +135,8 @@ public:
         char z,
         uchar direction,
         ushort color,
-        uchar flags);
+        uchar flags,
+        bool resync);
 };
 
 extern CGameWorld *g_World;

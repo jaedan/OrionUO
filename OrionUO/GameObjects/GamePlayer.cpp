@@ -16,7 +16,7 @@ CPlayer::~CPlayer()
     WISPFUN_DEBUG("c21_f2");
 }
 
-bool CPlayer::Walk(bool run, uchar direction)
+bool CPlayer::Walk(Direction direction, bool run)
 {
     WISPFUN_DEBUG("c177_f7");
     if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT ||
@@ -30,7 +30,7 @@ bool CPlayer::Walk(bool run, uchar direction)
 
     int x, y;
     char z;
-    uchar oldDirection;
+    Direction oldDirection;
 
     if (m_RequestedSteps.empty())
     {
@@ -40,19 +40,16 @@ bool CPlayer::Walk(bool run, uchar direction)
     {
         Step &step = m_RequestedSteps.back();
 
-        x = step.X;
-        y = step.Y;
-        z = step.Z;
-        oldDirection = step.Direction;
+        x = step.x;
+        y = step.y;
+        z = step.z;
+        oldDirection = (Direction)step.dir;
     }
-
-    oldDirection = oldDirection & 0x7;
-    direction = direction & 0x7;
 
     bool onMount = (FindLayer(OL_MOUNT) != NULL);
     ushort walkTime;
 
-    uchar newDirection = direction;
+    Direction newDirection = direction;
     int newX = x;
     int newY = y;
     char newZ = z;
@@ -105,19 +102,42 @@ bool CPlayer::Walk(bool run, uchar direction)
 
     CloseBank();
 
-    if (run)
-        direction |= 0x80;
+    Step step = {};
+    step.x = x;
+    step.y = y;
+    step.z = z;
+    step.dir = direction;
+    step.run = run;
+    step.seq = SequenceNumber;
 
-    Step step;
-    step.Direction = direction;
-    step.X = x;
-    step.Y = y;
-    step.Z = z;
-    step.SequenceNumber = SequenceNumber;
+    if (g_Player->m_MovementState == PlayerMovementState::ANIMATE_IMMEDIATELY)
+    {
+        for (auto &s : m_RequestedSteps)
+        {
+            if (s.anim == false)
+            {
+                LOG("Animating catch-up step\n");
+                s.anim = true;
+                QueueStep(s.x, s.y, s.z, (Direction)s.dir, s.run);
+            }
+        }
+
+        g_RemoveRangeXY.X = step.x;
+        g_RemoveRangeXY.Y = step.y;
+
+        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+        g_PluginManager.WindowProc(
+            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+
+        step.anim = true;
+
+        LOG("Step immediately animated\n");
+        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
+    }
 
     m_RequestedSteps.push_back(step);
 
-    CPacketWalkRequest(direction, SequenceNumber).Send();
+    CPacketWalkRequest(direction, SequenceNumber, run).Send();
 
     if (SequenceNumber == 0xFF)
         SequenceNumber = 1;
@@ -129,21 +149,6 @@ bool CPlayer::Walk(bool run, uchar direction)
     LastStepRequestTime = g_Ticks + walkTime;
 
     GetAnimationGroup();
-
-    if (m_AnimateImmediately)
-    {
-        g_RemoveRangeXY.X = step.X;
-        g_RemoveRangeXY.Y = step.Y;
-
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-
-        m_RequestedSteps.pop_front();
-
-        LOG("Step immediately animated\n");
-        QueueStep(step.X, step.Y, step.Z, step.Direction);
-    }
 
     return true;
 }
@@ -161,55 +166,89 @@ void CPlayer::ResetSteps()
     OffsetZ = 0;
 }
 
-void CPlayer::DenyWalk(uchar sequence, int x, int y, char z)
+void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, uint8_t z)
 {
-    ResetSteps();
+    for (const auto &step : m_RequestedSteps)
+    {
+        if (step.seq == sequence)
+        {
+            /* Found the step. Reset the player's movement. */
+            ResetSteps();
 
-    SetX(x);
-    SetY(y);
-    SetZ(z);
+            SetX(x);
+            SetY(y);
+            SetZ(z);
+            Dir = dir;
+            Run = false;
 
-    g_RemoveRangeXY.X = x;
-    g_RemoveRangeXY.Y = y;
+            g_RemoveRangeXY.X = x;
+            g_RemoveRangeXY.Y = y;
 
-    UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+            UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+            g_PluginManager.WindowProc(
+                g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+            return;
+        }
+    }
+
+    LOG("Ignoring errneous DenyWalk\n");
 }
 
 void CPlayer::ConfirmWalk(uchar sequence)
 {
     if (m_RequestedSteps.empty())
     {
+        LOG("Received Walk Confirmation, but no steps pending.\n");
+        /* TODO: Resynchronize */
         return;
     }
 
     Step &step = m_RequestedSteps.front();
 
-    if (step.SequenceNumber != sequence)
+    if (step.seq != sequence)
     {
-        LOG("Received Confirm Walk for Sequence Number %d but it is not pending.\n", sequence);
+        LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
+            sequence);
+        /* TODO: Resynchronize */
         return;
     }
 
-    g_RemoveRangeXY.X = step.X;
-    g_RemoveRangeXY.Y = step.Y;
-
-    UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-
     m_RequestedSteps.pop_front();
 
-    if (!m_HoldingSpellTarget)
+    if (!step.anim)
     {
-        m_CastingSpell = false;
-        if (m_AnimateImmediately == false)
-        {
-            LOG("Walk request successful. Animating immediately again.\n");
-            m_AnimateImmediately = true;
-        }
-    }
+        LOG("Step was not previously animated. Animating now.\n");
 
-    QueueStep(step.X, step.Y, step.Z, step.Direction);
+        int endX, endY;
+        char endZ;
+        Direction endDir;
+
+        GetEndPosition(endX, endY, endZ, endDir);
+
+        if (step.dir == endDir)
+        {
+            if (m_MovementState == PlayerMovementState::CASTING_SPELL)
+            {
+                LOG("Successful movement after casting. State transition to ANIMATE_IMMEDIATELY.\n");
+                m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+            }
+        }
+
+        if (m_MovementState == PlayerMovementState::AWAITING_NEXT_CONFIRMATION)
+        {
+            LOG("Received next walk confirmation. State transition to ANIMATE_IMMEDIATELY.\n");
+            m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+        }
+
+        g_RemoveRangeXY.X = step.x;
+        g_RemoveRangeXY.Y = step.y;
+
+        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
+        g_PluginManager.WindowProc(
+            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
+
+        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
+    }
 }
 
 void CPlayer::CloseBank()

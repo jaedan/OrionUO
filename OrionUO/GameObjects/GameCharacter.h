@@ -3,13 +3,30 @@
 #ifndef GAMECHARACTER_H
 #define GAMECHARACTER_H
 
+enum Direction
+{
+    DIR_NORTH = 0,
+    DIR_NORTHEAST,
+    DIR_EAST,
+    DIR_SOUTHEAST,
+    DIR_SOUTH,
+    DIR_SOUTHWEST,
+    DIR_WEST,
+    DIR_NORTHWEST,
+    DIR_INVALID,
+};
+
 struct Step
 {
-    int X = 0;
-    int Y = 0;
-    char Z = 0;
-    uchar Direction = 0;
-    uchar SequenceNumber = 0;
+    int x;
+    int y;
+    char z;
+
+    uint8_t dir : 6;
+    uint8_t anim : 1;
+    uint8_t run : 1;
+
+    uint8_t seq;
 };
 
 class CGameCharacter : public CGameObject
@@ -31,7 +48,8 @@ public:
 
     RACE_TYPE Race = RT_HUMAN;
 
-    uchar Direction = 0;
+    Direction Dir = DIR_NORTH;
+    bool Run = false;
 
     uchar Notoriety = 0;
 
@@ -83,13 +101,13 @@ public:
 
     deque<Step> m_Steps;
 
-    uchar CalculateDirection(int curX, int curY, int newX, int newY);
+    Direction CalculateDirection(int curX, int curY, int newX, int newY);
 
-    bool QueueStep(int x, int y, char z, uchar dir);
+    bool QueueStep(int x, int y, char z, Direction dir, bool run);
 
     int GetWalkSpeed(bool run, bool onMount);
 
-    void GetEndPosition(int &x, int &y, char &z, uchar &dir);
+    void GetEndPosition(int &x, int &y, char &z, Direction &dir);
     bool IsMoving() { return !m_Steps.empty(); }
 
     CGLTextTexture m_HitsTexture{ CGLTextTexture() };
@@ -122,7 +140,7 @@ public:
 
     void ProcessAnimation();
 
-    uchar GetAnimationDirection();
+    Direction GetAnimationDirection();
 
     ushort GetMountAnimation();
 
