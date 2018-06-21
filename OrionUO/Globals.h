@@ -112,6 +112,7 @@ extern bool g_ConfigLoaded;
 
 extern uchar g_LightLevel;
 extern uchar g_PersonalLightLevel;
+extern float g_EffectiveLightLevel;
 
 extern char g_SelectedCharName[30];
 

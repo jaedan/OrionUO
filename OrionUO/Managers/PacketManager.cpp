@@ -2015,6 +2015,8 @@ PACKET_HANDLER(PersonalLightLevel)
             level = 0x1F;
 
         g_PersonalLightLevel = level;
+
+        g_GameScreen.CalculateLightLevel();
     }
 }
 
@@ -2027,6 +2029,8 @@ PACKET_HANDLER(LightLevel)
         level = 0x1F;
 
     g_LightLevel = level;
+
+    g_GameScreen.CalculateLightLevel();
 }
 
 PACKET_HANDLER(EnableLockedFeatures)

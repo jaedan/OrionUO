@@ -65,6 +65,7 @@ bool g_ConfigLoaded = false;
 
 uchar g_LightLevel = 0;
 uchar g_PersonalLightLevel = 0;
+float g_EffectiveLightLevel = 0.0;
 
 char g_SelectedCharName[30] = { 0 };
 

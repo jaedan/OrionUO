@@ -2349,11 +2349,6 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
         }
         case VKI_DARK_NIGHTS:
         {
-            if (value == -1)
-                value = g_ConfigManager.DarkNights;
-            else
-                g_ConfigManager.DarkNights = (value != 0);
-
             break;
         }
         case VKI_COLORED_LIGHTING:

@@ -48,7 +48,7 @@ void CMainScreen::Init()
     g_TotalRecvSize = 0;
 
     g_LightLevel = 0;
-    g_PersonalLightLevel = 0;
+    g_EffectiveLightLevel = 0;
 
     g_ScreenEffectManager.UseSunrise();
     SmoothScreenAction = 0;

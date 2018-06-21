@@ -169,7 +169,7 @@ void CConfigManager::DefaultPage7()
     AllianceMessageColor = 0x0057;
     IgnoreGuildMessage = false;
     IgnoreAllianceMessage = false;
-    DarkNights = false;
+    LightLevel = 0;
     ColoredLighting = true;
     LockResizingGameWindow = false;
 }
@@ -626,6 +626,13 @@ void CConfigManager::SetCharacterBackpackStyle(uchar val)
     }
 }
 
+void CConfigManager::SetLightLevel(uchar val)
+{
+    LightLevel = val;
+
+    g_GameScreen.CalculateLightLevel();
+}
+
 ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
 {
     WISPFUN_DEBUG("c138_f29");
@@ -764,7 +771,7 @@ int CConfigManager::GetConfigKeyCode(const string &key)
                                              "AllianceMessageColor",
                                              "IgnoreGuildMessage",
                                              "IgnoreAllianceMessage",
-                                             "DarkNights",
+                                             "LightLevel",
                                              "ColoredLighting",
                                              "LockResizingGameWindow",
                                              "LockGumpsMoving",
@@ -1113,8 +1120,8 @@ bool CConfigManager::Load(const string &path)
                 case CMKC_IGNORE_ALLIANCE_MESSAGE:
                     IgnoreAllianceMessage = ToBool(strings[1]);
                     break;
-                case CMKC_DARK_NIGHTS:
-                    DarkNights = ToBool(strings[1]);
+                case CMKC_LIGHT_LEVEL:
+                    SetLightLevel(atoi(strings[1].c_str()));
                     break;
                 case CMKC_COLORED_LIGHTING:
                     ColoredLighting = ToBool(strings[1]);
@@ -1371,7 +1378,7 @@ void CConfigManager::Save(const string &path)
         writter.WriteInt("AllianceMessageColor", AllianceMessageColor);
         writter.WriteBool("IgnoreGuildMessage", IgnoreGuildMessage);
         writter.WriteBool("IgnoreAllianceMessage", IgnoreAllianceMessage);
-        writter.WriteBool("DarkNights", DarkNights);
+        writter.WriteBool("LightLevel", LightLevel);
         writter.WriteBool("ColoredLighting", ColoredLighting);
         writter.WriteBool("LockResizingGameWindow", LockResizingGameWindow);
         writter.WriteBool("LockGumpsMoving", LockGumpsMoving);

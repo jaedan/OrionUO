@@ -77,8 +77,6 @@ struct OBJECT_HITS_INFO
 class CGameScreen : public CBaseScreen
 {
 public:
-    bool UseLight = false;
-
     bool RenderListInitalized = false;
 
     bool UpdateDrawPos = false;
@@ -137,6 +135,8 @@ public:
     virtual void ProcessSmoothAction(uchar action = 0xFF);
 
     void CalculateGameWindowBounds();
+
+    void CalculateLightLevel();
 
     void CalculateRenderList();
 

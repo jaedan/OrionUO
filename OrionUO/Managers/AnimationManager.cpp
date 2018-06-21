@@ -2310,7 +2310,7 @@ bool CAnimationManager::DrawEquippedLayers(
             Draw(item, drawX, drawY, mirror, animIndex, id);
             m_EquipConvItem = NULL;
 
-            if (item->IsLightSource() && g_GameScreen.UseLight)
+            if (item->IsLightSource() && g_EffectiveLightLevel)
                 g_GameScreen.AddLight(obj, item, drawX, drawY - lightOffset);
         }
     }

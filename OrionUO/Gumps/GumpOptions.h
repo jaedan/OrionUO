@@ -160,7 +160,7 @@ private:
     static const int ID_GO_P7_ALLIANCE_MESSAGE_COLOR = 705;
     static const int ID_GO_P7_IGNORE_GUILD_MESSAGE = 706;
     static const int ID_GO_P7_IGNORE_ALLIANCE_MESSAGE = 707;
-    static const int ID_GO_P7_DARK_NIGHTS = 708;
+    static const int ID_GO_P7_LIGHT_LEVEL = 708;
     static const int ID_GO_P7_COLORED_LIGHTING = 709;
     static const int ID_GO_P7_AJUST_LONG_SPEECH = 710;
     static const int ID_GO_P7_GAME_WINDOW_WIDTH = 711;
@@ -193,6 +193,7 @@ private:
     CGUISlider *m_SliderDrawStatusConditionValue{ NULL };
     CGUISlider *m_SliderTooltipDelay{ NULL };
     CGUISlider *m_SliderSpeechDuration{ NULL };
+    CGUISlider *m_SliderLightLevel{ NULL };
     CGUISlider *m_SliderCircleTransparency{ NULL };
     CGUISlider *m_SliderInformSkills{ NULL };
     CGUISlider *m_SliderPingTimer{ NULL };
