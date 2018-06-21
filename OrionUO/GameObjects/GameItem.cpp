@@ -207,7 +207,7 @@ void CGameItem::Draw(int x, int y)
                     g_Orion.DrawStaticArtAnimated(objGraphic, objColor, x, y, selMode || Hidden());
             }
 
-            if (IsLightSource() && g_GameScreen.UseLight)
+            if (IsLightSource() && g_EffectiveLightLevel)
                 g_GameScreen.AddLight(this, this, x, y);
         }
 

@@ -197,7 +197,7 @@ void CRenderStaticObject::Draw(int x, int y)
         glDisable(GL_BLEND);
     }
 
-    if (IsLightSource() && g_GameScreen.UseLight)
+    if (IsLightSource() && g_EffectiveLightLevel)
         g_GameScreen.AddLight(this, this, x, y);
 }
 

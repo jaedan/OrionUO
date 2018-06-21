@@ -1006,9 +1006,7 @@ void CGameScreen::CalculateGameWindowBounds()
 
     UpdateMaxDrawZ();
 
-    UseLight = (g_PersonalLightLevel < g_LightLevel);
-
-    if (UseLight && g_GL.CanUseFrameBuffer)
+    if (g_EffectiveLightLevel && g_GL.CanUseFrameBuffer)
     {
         int testWidth = g_RenderBounds.GameWindowScaledWidth;
         int testHeight = g_RenderBounds.GameWindowScaledHeight;
@@ -1016,6 +1014,21 @@ void CGameScreen::CalculateGameWindowBounds()
         if (!g_LightBuffer.Ready(testWidth, testHeight))
             g_LightBuffer.Init(testWidth, testHeight);
     }
+}
+
+void CGameScreen::CalculateLightLevel()
+{
+    if (g_PersonalLightLevel > g_LightLevel)
+    {
+        g_EffectiveLightLevel = 0.0;
+        return;
+    }
+
+    float scalar = (100 - g_OptionsConfig.LightLevel) / 100.0f;
+
+    float current = (g_LightLevel - g_PersonalLightLevel) * scalar;
+
+    g_EffectiveLightLevel = (32 - current) / 32.0f;
 }
 
 void CGameScreen::AddLight(CRenderWorldObject *rwo, CRenderWorldObject *lightObject, int x, int y)
@@ -1238,7 +1251,7 @@ void CGameScreen::DrawGameWindowLight()
     WISPFUN_DEBUG("c164_f16");
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-    if (!UseLight)
+    if (g_EffectiveLightLevel == 0)
         return;
 
     g_LightColorizerShader.Use();
@@ -1247,10 +1260,7 @@ void CGameScreen::DrawGameWindowLight()
     {
         if (g_LightBuffer.Use())
         {
-            float newLightColor = ((32 - g_LightLevel + g_PersonalLightLevel) / 32.0f);
-
-            if (!g_ConfigManager.DarkNights)
-                newLightColor += 0.2f;
+            float newLightColor = g_EffectiveLightLevel;
 
             glClearColor(newLightColor, newLightColor, newLightColor, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -1527,12 +1537,9 @@ void CGameScreen::Render(bool mode)
 
         g_DrawColor = 1.0f;
 
-        if (!g_GL.CanUseFrameBuffer && g_PersonalLightLevel < g_LightLevel)
+        if (!g_GL.CanUseFrameBuffer && g_EffectiveLightLevel)
         {
-            g_DrawColor = (32 - g_LightLevel + g_PersonalLightLevel) / 32.0f;
-
-            if (!g_ConfigManager.DarkNights)
-                g_DrawColor += 0.2f;
+            g_DrawColor = g_EffectiveLightLevel;
         }
 
         if (g_GrayedPixels)

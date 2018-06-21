@@ -102,7 +102,7 @@ public:
     ushort AllianceMessageColor = 0;
     bool IgnoreGuildMessage = false;
     bool IgnoreAllianceMessage = false;
-    bool DarkNights = false;
+    ushort LightLevel = 0;
     bool ColoredLighting = false;
     bool LockResizingGameWindow = false;
 
@@ -212,6 +212,8 @@ public:
     uchar GetCharacterBackpackStyle() { return m_CharacterBackpackStyle; };
     void SetCharacterBackpackStyle(uchar val);
 
+    void SetLightLevel(uchar val);
+
     void Init();
 
     void DefaultPage1();
@@ -317,7 +319,7 @@ public:
         CMKC_ALLIANCE_MESSAGE_COLOR,
         CMKC_IGNORE_GUILD_MESSAGE,
         CMKC_IGNORE_ALLIANCE_MESSAGE,
-        CMKC_DARK_NIGHTS,
+        CMKC_LIGHT_LEVEL,
         CMKC_COLORED_LIGHTING,
         CMKC_LOCK_RESIZING_GAME_WINDOW,
         CMKC_LOCK_GUMPS_MOVING,
