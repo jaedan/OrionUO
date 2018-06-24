@@ -70,6 +70,17 @@ xcopy /y /d  "$(SolutionDir)bin\bassmidi.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\glew32.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\zlib1.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\Freeimage.dll" "$(OutDir)"
+if not exist "$(OutDir)\shaders" mkdir "$(OutDir)\shaders"
+if exist "$(OutDir)\shaders\Shader.vert" (del "$(OutDir)\shaders\Shader.vert")
+if exist "$(OutDir)\shaders\ColorizerShader.frag" (del "$(OutDir)\shaders\ColorizerShader.frag")
+if exist "$(OutDir)\shaders\DeathShader.frag" (del "$(OutDir)\shaders\DeathShader.frag")
+if exist "$(OutDir)\shaders\FontColorizerShader.frag" (del "$(OutDir)\shaders\FontColorizerShader.frag")
+if exist "$(OutDir)\shaders\LightColorizerShader.frag" (del "$(OutDir)\shaders\LightColorizerShader.frag")
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\Shader.vert" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\ColorizerShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\DeathShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\FontColorizerShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir)\shaders"
     </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -111,6 +122,17 @@ xcopy /y /d  "$(SolutionDir)bin\bassmidi.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\glew32.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\zlib1.dll" "$(OutDir)"
 xcopy /y /d  "$(SolutionDir)bin\Freeimage.dll" "$(OutDir)"
+if not exist "$(OutDir)\shaders" mkdir "$(OutDir)\shaders"
+if exist "$(OutDir)\shaders\Shader.vert" (del "$(OutDir)\shaders\Shader.vert")
+if exist "$(OutDir)\shaders\ColorizerShader.frag" (del "$(OutDir)\shaders\ColorizerShader.frag")
+if exist "$(OutDir)\shaders\DeathShader.frag" (del "$(OutDir)\shaders\DeathShader.frag")
+if exist "$(OutDir)\shaders\FontColorizerShader.frag" (del "$(OutDir)\shaders\FontColorizerShader.frag")
+if exist "$(OutDir)\shaders\LightColorizerShader.frag" (del "$(OutDir)\shaders\LightColorizerShader.frag")
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\Shader.vert" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\ColorizerShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\DeathShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\FontColorizerShader.frag" "$(OutDir)\shaders"
+xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir)\shaders"
       </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -625,6 +647,11 @@ xcopy /y /d  "$(SolutionDir)bin\Freeimage.dll" "$(OutDir)"
   </ItemGroup>
   <ItemGroup>
     <None Include="cursor1.cur" />
+    <None Include="shaders\ColorizerShader.frag" />
+    <None Include="shaders\DeathShader.frag" />
+    <None Include="shaders\FontColorizerShader.frag" />
+    <None Include="shaders\LightColorizerShader.frag" />
+    <None Include="shaders\Shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="OrionUO.idl" />

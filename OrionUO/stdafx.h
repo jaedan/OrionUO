@@ -122,7 +122,6 @@ class CGump;
 #include "Resource.h"
 #include "ScreenshotBuilder.h"
 #include "ServerList.h"
-#include "ShaderData.h"
 #include "SkillGroup.h"
 #include "StackWalker.h"
 #include "StumpsData.h"

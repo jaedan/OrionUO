@@ -2347,17 +2347,12 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 
             break;
         }
-        case VKI_DARK_NIGHTS:
+        case VKI_LIGHT_LEVEL:
         {
             break;
         }
-        case VKI_COLORED_LIGHTING:
+        case VKI_SHADOW_LEVEL:
         {
-            if (value == -1)
-                value = g_ConfigManager.ColoredLighting;
-            else
-                g_ConfigManager.ColoredLighting = (value != 0);
-
             break;
         }
         case VKI_CRIMINAL_ACTIONS_QUERY:
@@ -4391,43 +4386,36 @@ void COrion::LoadShaders()
 {
     WISPFUN_DEBUG("c194_f59");
 
-#if UO_USE_SHADER_FILES == 1
     WISP_FILE::CMappedFile frag;
     WISP_FILE::CMappedFile vert;
 
-    if (vert.Load(g_App.FilePath("shaders\\Shader.vert")))
+    if (vert.Load(g_App.ExeFilePath("shaders\\Shader.vert")))
     {
-        frag.Load(g_App.FilePath("shaders\\DeathShader.frag"));
+        frag.Load(g_App.ExeFilePath("shaders\\DeathShader.frag"));
 
         g_DeathShader.Init((char *)vert.Start, (char *)frag.Start);
 
         frag.Unload();
 
-        frag.Load(g_App.FilePath("shaders\\ColorizerShader.frag"));
+        frag.Load(g_App.ExeFilePath("shaders\\ColorizerShader.frag"));
 
         g_ColorizerShader.Init((char *)vert.Start, (char *)frag.Start);
 
         frag.Unload();
 
-        frag.Load(g_App.FilePath("shaders\\FontColorizerShader.frag"));
+        frag.Load(g_App.ExeFilePath("shaders\\FontColorizerShader.frag"));
 
         g_FontColorizerShader.Init((char *)vert.Start, (char *)frag.Start);
 
         frag.Unload();
 
-        frag.Load(g_App.FilePath("shaders\\LightColorizerShader.frag"));
+        frag.Load(g_App.ExeFilePath("shaders\\LightColorizerShader.frag"));
 
         g_LightColorizerShader.Init((char *)vert.Start, (char *)frag.Start);
 
         frag.Unload();
         vert.Unload();
     }
-#else
-    g_DeathShader.Init(g_Vert_ShaderData, g_Frag_DeathShaderData);
-    g_ColorizerShader.Init(g_Vert_ShaderData, g_Frag_ColorizerShaderData);
-    g_FontColorizerShader.Init(g_Vert_ShaderData, g_Frag_FontShaderData);
-    g_LightColorizerShader.Init(g_Vert_ShaderData, g_Frag_LightShaderData);
-#endif
 }
 
 void COrion::LoadClientStartupConfig()

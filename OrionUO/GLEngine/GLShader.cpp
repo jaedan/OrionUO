@@ -191,8 +191,8 @@ bool CColorizerShader::Init(const char *vertexShaderData, const char *fragmentSh
 {
     if (CGLShader::Init(vertexShaderData, fragmentShaderData))
     {
-        m_TexturePointer = glGetUniformLocationARB(m_Shader, "usedTexture");
-        m_ColorTablePointer = glGetUniformLocationARB(m_Shader, "colors");
+        m_TexturePointer = glGetUniformLocationARB(m_Shader, "texture");
+        m_ColorTablePointer = glGetUniformLocationARB(m_Shader, "hue");
         m_DrawModePointer = glGetUniformLocationARB(m_Shader, "drawMode");
     }
     else

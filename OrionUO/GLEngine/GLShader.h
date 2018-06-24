@@ -8,13 +8,10 @@ void UnuseShader();
 class CGLShader
 {
 protected:
-    GLhandleARB m_Shader{ 0 };
-
-    GLhandleARB m_VertexShader{ 0 };
-
-    GLhandleARB m_FragmentShader{ 0 };
-
-    GLuint m_TexturePointer{ 0 };
+    GLhandleARB m_Shader = 0;
+    GLhandleARB m_VertexShader = 0;
+    GLhandleARB m_FragmentShader = 0;
+    GLuint m_TexturePointer = 0;
 
 public:
     CGLShader();
@@ -40,9 +37,8 @@ public:
 class CColorizerShader : public CGLShader
 {
 protected:
-    GLuint m_ColorTablePointer{ 0 };
-
-    GLuint m_DrawModePointer{ 0 };
+    GLuint m_ColorTablePointer = 0;
+    GLuint m_DrawModePointer = 0;
 
 public:
     CColorizerShader();

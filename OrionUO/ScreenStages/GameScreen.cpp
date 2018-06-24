@@ -1087,11 +1087,7 @@ void CGameScreen::AddLight(CRenderWorldObject *rwo, CRenderWorldObject *lightObj
             if (light.ID >= MAX_LIGHTS_DATA_INDEX_COUNT)
                 return;
 
-            if (g_ConfigManager.ColoredLighting)
-                light.Color = g_Orion.GetLightColor(graphic);
-            else
-                light.Color = 0;
-
+            light.Color = g_Orion.GetLightColor(graphic);
             light.DrawX = x;
             light.DrawY = y;
 

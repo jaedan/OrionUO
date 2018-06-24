@@ -169,8 +169,7 @@ void CConfigManager::DefaultPage7()
     AllianceMessageColor = 0x0057;
     IgnoreGuildMessage = false;
     IgnoreAllianceMessage = false;
-    LightLevel = 0;
-    ColoredLighting = true;
+    LightLevel = 80;
     LockResizingGameWindow = false;
 }
 
@@ -772,7 +771,7 @@ int CConfigManager::GetConfigKeyCode(const string &key)
                                              "IgnoreGuildMessage",
                                              "IgnoreAllianceMessage",
                                              "LightLevel",
-                                             "ColoredLighting",
+                                             "Reserved",
                                              "LockResizingGameWindow",
                                              "LockGumpsMoving",
                                              "InnocentColor",
@@ -1123,9 +1122,6 @@ bool CConfigManager::Load(const string &path)
                 case CMKC_LIGHT_LEVEL:
                     SetLightLevel(atoi(strings[1].c_str()));
                     break;
-                case CMKC_COLORED_LIGHTING:
-                    ColoredLighting = ToBool(strings[1]);
-                    break;
                 case CMKC_LOCK_RESIZING_GAME_WINDOW:
                     LockResizingGameWindow = ToBool(strings[1]);
                     break;
@@ -1379,7 +1375,6 @@ void CConfigManager::Save(const string &path)
         writter.WriteBool("IgnoreGuildMessage", IgnoreGuildMessage);
         writter.WriteBool("IgnoreAllianceMessage", IgnoreAllianceMessage);
         writter.WriteBool("LightLevel", LightLevel);
-        writter.WriteBool("ColoredLighting", ColoredLighting);
         writter.WriteBool("LockResizingGameWindow", LockResizingGameWindow);
         writter.WriteBool("LockGumpsMoving", LockGumpsMoving);
 

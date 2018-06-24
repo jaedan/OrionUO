@@ -708,12 +708,7 @@ void CGumpOptions::InitToolTip()
         }
         case ID_GO_P7_LIGHT_LEVEL:
         {
-            g_ToolTip.Set(L"Adjust Light Levels");
-            break;
-        }
-        case ID_GO_P7_COLORED_LIGHTING:
-        {
-            g_ToolTip.Set(L"Light sources has exude colored lights");
+            g_ToolTip.Set(L"Day/night intensity");
             break;
         }
         case ID_GO_P7_AJUST_LONG_SPEECH:
@@ -2054,13 +2049,8 @@ void CGumpOptions::DrawPage7()
     text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 86, 242));
     text->CreateTextureW(0, L"Party Message Color");
 
-    checkbox = (CGUICheckbox *)Add(
-        new CGUICheckbox(ID_GO_P7_COLORED_LIGHTING, 0x00D2, 0x00D3, 0x00D2, 64, 264));
-    checkbox->Checked = g_OptionsConfig.ColoredLighting;
-    checkbox->SetTextParameters(0, L"Colored Lighting", g_OptionsTextColor);
-
-    text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 64, 284));
-    text->CreateTextureW(0, L"Light Level %");
+    text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 64, 264));
+    text->CreateTextureW(0, L"Day/Night Intensity %");
 
     m_SliderLightLevel = (CGUISlider *)Add(new CGUISlider(
         ID_GO_P7_LIGHT_LEVEL,
@@ -2071,12 +2061,12 @@ void CGumpOptions::DrawPage7()
         true,
         false,
         64,
-        304,
+        284,
         90,
         0,
         100,
         g_OptionsConfig.LightLevel));
-    m_SliderSpeechDuration->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
+    m_SliderLightLevel->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
 
     if (g_PacketManager.GetClientVersion() >= CV_6000)
     {
@@ -2930,8 +2920,6 @@ void CGumpOptions::GUMP_CHECKBOX_EVENT_C
                 g_OptionsConfig.IgnoreGuildMessage = state;
             else if (serial == ID_GO_P7_IGNORE_ALLIANCE_MESSAGE)
                 g_OptionsConfig.IgnoreAllianceMessage = state;
-            else if (serial == ID_GO_P7_COLORED_LIGHTING)
-                g_OptionsConfig.ColoredLighting = state;
             else if (serial == ID_GO_P7_LOCK_GAME_WINDOW_RESIZING)
                 g_OptionsConfig.LockResizingGameWindow = state;
 
@@ -3598,7 +3586,6 @@ void CGumpOptions::ApplyPageChanges()
             g_ConfigManager.IgnoreGuildMessage = g_OptionsConfig.IgnoreGuildMessage;
             g_ConfigManager.IgnoreAllianceMessage = g_OptionsConfig.IgnoreAllianceMessage;
             g_ConfigManager.LightLevel = g_OptionsConfig.LightLevel;
-            g_ConfigManager.ColoredLighting = g_OptionsConfig.ColoredLighting;
             g_ConfigManager.LockResizingGameWindow = g_OptionsConfig.LockResizingGameWindow;
 
             break;
