@@ -123,15 +123,11 @@ bool CGLEngine::Install()
 
     glEnable(GL_LIGHT0);
 
-    GLfloat lightPosition[] = { -1.0f, -1.0f, 0.5f, 0.0f };
-    glLightfv(GL_LIGHT0, GL_POSITION, &lightPosition[0]);
+    GLfloat lightPosition[] = { -1.0f, 0.0f, 1.0f, 0.0f };
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
-    GLfloat lightAmbient[] = { 2.0f, 2.0f, 2.0f, 1.0f };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, &lightAmbient[0]);
-
-    GLfloat lav = 0.8f;
-    GLfloat lightAmbientValues[] = { lav, lav, lav, lav };
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, &lightAmbientValues[0]);
+    GLfloat lightAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
