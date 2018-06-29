@@ -126,8 +126,7 @@ bool CGLEngine::Install()
     GLfloat lightPosition[] = { -1.0f, 0.0f, 1.0f, 0.0f };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
-    GLfloat lightAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+	SetAmbientLightIntensity(0.5f);
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
@@ -147,6 +146,12 @@ void CGLEngine::Uninstall()
         wglDeleteContext(RC);
         RC = 0;
     }
+}
+
+void CGLEngine::SetAmbientLightIntensity(float val)
+{
+    GLfloat lightAmbient[] = { val, val, val, 1.0f };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
 }
 
 void CGLEngine::UpdateRect()

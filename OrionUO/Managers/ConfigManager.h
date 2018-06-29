@@ -102,8 +102,8 @@ public:
     ushort AllianceMessageColor = 0;
     bool IgnoreGuildMessage = false;
     bool IgnoreAllianceMessage = false;
-    ushort LightLevel = 0;
-    bool ColoredLighting = false;
+    ushort LightLevel = 80;
+    ushort ShadowLevel = 50;
     bool LockResizingGameWindow = false;
 
     ushort InnocentColor = 0;
@@ -213,6 +213,7 @@ public:
     void SetCharacterBackpackStyle(uchar val);
 
     void SetLightLevel(uchar val);
+    void SetShadowLevel(uchar val);
 
     void Init();
 
@@ -320,7 +321,7 @@ public:
         CMKC_IGNORE_GUILD_MESSAGE,
         CMKC_IGNORE_ALLIANCE_MESSAGE,
         CMKC_LIGHT_LEVEL,
-        CMKC_COLORED_LIGHTING,
+        CMKC_SHADOW_LEVEL,
         CMKC_LOCK_RESIZING_GAME_WINDOW,
         CMKC_LOCK_GUMPS_MOVING,
         CMKC_INNOCENT_COLOR,

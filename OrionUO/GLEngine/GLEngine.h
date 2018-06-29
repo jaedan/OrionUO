@@ -29,6 +29,8 @@ public:
 
     void Uninstall();
 
+	void SetAmbientLightIntensity(float val);
+
     void UpdateRect();
 
     void BeginDraw();

@@ -2347,17 +2347,12 @@ int COrion::ValueInt(const VALUE_KEY_INT &key, int value)
 
             break;
         }
-        case VKI_DARK_NIGHTS:
+        case VKI_LIGHT_LEVEL:
         {
             break;
         }
-        case VKI_COLORED_LIGHTING:
+        case VKI_SHADOW_LEVEL:
         {
-            if (value == -1)
-                value = g_ConfigManager.ColoredLighting;
-            else
-                g_ConfigManager.ColoredLighting = (value != 0);
-
             break;
         }
         case VKI_CRIMINAL_ACTIONS_QUERY:
