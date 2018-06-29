@@ -126,7 +126,7 @@ bool CGLEngine::Install()
     GLfloat lightPosition[] = { -1.0f, 0.0f, 1.0f, 0.0f };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
-	SetAmbientLightIntensity(0.5f);
+    SetAmbientLightIntensity(0.5f);
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 

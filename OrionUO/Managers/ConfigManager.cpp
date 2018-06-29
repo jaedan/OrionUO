@@ -637,9 +637,9 @@ void CConfigManager::SetShadowLevel(uchar val)
 {
     ShadowLevel = val;
 
-	float intensity = (float)val / 100.0f;
+    float intensity = (float)val / 100.0f;
 
-	g_GL.SetAmbientLightIntensity(intensity);
+    g_GL.SetAmbientLightIntensity(intensity);
 }
 
 ushort CConfigManager::GetColorByNotoriety(uchar notoriety)

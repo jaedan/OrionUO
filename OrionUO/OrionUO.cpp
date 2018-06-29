@@ -1597,10 +1597,6 @@ void COrion::SaveLocalConfig(int serial)
     g_GumpManager.Save(path + "\\gumps_debug.cuo");
     g_CustomHousesManager.Save(path + "\\customhouses_debug.cuo");
 
-    LOG("managers:saving in to root\n");
-    g_ConfigManager.Save(g_App.UOFilesPath("orion_options.cfg"));
-    g_MacroManager.Save(g_App.UOFilesPath("macros_debug.cuo"));
-
     if (g_Player != NULL)
     {
         LOG("player exists\n");

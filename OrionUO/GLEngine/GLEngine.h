@@ -29,7 +29,7 @@ public:
 
     void Uninstall();
 
-	void SetAmbientLightIntensity(float val);
+    void SetAmbientLightIntensity(float val);
 
     void UpdateRect();
 
