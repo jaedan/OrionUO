@@ -307,12 +307,6 @@ void CMacroManager::LoadFromOptions()
 void CMacroManager::ChangePointer(CMacroObject *macro)
 {
     g_MacroPointer = macro;
-
-    if (g_MacroPointer == NULL && SendNotificationToPlugin)
-    {
-        SendNotificationToPlugin = false;
-        g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_END_MACRO_PAYING, 0, 0);
-    }
 }
 
 void CMacroManager::Execute()
@@ -1007,8 +1001,6 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 
                 g_LastTargetObject = obj->Serial;
                 g_LastAttackObject = obj->Serial;
-                g_PluginManager.WindowProc(
-                    g_OrionWindow.Handle, UOMSG_STATUS_REQUEST, (WPARAM)obj->Serial, 0);
             }
 
             break;

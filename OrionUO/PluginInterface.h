@@ -1,83 +1,132 @@
-
-
 #ifndef PLUGININTERFACE_H
 #define PLUGININTERFACE_H
 
 #include <Windows.h>
 
-typedef LRESULT WINDOW_PROC(HWND, UINT, WPARAM, LPARAM);
-typedef bool __cdecl PACKET_PROC(unsigned char *, const int &);
-typedef void __cdecl VOID_PROC();
-typedef bool __cdecl WORLD_MAP_DRAW_PROC();
-
-#define UOMSG_SET_SERVER_NAME WM_USER + 660
-#define UOMSG_SET_PLAYER_NAME WM_USER + 661
-#define UOMSG_UPDATE_PLAYER_XYZ WM_USER + 662
-#define UOMSG_UPDATE_PLAYER_DIR WM_USER + 663
-#define UOMSG_RECV WM_USER + 664
-#define UOMSG_SEND WM_USER + 665
-#define UOMSG_IP_SEND WM_USER + 666
-#define UOMSG_MENU_RESPONSE WM_USER + 669
-#define UOMSG_STATUS_REQUEST WM_USER + 670
-#define UOMSG_SELECTED_TILE WM_USER + 671
-#define UOMSG_END_MACRO_PAYING WM_USER + 672
-#define UOMSG_UPDATE_REMOVE_POS WM_USER + 673
-
-#pragma pack(push, 1)
-typedef struct UOI_PLAYER_XYZ_DATA
+#ifdef cplusplus
+extern "C"
 {
-    int X;
-    int Y;
-    int Z;
-} * PUOI_PLAYER_XYZ_DATA;
+#endif
 
-typedef struct UOI_SELECTED_TILE
-{
-    unsigned int Serial;
-    unsigned short Graphic;
-    unsigned short Color;
-    int X;
-    int Y;
-    int Z;
-    unsigned short LandGraphic;
-    int LandX;
-    int LandY;
-    int LandZ;
-} * PUOI_SELECTED_TILE;
+    enum UOMSG_MOUSE_BUTTON
+    {
+        UOMSG_MOUSE_BUTTON_MID = 0,
+        UOMSG_MOUSE_BUTTON_XTRA1,
+        UOMSG_MOUSE_BUTTON_XTRA2,
+    };
 
-typedef struct UOI_MENU_RESPONSE
-{
-    unsigned int Serial;
-    unsigned int ID;
-    int Code;
-} * PUOI_MENU_RESPONSE;
+    /* Message codes for messages sent from the client to the plugin */
+    enum UOMSG_TYPE
+    {
+        UOMSG_RECV = WM_USER + 660,
+        UOMSG_SEND,
+        UOMSG_DRAW,
+        UOMSG_SET_SERVER_NAME,
+        UOMSG_SET_PLAYER_NAME,
+        UOMSG_UPDATE_PLAYER_POSITION,
+        UOMSG_CLOSE,
+        UOMSG_DISCONNECT,
+        UOMSG_MOUSEBUTTONDOWN,
+        UOMSG_MOUSEBUTTONUP,
+        UOMSG_MOUSEWHEEL,
+        UOMSG_KEYDOWN,
+        UOMSG_KEYUP,
+        UOMSG_ACTIVEWINDOW,
+    };
 
-bool __cdecl PluginRecvFunction(unsigned char *buf, const int &size);
-bool __cdecl PluginSendFunction(unsigned char *buf, const int &size);
+    struct UOMSG
+    {
+        enum UOMSG_TYPE type;
 
-typedef struct PLUGIN_INTERFACE
-{
-    int InterfaceVersion;
-    int Size;
-    struct PLUGIN_CLIENT_INTERFACE *Client;
+        union {
+            struct
+            {
+                uint8_t *packet;
+                size_t sz;
+            } recv;
 
-    HWND WindowHandle;
-    int ClientVersion;
-    int ClientFlags;
+            struct
+            {
+                uint8_t *packet;
+                size_t sz;
+            } send;
 
-    PACKET_PROC *Recv;
-    PACKET_PROC *Send;
+            struct
+            {
+                const char *server_name;
+            } set_server_name;
 
-    class CPlugin *Owner;
+            struct
+            {
+                const char *player_name;
+            } set_player_name;
 
-    WINDOW_PROC *WindowProc;
-    PACKET_PROC *OnRecv;
-    PACKET_PROC *OnSend;
-    VOID_PROC *OnDisconnect;
-    VOID_PROC *OnWorldDraw;
-    VOID_PROC *OnSceneDraw;
-    WORLD_MAP_DRAW_PROC *OnWorldMapDraw;
-} * PPLUGIN_INTERFACE;
-#pragma pack(pop)
+            struct
+            {
+                uint16_t x;
+                uint16_t y;
+                uint8_t z;
+                uint8_t dir;
+            } update_position;
+
+            struct
+            {
+                enum UOMSG_MOUSE_BUTTON button;
+            } mouse_button_down;
+
+            struct
+            {
+                enum UOMSG_MOUSE_BUTTON button;
+            } mouse_button_up;
+
+            struct
+            {
+                bool up;
+            } mouse_wheel;
+
+            struct
+            {
+                uint32_t key_code;
+            } key_down;
+
+            struct
+            {
+                uint32_t key_code;
+            } key_up;
+
+            struct
+            {
+                bool active;
+            } active_window;
+        } u;
+    };
+
+    typedef void __cdecl PLUGIN_ENTRY(struct orion_plugin *plugin);
+    typedef int __cdecl ON_MESSAGE(struct UOMSG *msg);
+    typedef bool __cdecl SEND_PACKET(uint8_t *packet, size_t sz);
+    typedef bool __cdecl RECV_PACKET(uint8_t *packet, size_t sz);
+    typedef void __cdecl CAST_SPELL(uint32_t index);
+
+    struct orion_plugin
+    {
+        size_t size;
+
+        HWND WindowHandle;
+        int ClientVersion;
+        int ClientFlags;
+
+        struct
+        {
+            SEND_PACKET *send_packet;
+            RECV_PACKET *recv_packet;
+            CAST_SPELL *cast_spell;
+        } client;
+
+        ON_MESSAGE *OnMessage;
+    };
+
+#ifdef cplusplus
+}
+#endif
 
 #endif

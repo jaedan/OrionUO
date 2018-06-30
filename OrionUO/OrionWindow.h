@@ -31,7 +31,7 @@ protected:
     virtual void OnMidMouseButtonUp();
     virtual bool OnMidMouseButtonDoubleClick();
     virtual void OnMidMouseButtonScroll(bool up);
-    virtual void OnXMouseButton(bool up);
+    virtual void OnXMouseButton(ushort button);
     virtual void OnDragging();
     virtual void OnActivate();
     virtual void OnDeactivate();

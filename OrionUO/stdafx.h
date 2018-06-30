@@ -93,7 +93,6 @@ class CGump;
 
 #include "CharacterList.h"
 #include "ClickObject.h"
-#include "CommonInterfaces.h"
 #include "Container.h"
 #include "ContainerStack.h"
 #include "UseItemsList.h"
@@ -132,7 +131,6 @@ class CGump;
 
 #include "Network/UOHuffman.h"
 #include "Network/Packets.h"
-#include "Network/PluginPackets.h"
 #include "Network/Connection.h"
 
 #include "ToolTip.h"

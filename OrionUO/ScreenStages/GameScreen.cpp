@@ -1216,8 +1216,6 @@ void CGameScreen::DrawGameWindow(bool mode)
 
         IFOR (i, 0, m_ObjectHandlesCount)
             m_ObjectHandlesList[i]->DrawObjectHandlesTexture();
-
-        g_PluginManager.WorldDraw();
     }
     else
     {
@@ -1452,8 +1450,6 @@ void CGameScreen::PrepareContent()
                     g_Orion.OpenStatus(selchar->Serial);
                     g_GeneratedMouseDown = true;
                     g_OrionWindow.EmulateOnLeftMouseButtonDown();
-                    g_PluginManager.WindowProc(
-                        g_OrionWindow.Handle, UOMSG_STATUS_REQUEST, (WPARAM)selchar->Serial, 0);
                 }
             }
         }
@@ -1754,7 +1750,7 @@ void CGameScreen::Render(bool mode)
             TS_LEFT,
             UOFONT_BLACK_BORDER | UOFONT_FIXED);
 
-        g_PluginManager.SceneDraw();
+        g_PluginManager.DrawNotify();
 
         if (g_GameState == GS_GAME_BLOCKED)
         {

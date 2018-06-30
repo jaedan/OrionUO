@@ -564,7 +564,7 @@ void CPacketManager::OnReadFailed()
     g_Orion.DisconnectGump();
 
     g_AbyssPacket03First = true;
-    g_PluginManager.Disconnect();
+    g_PluginManager.DisconnectNotify();
 
     g_ConnectionManager.Disconnect();
 }
@@ -599,7 +599,7 @@ void CPacketManager::OnPacket()
 
     if (info.Direction != DIR_RECV && info.Direction != DIR_BOTH)
         LOG("message direction invalid: 0x%02X\n", *Start);
-    else if (g_PluginManager.PacketRecv(Start, (int)Size))
+    else if (!g_PluginManager.RecvNotify(Start, (int)Size))
     {
         if (info.Handler != 0)
         {
@@ -896,9 +896,6 @@ PACKET_HANDLER(EnterWorld)
 
     g_RemoveRangeXY.X = g_Player->GetX();
     g_RemoveRangeXY.Y = g_Player->GetY();
-
-    UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
 
     g_Player->OffsetX = 0;
     g_Player->OffsetY = 0;
@@ -5741,7 +5738,6 @@ PACKET_HANDLER(OrionMessages)
             existsMacros.Clear();
 
             g_MacroPointer = NULL;
-            g_MacroManager.SendNotificationToPlugin = true;
 
             IFOR (m, 0, count)
             {

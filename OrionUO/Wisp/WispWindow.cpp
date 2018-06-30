@@ -466,7 +466,7 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
         case WM_XBUTTONDOWN:
         {
             WISP_MOUSE::g_WispMouse->Update();
-            OnXMouseButton(!(short(HIWORD(wParam)) > 0));
+            OnXMouseButton(HIWORD(wParam));
 
             break;
         }

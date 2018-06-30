@@ -81,9 +81,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -717,9 +714,6 @@
     <ClInclude Include="Managers\PluginManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CommonInterfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PluginInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -818,9 +812,6 @@
     </ClInclude>
     <ClInclude Include="Gumps\GumpPropertyIcon.h">
       <Filter>Header Files\Gumps</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\PluginPackets.h">
-      <Filter>Header Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="Utility\PingThread.h">
       <Filter>Header Files\Utility</Filter>
@@ -1442,9 +1433,6 @@
     <ClCompile Include="Gumps\GumpSpellbook.cpp">
       <Filter>Source Files\Gumps</Filter>
     </ClCompile>
-    <ClCompile Include="CommonInterfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Managers\PluginManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -1528,9 +1516,6 @@
     </ClCompile>
     <ClCompile Include="Gumps\GumpPropertyIcon.cpp">
       <Filter>Source Files\Gumps</Filter>
-    </ClCompile>
-    <ClCompile Include="Network\PluginPackets.cpp">
-      <Filter>Source Files\Network</Filter>
     </ClCompile>
     <ClCompile Include="Utility\PingThread.cpp">
       <Filter>Source Files\Utility</Filter>

@@ -9,7 +9,6 @@ public:
     bool WaitingBandageTarget = false;
 
     uint WaitForTargetTimer = 0;
-    bool SendNotificationToPlugin = false;
 
 private:
     uint m_NextTimer{ 0 };

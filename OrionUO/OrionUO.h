@@ -25,7 +25,7 @@ public:
 private:
     uint m_CRC_Table[256];
 
-    std::list<std::tuple<std::string, std::string, uint32_t>> m_Plugins;
+    std::list<std::string> m_Plugins;
 
     uchar m_StaticTilesFilterFlags[0x10000];
 
@@ -102,8 +102,6 @@ private:
 
     string DecodeArgumentString(const char *text, int length);
 
-    void LoadPlugin(const string &libpath, const string &function, int flags);
-
     void LoadContaierOffsets();
 
 public:
@@ -177,9 +175,6 @@ public:
     ushort GetFallGraphic(ushort graphic);
     ushort GetWinterGraphic(ushort graphic);
     ushort GetDesolationGraphic(ushort graphic);
-
-    int ValueInt(const VALUE_KEY_INT &key, int value = -1);
-    string ValueString(const VALUE_KEY_STRING &key, string value = "");
 
     void ClearRemovedStaticsTextures();
 

@@ -1159,10 +1159,6 @@ void CGameWorld::UpdatePlayer(
 
         g_RemoveRangeXY.X = x;
         g_RemoveRangeXY.Y = y;
-
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
     }
 
     bool updateStatusbar = (g_Player->GetFlags() != flags);

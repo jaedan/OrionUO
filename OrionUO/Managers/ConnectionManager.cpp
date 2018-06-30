@@ -110,7 +110,6 @@ void CConnectionManager::SendIP(CSocket &socket, puchar seed)
 
 {
     WISPFUN_DEBUG("c139_f10");
-    g_PluginManager.WindowProc(g_OrionWindow.Handle, UOMSG_IP_SEND, (WPARAM)seed, 4);
     socket.Send(seed, 4);
 }
 

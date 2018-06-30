@@ -1034,14 +1034,8 @@ void CGameCharacter::ProcessAnimation()
             {
                 if (m_X != step.x || m_Y != step.y || m_Z != step.z)
                 {
-                    UOI_PLAYER_XYZ_DATA xyzData = { step.x, step.y, step.z };
-                    g_PluginManager.WindowProc(
-                        g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_XYZ, (WPARAM)&xyzData, 0);
+                    g_PluginManager.UpdatePlayerPosition(step.x, step.y, step.z, step.dir);
                 }
-
-                if (Dir != step.dir)
-                    g_PluginManager.WindowProc(
-                        g_OrionWindow.Handle, UOMSG_UPDATE_PLAYER_DIR, (WPARAM)step.dir, 0);
 
                 if (m_Z - step.z >= 22)
                 {

@@ -125,10 +125,6 @@ bool CPlayer::Walk(Direction direction, bool run)
         g_RemoveRangeXY.X = step.x;
         g_RemoveRangeXY.Y = step.y;
 
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
-
         step.anim = true;
 
         LOG("Step immediately animated\n");
@@ -184,9 +180,6 @@ void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, 
             g_RemoveRangeXY.X = x;
             g_RemoveRangeXY.Y = y;
 
-            UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-            g_PluginManager.WindowProc(
-                g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
             return;
         }
     }
@@ -242,10 +235,6 @@ void CPlayer::ConfirmWalk(uchar sequence)
 
         g_RemoveRangeXY.X = step.x;
         g_RemoveRangeXY.Y = step.y;
-
-        UOI_PLAYER_XYZ_DATA xyzData = { g_RemoveRangeXY.X, g_RemoveRangeXY.Y, 0 };
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_UPDATE_REMOVE_POS, (WPARAM)&xyzData, 0);
 
         QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
     }

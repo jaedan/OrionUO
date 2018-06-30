@@ -71,8 +71,7 @@ void CGameObject::SetName(const string &newName)
             g_OrionWindow.SetTitle(title);
         }
 
-        g_PluginManager.WindowProc(
-            g_OrionWindow.Handle, UOMSG_SET_PLAYER_NAME, (WPARAM)newName.c_str(), 0);
+        g_PluginManager.SetPlayerName(newName.c_str());
     }
 
     m_Name = newName;

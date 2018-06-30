@@ -1,167 +1,250 @@
-
-
 #include "stdafx.h"
 
 CPluginManager g_PluginManager;
 
-bool __cdecl PluginRecvFunction(puchar buf, const int &size)
+bool __cdecl plugin_send_to_client(uint8_t *packet, size_t sz)
 {
     WISPFUN_DEBUG("c_plgrcvfnc");
 
-    g_PacketManager.SavePluginReceivePacket(buf, size);
+    g_PacketManager.SavePluginReceivePacket(packet, sz);
 
     return true;
 }
 
-bool __cdecl PluginSendFunction(puchar buf, const int &size)
+bool __cdecl plugin_send_to_server(uint8_t *packet, size_t sz)
 {
     WISPFUN_DEBUG("c_plgsndfnc");
 
     uint ticks = g_Ticks;
-    g_TotalSendSize += size;
+    g_TotalSendSize += sz;
 
-    CPacketInfo &type = g_PacketManager.GetInfo(*buf);
+    CPacketInfo &type = g_PacketManager.GetInfo(*packet);
 
     LOG("--- ^(%d) s(+%d => %d) Plugin->Server:: %s\n",
         ticks - g_LastPacketTime,
-        size,
+        sz,
         g_TotalSendSize,
         type.Name);
 
     g_LastPacketTime = ticks;
     g_LastSendTime = ticks;
 
-    if (*buf == 0x80 || *buf == 0x91)
+    if (*packet == 0x80 || *packet == 0x91)
     {
-        LOG_DUMP(buf, 1);
+        LOG_DUMP(packet, 1);
         LOG("**** ACCOUNT AND PASSWORD CENSORED ****\n");
     }
     else
-        LOG_DUMP(buf, size);
+        LOG_DUMP(packet, sz);
 
-    g_ConnectionManager.Send(buf, size);
+    g_ConnectionManager.Send(packet, sz);
 
     return true;
 }
 
-CPlugin::CPlugin(uint flags)
-    : CBaseQueueItem()
-    , m_Flags(flags)
+void __cdecl plugin_cast_spell(uint32_t index)
 {
-    WISPFUN_DEBUG("c151_f1");
-    m_PPS = new PLUGIN_INTERFACE();
-    memset(m_PPS, 0, sizeof(PLUGIN_INTERFACE));
-
-    m_PPS->WindowHandle = g_OrionWindow.Handle;
-    m_PPS->ClientVersion = g_PacketManager.GetClientVersion();
-    m_PPS->ClientFlags = (g_FileManager.UseVerdata ? 0x01 : 0);
-}
-
-CPlugin::~CPlugin()
-{
-    WISPFUN_DEBUG("c151_f2");
-    if (m_PPS != NULL)
+    if (index >= 0)
     {
-        delete m_PPS;
-        m_PPS = NULL;
+        g_LastSpellIndex = index;
+
+        SendNotifyMessage(g_OrionWindow.Handle, ASSISTANTMSG_CAST_SPELL, (WPARAM)index, 0);
     }
 }
 
 CPluginManager::CPluginManager()
-    : CBaseQueue()
 {
 }
 
-LRESULT CPluginManager::WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
+void CPluginManager::LoadPlugin(const string &lib_path)
 {
-    WISPFUN_DEBUG("c152_f1");
-    LRESULT result = 0;
+    WISPFUN_DEBUG("c194_f16");
 
-    QFOR(plugin, m_Items, CPlugin *)
+    LOG("Loading %s...\n", lib_path);
+
+    HMODULE dll = LoadLibraryA(lib_path.c_str());
+
+    if (dll == nullptr)
     {
-        if (plugin->CanWindowProc() && plugin->m_PPS->WindowProc != NULL)
+        auto errorCode = GetLastError();
+        LOG("Failed to load %s\n", lib_path);
+        LOG("Error code: %i\n", errorCode);
+        return;
+    }
+
+    PLUGIN_ENTRY *entry = (PLUGIN_ENTRY *)GetProcAddress(dll, "Initialize");
+
+    if (entry == nullptr)
+    {
+        auto errorCode = GetLastError();
+        LOG("Failed to find function 'Initialize'\n");
+        LOG("Error code: %i\n", errorCode);
+        FreeLibrary(dll);
+        return;
+    }
+
+    struct orion_plugin *plugin = new orion_plugin;
+    if (plugin == nullptr)
+    {
+        auto errorCode = GetLastError();
+        LOG("Failed to allocate memory for plugin %s\n", lib_path);
+        FreeLibrary(dll);
+        return;
+    }
+
+    CRASHLOG("Plugin['%s'] loaded at: 0x%08X\n", lib_path.c_str(), dll);
+
+    plugin->WindowHandle = g_OrionWindow.Handle;
+    plugin->ClientVersionText = g_Orion.ClientVersionText;
+    plugin->ClientPath = g_App.UOFilesPathA;
+
+    plugin->client.recv_packet = plugin_send_to_client;
+    plugin->client.send_packet = plugin_send_to_server;
+    plugin->client.cast_spell = plugin_cast_spell;
+
+    entry(plugin);
+
+    m_Plugins.push_back(plugin);
+}
+
+bool CPluginManager::SendPluginMessage(struct UOMSG *msg)
+{
+    bool block = false;
+    for (const auto &plugin : m_Plugins)
+    {
+        if (plugin->OnMessage(msg))
         {
-            result = plugin->m_PPS->WindowProc(hWnd, msg, wparam, lparam);
+            block = true;
         }
     }
 
-    return result;
+    return block;
 }
 
-bool CPluginManager::PacketRecv(puchar buf, int size)
+bool CPluginManager::RecvNotify(uint8_t *packet, size_t sz)
 {
-    WISPFUN_DEBUG("c152_f2");
-    bool result = true;
+    struct UOMSG msg;
 
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->CanParseRecv() && plugin->m_PPS->OnRecv != NULL)
-        {
-            bool funRet = plugin->m_PPS->OnRecv(buf, size);
-
-            if (result)
-                result = funRet;
-        }
-    }
-
-    return result;
+    msg.type = UOMSG_RECV;
+    msg.u.recv.packet = packet;
+    msg.u.recv.sz = sz;
+    return SendPluginMessage(&msg);
 }
 
-bool CPluginManager::PacketSend(puchar buf, int size)
+bool CPluginManager::SendNotify(uint8_t *packet, size_t sz)
 {
-    WISPFUN_DEBUG("c152_f3");
-    bool result = true;
+    struct UOMSG msg;
 
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->CanParseSend() && plugin->m_PPS->OnSend != NULL)
-        {
-            bool funRet = plugin->m_PPS->OnSend(buf, size);
-
-            if (result)
-                result = funRet;
-        }
-    }
-
-    return result;
+    msg.type = UOMSG_SEND;
+    msg.u.recv.packet = packet;
+    msg.u.recv.sz = sz;
+    return SendPluginMessage(&msg);
 }
 
-void CPluginManager::Disconnect()
+void CPluginManager::DrawNotify()
 {
-    WISPFUN_DEBUG("c152_f4");
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->m_PPS->OnDisconnect != NULL)
-            plugin->m_PPS->OnDisconnect();
-    }
+    struct UOMSG msg;
+
+    msg.type = UOMSG_DRAW;
+    SendPluginMessage(&msg);
 }
 
-void CPluginManager::WorldDraw()
+void CPluginManager::SetServerName(const char *name)
 {
-    WISPFUN_DEBUG("c152_f5");
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->CanEnterWorldRender() && plugin->m_PPS->OnWorldDraw != NULL)
-            plugin->m_PPS->OnWorldDraw();
-    }
+    struct UOMSG msg;
+
+    msg.type = UOMSG_SET_SERVER_NAME;
+    msg.u.set_server_name.server_name = name;
+    SendPluginMessage(&msg);
 }
 
-void CPluginManager::SceneDraw()
+void CPluginManager::SetPlayerName(const char *name)
 {
-    WISPFUN_DEBUG("c152_f6");
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->CanEnterSceneRender() && plugin->m_PPS->OnSceneDraw != NULL)
-            plugin->m_PPS->OnSceneDraw();
-    }
+    struct UOMSG msg;
+
+    msg.type = UOMSG_RECV;
+    msg.u.set_player_name.player_name = name;
+    SendPluginMessage(&msg);
 }
 
-void CPluginManager::WorldMapDraw()
+void CPluginManager::UpdatePlayerPosition(uint16_t x, uint16_t y, uint8_t z, uint8_t dir)
 {
-    WISPFUN_DEBUG("c152_f7");
-    QFOR(plugin, m_Items, CPlugin *)
-    {
-        if (plugin->CanEnterWorldMapRender() && plugin->m_PPS->OnWorldMapDraw != NULL)
-            plugin->m_PPS->OnWorldMapDraw();
-    }
+    struct UOMSG msg;
+
+    msg.type = UOMSG_UPDATE_PLAYER_POSITION;
+    msg.u.update_position.x = x;
+    msg.u.update_position.y = y;
+    msg.u.update_position.z = z;
+    msg.u.update_position.dir = dir;
+    SendPluginMessage(&msg);
+}
+
+void CPluginManager::CloseNotify()
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_CLOSE;
+    SendPluginMessage(&msg);
+}
+
+void CPluginManager::DisconnectNotify()
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_DISCONNECT;
+    SendPluginMessage(&msg);
+}
+
+bool CPluginManager::MouseButtonDown(enum UOMSG_MOUSE_BUTTON button)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_MOUSEBUTTONDOWN;
+    msg.u.mouse_button_down.button = button;
+    return SendPluginMessage(&msg);
+}
+
+bool CPluginManager::MouseButtonUp(enum UOMSG_MOUSE_BUTTON button)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_MOUSEBUTTONUP;
+    msg.u.mouse_button_up.button = button;
+    return SendPluginMessage(&msg);
+}
+
+bool CPluginManager::MouseWheel(bool up)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_MOUSEWHEEL;
+    msg.u.mouse_wheel.up = up;
+    return SendPluginMessage(&msg);
+}
+
+bool CPluginManager::KeyDown(uint32_t key_code)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_KEYDOWN;
+    msg.u.key_down.key_code = key_code;
+    return SendPluginMessage(&msg);
+}
+
+bool CPluginManager::KeyUp(uint32_t key_code)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_KEYUP;
+    msg.u.key_up.key_code = key_code;
+    return SendPluginMessage(&msg);
+}
+
+void CPluginManager::ActivateWindow(bool activated)
+{
+    struct UOMSG msg;
+
+    msg.type = UOMSG_ACTIVEWINDOW;
+    msg.u.active_window.active = activated;
+    SendPluginMessage(&msg);
 }

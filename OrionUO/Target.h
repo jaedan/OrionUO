@@ -50,14 +50,6 @@ public:
 
     void SendCancelTarget();
 
-    void Plugin_SendTargetObject(int Serial);
-
-    void Plugin_SendTargetTile(ushort tileID, short x, short Y, char z);
-
-    void Plugin_SendCancelTarget();
-
-    void Plugin_SendTarget();
-
     void SendLastTarget();
 
     void SendTarget();

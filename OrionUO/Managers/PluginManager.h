@@ -1,43 +1,40 @@
-
-
 #ifndef PLUGINMANAGER_H
 #define PLUGINMANAGER_H
 
-class CPlugin : public CBaseQueueItem
+/* Message codes for messages sent from the assistant to the client */
+enum ASSISTANTMSG
 {
-private:
-    uint m_Flags{ 0 };
-
-public:
-    CPlugin(uint flags);
-    virtual ~CPlugin();
-
-    bool CanParseRecv() { return (m_Flags & PLUGIN_FLAGS_PARSE_RECV); }
-    bool CanParseSend() { return (m_Flags & PLUGIN_FLAGS_PARSE_SEND); }
-    bool CanRecv() { return (m_Flags & PLUGIN_FLAGS_RECV); }
-    bool CanSend() { return (m_Flags & PLUGIN_FLAGS_SEND); }
-    bool CanWindowProc() { return (m_Flags & PLUGIN_FLAGS_WINDOW_PROC); }
-    bool CanClientAccess() { return (m_Flags & PLUGIN_FLAGS_CLIENT_ACCESS); }
-    bool CanEnterWorldRender() { return (m_Flags & PLUGIN_FLAGS_GAME_WORLD_DRAW); }
-    bool CanEnterSceneRender() { return (m_Flags & PLUGIN_FLAGS_SCENE_DRAW); }
-    bool CanEnterWorldMapRender() { return (m_Flags & PLUGIN_FLAGS_WORLD_MAP_DRAW); }
-
-    PPLUGIN_INTERFACE m_PPS;
+    ASSISTANTMSG_RECV = WM_USER + 760,
+    ASSISTANTMSG_SEND,
+    ASSISTANTMSG_CAST_SPELL,
 };
 
-class CPluginManager : public CBaseQueue
+class CPluginManager
 {
+    std::list<struct orion_plugin *> m_Plugins;
+
+    bool SendPluginMessage(struct UOMSG *msg);
+
 public:
     CPluginManager();
     virtual ~CPluginManager() {}
 
-    LRESULT WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
-    bool PacketRecv(puchar buf, int size);
-    bool PacketSend(puchar buf, int size);
-    void Disconnect();
-    void WorldDraw();
-    void SceneDraw();
-    void WorldMapDraw();
+    void LoadPlugin(const string &lib_path);
+
+    bool RecvNotify(uint8_t *packet, size_t sz);
+    bool SendNotify(uint8_t *packet, size_t sz);
+    void DrawNotify();
+    void SetServerName(const char *name);
+    void SetPlayerName(const char *name);
+    void UpdatePlayerPosition(uint16_t x, uint16_t y, uint8_t z, uint8_t dir);
+    void CloseNotify();
+    void DisconnectNotify();
+    bool MouseButtonDown(enum UOMSG_MOUSE_BUTTON button);
+    bool MouseButtonUp(enum UOMSG_MOUSE_BUTTON button);
+    bool MouseWheel(bool up);
+    bool KeyDown(uint32_t key_code);
+    bool KeyUp(uint32_t key_code);
+    void ActivateWindow(bool activated);
 };
 
 extern CPluginManager g_PluginManager;
