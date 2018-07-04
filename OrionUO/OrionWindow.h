@@ -36,8 +36,8 @@ protected:
     virtual void OnActivate();
     virtual void OnDeactivate();
     virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam);
-    virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
-    virtual void OnKeyUp(const WPARAM &wParam, const LPARAM &lParam);
+    virtual bool OnKeyDown(const WPARAM &wParam, const LPARAM &lParam);
+    virtual bool OnKeyUp(const WPARAM &wParam, const LPARAM &lParam);
     virtual HRESULT OnRepaint(const WPARAM &wParam, const LPARAM &lParam);
     virtual void OnShow(bool show);
     virtual void OnMaximize();

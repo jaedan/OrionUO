@@ -104,8 +104,8 @@ protected:
     virtual void OnActivate() {}
     virtual void OnDeactivate() {}
     virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam) {}
-    virtual void OnKeyDown(const WPARAM &wParam, const LPARAM &lParam) {}
-    virtual void OnKeyUp(const WPARAM &wParam, const LPARAM &lParam) {}
+    virtual bool OnKeyDown(const WPARAM &wParam, const LPARAM &lParam) { return false; }
+    virtual bool OnKeyUp(const WPARAM &wParam, const LPARAM &lParam) { return false; }
     virtual HRESULT OnRepaint(const WPARAM &wParam, const LPARAM &lParam)
     {
         return (HRESULT)DefWindowProc(Handle, WM_NCPAINT, wParam, lParam);

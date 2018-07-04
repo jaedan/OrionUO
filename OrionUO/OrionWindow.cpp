@@ -373,26 +373,28 @@ void COrionWindow::OnCharPress(const WPARAM &wParam, const LPARAM &lParam)
     }
 }
 
-void COrionWindow::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
+bool COrionWindow::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c195_f20");
     if (g_GameState == GS_GAME)
     {
         if (g_PluginManager.KeyDown(wParam))
-            return;
+            return true;
     }
 
     if (wParam != VK_RETURN && g_CurrentScreen != NULL && g_ScreenEffectManager.Mode == SEM_NONE)
         g_CurrentScreen->OnKeyDown(wParam, lParam);
+
+    return false;
 }
 
-void COrionWindow::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
+bool COrionWindow::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
 {
     WISPFUN_DEBUG("c195_f21");
     if (g_GameState == GS_GAME)
     {
         if (g_PluginManager.KeyUp(wParam))
-            return;
+            return true;
     }
 
     if (g_CurrentScreen != NULL && g_ScreenEffectManager.Mode == SEM_NONE)
@@ -400,6 +402,8 @@ void COrionWindow::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
 
     if (wParam == 0x2C)
         g_ScreenshotBuilder.SaveScreen();
+
+    return false;
 }
 
 HRESULT COrionWindow::OnRepaint(const WPARAM &wParam, const LPARAM &lParam)

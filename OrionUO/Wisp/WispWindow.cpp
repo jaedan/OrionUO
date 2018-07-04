@@ -479,19 +479,19 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
         {
-            OnKeyDown(wParam, lParam);
+            bool block = OnKeyDown(wParam, lParam);
 
             if (wParam == VK_F4 && (GetAsyncKeyState(VK_MENU) & 0x80000000))
                 break;
 
-            return 0;
+            return block;
         }
         case WM_KEYUP:
         case WM_SYSKEYUP:
         {
-            OnKeyUp(wParam, lParam);
+            bool block = OnKeyUp(wParam, lParam);
 
-            return 0;
+            return block;
         }
         case WM_NCACTIVATE:
         {

@@ -36,13 +36,20 @@ int CApplication::Run(HINSTANCE hinstance)
     Hinstance = hinstance;
 
     MSG msg = { 0 };
+    LRESULT result;
 
     while (msg.message != WM_QUIT)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            result = DispatchMessage(&msg);
+            if (msg.message >= WM_KEYFIRST && msg.message <= WM_KEYLAST)
+            {
+                if (!result)
+                {
+                    TranslateMessage(&msg);
+                }
+            }
         }
         else
             Sleep(1);
