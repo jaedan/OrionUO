@@ -28,6 +28,7 @@
 *.uop
 *.pdb
 *.sf2
+/.vscode
 /.vs
 /Makefile*
 /ipch
