@@ -313,8 +313,8 @@ void CGameScreen::CalculateRenderList()
     {
         case DAS_IN_WARMODE:
         {
-            g_DrawAura =
-                g_Player->Warmode && (!g_ConfigManager.DrawAuraWithCtrlPressed || g_CtrlPressed);
+            g_DrawAura = (g_Player->WarMode == WarModeState::War) &&
+                         (!g_ConfigManager.DrawAuraWithCtrlPressed || g_CtrlPressed);
             break;
         }
         case DAS_ALWAYS:
@@ -2131,7 +2131,7 @@ bool CGameScreen::OnLeftMouseButtonDoubleClick()
             }
         }
 
-        if (g_Player->Warmode && charUnderMouse != g_PlayerSerial)
+        if ((g_Player->WarMode == WarModeState::War) && charUnderMouse != g_PlayerSerial)
             g_Orion.Attack(charUnderMouse);
         else
             g_Orion.DoubleClick(charUnderMouse);
@@ -2380,9 +2380,9 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     if (wParam == VK_TAB)
     {
         if (g_ConfigManager.HoldTabForCombat)
-            g_Orion.ChangeWarmode(1);
+            g_Player->ChangeWarMode(WarModeState::War);
         else
-            g_Orion.ChangeWarmode();
+            g_Player->ChangeWarMode(WarModeState::Toggle);
     }
 
     {
@@ -2410,6 +2410,6 @@ void CGameScreen::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
     if (wParam == VK_TAB && g_GameState == GS_GAME)
     {
         if (g_ConfigManager.HoldTabForCombat)
-            g_Orion.ChangeWarmode(0);
+            g_Player->ChangeWarMode(WarModeState::Peace);
     }
 }

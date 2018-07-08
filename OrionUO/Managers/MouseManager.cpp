@@ -112,7 +112,7 @@ int CMouseManager::GetFacing(int x1, int y1, int to_x, int to_y, int current_fac
 ushort CMouseManager::GetGameCursor()
 {
     WISPFUN_DEBUG("c147_f2");
-    int war = (int)(g_Player != NULL && g_Player->Warmode);
+    int war = (int)(g_Player != NULL && (g_Player->WarMode == WarModeState::War));
     ushort result = g_CursorData[war][9];
 
     if (g_Target.IsTargeting() && !g_ObjectInHand.Enabled)

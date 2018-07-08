@@ -9,6 +9,13 @@ enum class PlayerMovementState
     ANIMATE_ON_CONFIRM,
 };
 
+enum class WarModeState
+{
+    Peace = 0,
+    War = 1,
+    Toggle = 2
+};
+
 class CPlayer : public CGameCharacter
 {
 public:
@@ -22,7 +29,7 @@ public:
     ushort Weight = 0;
     short Armor = 0;
     uint Gold = 0;
-    bool Warmode = 0;
+    WarModeState WarMode = WarModeState::Peace;
     ushort MurderCounts = 0;
     uchar Followers = 0;
     uchar MaxFollowers = 5;
@@ -58,6 +65,9 @@ public:
     uint8_t SequenceNumber = 0;
     std::deque<Step> m_RequestedSteps;
     PlayerMovementState m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+
+    std::deque<WarModeState> m_WarModeRequests;
+    void ChangeWarMode(WarModeState state);
 
     CPlayer(int serial);
 

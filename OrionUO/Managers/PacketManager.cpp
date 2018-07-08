@@ -1856,30 +1856,23 @@ PACKET_HANDLER(UpdateCharacter)
 PACKET_HANDLER(Warmode)
 {
     WISPFUN_DEBUG("c150_f36");
-    if (g_World == NULL)
-        return;
 
-    g_Player->Warmode = ReadUInt8();
+    WarModeState newState = (WarModeState)ReadUInt8();
 
-    g_GumpManager.UpdateContent(g_PlayerSerial, 0, GT_STATUSBAR);
-
-    CGumpPaperdoll *gump = (CGumpPaperdoll *)g_GumpManager.GetGump(g_PlayerSerial, 0, GT_PAPERDOLL);
-
-    if (gump != NULL && gump->m_ButtonWarmode != NULL)
+    if (g_Player->m_WarModeRequests.empty())
     {
-        ushort graphic = 0x07E5;
-
-        if (g_Player->Warmode)
-            graphic += 3;
-
-        gump->m_ButtonWarmode->Graphic = graphic;
-        gump->m_ButtonWarmode->GraphicSelected = graphic + 2;
-        gump->m_ButtonWarmode->GraphicPressed = graphic + 1;
-
-        gump->WantRedraw = true;
+        /* Unsolicited. */
+        g_Player->ChangeWarMode(newState);
+        return;
     }
 
-    g_World->MoveToTop(g_Player);
+    WarModeState expectedState = g_Player->m_WarModeRequests.front();
+    g_Player->m_WarModeRequests.pop_front();
+
+    if (newState != expectedState)
+    {
+        LOG("Expected war mode state to be %d, but got %d\n", expectedState, newState);
+    }
 }
 
 PACKET_HANDLER(PauseControl)
@@ -3180,7 +3173,7 @@ PACKET_HANDLER(DeathScreen)
         if (g_ConfigManager.GetMusic())
             g_Orion.PlayMusic(42, true);
 
-        g_Orion.ChangeWarmode(0);
+        g_Player->ChangeWarMode(WarModeState::Peace);
 
         g_DeathScreenTimer = g_Ticks + DEATH_SCREEN_DELAY;
     }

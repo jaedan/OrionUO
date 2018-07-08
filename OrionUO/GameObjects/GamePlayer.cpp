@@ -16,6 +16,72 @@ CPlayer::~CPlayer()
     WISPFUN_DEBUG("c21_f2");
 }
 
+void CPlayer::ChangeWarMode(WarModeState state)
+{
+    WISPFUN_DEBUG("c194_f106");
+
+    if (state == WarModeState::Toggle)
+    {
+        /* Toggle warmode */
+        if (WarMode == WarModeState::Peace)
+        {
+            WarMode = WarModeState::War;
+        }
+        else
+        {
+            WarMode = WarModeState::Peace;
+        }
+
+        CPacketChangeWarmode((uchar)WarMode).Send();
+        m_WarModeRequests.push_back(WarMode);
+    }
+    else
+    {
+        WarModeState previousMode = WarMode;
+
+        if (state != previousMode)
+        {
+            WarMode = state;
+            if (state == WarModeState::War)
+            {
+                /* Entering warmode */
+                if (g_ConfigManager.GetMusic())
+                {
+                    g_Orion.PlayMusic(rand() % 3 + 38, true);
+                }
+            }
+            else
+            {
+                /* Exiting warmode */
+                g_SoundManager.StopWarMusic();
+            }
+
+            CPacketChangeWarmode((uchar)WarMode).Send();
+            m_WarModeRequests.push_back(WarMode);
+        }
+    }
+
+    g_GumpManager.UpdateContent(g_PlayerSerial, 0, GT_STATUSBAR);
+
+    CGumpPaperdoll *gump = (CGumpPaperdoll *)g_GumpManager.GetGump(g_PlayerSerial, 0, GT_PAPERDOLL);
+
+    if (gump != NULL && gump->m_ButtonWarmode != NULL)
+    {
+        ushort graphic = 0x07E5;
+
+        if (WarMode == WarModeState::War)
+            graphic += 3;
+
+        gump->m_ButtonWarmode->Graphic = graphic;
+        gump->m_ButtonWarmode->GraphicSelected = graphic + 2;
+        gump->m_ButtonWarmode->GraphicPressed = graphic + 1;
+
+        gump->WantRedraw = true;
+    }
+
+    g_World->MoveToTop(this);
+}
+
 bool CPlayer::Walk(Direction direction, bool run)
 {
     WISPFUN_DEBUG("c177_f7");

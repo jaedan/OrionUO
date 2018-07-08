@@ -62,7 +62,7 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
                 Add(new CGUIButton(ID_GP_BUTTON_CHAT_OR_GUILD, 0x07E2, 0x07E4, 0x07E3, 185, 179));
         }
 
-        if (g_Player->Warmode)
+        if (g_Player->WarMode == WarModeState::War)
             m_ButtonWarmode = (CGUIButton *)Add(
                 new CGUIButton(ID_GP_BUTTON_WARMODE, 0x07E8, 0x07EA, 0x07E9, 185, 206));
         else
@@ -776,7 +776,7 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
         }
         case ID_GP_BUTTON_WARMODE:
         {
-            g_Orion.ChangeWarmode();
+            g_Player->ChangeWarMode(WarModeState::Toggle);
             break;
         }
         case ID_GP_BUTTON_STATUS:

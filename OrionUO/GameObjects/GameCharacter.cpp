@@ -505,7 +505,7 @@ void CGameCharacter::Draw(int x, int y)
 
     uint lastSBsel = g_StatusbarUnderMouse;
 
-    if (!IsPlayer() && g_Player->Warmode && g_SelectedObject.Object == this)
+    if (!IsPlayer() && (g_Player->WarMode == WarModeState::War) && g_SelectedObject.Object == this)
         g_StatusbarUnderMouse = Serial;
 
     g_AnimationManager.DrawCharacter(this, x, y);
@@ -839,7 +839,7 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
         bool InWar = InWarMode();
 
         if (IsPlayer())
-            InWar = g_Player->Warmode;
+            InWar = (g_Player->WarMode == WarModeState::War);
 
         if (isWalking)
         {

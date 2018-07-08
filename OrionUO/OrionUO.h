@@ -295,8 +295,6 @@ public:
 
     void EquipItem(uint container = 0);
 
-    void ChangeWarmode(uchar status = 0xFF);
-
     void Click(uint serial);
 
     void DoubleClick(uint serial);

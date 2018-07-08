@@ -150,7 +150,7 @@ bool CGumpTargetSystem::OnLeftMouseButtonDoubleClick()
 
     if (serial != g_PlayerSerial)
     {
-        if (g_Player->Warmode)
+        if (g_Player->WarMode == WarModeState::War)
         {
             if (serial < 0x40000000)
                 g_Orion.Attack(serial);

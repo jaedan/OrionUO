@@ -780,7 +780,7 @@ void CGumpStatusbar::UpdateContent()
             }
             else
             {
-                if (g_Player->Warmode)
+                if (g_Player->WarMode == WarModeState::War)
                     Add(new CGUIGumppic(0x0807, 0, 0));
                 else
                     Add(new CGUIGumppic(0x0803, 0, 0));
@@ -1135,7 +1135,7 @@ bool CGumpStatusbar::OnLeftMouseButtonDoubleClick()
     }
     else if (Serial != g_PlayerSerial)
     {
-        if (g_Player->Warmode)
+        if (g_Player->WarMode == WarModeState::War)
             g_Orion.Attack(Serial);
         else
             g_Orion.DoubleClick(Serial);

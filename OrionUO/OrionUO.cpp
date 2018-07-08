@@ -4659,27 +4659,6 @@ void COrion::EquipItem(uint container)
     }
 }
 
-void COrion::ChangeWarmode(uchar status)
-{
-    WISPFUN_DEBUG("c194_f106");
-    uchar newstatus = (uchar)(!g_Player->Warmode);
-
-    if (status != 0xFF)
-    {
-        if (g_Player->Warmode == (bool)status)
-            return;
-
-        newstatus = status;
-    }
-
-    if (newstatus == 1 && g_ConfigManager.GetMusic())
-        PlayMusic(rand() % 3 + 38, true);
-    else if (newstatus == 0)
-        g_SoundManager.StopWarMusic();
-
-    CPacketChangeWarmode(newstatus).Send();
-}
-
 void COrion::Click(uint serial)
 {
     WISPFUN_DEBUG("c194_f111");

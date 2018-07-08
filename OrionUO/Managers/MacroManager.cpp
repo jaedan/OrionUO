@@ -638,7 +638,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_WAR_PEACE:
         {
-            g_Orion.ChangeWarmode();
+            g_Player->ChangeWarMode(WarModeState::Toggle);
 
             break;
         }
