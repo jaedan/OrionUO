@@ -187,11 +187,8 @@ void CTarget::SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
 
-    if (g_Player->m_MovementState == PlayerMovementState::HOLDING_SPELL_TARGET)
-    {
-        LOG("Selected target. State transition to AWAITING_NEXT_CONFIRMATION.\n");
-        g_Player->m_MovementState = PlayerMovementState::AWAITING_NEXT_CONFIRMATION;
-    }
+    LOG("Selected target. State transition to delayed animation.\n");
+    g_Player->m_MovementState = PlayerMovementState::ANIMATE_ON_CONFIRM;
 
     if (Type != 2)
         g_Orion.Send(m_Data, sizeof(m_Data));

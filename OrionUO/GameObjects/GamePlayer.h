@@ -6,9 +6,7 @@
 enum class PlayerMovementState
 {
     ANIMATE_IMMEDIATELY = 0,
-    CASTING_SPELL,
-    HOLDING_SPELL_TARGET,
-    AWAITING_NEXT_CONFIRMATION,
+    ANIMATE_ON_CONFIRM,
 };
 
 class CPlayer : public CGameCharacter

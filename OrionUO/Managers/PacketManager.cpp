@@ -2783,17 +2783,6 @@ PACKET_HANDLER(Target)
     WISPFUN_DEBUG("c150_f51");
     g_Target.SetData(*this);
 
-    if (g_Player->m_MovementState == PlayerMovementState::CASTING_SPELL)
-    {
-        LOG("Target cursor while casting. State transition to HOLDING_SPELL_TARGET.\n");
-        g_Player->m_MovementState = PlayerMovementState::HOLDING_SPELL_TARGET;
-    }
-    else if (g_Player->m_MovementState == PlayerMovementState::HOLDING_SPELL_TARGET)
-    {
-        LOG("Target cancellation. State transition to AWAITING_NEXT_CONFIRMATION.\n");
-        g_Player->m_MovementState = PlayerMovementState::AWAITING_NEXT_CONFIRMATION;
-    }
-
     if (g_PartyHelperTimer > g_Ticks && g_PartyHelperTarget)
     {
         g_Target.SendTargetObject(g_PartyHelperTarget);

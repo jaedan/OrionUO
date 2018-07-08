@@ -4756,8 +4756,8 @@ void COrion::CastSpell(int index)
     {
         g_LastSpellIndex = index;
 
-        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
-        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
+        LOG("Spell cast starting. State transition to delayed animation.\n");
+        g_Player->m_MovementState = PlayerMovementState::ANIMATE_ON_CONFIRM;
         CPacketCastSpell(index).Send();
     }
 }
@@ -4769,8 +4769,8 @@ void COrion::CastSpellFromBook(int index, uint serial)
     {
         g_LastSpellIndex = index;
 
-        LOG("Spell cast starting. State transition to CASTING_SPELL.\n");
-        g_Player->m_MovementState = PlayerMovementState::CASTING_SPELL;
+        LOG("Spell cast starting. State transition to delayed animation.\n");
+        g_Player->m_MovementState = PlayerMovementState::ANIMATE_ON_CONFIRM;
         CPacketCastSpellFromBook(index, serial).Send();
     }
 }

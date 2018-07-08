@@ -184,7 +184,7 @@ void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, 
         }
     }
 
-    LOG("Ignoring errneous DenyWalk\n");
+    LOG("Ignoring erroneous DenyWalk\n");
 }
 
 void CPlayer::ConfirmWalk(uchar sequence)
@@ -220,17 +220,11 @@ void CPlayer::ConfirmWalk(uchar sequence)
 
         if (step.dir == endDir)
         {
-            if (m_MovementState == PlayerMovementState::CASTING_SPELL)
+            if (m_MovementState == PlayerMovementState::ANIMATE_ON_CONFIRM)
             {
-                LOG("Successful movement after casting. State transition to ANIMATE_IMMEDIATELY.\n");
+                LOG("Successful movement in delayed mode. Switching to animating immediately.\n");
                 m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
             }
-        }
-
-        if (m_MovementState == PlayerMovementState::AWAITING_NEXT_CONFIRMATION)
-        {
-            LOG("Received next walk confirmation. State transition to ANIMATE_IMMEDIATELY.\n");
-            m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
         }
 
         g_RemoveRangeXY.X = step.x;
