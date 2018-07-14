@@ -67,7 +67,7 @@ bool CGUITilepicHightlighted::Select()
 
         IFOR (i, 0, count)
         {
-            if (th->Select(m_X + offset, m_Y + offset, !CheckPolygone))
+            if (th->Select(m_X + offset, m_Y + offset, !CheckPolygon))
                 return true;
 
             offset = 5;

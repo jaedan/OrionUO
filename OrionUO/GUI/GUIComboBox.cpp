@@ -214,7 +214,7 @@ void CGUIComboBox::Draw(bool checktrans)
                 if (g_SelectedObject.Object == item)
                 {
                     glColor4f(0.7f, 0.7f, 0.7f, 1.0f);
-                    g_GL.DrawPolygone(currentX, currentY, m_WorkWidth, 14);
+                    g_GL.DrawPolygon(currentX, currentY, m_WorkWidth, 14);
                     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
                 }
 
@@ -319,7 +319,7 @@ bool CGUIComboBox::Select()
         if (ShowMaximizedCenter)
             currentY -= m_WorkHeight / 2;
 
-        select = g_Orion.PolygonePixelsInXY(currentX, currentY, m_WorkWidth, m_WorkHeight);
+        select = g_Orion.PolygonPixelsInXY(currentX, currentY, m_WorkWidth, m_WorkHeight);
 
         if (!select)
         {
@@ -371,7 +371,7 @@ CBaseGUI *CGUIComboBox::SelectedItem()
         {
             if (item->Type == GOT_TEXT)
             {
-                if (g_Orion.PolygonePixelsInXY(currentX, currentY, m_WorkWidth, 14))
+                if (g_Orion.PolygonPixelsInXY(currentX, currentY, m_WorkWidth, 14))
                 {
                     select = item;
                     break;

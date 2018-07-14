@@ -410,7 +410,7 @@ void CGLEngine::DrawLine(int x, int y, int targetX, int targetY)
     glEnable(GL_TEXTURE_2D);
 }
 
-void CGLEngine::DrawPolygone(int x, int y, int width, int height)
+void CGLEngine::DrawPolygon(int x, int y, int width, int height)
 {
     WISPFUN_DEBUG("c29_f27");
     glDisable(GL_TEXTURE_2D);

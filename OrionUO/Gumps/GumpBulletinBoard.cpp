@@ -30,7 +30,7 @@ CGumpBulletinBoard::CGumpBulletinBoard(uint serial, short x, short y, string nam
         button->GraphicSelected = 0x0824;
         button->GraphicPressed = 0x0824;
         button->SelectOnly = true;
-        button->CheckPolygone = true;
+        button->CheckPolygon = true;
         button->SetY(button->GetY() - 14);
     }
 
@@ -42,7 +42,7 @@ CGumpBulletinBoard::CGumpBulletinBoard(uint serial, short x, short y, string nam
         button->GraphicSelected = 0x0825;
         button->GraphicPressed = 0x0825;
         button->SelectOnly = true;
-        button->CheckPolygone = true;
+        button->CheckPolygon = true;
         button->SetY(button->GetY() - 14);
     }
 

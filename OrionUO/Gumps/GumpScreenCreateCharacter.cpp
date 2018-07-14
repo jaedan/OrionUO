@@ -101,7 +101,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         uint clr = g_ColorManager.Color16To32(color);
 
-        Add(new CGUIColoredPolygone(ID_CCS_SKIN_TONE, color, 490, 154, 120, 25, clr));
+        Add(new CGUIColoredPolygon(ID_CCS_SKIN_TONE, color, 490, 154, 120, 25, clr));
 
         entry = (CGUITextEntry *)Add(new CGUITextEntry(
             ID_CCS_SHIRT_COLOR,
@@ -127,7 +127,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         clr = g_ColorManager.Color16To32(color);
 
-        Add(new CGUIColoredPolygone(ID_CCS_SHIRT_COLOR, color, 490, 199, 120, 25, clr));
+        Add(new CGUIColoredPolygon(ID_CCS_SHIRT_COLOR, color, 490, 199, 120, 25, clr));
 
         entry = (CGUITextEntry *)Add(new CGUITextEntry(
             ID_CCS_SKIRT_OR_PANTS_COLOR,
@@ -155,7 +155,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         clr = g_ColorManager.Color16To32(color);
 
-        Add(new CGUIColoredPolygone(ID_CCS_SKIRT_OR_PANTS_COLOR, color, 490, 244, 120, 25, clr));
+        Add(new CGUIColoredPolygon(ID_CCS_SKIRT_OR_PANTS_COLOR, color, 490, 244, 120, 25, clr));
 
         entry = (CGUITextEntry *)Add(new CGUITextEntry(
             ID_CCS_HAIR_COLOR,
@@ -179,7 +179,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         clr = g_ColorManager.Color16To32(color);
 
-        Add(new CGUIColoredPolygone(ID_CCS_HAIR_COLOR, color, 490, 289, 120, 25, clr));
+        Add(new CGUIColoredPolygon(ID_CCS_HAIR_COLOR, color, 490, 289, 120, 25, clr));
 
         if (!g_CreateCharacterManager.GetFemale())
         {
@@ -205,7 +205,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
             clr = g_ColorManager.Color16To32(color);
 
-            Add(new CGUIColoredPolygone(ID_CCS_FACIAL_HAIR_COLOR, color, 490, 333, 120, 25, clr));
+            Add(new CGUIColoredPolygon(ID_CCS_FACIAL_HAIR_COLOR, color, 490, 333, 120, 25, clr));
         }
     }
     else
@@ -214,9 +214,9 @@ void CGumpScreenCreateCharacter::UpdateContent()
         {
             pushort colorPtr = g_CreateCharacterManager.GetSkinTonePtr();
             int maxX = 8;
-            int polygoneWidth = 15;
+            int polygonWidth = 15;
             int maxY = 8;
-            int polygoneHeight = 35;
+            int polygonHeight = 35;
 
             IFOR (y, 0, maxY)
             {
@@ -230,16 +230,15 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
                     uint clr = g_ColorManager.Color16To32(color);
 
-                    CGUIColoredPolygone *polygone =
-                        (CGUIColoredPolygone *)Add(new CGUIColoredPolygone(
-                            ID_CCS_COLOR_RANGE + ((int)x * maxY + (int)y),
-                            startColor,
-                            491 + ((int)x * polygoneWidth),
-                            138 + ((int)y * polygoneHeight),
-                            polygoneWidth,
-                            polygoneHeight,
-                            clr));
-                    polygone->DrawDot = true;
+                    CGUIColoredPolygon *polygon = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
+                        ID_CCS_COLOR_RANGE + ((int)x * maxY + (int)y),
+                        startColor,
+                        491 + ((int)x * polygonWidth),
+                        138 + ((int)y * polygonHeight),
+                        polygonWidth,
+                        polygonHeight,
+                        clr));
+                    polygon->DrawDot = true;
                 }
             }
         }
@@ -259,16 +258,15 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
                     uint clr = g_ColorManager.Color16To32(color);
 
-                    CGUIColoredPolygone *polygone =
-                        (CGUIColoredPolygone *)Add(new CGUIColoredPolygone(
-                            ID_CCS_COLOR_RANGE + ((int)y * 20 + (int)x),
-                            startColor,
-                            492 + ((int)x * 6),
-                            148 + ((int)y * 5),
-                            6,
-                            5,
-                            clr));
-                    polygone->DrawDot = true;
+                    CGUIColoredPolygon *polygon = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
+                        ID_CCS_COLOR_RANGE + ((int)y * 20 + (int)x),
+                        startColor,
+                        492 + ((int)x * 6),
+                        148 + ((int)y * 5),
+                        6,
+                        5,
+                        clr));
+                    polygon->DrawDot = true;
 
                     startColor += 5;
                 }
@@ -280,7 +278,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
         {
             pushort colorPtr = g_CreateCharacterManager.GetHairColorPtr();
             int maxY = 8;
-            int polygoneHeight = 35;
+            int polygonHeight = 35;
 
             IFOR (y, 0, maxY)
             {
@@ -294,16 +292,15 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
                     uint clr = g_ColorManager.Color16To32(color);
 
-                    CGUIColoredPolygone *polygone =
-                        (CGUIColoredPolygone *)Add(new CGUIColoredPolygone(
-                            ID_CCS_COLOR_RANGE + ((int)x * maxY + (int)y),
-                            startColor,
-                            490 + ((int)x * 20),
-                            140 + ((int)y * polygoneHeight),
-                            20,
-                            polygoneHeight,
-                            clr));
-                    polygone->DrawDot = true;
+                    CGUIColoredPolygon *polygon = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
+                        ID_CCS_COLOR_RANGE + ((int)x * maxY + (int)y),
+                        startColor,
+                        490 + ((int)x * 20),
+                        140 + ((int)y * polygonHeight),
+                        20,
+                        polygonHeight,
+                        clr));
+                    polygon->DrawDot = true;
                 }
             }
         }

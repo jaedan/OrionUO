@@ -56,7 +56,7 @@ CGumpShop::CGumpShop(uint serial, bool isBuyGump, short x, short y)
             button->Graphic = 0x0824;
             button->GraphicSelected = 0x0824;
             button->GraphicPressed = 0x0824;
-            button->CheckPolygone = true;
+            button->CheckPolygon = true;
 
             if (!i)
                 button->SetY(button->GetY() - 11);
@@ -71,7 +71,7 @@ CGumpShop::CGumpShop(uint serial, bool isBuyGump, short x, short y)
             button->Graphic = 0x0825;
             button->GraphicSelected = 0x0825;
             button->GraphicPressed = 0x0825;
-            button->CheckPolygone = true;
+            button->CheckPolygon = true;
 
             if (!i)
                 button->SetY(button->GetY() - 25);

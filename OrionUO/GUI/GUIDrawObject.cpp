@@ -69,7 +69,7 @@ bool CGUIDrawObject::Select()
     CGLTexture *th = g_Orion.ExecuteGump(Graphic);
 
     if (th != NULL)
-        return th->Select(m_X, m_Y, !CheckPolygone);
+        return th->Select(m_X, m_Y, !CheckPolygon);
 
     return false;
 }

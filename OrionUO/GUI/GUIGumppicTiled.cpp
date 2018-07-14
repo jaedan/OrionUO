@@ -65,7 +65,7 @@ bool CGUIGumppicTiled::Select()
 
         if (x >= 0 && y >= 0 && x < th->Width && y < th->Height)
         {
-            if (CheckPolygone)
+            if (CheckPolygon)
                 return true;
 
             int pos = (y * th->Width) + x;

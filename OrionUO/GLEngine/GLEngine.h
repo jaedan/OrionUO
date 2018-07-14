@@ -59,7 +59,7 @@ public:
 
     void DrawLine(int x, int y, int targetX, int targetY);
 
-    void DrawPolygone(int x, int y, int width, int height);
+    void DrawPolygon(int x, int y, int width, int height);
 
     void DrawCircle(float x, float y, float radius, int gradientMode = 0);
 

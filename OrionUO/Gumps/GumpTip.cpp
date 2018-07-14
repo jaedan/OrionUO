@@ -25,11 +25,11 @@ CGumpTip::CGumpTip(uint serial, short x, short y, string str, bool updates)
 
         m_ButtonPrevGump =
             (CGUIButton *)Add(new CGUIButton(ID_GT_PREV_GUMP, 0x09CC, 0x09CC, 0x09CC, 35, Height));
-        m_ButtonPrevGump->CheckPolygone = true;
+        m_ButtonPrevGump->CheckPolygon = true;
 
         m_ButtonNextGump =
             (CGUIButton *)Add(new CGUIButton(ID_GT_NEXT_GUMP, 0x09CD, 0x09CD, 0x09CD, 251, Height));
-        m_ButtonNextGump->CheckPolygone = true;
+        m_ButtonNextGump->CheckPolygon = true;
     }
 
     CGUIText *text = (CGUIText *)m_HTMLGump->Add(new CGUIText(0, 3, 3));

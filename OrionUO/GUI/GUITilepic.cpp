@@ -53,7 +53,7 @@ bool CGUITilepic::Select()
     CGLTexture *th = g_Orion.m_StaticDataIndex[Graphic].Texture;
 
     if (th != NULL)
-        return th->Select(m_X, m_Y, !CheckPolygone);
+        return th->Select(m_X, m_Y, !CheckPolygon);
 
     return false;
 }

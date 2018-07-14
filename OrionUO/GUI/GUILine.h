@@ -18,7 +18,7 @@ class CGUILine : public CBaseGUI
     uchar ColorA = 0;
 
 public:
-    CGUILine(int x, int y, int targetX, int targetY, int polygoneColor);
+    CGUILine(int x, int y, int targetX, int targetY, int polygonColor);
     virtual ~CGUILine();
 
     virtual void Draw(bool checktrans = false);

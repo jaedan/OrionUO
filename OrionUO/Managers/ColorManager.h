@@ -45,7 +45,7 @@ public:
 
     ushort GetRadarColorData(int c);
 
-    uint GetPolygoneColor(ushort c, ushort color);
+    uint GetPolygonColor(ushort c, ushort color);
 
     uint GetUnicodeFontColor(ushort &c, ushort color);
 

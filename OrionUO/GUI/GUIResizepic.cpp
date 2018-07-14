@@ -63,7 +63,7 @@ void CGUIResizepic::Draw(bool checktrans)
 bool CGUIResizepic::Select()
 {
     WISPFUN_DEBUG("c69_f3");
-    if (CheckPolygone)
+    if (CheckPolygon)
         return CGUIPolygonal::Select();
 
     return g_Orion.ResizepicPixelsInXY(Graphic, m_X, m_Y, Width, Height);

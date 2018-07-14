@@ -1533,7 +1533,7 @@ void CGameScreen::Render(bool mode)
         else
         {
             glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-            g_GL.DrawPolygone(
+            g_GL.DrawPolygon(
                 g_RenderBounds.GameWindowPosX,
                 g_RenderBounds.GameWindowPosY,
                 g_RenderBounds.GameWindowWidth,

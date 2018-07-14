@@ -51,9 +51,9 @@ void CGumpPropertyIcon::UpdateContent()
             Add(new CGUIGumppic(0x00E3, 0, 0));
         else
         {
-            Add(new CGUIColoredPolygone(
+            Add(new CGUIColoredPolygon(
                 0, 0, 0, 0, m_Texture.Width + 12, m_Texture.Height + 8, 0xC07F7F7F));
-            Add(new CGUIColoredPolygone(
+            Add(new CGUIColoredPolygon(
                 0, 0, 6, 20, m_Texture.Width, m_Texture.Height - 16, 0xC0000000));
 
             Add(new CGUIExternalTexture(&m_Texture, false, 6, 2));
@@ -66,8 +66,8 @@ void CGumpPropertyIcon::UpdateContent()
         if (height < 150)
             height = 150;
 
-        Add(new CGUIColoredPolygone(0, 0, 0, 0, m_Texture.Width + 12, height + 8, 0xC07F7F7F));
-        Add(new CGUIColoredPolygone(0, 0, 6, 20, m_Texture.Width, height - 16, 0xC0000000));
+        Add(new CGUIColoredPolygon(0, 0, 0, 0, m_Texture.Width + 12, height + 8, 0xC07F7F7F));
+        Add(new CGUIColoredPolygon(0, 0, 6, 20, m_Texture.Width, height - 16, 0xC0000000));
 
         Add(new CGUIExternalTexture(&m_Texture, false, 6, 2));
 

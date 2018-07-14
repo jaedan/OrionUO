@@ -12,7 +12,7 @@ public:
 
     bool PartialHue = false;
 
-    bool CheckPolygone = false;
+    bool CheckPolygon = false;
 
     bool Enabled = true;
 

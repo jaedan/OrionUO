@@ -1376,8 +1376,8 @@ void CAnimationManager::DrawCharacter(CGameCharacter *obj, int x, int y)
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-        uint auraColor = g_ColorManager.GetPolygoneColor(
-            16, g_ConfigManager.GetColorByNotoriety(obj->Notoriety));
+        uint auraColor =
+            g_ColorManager.GetPolygonColor(16, g_ConfigManager.GetColorByNotoriety(obj->Notoriety));
         glColor4ub(GetRValue(auraColor), GetGValue(auraColor), GetBValue(auraColor), 0xFF);
 
         glUniform1iARB(g_ShaderDrawMode, SDM_NO_COLOR);

@@ -488,9 +488,9 @@ void CGumpWorldMap::GenerateFrame(bool stop)
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-        g_GL.DrawPolygone(
+        g_GL.DrawPolygon(
             m_MapData->OffsetX + playerX + 0, m_MapData->OffsetY + playerY + 30, 16, 2);
-        g_GL.DrawPolygone(
+        g_GL.DrawPolygon(
             m_MapData->OffsetX + playerX + 7, m_MapData->OffsetY + playerY + 23, 2, 16);
         g_GL.DrawCircle(
             m_MapData->OffsetX + playerX + 8.0f, m_MapData->OffsetY + playerY + 31.0f, 3.0f);
@@ -705,7 +705,7 @@ void CGumpWorldMap::OnMidMouseButtonScroll(bool up)
     WISPFUN_DEBUG("c132_f20");
 
     if (!Minimized && !g_MouseManager.LeftButtonPressed && !g_MouseManager.RightButtonPressed &&
-        g_Orion.PolygonePixelsInXY(m_X + 8, m_Y + 31, Width - 16, Height - 16))
+        g_Orion.PolygonPixelsInXY(m_X + 8, m_Y + 31, Width - 16, Height - 16))
     {
         int ofs = 0;
 

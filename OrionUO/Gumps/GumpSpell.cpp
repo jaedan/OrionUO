@@ -17,7 +17,7 @@ CGumpSpell::CGumpSpell(uint serial, short x, short y, ushort graphic)
     m_SpellUnlocker = (CGUIButton *)Add(
         new CGUIButton(ID_GS_BUTTON_REMOVE_FROM_GROUP, 0x082C, 0x082C, 0x082C, 30, 16));
 
-    m_SpellUnlocker->CheckPolygone = true;
+    m_SpellUnlocker->CheckPolygon = true;
     m_SpellUnlocker->Visible = false;
 
     Add(new CGUIAlphaBlending(false, 0.0f));

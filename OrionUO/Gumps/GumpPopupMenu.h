@@ -21,7 +21,7 @@ class CGumpPopupMenu : public CGump
     int Height = 0;
 
 private:
-    CGUIColoredPolygone *m_Polygone{ NULL };
+    CGUIColoredPolygon *m_Polygon{ NULL };
 
 public:
     CGumpPopupMenu(uint serial, short x, short y);

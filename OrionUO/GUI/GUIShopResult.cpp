@@ -37,7 +37,7 @@ CBaseGUI *CGUIShopResult::SelectedItem()
     CBaseGUI *result = this;
     WISP_GEOMETRY::CSize size = m_MinMaxButtons->GetSize();
 
-    if (g_Orion.PolygonePixelsInXY(
+    if (g_Orion.PolygonPixelsInXY(
             m_X + m_MinMaxButtons->GetX(), m_Y + m_MinMaxButtons->GetY(), size.Width, size.Height))
         result = m_MinMaxButtons;
 

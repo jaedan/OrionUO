@@ -61,8 +61,8 @@ void CGumpSelectColor::UpdateContent()
             uint clr = g_ColorManager.Color16To32(color);
 
             uint serial = ID_GSC_COLORS + ((int)x * 30 + (int)y);
-            CGUIColoredPolygone *polygone =
-                (CGUIColoredPolygone *)m_DataBox->Add(new CGUIColoredPolygone(
+            CGUIColoredPolygon *polygon =
+                (CGUIColoredPolygon *)m_DataBox->Add(new CGUIColoredPolygon(
                     serial,
                     startColor,
                     34 + ((int)x * cellWidthX),
@@ -70,8 +70,8 @@ void CGumpSelectColor::UpdateContent()
                     cellWidthX,
                     cellWidthY,
                     clr));
-            polygone->CallOnMouseUp = true;
-            polygone->Focused = (m_SelectedIndex == serial);
+            polygon->CallOnMouseUp = true;
+            polygon->Focused = (m_SelectedIndex == serial);
 
             startColor += 5;
         }
@@ -101,7 +101,7 @@ void CGumpSelectColor::GUMP_BUTTON_EVENT_C
         WantRedraw = true;
 
         QFOR(item, m_DataBox->m_Items, CBaseGUI *)
-        ((CGUIColoredPolygone *)item)->Focused = (item->Serial == m_SelectedIndex);
+        ((CGUIColoredPolygon *)item)->Focused = (item->Serial == m_SelectedIndex);
     }
 }
 

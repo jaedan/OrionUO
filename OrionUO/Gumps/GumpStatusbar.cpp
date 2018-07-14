@@ -817,7 +817,7 @@ void CGumpStatusbar::UpdateContent()
 
             m_StatusbarUnlocker = (CGUIButton *)Add(
                 new CGUIButton(ID_GSB_BUTTON_REMOVE_FROM_GROUP, 0x082C, 0x082C, 0x082C, 136, 24));
-            m_StatusbarUnlocker->CheckPolygone = true;
+            m_StatusbarUnlocker->CheckPolygon = true;
             m_StatusbarUnlocker->Visible = InGroup();
         }
     }
@@ -1012,7 +1012,7 @@ void CGumpStatusbar::UpdateContent()
 
         m_StatusbarUnlocker = (CGUIButton *)Add(
             new CGUIButton(ID_GSB_BUTTON_REMOVE_FROM_GROUP, 0x082C, 0x082C, 0x082C, 136, 24));
-        m_StatusbarUnlocker->CheckPolygone = true;
+        m_StatusbarUnlocker->CheckPolygon = true;
         m_StatusbarUnlocker->Visible = InGroup();
     }
 

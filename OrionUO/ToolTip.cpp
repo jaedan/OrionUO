@@ -130,7 +130,7 @@ void CToolTip::Draw(int cursorWidth, int cursorHeight)
 
         glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
 
-        g_GL.DrawPolygone(x, y, Texture.Width + 8, Texture.Height + 8);
+        g_GL.DrawPolygon(x, y, Texture.Width + 8, Texture.Height + 8);
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 

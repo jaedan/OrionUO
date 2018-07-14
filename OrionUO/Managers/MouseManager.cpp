@@ -387,11 +387,11 @@ void CMouseManager::Draw(ushort id)
                 uint auraColor = 0;
 
                 if (g_Target.CursorType == 0)
-                    auraColor = g_ColorManager.GetPolygoneColor(16, 0x03B2);
+                    auraColor = g_ColorManager.GetPolygonColor(16, 0x03B2);
                 else if (g_Target.CursorType == 1)
-                    auraColor = g_ColorManager.GetPolygoneColor(16, 0x0023);
+                    auraColor = g_ColorManager.GetPolygonColor(16, 0x0023);
                 else if (g_Target.CursorType == 2)
-                    auraColor = g_ColorManager.GetPolygoneColor(16, 0x005A);
+                    auraColor = g_ColorManager.GetPolygonColor(16, 0x005A);
 
                 if (auraColor)
                 {

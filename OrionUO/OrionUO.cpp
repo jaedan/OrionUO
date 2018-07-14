@@ -3991,7 +3991,7 @@ void COrion::DrawLight(LIGHT_DATA &light)
     }
 }
 
-bool COrion::PolygonePixelsInXY(int x, int y, int width, int height)
+bool COrion::PolygonPixelsInXY(int x, int y, int width, int height)
 {
     WISPFUN_DEBUG("c194_f86");
     x = g_MouseManager.Position.X - x;

@@ -20,8 +20,7 @@ CGumpProperty::CGumpProperty(const wstring &text)
     if (m_Y < 0)
         m_Y = 0;
 
-    Add(new CGUIColoredPolygone(
-        0, 0, 0, 0, m_Texture.Width + 12, m_Texture.Height + 8, 0x7F000000));
+    Add(new CGUIColoredPolygon(0, 0, 0, 0, m_Texture.Width + 12, m_Texture.Height + 8, 0x7F000000));
 
     Add(new CGUIExternalTexture(&m_Texture, false, 6, 4));
 }

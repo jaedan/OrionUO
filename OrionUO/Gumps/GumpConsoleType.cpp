@@ -217,7 +217,7 @@ void CGumpConsoleType::UpdateContent()
             if (!i)
                 text0Height = entry->m_Entry.m_Texture.Height;
 
-            Add(new CGUIColoredPolygone(
+            Add(new CGUIColoredPolygon(
                 (int)i + 1,
                 0,
                 offsetX + 1,

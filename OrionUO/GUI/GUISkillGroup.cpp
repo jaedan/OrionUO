@@ -67,7 +67,7 @@ CBaseGUI *CGUISkillGroup::SelectedItem()
     WISPFUN_DEBUG("c75_f7");
     CBaseGUI *selected = m_Name;
 
-    if (g_Orion.PolygonePixelsInXY(m_X + m_Minimizer->GetX(), m_Y + m_Minimizer->GetY(), 14, 14))
+    if (g_Orion.PolygonPixelsInXY(m_X + m_Minimizer->GetX(), m_Y + m_Minimizer->GetY(), 14, 14))
         selected = m_Minimizer;
     else if (!GetMinimized())
     {
@@ -117,10 +117,10 @@ void CGUISkillGroup::Draw(bool checktrans)
     if (m_Name->Focused && g_EntryPointer == &m_Name->m_Entry)
     {
         drawOrnament = false;
-        g_GL.DrawPolygone(16, 0, 200, 14);
+        g_GL.DrawPolygon(16, 0, 200, 14);
     }
     else if (m_Name->Focused)
-        g_GL.DrawPolygone(16, 0, m_Name->m_Entry.m_Texture.Width, 14);
+        g_GL.DrawPolygon(16, 0, m_Name->m_Entry.m_Texture.Width, 14);
 
     m_Name->Draw(checktrans);
 

@@ -147,7 +147,7 @@ ushort CColorManager::GetRadarColorData(int c)
     return 0;
 }
 
-uint CColorManager::GetPolygoneColor(ushort c, ushort color)
+uint CColorManager::GetPolygonColor(ushort c, ushort color)
 {
     WISPFUN_DEBUG("c137_f8");
     if (color != 0 && color < m_HuesCount)

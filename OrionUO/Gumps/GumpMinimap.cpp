@@ -240,7 +240,7 @@ void CGumpMinimap::UpdateContent()
 
                 if (color)
                 {
-                    uint pcl = g_ColorManager.GetPolygoneColor(16, color);
+                    uint pcl = g_ColorManager.GetPolygonColor(16, color);
 
                     int x = go->GetX() - playerX;
                     int y = go->GetY() - playerY;
@@ -248,13 +248,13 @@ void CGumpMinimap::UpdateContent()
                     int gx = x - y;
                     int gy = x + y;
 
-                    m_DataBox->Add(new CGUIColoredPolygone(
+                    m_DataBox->Add(new CGUIColoredPolygon(
                         0, 0, gumpCenterX + gx, gumpCenterY + gy, 2, 2, pcl));
                 }
             }
         }
 
-        m_DataBox->Add(new CGUIColoredPolygone(0, 0, gumpCenterX, gumpCenterY, 2, 2, 0xFFFFFFFF));
+        m_DataBox->Add(new CGUIColoredPolygon(0, 0, gumpCenterX, gumpCenterY, 2, 2, 0xFFFFFFFF));
     }
 }
 

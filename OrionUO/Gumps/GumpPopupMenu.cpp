@@ -12,9 +12,9 @@ CGumpPopupMenu::CGumpPopupMenu(uint serial, short x, short y)
     g_PopupMenu = this;
     Page = 1;
 
-    m_Polygone = (CGUIColoredPolygone *)Add(new CGUIColoredPolygone(0, 0, 0, 0, 0, 0, 0xFFFFFFFE));
-    m_Polygone->DrawOnly = true;
-    m_Polygone->Visible = false;
+    m_Polygon = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(0, 0, 0, 0, 0, 0, 0xFFFFFFFE));
+    m_Polygon->DrawOnly = true;
+    m_Polygon->Visible = false;
 }
 
 CGumpPopupMenu::~CGumpPopupMenu()
@@ -158,22 +158,22 @@ void CGumpPopupMenu::PrepareContent()
     {
         CGUIHitBox *box = (CGUIHitBox *)g_SelectedObject.Object;
 
-        if (!m_Polygone->Visible || m_Polygone->GetY() != box->GetY())
+        if (!m_Polygon->Visible || m_Polygon->GetY() != box->GetY())
         {
             WantRedraw = true;
 
-            m_Polygone->SetX(box->GetX());
-            m_Polygone->SetY(box->GetY());
-            m_Polygone->Width = box->Width;
-            m_Polygone->Height = box->Height;
-            m_Polygone->Visible = true;
+            m_Polygon->SetX(box->GetX());
+            m_Polygon->SetY(box->GetY());
+            m_Polygon->Width = box->Width;
+            m_Polygon->Height = box->Height;
+            m_Polygon->Visible = true;
         }
     }
-    else if (m_Polygone->Visible)
+    else if (m_Polygon->Visible)
     {
         WantRedraw = true;
 
-        m_Polygone->Visible = false;
+        m_Polygon->Visible = false;
     }
 }
 
@@ -217,7 +217,7 @@ void CGumpPopupMenu::GUMP_BUTTON_EVENT_C
         }
 
         WantRedraw = true;
-        m_Polygone->Visible = false;
+        m_Polygon->Visible = false;
     }
     else
     {

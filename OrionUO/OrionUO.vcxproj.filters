@@ -306,9 +306,6 @@
     <ClInclude Include="GUI\GUIPolygonal.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\GUIColoredPolygone.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\GUIResizepic.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -795,6 +792,9 @@
     <ClInclude Include="Wisp\WispBinaryFileWriter.h">
       <Filter>Header Files\Wisp</Filter>
     </ClInclude>
+    <ClInclude Include="GUI\GUIColoredPolygon.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OrionUO.cpp">
@@ -1002,9 +1002,6 @@
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUIPolygonal.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\GUIColoredPolygone.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUIResizepic.cpp">
@@ -1471,6 +1468,9 @@
     </ClCompile>
     <ClCompile Include="Wisp\WispBinaryFileWriter.cpp">
       <Filter>Source Files\Wisp</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\GUIColoredPolygon.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

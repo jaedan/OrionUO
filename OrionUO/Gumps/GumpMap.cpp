@@ -294,7 +294,7 @@ CRenderObject *CGumpMap::Select()
                 }
             }
 
-            if (g_Orion.PolygonePixelsInXY(drawX, drawY, 10, 10))
+            if (g_Orion.PolygonPixelsInXY(drawX, drawY, 10, 10))
             {
                 g_SelectedObject.Init(item, this);
                 g_SelectedObject.Serial = item->Serial + ID_GM_PIN_LIST;
@@ -386,7 +386,7 @@ void CGumpMap::OnLeftMouseButtonUp()
                 int x = m_X + 24;
                 int y = m_Y + 32;
 
-                if (g_Orion.PolygonePixelsInXY(x, y, Width, Height))
+                if (g_Orion.PolygonPixelsInXY(x, y, Width, Height))
                 {
                     x = g_MouseManager.Position.X - x - 4;
                     y = g_MouseManager.Position.Y - y - 2;
@@ -407,7 +407,7 @@ void CGumpMap::OnLeftMouseButtonUp()
 
         int idx = g_PressedObject.LeftSerial - ID_GM_PIN_LIST - 1;
 
-        if (g_Orion.PolygonePixelsInXY(x, y, Width, Height))
+        if (g_Orion.PolygonPixelsInXY(x, y, Width, Height))
         {
             x = g_MouseManager.Position.X - (x - 4);
             y = g_MouseManager.Position.Y - (y - 2);

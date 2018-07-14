@@ -84,13 +84,13 @@ void CScreenEffectManager::Draw()
         glColor4f(ColorR, ColorG, ColorB, Alpha);
 
         if (Type == SET_TO_WHITE_THEN_BLACK && Alpha >= 1.0f)
-            g_GL.DrawPolygone(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
+            g_GL.DrawPolygon(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
         else
         {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            g_GL.DrawPolygone(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
+            g_GL.DrawPolygon(0, 0, g_OrionWindow.GetSize().Width, g_OrionWindow.GetSize().Height);
 
             glDisable(GL_BLEND);
         }

@@ -20,7 +20,7 @@ CGUISkillItem::CGUISkillItem(int serial, int useSerial, int statusSerial, int in
 
         ushort graphic = GetStatusButtonGraphic();
         m_ButtonStatus = new CGUIButton(statusSerial, graphic, graphic, graphic, 251, 0);
-        m_ButtonStatus->CheckPolygone = true;
+        m_ButtonStatus->CheckPolygon = true;
 
         g_FontManager.GenerateA(9, m_NameText, skill->Name, 0x0288);
 
@@ -97,7 +97,7 @@ CBaseGUI *CGUISkillItem::SelectedItem()
     WISPFUN_DEBUG("c76_f7");
     CBaseGUI *selected = this;
 
-    if (g_Orion.PolygonePixelsInXY(
+    if (g_Orion.PolygonPixelsInXY(
             m_X + m_ButtonStatus->GetX(), m_Y + m_ButtonStatus->GetY(), 14, 14))
         selected = m_ButtonStatus;
     else if (m_ButtonUse != NULL)
@@ -119,7 +119,7 @@ void CGUISkillItem::Draw(bool checktrans)
         m_ButtonUse->Draw(checktrans);
 
     if (g_PressedObject.LeftObject == this)
-        g_GL.DrawPolygone(20, 0, 250, 14);
+        g_GL.DrawPolygon(20, 0, 250, 14);
 
     m_NameText.Draw(22, 0, checktrans);
 

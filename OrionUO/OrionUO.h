@@ -245,7 +245,7 @@ public:
 
     void DrawLight(struct LIGHT_DATA &light);
 
-    bool PolygonePixelsInXY(int x, int y, int width, int height);
+    bool PolygonPixelsInXY(int x, int y, int width, int height);
 
     bool GumpPixelsInXY(ushort id, int x, int y);
 

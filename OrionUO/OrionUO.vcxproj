@@ -215,7 +215,7 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="GUI\GUIMinMaxButtons.h" />
     <ClInclude Include="GUI\GUIPage.h" />
     <ClInclude Include="GUI\GUIPolygonal.h" />
-    <ClInclude Include="GUI\GUIColoredPolygone.h" />
+    <ClInclude Include="GUI\GUIColoredPolygon.h" />
     <ClInclude Include="GUI\GUIRadio.h" />
     <ClInclude Include="GUI\GUIResizeButton.h" />
     <ClInclude Include="GUI\GUIResizepic.h" />
@@ -450,7 +450,7 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="GUI\GUIMinMaxButtons.cpp" />
     <ClCompile Include="GUI\GUIPage.cpp" />
     <ClCompile Include="GUI\GUIPolygonal.cpp" />
-    <ClCompile Include="GUI\GUIColoredPolygone.cpp" />
+    <ClCompile Include="GUI\GUIColoredPolygon.cpp" />
     <ClCompile Include="GUI\GUIRadio.cpp" />
     <ClCompile Include="GUI\GUIResizeButton.cpp" />
     <ClCompile Include="GUI\GUIResizepic.cpp" />

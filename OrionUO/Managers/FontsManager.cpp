@@ -2277,7 +2277,7 @@ UINT_LIST CFontsManager::GeneratePixelsW(
     if (color == 0xFFFF)
         datacolor = 0xFFFFFFFE;
     else
-        datacolor = g_ColorManager.GetPolygoneColor(cell, color) << 8 | 0xFF;
+        datacolor = g_ColorManager.GetPolygonColor(cell, color) << 8 | 0xFF;
 
     bool isItalic = (flags & UOFONT_ITALIC);
     bool isSolid = (flags & UOFONT_SOLID);

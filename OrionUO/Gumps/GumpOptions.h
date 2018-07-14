@@ -197,37 +197,37 @@ private:
     CGUISlider *m_SliderInformSkills{ NULL };
     CGUISlider *m_SliderPingTimer{ NULL };
 
-    CGUIColoredPolygone *m_ColorTooltipText{ NULL };
+    CGUIColoredPolygon *m_ColorTooltipText{ NULL };
 
-    CGUIColoredPolygone *m_ColorInputText{ NULL };
-    CGUIColoredPolygone *m_ColorMenuOption{ NULL };
-    CGUIColoredPolygone *m_ColorPlayerColorInMemberList{ NULL };
-    CGUIColoredPolygone *m_ColorChatText{ NULL };
-    CGUIColoredPolygone *m_ColorPlayerNameWithoutSpeakingPrivileges{ NULL };
-    CGUIColoredPolygone *m_ColorMutedText{ NULL };
-    CGUIColoredPolygone *m_ColorChannelModeratorName{ NULL };
-    CGUIColoredPolygone *m_ColorChannelModeratorText{ NULL };
-    CGUIColoredPolygone *m_ColorMyName{ NULL };
-    CGUIColoredPolygone *m_ColorMyText{ NULL };
-    CGUIColoredPolygone *m_ColorSystemMessage{ NULL };
-    CGUIColoredPolygone *m_ColorTextOutputBackground{ NULL };
-    CGUIColoredPolygone *m_ColorTextInputBackground{ NULL };
-    CGUIColoredPolygone *m_ColorUserListBackground{ NULL };
-    CGUIColoredPolygone *m_ColorConferenceListBackground{ NULL };
-    CGUIColoredPolygone *m_ColorCommandListBackground{ NULL };
+    CGUIColoredPolygon *m_ColorInputText{ NULL };
+    CGUIColoredPolygon *m_ColorMenuOption{ NULL };
+    CGUIColoredPolygon *m_ColorPlayerColorInMemberList{ NULL };
+    CGUIColoredPolygon *m_ColorChatText{ NULL };
+    CGUIColoredPolygon *m_ColorPlayerNameWithoutSpeakingPrivileges{ NULL };
+    CGUIColoredPolygon *m_ColorMutedText{ NULL };
+    CGUIColoredPolygon *m_ColorChannelModeratorName{ NULL };
+    CGUIColoredPolygon *m_ColorChannelModeratorText{ NULL };
+    CGUIColoredPolygon *m_ColorMyName{ NULL };
+    CGUIColoredPolygon *m_ColorMyText{ NULL };
+    CGUIColoredPolygon *m_ColorSystemMessage{ NULL };
+    CGUIColoredPolygon *m_ColorTextOutputBackground{ NULL };
+    CGUIColoredPolygon *m_ColorTextInputBackground{ NULL };
+    CGUIColoredPolygon *m_ColorUserListBackground{ NULL };
+    CGUIColoredPolygon *m_ColorConferenceListBackground{ NULL };
+    CGUIColoredPolygon *m_ColorCommandListBackground{ NULL };
 
-    CGUIColoredPolygone *m_ColorSpeech{ NULL };
-    CGUIColoredPolygone *m_ColorEmote{ NULL };
-    CGUIColoredPolygone *m_ColorPartyMessage{ NULL };
-    CGUIColoredPolygone *m_ColorGuildMessage{ NULL };
-    CGUIColoredPolygone *m_ColorAllianceMessage{ NULL };
+    CGUIColoredPolygon *m_ColorSpeech{ NULL };
+    CGUIColoredPolygon *m_ColorEmote{ NULL };
+    CGUIColoredPolygon *m_ColorPartyMessage{ NULL };
+    CGUIColoredPolygon *m_ColorGuildMessage{ NULL };
+    CGUIColoredPolygon *m_ColorAllianceMessage{ NULL };
 
-    CGUIColoredPolygone *m_ColorInnocent{ NULL };
-    CGUIColoredPolygone *m_ColorFriendly{ NULL };
-    CGUIColoredPolygone *m_ColorSomeone{ NULL };
-    CGUIColoredPolygone *m_ColorCriminal{ NULL };
-    CGUIColoredPolygone *m_ColorEnemy{ NULL };
-    CGUIColoredPolygone *m_ColorMurderer{ NULL };
+    CGUIColoredPolygon *m_ColorInnocent{ NULL };
+    CGUIColoredPolygon *m_ColorFriendly{ NULL };
+    CGUIColoredPolygon *m_ColorSomeone{ NULL };
+    CGUIColoredPolygon *m_ColorCriminal{ NULL };
+    CGUIColoredPolygon *m_ColorEnemy{ NULL };
+    CGUIColoredPolygon *m_ColorMurderer{ NULL };
 
     CGUIDataBox *m_MacroDataBox{ NULL };
     CGUICheckbox *m_MacroCheckboxShift{ NULL };

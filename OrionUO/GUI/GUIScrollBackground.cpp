@@ -123,7 +123,7 @@ bool CGUIScrollBackground::Select()
     if (!(x >= 0 && y >= 0 && x < Width && y < Height))
         return false;
 
-    if (CheckPolygone)
+    if (CheckPolygon)
         return true;
 
     bool select = false;

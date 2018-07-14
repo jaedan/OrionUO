@@ -14,7 +14,7 @@
 #include "GUIButtonTileart.h"
 #include "GUICheckbox.h"
 #include "GUIChecktrans.h"
-#include "GUIColoredPolygone.h"
+#include "GUIColoredPolygon.h"
 #include "GUIComboBox.h"
 #include "GUIText.h"
 #include "GUIComboboxText.h"

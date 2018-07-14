@@ -145,7 +145,7 @@ bool CGump::SelectLocker()
     WISPFUN_DEBUG("c84_f4");
     return (
         m_Locker.Serial && g_ShowGumpLocker &&
-        g_Orion.PolygonePixelsInXY(m_Locker.GetX(), m_Locker.GetY(), 10, 14));
+        g_Orion.PolygonPixelsInXY(m_Locker.GetX(), m_Locker.GetY(), 10, 14));
 }
 
 bool CGump::TestLockerClick()
@@ -613,7 +613,7 @@ void CGump::TestItemsLeftMouseDown(
                         gump->Page = box->ToPage;
                     }
                 }
-                case GOT_COLOREDPOLYGONE:
+                case GOT_COLOREDPOLYGON:
                 {
                     if (((CGUIPolygonal *)item)->CallOnMouseUp)
                         break;
@@ -857,7 +857,7 @@ void CGump::TestItemsLeftMouseUp(CGump *gump, CBaseGUI *start, int currentPage, 
 
                     return;
                 }
-                case GOT_COLOREDPOLYGONE:
+                case GOT_COLOREDPOLYGON:
                 {
                     if (!((CGUIPolygonal *)item)->CallOnMouseUp)
                         break;

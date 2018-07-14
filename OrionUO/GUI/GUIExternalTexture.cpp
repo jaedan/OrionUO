@@ -94,7 +94,7 @@ bool CGUIExternalTexture::Select()
 {
     WISPFUN_DEBUG("c53_f4");
     if (m_Texture != NULL)
-        return m_Texture->Select(m_X, m_Y, !CheckPolygone);
+        return m_Texture->Select(m_X, m_Y, !CheckPolygon);
 
     return false;
 }

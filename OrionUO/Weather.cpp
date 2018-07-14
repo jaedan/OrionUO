@@ -241,7 +241,7 @@ void CWeather::Draw(int x, int y)
                 effect->X += (effect->SpeedX * speedOffset);
                 effect->Y += (effect->SpeedY * speedOffset);
 
-                g_GL.DrawPolygone(x + (int)effect->X, y + (int)effect->Y, 2, 2);
+                g_GL.DrawPolygon(x + (int)effect->X, y + (int)effect->Y, 2, 2);
 
                 break;
             }

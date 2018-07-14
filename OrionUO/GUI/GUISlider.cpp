@@ -381,7 +381,7 @@ bool CGUISlider::Select()
         else
             buttonX += Offset;
 
-        if (th->Select(buttonX, buttonY, !CheckPolygone))
+        if (th->Select(buttonX, buttonY, !CheckPolygon))
             return true;
 
         if (BackgroundGraphic)

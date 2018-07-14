@@ -89,9 +89,9 @@ void CGumpSecureTrading::UpdateContent()
 
         if (g_PacketManager.GetClientVersion() < CV_500A)
         {
-            Add(new CGUIColoredPolygone(0, 0, 45, 90, 110, 60, 0xFF000001));
+            Add(new CGUIColoredPolygon(0, 0, 45, 90, 110, 60, 0xFF000001));
 
-            Add(new CGUIColoredPolygone(0, 0, 192, 70, 110, 60, 0xFF000001));
+            Add(new CGUIColoredPolygon(0, 0, 192, 70, 110, 60, 0xFF000001));
         }
 
         if (StateMy)
@@ -269,7 +269,7 @@ void CGumpSecureTrading::OnLeftMouseButtonUp()
         int x = m_X;
         int y = m_Y;
 
-        if (g_Orion.PolygonePixelsInXY(x + 45, y + 70, 110, 80))
+        if (g_Orion.PolygonPixelsInXY(x + 45, y + 70, 110, 80))
         {
             {
                 x = g_MouseManager.Position.X - x - 45;
