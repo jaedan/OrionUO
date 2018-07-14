@@ -337,13 +337,6 @@ bool CGameObject::Poisoned()
     return SA_Poisoned;
 }
 
-bool CGameObject::Flying()
-{
-    WISPFUN_DEBUG("c20_f13");
-
-    return (m_Flags & 0x04);
-}
-
 int CGameObject::IsGold(ushort graphic)
 {
     WISPFUN_DEBUG("c20_f14");

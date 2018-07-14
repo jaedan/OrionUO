@@ -891,8 +891,7 @@ int CGameCharacter::GetWalkSpeed(bool run, bool onMount)
     WISPFUN_DEBUG("c177_f6");
     bool mounted =
         (onMount ||
-         (g_SpeedMode == CST_FAST_UNMOUNT || g_SpeedMode == CST_FAST_UNMOUNT_AND_CANT_RUN) ||
-         Flying());
+         (g_SpeedMode == CST_FAST_UNMOUNT || g_SpeedMode == CST_FAST_UNMOUNT_AND_CANT_RUN));
 
     return CHARACTER_ANIMATION_DELAY_TABLE[mounted][run];
 }
