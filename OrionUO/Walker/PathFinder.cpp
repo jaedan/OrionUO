@@ -63,9 +63,6 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
                 {
                     if (!IsImpassable(tiledataFlags))
                         flags = POF_IMPASSABLE_OR_SURFACE | POF_SURFACE | POF_BRIDGE;
-
-                    if (stepState == PSS_FLYING && IsNoDiagonal(tiledataFlags))
-                        flags |= POF_NO_DIAGONAL;
                 }
 
                 int landMinZ = land->MinZ;
@@ -147,9 +144,6 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
 
                     if (dropFlags)
                         flags &= 0xFFFFFFFE;
-
-                    if (stepState == PSS_FLYING && obj->IsNoDiagonal())
-                        flags |= POF_NO_DIAGONAL;
                 }
 
                 if (flags)
@@ -257,15 +251,10 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     }
     else
     {
-        if (g_Player->Flying())
-            stepState = PSS_FLYING;
-        else
-        {
-            CGameItem *mount = g_Player->FindLayer(OL_MOUNT);
+        CGameItem *mount = g_Player->FindLayer(OL_MOUNT);
 
-            if (mount != NULL && mount->Graphic == 0x3EB3)
-                stepState = PSS_ON_SEA_HORSE;
-        }
+        if (mount != NULL && mount->Graphic == 0x3EB3)
+            stepState = PSS_ON_SEA_HORSE;
     }
 
     int minZ = -128;
@@ -295,23 +284,6 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     IFOR (i, 0, listSize)
     {
         const CPathObject &obj = list[i];
-
-        if ((obj.Flags & POF_NO_DIAGONAL) && stepState == PSS_FLYING)
-        {
-            int objAverageZ = obj.AverageZ;
-
-            int delta = abs(objAverageZ - (int)z);
-
-            if (delta <= 25)
-            {
-                if (objAverageZ != -128)
-                    resultZ = objAverageZ;
-                else
-                    resultZ = currentZ;
-
-                break;
-            }
-        }
 
         if (obj.Flags & POF_IMPASSABLE_OR_SURFACE)
         {

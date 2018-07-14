@@ -97,8 +97,6 @@ public:
 
     bool Poisoned();
 
-    bool Flying();
-
     bool YellowHits() { return (m_Flags & 0x08); }
 
     bool IgnoreCharacters() { return (m_Flags & 0x10); }
