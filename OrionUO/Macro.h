@@ -55,7 +55,7 @@ public:
 
     static CMacro *Load(WISP_FILE::CMappedFile &file);
 
-    void Save(WISP_FILE::CBinaryFileWritter &writter);
+    void Save(WISP_FILE::CBinaryFileWriter &writer);
 
     static CMacro *CreateBlankMacro();
 

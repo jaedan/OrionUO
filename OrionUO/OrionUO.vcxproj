@@ -369,7 +369,7 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="Weather.h" />
     <ClInclude Include="WeatherEffect.h" />
     <ClInclude Include="Wisp\WispApplication.h" />
-    <ClInclude Include="Wisp\WispBinaryFileWritter.h" />
+    <ClInclude Include="Wisp\WispBinaryFileWriter.h" />
     <ClInclude Include="Wisp\WispConnection.h" />
     <ClInclude Include="Wisp\WispDataStream.h" />
     <ClInclude Include="Wisp\WispDefinitions.h" />
@@ -603,7 +603,7 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="Weather.cpp" />
     <ClCompile Include="WeatherEffeect.cpp" />
     <ClCompile Include="Wisp\WispApplication.cpp" />
-    <ClCompile Include="Wisp\WispBinaryFileWritter.cpp" />
+    <ClCompile Include="Wisp\WispBinaryFileWriter.cpp" />
     <ClCompile Include="Wisp\WispConnection.cpp" />
     <ClCompile Include="Wisp\WispDataStream.cpp" />
     <ClCompile Include="Wisp\WispGeometry.cpp" />

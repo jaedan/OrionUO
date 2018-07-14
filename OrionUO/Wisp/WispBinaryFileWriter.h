@@ -1,18 +1,18 @@
 
-#ifndef WISPBINARYFILEWRITTER_H
-#define WISPBINARYFILEWRITTER_H
+#ifndef WISPBINARYFILEWRITER_H
+#define WISPBINARYFILEWRITER_H
 
 namespace WISP_FILE
 {
-class CBinaryFileWritter : public WISP_DATASTREAM::CDataWritter
+class CBinaryFileWriter : public WISP_DATASTREAM::CDataWriter
 {
 private:
     FILE *m_File{ NULL };
 
 public:
-    CBinaryFileWritter();
+    CBinaryFileWriter();
 
-    virtual ~CBinaryFileWritter();
+    virtual ~CBinaryFileWriter();
 
     bool Open(const string &path);
     bool Open(const wstring &path);

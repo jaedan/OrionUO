@@ -204,9 +204,6 @@
     <ClInclude Include="Managers\ConfigManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Wisp\WispBinaryFileWritter.h">
-      <Filter>Header Files\Wisp</Filter>
-    </ClInclude>
     <ClInclude Include="Managers\SoundManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -795,6 +792,9 @@
     <ClInclude Include="GUI\GUIBulletinBoardObject.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Wisp\WispBinaryFileWriter.h">
+      <Filter>Header Files\Wisp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OrionUO.cpp">
@@ -904,9 +904,6 @@
     </ClCompile>
     <ClCompile Include="Managers\ConfigManager.cpp">
       <Filter>Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Wisp\WispBinaryFileWritter.cpp">
-      <Filter>Source Files\Wisp</Filter>
     </ClCompile>
     <ClCompile Include="Managers\SoundManager.cpp">
       <Filter>Source Files\Managers</Filter>
@@ -1471,6 +1468,9 @@
     </ClCompile>
     <ClCompile Include="Utility\PingThread.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Wisp\WispBinaryFileWriter.cpp">
+      <Filter>Source Files\Wisp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

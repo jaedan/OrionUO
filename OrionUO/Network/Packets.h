@@ -3,7 +3,7 @@
 #ifndef PACKETS_H
 #define PACKETS_H
 
-class CPacket : public WISP_DATASTREAM::CDataWritter
+class CPacket : public WISP_DATASTREAM::CDataWriter
 {
 public:
     CPacket(size_t size, bool autoResize = false);

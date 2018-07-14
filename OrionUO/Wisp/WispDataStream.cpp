@@ -2,11 +2,11 @@
 
 namespace WISP_DATASTREAM
 {
-CDataWritter::CDataWritter()
+CDataWriter::CDataWriter()
 {
 }
 
-CDataWritter::CDataWritter(size_t size, bool autoResize)
+CDataWriter::CDataWriter(size_t size, bool autoResize)
     : AutoResize(autoResize)
 {
     WISPFUN_DEBUG("c4_f1");
@@ -14,14 +14,14 @@ CDataWritter::CDataWritter(size_t size, bool autoResize)
     Ptr = &m_Data[0];
 }
 
-CDataWritter::~CDataWritter()
+CDataWriter::~CDataWriter()
 {
     WISPFUN_DEBUG("c4_f2");
     m_Data.clear();
     Ptr = NULL;
 }
 
-void CDataWritter::Resize(size_t newSize, bool resetPtr)
+void CDataWriter::Resize(size_t newSize, bool resetPtr)
 {
     WISPFUN_DEBUG("c4_f3");
     m_Data.resize(newSize, 0);
@@ -30,7 +30,7 @@ void CDataWritter::Resize(size_t newSize, bool resetPtr)
         Ptr = &m_Data[0];
 }
 
-void CDataWritter::Move(const intptr_t &offset)
+void CDataWriter::Move(const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f4");
     if (AutoResize)
@@ -42,7 +42,7 @@ void CDataWritter::Move(const intptr_t &offset)
         Ptr += offset;
 }
 
-void CDataWritter::WriteDataBE(const puchar data, size_t size, const intptr_t &offset)
+void CDataWriter::WriteDataBE(const puchar data, size_t size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f5");
     if (AutoResize)
@@ -61,7 +61,7 @@ void CDataWritter::WriteDataBE(const puchar data, size_t size, const intptr_t &o
     }
 }
 
-void CDataWritter::WriteDataLE(const puchar data, size_t size, const intptr_t &offset)
+void CDataWriter::WriteDataLE(const puchar data, size_t size, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f6");
     if (AutoResize)
@@ -80,7 +80,7 @@ void CDataWritter::WriteDataLE(const puchar data, size_t size, const intptr_t &o
     }
 }
 
-void CDataWritter::WriteString(
+void CDataWriter::WriteString(
     const string &val, size_t length, bool nullTerminated, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f7");
@@ -102,7 +102,7 @@ void CDataWritter::WriteString(
     }
 }
 
-void CDataWritter::WriteWString(
+void CDataWriter::WriteWString(
     const wstring &val, size_t length, bool bigEndian, bool nullTerminated, const intptr_t &offset)
 {
     WISPFUN_DEBUG("c4_f8");

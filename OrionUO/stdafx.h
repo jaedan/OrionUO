@@ -58,7 +58,7 @@
 #include "Wisp/WispGlobal.h"
 #include "Wisp/WispApplication.h"
 #include "Wisp/WispDataStream.h"
-#include "Wisp/WispBinaryFileWritter.h"
+#include "Wisp/WispBinaryFileWriter.h"
 #include "Wisp/WispConnection.h"
 #include "Wisp/WispGeometry.h"
 #include "Wisp/WispLogger.h"

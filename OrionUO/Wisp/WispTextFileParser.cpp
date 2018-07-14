@@ -315,22 +315,22 @@ STRING_LIST CTextFileParser::GetTokens(const char *str, bool trim)
     return result;
 }
 
-CTextFileWritter::CTextFileWritter(const string &path)
+CTextFileWriter::CTextFileWriter(const string &path)
 {
     fopen_s(&m_File, path.c_str(), "w");
 }
 
-CTextFileWritter::CTextFileWritter(const wstring &path)
+CTextFileWriter::CTextFileWriter(const wstring &path)
 {
     _wfopen_s(&m_File, path.c_str(), L"w");
 }
 
-CTextFileWritter::~CTextFileWritter()
+CTextFileWriter::~CTextFileWriter()
 {
     Close();
 }
 
-void CTextFileWritter::Close()
+void CTextFileWriter::Close()
 {
     if (m_File != NULL)
     {
@@ -339,19 +339,19 @@ void CTextFileWritter::Close()
     }
 }
 
-void CTextFileWritter::WriteString(const string &key, const string &value)
+void CTextFileWriter::WriteString(const string &key, const string &value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + value + "\n").c_str(), m_File);
 }
 
-void CTextFileWritter::WriteInt(const string &key, int value)
+void CTextFileWriter::WriteInt(const string &key, int value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + std::to_string(value) + "\n").c_str(), m_File);
 }
 
-void CTextFileWritter::WriteBool(const string &key, bool value)
+void CTextFileWriter::WriteBool(const string &key, bool value)
 {
     if (m_File != NULL)
         fputs(string(key + "=" + (value ? "yes" : "no") + "\n").c_str(), m_File);

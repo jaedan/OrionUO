@@ -74,15 +74,15 @@ public:
     STRING_LIST GetTokens(const char *str, bool trim = true);
 };
 
-class CTextFileWritter
+class CTextFileWriter
 {
 private:
     FILE *m_File{ NULL };
 
 public:
-    CTextFileWritter(const string &path);
-    CTextFileWritter(const wstring &path);
-    ~CTextFileWritter();
+    CTextFileWriter(const string &path);
+    CTextFileWriter(const wstring &path);
+    ~CTextFileWriter();
 
     bool Opened() { return (m_File != NULL); };
 

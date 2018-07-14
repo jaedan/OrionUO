@@ -3,7 +3,7 @@
 #include "stdafx.h"
 
 CPacket::CPacket(size_t size, bool autoResize)
-    : WISP_DATASTREAM::CDataWritter(size, autoResize)
+    : WISP_DATASTREAM::CDataWriter(size, autoResize)
 {
 }
 

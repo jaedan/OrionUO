@@ -85,7 +85,7 @@ void CConnectionManager::Init()
     {
         if (LPHOSTENT lphost = gethostbyname(hostName))
         {
-            WISP_DATASTREAM::CDataWritter stream;
+            WISP_DATASTREAM::CDataWriter stream;
             stream.WriteUInt32LE(((LPIN_ADDR)lphost->h_addr)->s_addr);
             UCHAR_LIST &data = stream.Data();
 
@@ -138,7 +138,7 @@ bool CConnectionManager::Connect(const string &address, int port, puchar gameSee
 
                 SendIP(m_LoginSocket, m_Seed);
 
-                WISP_DATASTREAM::CDataWritter stream;
+                WISP_DATASTREAM::CDataWriter stream;
 
                 string str = g_Orion.ClientVersionText;
 

@@ -259,23 +259,23 @@ bool CMacroManager::Load(const string &path, const string &originalPath)
 void CMacroManager::Save(const string &path)
 {
     WISPFUN_DEBUG("c145_f4");
-    WISP_FILE::CBinaryFileWritter writter;
-    writter.Open(path);
+    WISP_FILE::CBinaryFileWriter writer;
+    writer.Open(path);
 
-    writter.WriteUInt8(0);
+    writer.WriteUInt8(0);
 
     short count = GetItemsCount();
 
-    writter.WriteInt16LE(count);
-    writter.WriteBuffer();
+    writer.WriteInt16LE(count);
+    writer.WriteBuffer();
 
     QFOR(obj, m_Items, CMacro *)
-    obj->Save(writter);
+    obj->Save(writer);
 
-    writter.WriteUInt32LE(0);
-    writter.WriteBuffer();
+    writer.WriteUInt32LE(0);
+    writer.WriteBuffer();
 
-    writter.Close();
+    writer.Close();
 }
 
 CMacro *CMacroManager::FindMacro(ushort key, bool alt, bool ctrl, bool shift)

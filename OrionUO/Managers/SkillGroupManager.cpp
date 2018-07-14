@@ -288,11 +288,11 @@ bool CSkillGroupManager::Load(string path)
 void CSkillGroupManager::Save(string path)
 {
     WISPFUN_DEBUG("c155_f13");
-    WISP_FILE::CBinaryFileWritter writter;
+    WISP_FILE::CBinaryFileWriter writer;
 
-    writter.Open(path);
+    writer.Open(path);
 
-    writter.WriteUInt8(0);
+    writer.WriteUInt8(0);
 
     Count = 0;
     CSkillGroupObject *group = m_Groups;
@@ -302,7 +302,7 @@ void CSkillGroupManager::Save(string path)
         group = group->m_Next;
     }
 
-    writter.WriteUInt16LE(Count);
+    writer.WriteUInt16LE(Count);
 
     group = m_Groups;
 
@@ -312,25 +312,25 @@ void CSkillGroupManager::Save(string path)
         size_t len = str.length() + 1;
 
         short size = (short)len + 2 + 2 + 2 + group->Count;
-        writter.WriteUInt16LE(size);
+        writer.WriteUInt16LE(size);
 
-        writter.WriteUInt16LE((short)len);
-        writter.WriteString(str, false);
+        writer.WriteUInt16LE((short)len);
+        writer.WriteString(str, false);
 
         short count = group->Count;
 
-        writter.WriteUInt16LE(count);
+        writer.WriteUInt16LE(count);
 
         IFOR (j, 0, count)
         {
             BYTE skill = group->GetItem(j);
-            writter.WriteUInt8(skill);
+            writer.WriteUInt8(skill);
         }
 
-        writter.WriteBuffer();
+        writer.WriteBuffer();
 
         group = group->m_Next;
     }
 
-    writter.Close();
+    writer.Close();
 }
