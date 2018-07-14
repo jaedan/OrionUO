@@ -67,7 +67,6 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0xC1, new PacketFilterCallback( OnLocalizedMessage ) );
 			PacketHandler.RegisterServerToClientFilter( 0xC8, new PacketFilterCallback( SetUpdateRange ) );
 			PacketHandler.RegisterServerToClientFilter( 0xCC, new PacketFilterCallback( OnLocalizedMessageAffix ) );
-			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) );
             PacketHandler.RegisterServerToClientFilter(0xFC, new PacketFilterCallback(OrionInfo));
@@ -2024,19 +2023,6 @@ namespace Assistant
 		private static void ServerSetWarMode( PacketReader p, PacketHandlerEventArgs args )
 		{
 			World.Player.Warmode = p.ReadBoolean();
-		}
-
-		private static void CustomHouseInfo( PacketReader p, PacketHandlerEventArgs args )
-		{
-			p.ReadByte(); // compression
-			p.ReadByte(); // Unknown
-
-			Item i = World.FindItem( p.ReadUInt32() );
-			if ( i != null )
-			{
-				i.HouseRevision = p.ReadInt32();
-				i.HousePacket = p.CopyBytes( 0, p.Length );
-			}
 		}
 
 		private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )

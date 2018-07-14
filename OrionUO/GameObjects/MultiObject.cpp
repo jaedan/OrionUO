@@ -39,33 +39,6 @@ void CMultiObject::Draw(int x, int y)
 
     ushort color = Color;
 
-    if (State)
-    {
-        if (State & CHMOF_IGNORE_IN_RENDER)
-            return;
-
-        if (State & CHMOF_INCORRECT_PLACE)
-            color = 0x002B;
-
-        if (State & CHMOF_TRANSPARENT)
-        {
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glColor4f(1.0f, 1.0f, 1.0f, 0.75f);
-
-            g_Orion.DrawStaticArt(Graphic, color, x, y);
-
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            glDisable(GL_BLEND);
-
-#if UO_DEBUG_INFO != 0
-            g_RenderedObjectsCountInGameWindow++;
-#endif
-
-            return;
-        }
-    }
-
 #if UO_DEBUG_INFO != 0
     g_RenderedObjectsCountInGameWindow++;
 #endif
@@ -97,17 +70,6 @@ void CMultiObject::Select(int x, int y)
     WISPFUN_DEBUG("c25_f4");
     if (!OnTarget)
     {
-        if (State)
-        {
-            if (State & CHMOF_IGNORE_IN_RENDER)
-                return;
-            else if ((State & CHMOF_TRANSPARENT) && !(State & CHMOF_GENERIC_INTERNAL))
-            {
-                if (g_CustomHouseGump == NULL || !g_CustomHouseGump->SelectedGraphic)
-                    return;
-            }
-        }
-
         RenderGraphic = Graphic;
 
         CRenderStaticObject::Select(x, y);

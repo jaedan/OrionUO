@@ -551,48 +551,11 @@ ushort CGameItem::GetMountAnimation()
     return graphic;
 }
 
-void CGameItem::ClearCustomHouseMultis(int state)
-{
-    CMulti *nextMulti = NULL;
-
-    int checkZ = m_Z + 7;
-
-    for (CMulti *multi = (CMulti *)m_Items; multi != NULL; multi = nextMulti)
-    {
-        nextMulti = (CMulti *)multi->m_Next;
-
-        CMultiObject *nextItem = NULL;
-
-        for (CMultiObject *item = (CMultiObject *)multi->m_Items; item != NULL; item = nextItem)
-        {
-            nextItem = (CMultiObject *)item->m_Next;
-
-            item->State = item->State & ~(CHMOF_TRANSPARENT | CHMOF_IGNORE_IN_RENDER |
-                                          CHMOF_VALIDATED_PLACE | CHMOF_INCORRECT_PLACE);
-
-            if (item->IsCustomHouseMulti())
-            {
-                if (!state || item->State & state)
-                    multi->Delete(item);
-            }
-            else if (item->GetZ() == checkZ)
-                item->State = item->State | CHMOF_FLOOR | CHMOF_IGNORE_IN_RENDER;
-        }
-
-        if (multi->m_Items == NULL)
-            Delete(multi);
-    }
-}
-
-CMultiObject *
-CGameItem::AddMulti(ushort graphic, ushort color, char x, char y, char z, bool isCustomHouseMulti)
+CMultiObject *CGameItem::AddMulti(ushort graphic, ushort color, char x, char y, char z)
 {
     CMultiObject *mo = NULL;
 
-    if (isCustomHouseMulti)
-        mo = new CCustomHouseMultiObject(graphic, color, GetX() + x, GetY() + y, z, 1);
-    else
-        mo = new CMultiObject(graphic, GetX() + x, GetY() + y, z, 1);
+    mo = new CMultiObject(graphic, GetX() + x, GetY() + y, z, 1);
 
     g_MapManager.AddRender(mo);
     AddMultiObject(mo);

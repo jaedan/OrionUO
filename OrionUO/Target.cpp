@@ -30,24 +30,6 @@ void CTarget::Reset()
     MultiGraphic = 0;
 }
 
-void CTarget::RequestFromCustomHouse()
-{
-    Type = 2;
-    CursorID = 0;
-    CursorType = 0;
-    Targeting = true;
-    MultiGraphic = 0;
-
-    if (g_CustomHouseGump != NULL)
-    {
-        g_CustomHouseGump->Erasing = false;
-        g_CustomHouseGump->SeekTile = false;
-        g_CustomHouseGump->SelectedGraphic = 0;
-        g_CustomHouseGump->CombinedStair = false;
-        g_CustomHouseGump->WantUpdateContent = true;
-    }
-}
-
 void CTarget::SetLastTargetObject(int serial)
 {
     Type = 0;
@@ -157,15 +139,6 @@ void CTarget::SendCancelTarget()
     pack32(m_Data + 15, 0);
 
     SendTarget();
-
-    if (g_CustomHouseGump != NULL)
-    {
-        g_CustomHouseGump->Erasing = false;
-        g_CustomHouseGump->SeekTile = false;
-        g_CustomHouseGump->SelectedGraphic = 0;
-        g_CustomHouseGump->CombinedStair = false;
-        g_CustomHouseGump->WantUpdateContent = true;
-    }
 }
 
 void CTarget::SendLastTarget()

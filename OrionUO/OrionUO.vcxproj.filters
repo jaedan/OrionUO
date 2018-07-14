@@ -780,18 +780,6 @@
     <ClInclude Include="ContainerStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gumps\GumpCustomHouse.h">
-      <Filter>Header Files\Gumps</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\CustomHouseObjects.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\CustomHouseMultiObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\CustomHousesManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Managers\SkillsManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -1474,18 +1462,6 @@
     </ClCompile>
     <ClCompile Include="ContainerStack.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Gumps\GumpCustomHouse.cpp">
-      <Filter>Source Files\Gumps</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\CustomHouseObjects.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\CustomHouseMultiObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Managers\CustomHousesManager.cpp">
-      <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Managers\UOFileReader.cpp">
       <Filter>Source Files\Managers</Filter>

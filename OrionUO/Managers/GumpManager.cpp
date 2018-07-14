@@ -462,9 +462,7 @@ void CGumpManager::Draw(bool blocked)
         {
             if (gump->CanBeDisplayed())
             {
-                if (g_CustomHouseGump == NULL || gump == g_CustomHouseGump ||
-                    gump->GumpType == GT_GENERIC)
-                    gump->Draw();
+                gump->Draw();
             }
 
             if (gump->GumpType == GT_MENUBAR)
@@ -474,7 +472,7 @@ void CGumpManager::Draw(bool blocked)
         gump = next;
     }
 
-    if (menuBarGump != NULL && (g_CustomHouseGump == NULL || menuBarGump == g_CustomHouseGump))
+    if (menuBarGump != NULL)
         menuBarGump->Draw();
 }
 
@@ -492,9 +490,7 @@ void CGumpManager::Select(bool blocked)
         {
             if (gump->CanBeDisplayed())
             {
-                if (g_CustomHouseGump == NULL || gump == g_CustomHouseGump ||
-                    gump->GumpType == GT_GENERIC)
-                    gump->Select();
+                gump->Select();
             }
 
             if (gump->GumpType == GT_MENUBAR)
@@ -504,8 +500,7 @@ void CGumpManager::Select(bool blocked)
         gump = next;
     }
 
-    if (menuBarGump != NULL && blocked == menuBarGump->Blocked &&
-        (g_CustomHouseGump == NULL || menuBarGump == g_CustomHouseGump))
+    if (menuBarGump != NULL && blocked == menuBarGump->Blocked)
         menuBarGump->Select();
 }
 

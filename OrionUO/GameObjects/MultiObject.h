@@ -23,8 +23,6 @@ public:
     virtual void Select(int x, int y);
 
     bool IsMultiObject() { return true; }
-
-    virtual bool IsCustomHouseMulti() { return false; }
 };
 
 #endif

@@ -43,9 +43,6 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
 
     for (CRenderWorldObject *obj = block->GetRender(bx, by); obj != NULL; obj = obj->m_NextXY)
     {
-        if (g_CustomHouseGump != NULL && obj->GetZ() < g_Player->GetZ())
-            continue;
-
         ushort graphic = obj->Graphic;
 
         if (obj->IsLandObject())
@@ -112,11 +109,6 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
                 else
                     dropFlags = ((graphic >= 0x3946 && graphic <= 0x3964) || graphic == 0x0082);
             }
-            else if (
-                g_CustomHouseGump != NULL && obj->IsMultiObject() &&
-                ((CMultiObject *)obj)->IsCustomHouseMulti() &&
-                !(((CMultiObject *)obj)->State & CHMOF_GENERIC_INTERNAL))
-                canBeAdd = false;
 
             if (canBeAdd)
             {
@@ -282,18 +274,6 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     CalculateMinMaxZ(minZ, maxZ, x, y, z, direction, stepState);
 
     vector<CPathObject> list;
-
-    if (g_CustomHouseGump != NULL)
-    {
-        RECT rect = { g_CustomHouseGump->StartPos.X,
-                      g_CustomHouseGump->StartPos.Y,
-                      g_CustomHouseGump->EndPos.X,
-                      g_CustomHouseGump->EndPos.Y };
-        POINT pos = { x, y };
-
-        if (!PtInRect(&rect, pos))
-            return false;
-    }
 
     if (!CreateItemsList(list, x, y, stepState) || !list.size())
         return false;

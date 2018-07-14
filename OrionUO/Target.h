@@ -42,8 +42,6 @@ public:
 
     void Reset();
 
-    void RequestFromCustomHouse();
-
     void SendTargetObject(int Serial);
 
     void SendTargetTile(ushort tileID, short x, short Y, char z);

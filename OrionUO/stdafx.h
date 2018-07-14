@@ -146,13 +146,11 @@ class CGump;
 #include "GUI/GUI.h"
 
 #include "Gumps/Gump.h"
-#include "GameObjects/CustomHouseObjects.h"
 #include "GameObjects/MapObject.h"
 #include "GameObjects/RenderStaticObject.h"
 #include "GameObjects/LandObject.h"
 #include "GameObjects/StaticObject.h"
 #include "GameObjects/MultiObject.h"
-#include "GameObjects/CustomHouseMultiObject.h"
 #include "GameObjects/GameObject.h"
 #include "GameObjects/GameItem.h"
 #include "GameObjects/GameCharacter.h"
@@ -168,7 +166,6 @@ class CGump;
 #include "Walker/PathFinder.h"
 
 #include "Target.h"
-#include "Managers/CustomHousesManager.h"
 
 #include "Gumps/GumpAbility.h"
 #include "Gumps/GumpBaseScroll.h"
@@ -179,7 +176,6 @@ class CGump;
 #include "Gumps/GumpCombatBook.h"
 #include "Gumps/GumpConsoleType.h"
 #include "Gumps/GumpContainer.h"
-#include "Gumps/GumpCustomHouse.h"
 #include "Gumps/GumpDrag.h"
 #include "Gumps/GumpSelectColor.h"
 #include "Gumps/GumpDye.h"

@@ -49,10 +49,7 @@ public:
 
     virtual void Select(int x, int y);
 
-    void ClearCustomHouseMultis(int state);
-
-    CMultiObject *
-    AddMulti(ushort graphic, ushort color, char x, char y, char z, bool isCustomHouseMulti);
+    CMultiObject *AddMulti(ushort graphic, ushort color, char x, char y, char z);
 
     void OnGraphicChange(int direction = 0);
 

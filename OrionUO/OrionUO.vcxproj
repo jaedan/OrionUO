@@ -158,8 +158,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="DefinitionMacro.h" />
     <ClInclude Include="EnumList.h" />
     <ClInclude Include="ExceptionFilter.h" />
-    <ClInclude Include="GameObjects\CustomHouseMultiObject.h" />
-    <ClInclude Include="GameObjects\CustomHouseObjects.h" />
     <ClInclude Include="GameObjects\GameCharacter.h" />
     <ClInclude Include="GameObjects\GameEffect.h" />
     <ClInclude Include="GameObjects\GameEffectDrag.h" />
@@ -244,7 +242,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="Gumps\GumpBulletinBoard.h" />
     <ClInclude Include="Gumps\GumpBulletinBoardItem.h" />
     <ClInclude Include="Gumps\GumpCombatBook.h" />
-    <ClInclude Include="Gumps\GumpCustomHouse.h" />
     <ClInclude Include="Gumps\GumpProperty.h" />
     <ClInclude Include="Gumps\GumpPropertyIcon.h" />
     <ClInclude Include="Gumps\GumpRacialAbilitiesBook.h" />
@@ -298,7 +295,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="Managers\ConnectionManager.h" />
     <ClInclude Include="Managers\CorpseManager.h" />
     <ClInclude Include="Managers\CreateCharacterManager.h" />
-    <ClInclude Include="Managers\CustomHousesManager.h" />
     <ClInclude Include="Managers\EffectManager.h" />
     <ClInclude Include="Managers\FileManager.h" />
     <ClInclude Include="Managers\FontsManager.h" />
@@ -400,8 +396,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="ContainerStack.cpp" />
     <ClCompile Include="DateTimeStamp.cpp" />
     <ClCompile Include="ExceptionFilter.cpp" />
-    <ClCompile Include="GameObjects\CustomHouseMultiObject.cpp" />
-    <ClCompile Include="GameObjects\CustomHouseObjects.cpp" />
     <ClCompile Include="GameObjects\GameCharacter.cpp" />
     <ClCompile Include="GameObjects\GameEffect.cpp" />
     <ClCompile Include="GameObjects\GameEffectDrag.cpp" />
@@ -485,7 +479,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="Gumps\GumpBulletinBoard.cpp" />
     <ClCompile Include="Gumps\GumpBulletinBoardItem.cpp" />
     <ClCompile Include="Gumps\GumpCombatBook.cpp" />
-    <ClCompile Include="Gumps\GumpCustomHouse.cpp" />
     <ClCompile Include="Gumps\GumpProperty.cpp" />
     <ClCompile Include="Gumps\GumpPropertyIcon.cpp" />
     <ClCompile Include="Gumps\GumpRacialAbilitiesBook.cpp" />
@@ -539,7 +532,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="Managers\ConnectionManager.cpp" />
     <ClCompile Include="Managers\CorpseManager.cpp" />
     <ClCompile Include="Managers\CreateCharacterManager.cpp" />
-    <ClCompile Include="Managers\CustomHousesManager.cpp" />
     <ClCompile Include="Managers\EffectManager.cpp" />
     <ClCompile Include="Managers\FileManager.cpp" />
     <ClCompile Include="Managers\FontsManager.cpp" />

@@ -1372,7 +1372,6 @@ void COrion::LoadLocalConfig(int serial)
     }
 
     g_GumpManager.Load(path + "\\gumps_debug.cuo");
-    g_CustomHousesManager.Load(path + "\\customhouses_debug.cuo");
 
     if (g_ConfigManager.OffsetInterfaceWindows)
         g_ContainerRect.MakeDefault();
@@ -1439,7 +1438,6 @@ void COrion::SaveLocalConfig(int serial)
     g_SkillGroupManager.Save(path + "\\skills_debug.cuo");
     g_MacroManager.Save(path + "\\macros_debug.cuo");
     g_GumpManager.Save(path + "\\gumps_debug.cuo");
-    g_CustomHousesManager.Save(path + "\\customhouses_debug.cuo");
 
     if (g_Player != NULL)
     {

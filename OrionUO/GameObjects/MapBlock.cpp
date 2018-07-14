@@ -287,8 +287,6 @@ void CMapBlock::AddRender(CRenderWorldObject *item, int x, int y)
             else
                 goto process_static;
         }
-        else if (item->IsMultiObject() && (((CMultiObject *)item)->State & CHMOF_GENERIC_INTERNAL))
-            priorityZ--;
         else
         {
         process_static:

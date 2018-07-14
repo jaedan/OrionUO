@@ -516,18 +516,6 @@ void CGameScreen::AddTileToRenderList(
             grayColor = 0x038E;
     }
 
-    if (g_CustomHouseGump != NULL)
-    {
-        RECT rect = { g_CustomHouseGump->StartPos.X,
-                      g_CustomHouseGump->StartPos.Y,
-                      g_CustomHouseGump->EndPos.X,
-                      g_CustomHouseGump->EndPos.Y + 1 };
-        POINT pos = { worldX, worldY };
-
-        if (!PtInRect(&rect, pos))
-            grayColor = 0x038E;
-    }
-
     for (; obj != NULL; obj = obj->m_NextXY)
     {
 #if UO_RENDER_LIST_SORT == 1
@@ -778,28 +766,6 @@ void CGameScreen::AddTileToRenderList(
         m_RenderList[m_RenderListCount].Object = obj;
         m_RenderList[m_RenderListCount].GrayColor = grayColor;
         obj->UseInRender = RenderIndex;
-
-        if (!grayColor && g_CustomHouseGump != NULL && g_Target.IsTargeting() &&
-            obj == g_SelectedObject.Object)
-        {
-            int zOffset = 0;
-
-            if (g_CustomHouseGump->CurrentFloor == 1)
-                zOffset = -7;
-
-            if (obj->GetZ() >= g_Player->GetZ() + zOffset && obj->GetZ() < g_Player->GetZ() + 20)
-            {
-                if (g_CustomHouseGump->Erasing)
-                {
-                    CUSTOM_HOUSE_BUILD_TYPE type;
-
-                    if (g_CustomHouseGump->CanEraseHere(obj, type))
-                        m_RenderList[m_RenderListCount].GrayColor = 0x0021;
-                }
-                else
-                    m_RenderList[m_RenderListCount].GrayColor = 0x0035;
-            }
-        }
 
         m_RenderListCount++;
     }
@@ -1681,11 +1647,6 @@ void CGameScreen::Render(bool mode)
                     case ROT_MULTI_OBJECT:
                     {
                         sprintf_s(soName, "Multi");
-
-                        if (((CMultiObject *)selRwo)->IsCustomHouseMulti())
-                            sprintf_s(soName, "Multi CH %04X", ((CMultiObject *)selRwo)->State);
-                        else
-                            sprintf_s(soName, "Multi");
                         break;
                     }
                     default:
@@ -1885,15 +1846,6 @@ void CGameScreen::OnLeftMouseButtonUp()
 
         if (g_SelectedObject.Object->IsWorldObject())
             rwo = (CRenderWorldObject *)g_SelectedObject.Object;
-
-        if (g_CustomHouseGump != NULL && g_Target.IsTargeting())
-        {
-            g_CustomHouseGump->OnTargetWorld(rwo);
-
-            g_MouseManager.LastLeftButtonClickTimer = 0;
-
-            return;
-        }
 
         if (g_Target.IsTargeting() && !g_ObjectInHand.Enabled)
         {

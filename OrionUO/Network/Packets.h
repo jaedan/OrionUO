@@ -476,12 +476,6 @@ public:
     CPacketToggleGargoyleFlying();
 };
 
-class CPacketCustomHouseDataReq : public CPacket
-{
-public:
-    CPacketCustomHouseDataReq(int serial);
-};
-
 class CPacketStunReq : public CPacket
 {
 public:
@@ -504,90 +498,6 @@ class CPacketWalkRequest : public CPacket
 {
 public:
     CPacketWalkRequest(uchar direction, uchar sequence, bool run);
-};
-
-class CPacketCustomHouseBackup : public CPacket
-{
-public:
-    CPacketCustomHouseBackup();
-};
-
-class CPacketCustomHouseRestore : public CPacket
-{
-public:
-    CPacketCustomHouseRestore();
-};
-
-class CPacketCustomHouseCommit : public CPacket
-{
-public:
-    CPacketCustomHouseCommit();
-};
-
-class CPacketCustomHouseBuildingExit : public CPacket
-{
-public:
-    CPacketCustomHouseBuildingExit();
-};
-
-class CPacketCustomHouseGoToFloor : public CPacket
-{
-public:
-    CPacketCustomHouseGoToFloor(uchar floor);
-};
-
-class CPacketCustomHouseSync : public CPacket
-{
-public:
-    CPacketCustomHouseSync();
-};
-
-class CPacketCustomHouseClear : public CPacket
-{
-public:
-    CPacketCustomHouseClear();
-};
-
-class CPacketCustomHouseRevert : public CPacket
-{
-public:
-    CPacketCustomHouseRevert();
-};
-
-class CPacketCustomHouseResponse : public CPacket
-{
-public:
-    CPacketCustomHouseResponse();
-};
-
-class CPacketCustomHouseAddItem : public CPacket
-{
-public:
-    CPacketCustomHouseAddItem(ushort graphic, int x, int y);
-};
-
-class CPacketCustomHouseDeleteItem : public CPacket
-{
-public:
-    CPacketCustomHouseDeleteItem(ushort graphic, int x, int y, int z);
-};
-
-class CPacketCustomHouseAddRoof : public CPacket
-{
-public:
-    CPacketCustomHouseAddRoof(ushort graphic, int x, int y, int z);
-};
-
-class CPacketCustomHouseDeleteRoof : public CPacket
-{
-public:
-    CPacketCustomHouseDeleteRoof(ushort graphic, int x, int y, int z);
-};
-
-class CPacketCustomHouseAddStair : public CPacket
-{
-public:
-    CPacketCustomHouseAddStair(ushort graphic, int x, int y);
 };
 
 class CPacketOrionVersion : public CPacket
