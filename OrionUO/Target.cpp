@@ -224,9 +224,6 @@ void CTarget::LoadMulti(int offsetX, int offsetY, char offsetZ)
     {
         int itemOffset = sizeof(MULTI_BLOCK);
 
-        if (g_PacketManager.GetClientVersion() >= CV_7090)
-            itemOffset = sizeof(MULTI_BLOCK_NEW);
-
         IFOR (j, 0, count)
         {
             PMULTI_BLOCK pmb = (PMULTI_BLOCK)(index.Address + (j * itemOffset));

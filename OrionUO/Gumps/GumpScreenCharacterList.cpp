@@ -19,18 +19,10 @@ void CGumpScreenCharacterList::UpdateContent()
     Clear();
 
     int count = g_CharacterList.Count;
-    bool testField = (g_PacketManager.GetClientVersion() >= CV_305D);
     int posInList = 0;
-    int yOffset = 150;
-    int yBonus = 0;
-    int listTitleY = 106;
-
-    if (g_PacketManager.GetClientVersion() >= CV_6040)
-    {
-        listTitleY = 96;
-        yOffset = 125;
-        yBonus = 45;
-    }
+    int yOffset = 125;
+    int yBonus = 45;
+    int listTitleY = 96;
 
     Add(new CGUIGumppicTiled(0x0E14, 0, 0, 640, 480));
     Add(new CGUIGumppic(0x157C, 0, 0));
@@ -47,7 +39,7 @@ void CGumpScreenCharacterList::UpdateContent()
     {
         size_t len = g_CharacterList.GetName(i).length();
 
-        if (!testField || len != 0 || !i)
+        if (len != 0 || !i)
         {
             Add(new CGUIResizepic(
                 ID_CS_CHARACTERS + (int)i, 0x0BB8, 224, yOffset + (posInList * 40), 280, 30));
@@ -127,11 +119,9 @@ void CGumpScreenCharacterList::InitToolTip()
 
     if (id >= ID_CS_CHARACTERS)
     {
-        bool testField = (g_PacketManager.GetClientVersion() >= CV_305D);
-
         IFOR (i, 0, g_CharacterList.Count)
         {
-            if (!testField || !i || g_CharacterList.GetName(i).length() != 0)
+            if (!i || g_CharacterList.GetName(i).length() != 0)
             {
                 if (id == (ID_CS_CHARACTERS + i))
                 {

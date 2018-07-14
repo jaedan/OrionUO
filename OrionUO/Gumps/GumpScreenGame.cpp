@@ -210,8 +210,7 @@ void CGumpScreenGame::OnLeftMouseButtonUp()
         if (g_ConfigManager.GameWindowHeight >= GetSystemMetrics(SM_CYSCREEN) - 60)
             g_ConfigManager.GameWindowHeight = GetSystemMetrics(SM_CYSCREEN) - 60;
 
-        if (g_PacketManager.GetClientVersion() >= CV_200)
-            CPacketGameWindowSize().Send();
+        CPacketGameWindowSize().Send();
     }
     else
     {

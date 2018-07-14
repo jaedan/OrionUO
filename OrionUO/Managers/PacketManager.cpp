@@ -34,270 +34,287 @@ CPacketManager g_PacketManager;
     }
 
 CPacketInfo CPacketManager::m_Packets[0x100] = {
-    SMSG(ORION_SAVE_PACKET, "Create Character", 0x68),
-    SMSG(ORION_SAVE_PACKET, "Disconnect", 0x05),
-    SMSG(ORION_IGNORE_PACKET, "Walk Request", 0x07),
-    BMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
-    BMSG(ORION_SAVE_PACKET, "Request God mode (God client)", 0x02),
-    SMSG(ORION_IGNORE_PACKET, "Attack", 0x05),
-    SMSG(ORION_IGNORE_PACKET, "Double Click", 0x05),
-    SMSG(ORION_SAVE_PACKET, "Pick Up Item", 0x07),
-    SMSG(ORION_SAVE_PACKET, "Drop Item", 0x0e),
-    SMSG(ORION_IGNORE_PACKET, "Single Click", 0x05),
-    BMSG(ORION_SAVE_PACKET, "Edit (God client)", 0x0b),
-    RMSGH(ORION_IGNORE_PACKET, "Damage Visualization", 0x07, Damage),
-    BMSG(ORION_SAVE_PACKET, "Edit tiledata (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Edit NPC data (God client)", 0x03),
-    BMSG(ORION_SAVE_PACKET, "Edit template data (God client)", 0x01),
-    UMSG(ORION_SAVE_PACKET, 0x3d),
-    BMSG(ORION_SAVE_PACKET, "Edit hue data (God client)", 0xd7),
+    /* 0x0 */ SMSG(ORION_SAVE_PACKET, "Create Character", 0x68),
+    /* 0x1 */ SMSG(ORION_SAVE_PACKET, "Disconnect", 0x05),
+    /* 0x2 */ SMSG(ORION_IGNORE_PACKET, "Walk Request", 0x07),
+    /* 0x3 */ BMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
+    /* 0x4 */ BMSG(ORION_SAVE_PACKET, "Request God mode (God client)", 0x02),
+    /* 0x5 */ SMSG(ORION_IGNORE_PACKET, "Attack", 0x05),
+    /* 0x6 */ SMSG(ORION_IGNORE_PACKET, "Double Click", 0x05),
+    /* 0x7 */ SMSG(ORION_SAVE_PACKET, "Pick Up Item", 0x07),
+    /* 0x8 */ SMSG(ORION_SAVE_PACKET, "Drop Item", 0x0F),
+    /* 0x9 */ SMSG(ORION_IGNORE_PACKET, "Single Click", 0x05),
+    /* 0xA */ BMSG(ORION_SAVE_PACKET, "Edit (God client)", 0x0b),
+    /* 0xB */ RMSGH(ORION_IGNORE_PACKET, "Damage Visualization", 0x07, Damage),
+    /* 0xC */ BMSG(ORION_SAVE_PACKET, "Edit tiledata (God client)", PACKET_VARIABLE_SIZE),
+    /* 0xD */ BMSG(ORION_SAVE_PACKET, "Edit NPC data (God client)", 0x03),
+    /* 0xE */ BMSG(ORION_SAVE_PACKET, "Edit template data (God client)", 0x01),
+    /* 0xF */ UMSG(ORION_SAVE_PACKET, 0x3d),
+    /* 0x10 */ BMSG(ORION_SAVE_PACKET, "Edit hue data (God client)", 0xd7),
+    /* 0x11 */
     RMSGH(ORION_IGNORE_PACKET, "Character Status", PACKET_VARIABLE_SIZE, CharacterStatus),
-    SMSG(ORION_IGNORE_PACKET, "Perform Action", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_IGNORE_PACKET, "Client Equip Item", 0x0a),
-    BMSG(ORION_SAVE_PACKET, "Change tile Z (God client)", 0x06),
-    BMSG(ORION_SAVE_PACKET, "Follow", 0x09),
-    RMSGH(ORION_SAVE_PACKET, "Health status bar update (0x16)", 0x01, NewHealthbarUpdate),
+    /* 0x12 */ SMSG(ORION_IGNORE_PACKET, "Perform Action", PACKET_VARIABLE_SIZE),
+    /* 0x13 */ SMSG(ORION_IGNORE_PACKET, "Client Equip Item", 0x0a),
+    /* 0x14 */ BMSG(ORION_SAVE_PACKET, "Change tile Z (God client)", 0x06),
+    /* 0x15 */ BMSG(ORION_SAVE_PACKET, "Follow", 0x09),
+    /* 0x16 */
+    RMSGH(
+        ORION_SAVE_PACKET,
+        "Health status bar update (0x16)",
+        PACKET_VARIABLE_SIZE,
+        NewHealthbarUpdate),
+    /* 0x17 */
     RMSGH(
         ORION_IGNORE_PACKET,
         "Health status bar update (KR)",
         PACKET_VARIABLE_SIZE,
         NewHealthbarUpdate),
-    BMSG(ORION_SAVE_PACKET, "Add script (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Edit NPC speech (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_SAVE_PACKET, "Update Item", PACKET_VARIABLE_SIZE, UpdateItem),
-    RMSGH(ORION_SAVE_PACKET, "Enter World", 0x25, EnterWorld),
-    RMSGH(ORION_IGNORE_PACKET, "Server Talk", PACKET_VARIABLE_SIZE, Talk),
-    RMSGH(ORION_SAVE_PACKET, "Delete Object", 0x05, DeleteObject),
-    BMSG(ORION_SAVE_PACKET, "Animate?", 0x04),
-    BMSG(ORION_SAVE_PACKET, "Explode?", 0x08),
-    RMSGH(ORION_SAVE_PACKET, "Update Player", 0x13, UpdatePlayer),
-    RMSGH(ORION_IGNORE_PACKET, "Deny Walk", 0x08, DenyWalk),
-    BMSGH(ORION_IGNORE_PACKET, "Confirm Walk", 0x03, ConfirmWalk),
-    RMSGH(ORION_SAVE_PACKET, "Drag Animation", 0x1a, DragAnimation),
-    RMSGH(ORION_SAVE_PACKET, "Open Container", 0x07, OpenContainer),
-    RMSGH(ORION_SAVE_PACKET, "Update Contained Item", 0x14, UpdateContainedItem),
-    BMSG(ORION_SAVE_PACKET, "Kick client (God client)", 0x05),
-    RMSGH(ORION_SAVE_PACKET, "Deny Move Item", 0x02, DenyMoveItem),
-    RMSGH(ORION_SAVE_PACKET, "End dragging item", 0x05, EndDraggingItem),
-    RMSGH(ORION_SAVE_PACKET, "Drop Item Accepted", 0x01, DropItemAccepted),
-    RMSG(ORION_SAVE_PACKET, "Blood mode", 0x05),
-    BMSG(ORION_SAVE_PACKET, "Toggle God mode (God client)", 0x02),
-    BMSGH(ORION_IGNORE_PACKET, "Death Screen", 0x02, DeathScreen),
-    RMSGH(ORION_SAVE_PACKET, "Mobile Attributes", 0x11, MobileAttributes),
-    RMSGH(ORION_SAVE_PACKET, "Server Equip Item", 0x0f, EquipItem),
-    RMSG(ORION_SAVE_PACKET, "Combat Notification", 0x0a),
-    RMSG(ORION_SAVE_PACKET, "Attack ok", 0x05),
-    RMSG(ORION_SAVE_PACKET, "Attack end", 0x01),
-    BMSG(ORION_SAVE_PACKET, "Toggle hack mover (God client)", 0x02),
-    RMSGH(ORION_IGNORE_PACKET, "Pause Control", 0x02, PauseControl),
-    SMSG(ORION_IGNORE_PACKET, "Status Request", 0x0a),
-    BMSG(ORION_SAVE_PACKET, "Resource type (God client)", 0x28d),
-    BMSG(ORION_SAVE_PACKET, "Resource tile data (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Move object (God client)", 0x08),
-    RMSGH(ORION_SAVE_PACKET, "Pathfinding", 0x07, Pathfinding),
-    BMSG(ORION_SAVE_PACKET, "Remove group (God client)", 0x09),
-    BMSGH(ORION_IGNORE_PACKET, "Update Skills", PACKET_VARIABLE_SIZE, UpdateSkills),
-    BMSGH(ORION_IGNORE_PACKET, "Vendor Buy Reply", PACKET_VARIABLE_SIZE, BuyReply),
+    /* 0x18 */ BMSG(ORION_SAVE_PACKET, "Add script (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x19 */ BMSG(ORION_SAVE_PACKET, "Edit NPC speech (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x1A */ RMSGH(ORION_SAVE_PACKET, "Update Item", PACKET_VARIABLE_SIZE, UpdateItem),
+    /* 0x1B */ RMSGH(ORION_SAVE_PACKET, "Enter World", 0x25, EnterWorld),
+    /* 0x1C */ RMSGH(ORION_IGNORE_PACKET, "Server Talk", PACKET_VARIABLE_SIZE, Talk),
+    /* 0x1D */ RMSGH(ORION_SAVE_PACKET, "Delete Object", 0x05, DeleteObject),
+    /* 0x1E */ BMSG(ORION_SAVE_PACKET, "Animate?", 0x04),
+    /* 0x1F */ BMSG(ORION_SAVE_PACKET, "Explode?", 0x08),
+    /* 0x20 */ RMSGH(ORION_SAVE_PACKET, "Update Player", 0x13, UpdatePlayer),
+    /* 0x21 */ RMSGH(ORION_IGNORE_PACKET, "Deny Walk", 0x08, DenyWalk),
+    /* 0x22 */ BMSGH(ORION_IGNORE_PACKET, "Confirm Walk", 0x03, ConfirmWalk),
+    /* 0x23 */ RMSGH(ORION_SAVE_PACKET, "Drag Animation", 0x1a, DragAnimation),
+    /* 0x24 */ RMSGH(ORION_SAVE_PACKET, "Open Container", 0x09, OpenContainer),
+    /* 0x25 */ RMSGH(ORION_SAVE_PACKET, "Update Contained Item", 0x15, UpdateContainedItem),
+    /* 0x26 */ BMSG(ORION_SAVE_PACKET, "Kick client (God client)", 0x05),
+    /* 0x27 */ RMSGH(ORION_SAVE_PACKET, "Deny Move Item", 0x02, DenyMoveItem),
+    /* 0x28 */ RMSGH(ORION_SAVE_PACKET, "End dragging item", 0x05, EndDraggingItem),
+    /* 0x29 */ RMSGH(ORION_SAVE_PACKET, "Drop Item Accepted", 0x01, DropItemAccepted),
+    /* 0x2A */ RMSG(ORION_SAVE_PACKET, "Blood mode", 0x05),
+    /* 0x2B */ BMSG(ORION_SAVE_PACKET, "Toggle God mode (God client)", 0x02),
+    /* 0x2C */ BMSGH(ORION_IGNORE_PACKET, "Death Screen", 0x02, DeathScreen),
+    /* 0x2D */ RMSGH(ORION_SAVE_PACKET, "Mobile Attributes", 0x11, MobileAttributes),
+    /* 0x2E */ RMSGH(ORION_SAVE_PACKET, "Server Equip Item", 0x0f, EquipItem),
+    /* 0x2F */ RMSG(ORION_SAVE_PACKET, "Combat Notification", 0x0a),
+    /* 0x30 */ RMSG(ORION_SAVE_PACKET, "Attack ok", 0x05),
+    /* 0x31 */ RMSG(ORION_SAVE_PACKET, "Attack end", PACKET_VARIABLE_SIZE),
+    /* 0x32 */ BMSG(ORION_SAVE_PACKET, "Toggle hack mover (God client)", 0x02),
+    /* 0x33 */ RMSGH(ORION_IGNORE_PACKET, "Pause Control", 0x02, PauseControl),
+    /* 0x34 */ SMSG(ORION_IGNORE_PACKET, "Status Request", 0x0a),
+    /* 0x35 */ BMSG(ORION_SAVE_PACKET, "Resource type (God client)", 0x28d),
+    /* 0x36 */ BMSG(ORION_SAVE_PACKET, "Resource tile data (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x37 */ BMSG(ORION_SAVE_PACKET, "Move object (God client)", 0x08),
+    /* 0x38 */ RMSGH(ORION_SAVE_PACKET, "Pathfinding", 0x07, Pathfinding),
+    /* 0x39 */ BMSG(ORION_SAVE_PACKET, "Remove group (God client)", 0x09),
+    /* 0x3A */ BMSGH(ORION_IGNORE_PACKET, "Update Skills", PACKET_VARIABLE_SIZE, UpdateSkills),
+    /* 0x3B */ BMSGH(ORION_IGNORE_PACKET, "Vendor Buy Reply", PACKET_VARIABLE_SIZE, BuyReply),
+    /* 0x3C */
     RMSGH(ORION_SAVE_PACKET, "Update Contained Items", PACKET_VARIABLE_SIZE, UpdateContainedItems),
-    BMSG(ORION_SAVE_PACKET, "Ship (God client)", 0x02),
-    BMSG(ORION_SAVE_PACKET, "Versions (God client)", 0x25),
-    BMSG(ORION_SAVE_PACKET, "Update Statics (God Client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", 0xc9),
-    BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Update art (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Update animation (God client)", 0x229),
-    BMSG(ORION_SAVE_PACKET, "Update hues (God client)", 0x2c9),
-    BMSG(ORION_SAVE_PACKET, "Version OK (God client)", 0x05),
-    BMSG(ORION_SAVE_PACKET, "New art (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "New terrain (God client)", 0x0b),
-    BMSG(ORION_SAVE_PACKET, "New animation (God client)", 0x49),
-    BMSG(ORION_SAVE_PACKET, "New hues (God client)", 0x5d),
-    BMSG(ORION_SAVE_PACKET, "Destroy art (God client)", 0x05),
-    BMSG(ORION_SAVE_PACKET, "Check version (God client)", 0x09),
-    BMSG(ORION_SAVE_PACKET, "Script names (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Edit script (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Personal Light Level", 0x06, PersonalLightLevel),
-    RMSGH(ORION_IGNORE_PACKET, "Global Light Level", 0x02, LightLevel),
-    BMSG(ORION_IGNORE_PACKET, "Board header", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_IGNORE_PACKET, "Board message", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_IGNORE_PACKET, "Post board message", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_SAVE_PACKET, "Error Code", 0x02, ErrorCode),
-    RMSGH(ORION_SAVE_PACKET, "Sound Effect", 0x0c, PlaySoundEffect),
-    RMSGH(ORION_IGNORE_PACKET, "Login Complete", 0x01, LoginComplete),
-    BMSGH(ORION_IGNORE_PACKET, "Map Data", 0x0b, MapData),
-    BMSG(ORION_SAVE_PACKET, "Update regions (God client)", 0x6e),
-    BMSG(ORION_SAVE_PACKET, "New region (God client)", 0x6a),
-    BMSG(ORION_SAVE_PACKET, "New content FX (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Update content FX (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Set Time", 0x04, SetTime),
-    BMSG(ORION_SAVE_PACKET, "Restart Version", 0x02),
-    SMSG(ORION_IGNORE_PACKET, "Select Character", 0x49),
-    BMSG(ORION_SAVE_PACKET, "Server list (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Add server (God client)", 0x31),
-    BMSG(ORION_SAVE_PACKET, "Remove server (God client)", 0x05),
-    BMSG(ORION_SAVE_PACKET, "Destroy static (God client)", 0x09),
-    BMSG(ORION_SAVE_PACKET, "Move static (God client)", 0x0f),
-    BMSG(ORION_SAVE_PACKET, "Area load (God client)", 0x0d),
-    BMSG(ORION_SAVE_PACKET, "Area load request (God client)", 0x01),
-    RMSGH(ORION_IGNORE_PACKET, "Set Weather", 0x04, SetWeather),
-    BMSGH(ORION_IGNORE_PACKET, "Book Page Data", PACKET_VARIABLE_SIZE, BookData),
-    BMSG(ORION_SAVE_PACKET, "Simped? (God client)", 0x15),
-    BMSG(ORION_SAVE_PACKET, "Script attach (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Friends (God client)", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Notify friend (God client)", 0x03),
-    BMSG(ORION_SAVE_PACKET, "Key use (God client)", 0x09),
-    BMSGH(ORION_IGNORE_PACKET, "Target Data", 0x13, Target),
-    RMSGH(ORION_SAVE_PACKET, "Play Music", 0x03, PlayMusic),
-    RMSGH(ORION_IGNORE_PACKET, "Character Animation", 0x0e, CharacterAnimation),
-    BMSGH(ORION_IGNORE_PACKET, "Secure Trading", PACKET_VARIABLE_SIZE, SecureTrading),
-    RMSGH(ORION_IGNORE_PACKET, "Graphic Effect", 0x1c, GraphicEffect),
+    /* 0x3D */ BMSG(ORION_SAVE_PACKET, "Ship (God client)", 0x02),
+    /* 0x3E */ BMSG(ORION_SAVE_PACKET, "Versions (God client)", 0x25),
+    /* 0x3F */ BMSG(ORION_SAVE_PACKET, "Update Statics (God Client)", PACKET_VARIABLE_SIZE),
+    /* 0x40 */ BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", 0xc9),
+    /* 0x41 */ BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x42 */ BMSG(ORION_SAVE_PACKET, "Update art (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x43 */ BMSG(ORION_SAVE_PACKET, "Update animation (God client)", 0x229),
+    /* 0x44 */ BMSG(ORION_SAVE_PACKET, "Update hues (God client)", 0x2c9),
+    /* 0x45 */ BMSG(ORION_SAVE_PACKET, "Version OK (God client)", 0x05),
+    /* 0x46 */ BMSG(ORION_SAVE_PACKET, "New art (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x47 */ BMSG(ORION_SAVE_PACKET, "New terrain (God client)", 0x0b),
+    /* 0x48 */ BMSG(ORION_SAVE_PACKET, "New animation (God client)", 0x49),
+    /* 0x49 */ BMSG(ORION_SAVE_PACKET, "New hues (God client)", 0x5d),
+    /* 0x4A */ BMSG(ORION_SAVE_PACKET, "Destroy art (God client)", 0x05),
+    /* 0x4B */ BMSG(ORION_SAVE_PACKET, "Check version (God client)", 0x09),
+    /* 0x4C */ BMSG(ORION_SAVE_PACKET, "Script names (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x4D */ BMSG(ORION_SAVE_PACKET, "Edit script (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x4E */ RMSGH(ORION_IGNORE_PACKET, "Personal Light Level", 0x06, PersonalLightLevel),
+    /* 0x4F */ RMSGH(ORION_IGNORE_PACKET, "Global Light Level", 0x02, LightLevel),
+    /* 0x50 */ BMSG(ORION_IGNORE_PACKET, "Board header", PACKET_VARIABLE_SIZE),
+    /* 0x51 */ BMSG(ORION_IGNORE_PACKET, "Board message", PACKET_VARIABLE_SIZE),
+    /* 0x52 */ BMSG(ORION_IGNORE_PACKET, "Post board message", PACKET_VARIABLE_SIZE),
+    /* 0x53 */ RMSGH(ORION_SAVE_PACKET, "Error Code", 0x02, ErrorCode),
+    /* 0x54 */ RMSGH(ORION_SAVE_PACKET, "Sound Effect", 0x0c, PlaySoundEffect),
+    /* 0x55 */ RMSGH(ORION_IGNORE_PACKET, "Login Complete", 0x01, LoginComplete),
+    /* 0x56 */ BMSGH(ORION_IGNORE_PACKET, "Map Data", 0x0b, MapData),
+    /* 0x57 */ BMSG(ORION_SAVE_PACKET, "Update regions (God client)", 0x6e),
+    /* 0x58 */ BMSG(ORION_SAVE_PACKET, "New region (God client)", 0x6a),
+    /* 0x59 */ BMSG(ORION_SAVE_PACKET, "New content FX (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x5A */ BMSG(ORION_SAVE_PACKET, "Update content FX (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x5B */ RMSGH(ORION_IGNORE_PACKET, "Set Time", 0x04, SetTime),
+    /* 0x5C */ BMSG(ORION_SAVE_PACKET, "Restart Version", 0x02),
+    /* 0x5D */ SMSG(ORION_IGNORE_PACKET, "Select Character", 0x49),
+    /* 0x5E */ BMSG(ORION_SAVE_PACKET, "Server list (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x5F */ BMSG(ORION_SAVE_PACKET, "Add server (God client)", 0x31),
+    /* 0x60 */ BMSG(ORION_SAVE_PACKET, "Remove server (God client)", 0x05),
+    /* 0x61 */ BMSG(ORION_SAVE_PACKET, "Destroy static (God client)", 0x09),
+    /* 0x62 */ BMSG(ORION_SAVE_PACKET, "Move static (God client)", 0x0f),
+    /* 0x63 */ BMSG(ORION_SAVE_PACKET, "Area load (God client)", 0x0d),
+    /* 0x64 */ BMSG(ORION_SAVE_PACKET, "Area load request (God client)", 0x01),
+    /* 0x65 */ RMSGH(ORION_IGNORE_PACKET, "Set Weather", 0x04, SetWeather),
+    /* 0x66 */ BMSGH(ORION_IGNORE_PACKET, "Book Page Data", PACKET_VARIABLE_SIZE, BookData),
+    /* 0x67 */ BMSG(ORION_SAVE_PACKET, "Simped? (God client)", 0x15),
+    /* 0x68 */ BMSG(ORION_SAVE_PACKET, "Script attach (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x69 */ BMSG(ORION_SAVE_PACKET, "Friends (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x6A */ BMSG(ORION_SAVE_PACKET, "Notify friend (God client)", 0x03),
+    /* 0x6B */ BMSG(ORION_SAVE_PACKET, "Key use (God client)", 0x09),
+    /* 0x6C */ BMSGH(ORION_IGNORE_PACKET, "Target Data", 0x13, Target),
+    /* 0x6D */ RMSGH(ORION_SAVE_PACKET, "Play Music", 0x03, PlayMusic),
+    /* 0x6E */ RMSGH(ORION_IGNORE_PACKET, "Character Animation", 0x0e, CharacterAnimation),
+    /* 0x6F */ BMSGH(ORION_IGNORE_PACKET, "Secure Trading", PACKET_VARIABLE_SIZE, SecureTrading),
+    /* 0x70 */ RMSGH(ORION_IGNORE_PACKET, "Graphic Effect", 0x1c, GraphicEffect),
+    /* 0x71 */
     BMSGH(ORION_IGNORE_PACKET, "Bulletin Board Data", PACKET_VARIABLE_SIZE, BulletinBoardData),
-    BMSGH(ORION_IGNORE_PACKET, "War Mode", 0x05, Warmode),
-    BMSGH(ORION_IGNORE_PACKET, "Ping", 0x02, Ping),
-    RMSGH(ORION_IGNORE_PACKET, "Vendor Buy List", PACKET_VARIABLE_SIZE, BuyList),
-    SMSG(ORION_SAVE_PACKET, "Rename Character", 0x23),
-    RMSG(ORION_SAVE_PACKET, "New Subserver", 0x10),
-    RMSGH(ORION_SAVE_PACKET, "Update Character", 0x11, UpdateCharacter),
-    RMSGH(ORION_SAVE_PACKET, "Update Object", PACKET_VARIABLE_SIZE, UpdateObject),
-    BMSG(ORION_SAVE_PACKET, "Resource query (God client)", 0x09),
-    BMSG(ORION_SAVE_PACKET, "Resource data (God client)", PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Sequence?", 0x02),
-    RMSGH(ORION_IGNORE_PACKET, "Open Menu Gump", PACKET_VARIABLE_SIZE, OpenMenu),
-    SMSG(ORION_IGNORE_PACKET, "Menu Choice", 0x0d),
-    BMSG(ORION_SAVE_PACKET, "God view query (God client)", 0x02),
-    BMSG(ORION_SAVE_PACKET, "God view data (God client)", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_IGNORE_PACKET, "First Login", 0x3e),
-    RMSG(ORION_SAVE_PACKET, "Change character", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Login Error", 0x02, LoginError),
-    SMSG(ORION_IGNORE_PACKET, "Delete Character", 0x27),
-    BMSG(ORION_SAVE_PACKET, "Change password", 0x45),
+    /* 0x72 */ BMSGH(ORION_IGNORE_PACKET, "War Mode", 0x05, Warmode),
+    /* 0x73 */ BMSGH(ORION_IGNORE_PACKET, "Ping", 0x02, Ping),
+    /* 0x74 */ RMSGH(ORION_IGNORE_PACKET, "Vendor Buy List", PACKET_VARIABLE_SIZE, BuyList),
+    /* 0x75 */ SMSG(ORION_SAVE_PACKET, "Rename Character", 0x23),
+    /* 0x76 */ RMSG(ORION_SAVE_PACKET, "New Subserver", 0x10),
+    /* 0x77 */ RMSGH(ORION_SAVE_PACKET, "Update Character", 0x11, UpdateCharacter),
+    /* 0x78 */ RMSGH(ORION_SAVE_PACKET, "Update Object", PACKET_VARIABLE_SIZE, UpdateObject),
+    /* 0x79 */ BMSG(ORION_SAVE_PACKET, "Resource query (God client)", 0x09),
+    /* 0x7A */ BMSG(ORION_SAVE_PACKET, "Resource data (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x7B */ RMSG(ORION_SAVE_PACKET, "Sequence?", 0x02),
+    /* 0x7C */ RMSGH(ORION_IGNORE_PACKET, "Open Menu Gump", PACKET_VARIABLE_SIZE, OpenMenu),
+    /* 0x7D */ SMSG(ORION_IGNORE_PACKET, "Menu Choice", 0x0d),
+    /* 0x7E */ BMSG(ORION_SAVE_PACKET, "God view query (God client)", 0x02),
+    /* 0x7F */ BMSG(ORION_SAVE_PACKET, "God view data (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x80 */ SMSG(ORION_IGNORE_PACKET, "First Login", 0x3e),
+    /* 0x81 */ RMSG(ORION_SAVE_PACKET, "Change character", PACKET_VARIABLE_SIZE),
+    /* 0x82 */ RMSGH(ORION_IGNORE_PACKET, "Login Error", 0x02, LoginError),
+    /* 0x83 */ SMSG(ORION_IGNORE_PACKET, "Delete Character", 0x27),
+    /* 0x84 */ BMSG(ORION_SAVE_PACKET, "Change password", 0x45),
+    /* 0x85 */
     RMSGH(ORION_IGNORE_PACKET, "Character List Notification", 0x02, CharacterListNotification),
+    /* 0x86 */
     RMSGH(ORION_IGNORE_PACKET, "Resend Character List", PACKET_VARIABLE_SIZE, ResendCharacterList),
-    BMSG(ORION_SAVE_PACKET, "Send resources (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Open Paperdoll", 0x42, OpenPaperdoll),
-    RMSGH(ORION_SAVE_PACKET, "Corpse Equipment", PACKET_VARIABLE_SIZE, CorpseEquipment),
-    BMSG(ORION_SAVE_PACKET, "Trigger edit (God client)", PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Display sign gump", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Relay Server", 0x0b, RelayServer),
-    SMSG(ORION_SAVE_PACKET, "UO3D create character", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Move character (God client)", PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Display Map", 0x13, DisplayMap),
-    SMSG(ORION_IGNORE_PACKET, "Second Login", 0x41),
-    BMSG(ORION_SAVE_PACKET, "Update multi data (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Open Book", 0x63, OpenBook),
-    BMSG(ORION_SAVE_PACKET, "Update skills data (God client)", PACKET_VARIABLE_SIZE),
-    BMSGH(ORION_IGNORE_PACKET, "Dye Data", 0x09, DyeData),
-    BMSG(ORION_SAVE_PACKET, "Game central monitor (God client)", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_SAVE_PACKET, "Move Player", 0x02, MovePlayer),
-    BMSG(ORION_SAVE_PACKET, "All Names (3D Client Only)", PACKET_VARIABLE_SIZE),
-    BMSGH(ORION_SAVE_PACKET, "Multi Placement", 0x1a, MultiPlacement),
-    BMSGH(ORION_SAVE_PACKET, "ASCII Prompt", PACKET_VARIABLE_SIZE, ASCIIPrompt),
-    SMSG(ORION_IGNORE_PACKET, "Help Request", 0x102),
-    BMSG(ORION_SAVE_PACKET, "Assistant request (God client)", 0x135),
-    BMSG(ORION_SAVE_PACKET, "GM single (God client)", 0x33),
-    RMSGH(ORION_IGNORE_PACKET, "Vendor Sell List", PACKET_VARIABLE_SIZE, SellList),
-    SMSG(ORION_IGNORE_PACKET, "Vendor Sell Reply", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_IGNORE_PACKET, "Select Server", 0x03),
-    RMSGH(ORION_IGNORE_PACKET, "Update Hitpoints", 0x09, UpdateHitpoints),
-    RMSGH(ORION_IGNORE_PACKET, "Update Mana", 0x09, UpdateMana),
-    RMSGH(ORION_IGNORE_PACKET, "Update Stamina", 0x09, UpdateStamina),
-    SMSG(ORION_SAVE_PACKET, "System Information", 0x95),
-    RMSGH(ORION_SAVE_PACKET, "Open URL", PACKET_VARIABLE_SIZE, OpenUrl),
-    RMSGH(ORION_IGNORE_PACKET, "Tip Window", PACKET_VARIABLE_SIZE, TipWindow),
-    SMSG(ORION_SAVE_PACKET, "Request Tip", 0x04),
-    RMSGH(ORION_IGNORE_PACKET, "Server List", PACKET_VARIABLE_SIZE, ServerList),
-    RMSGH(ORION_IGNORE_PACKET, "Character List", PACKET_VARIABLE_SIZE, CharacterList),
-    RMSGH(ORION_IGNORE_PACKET, "Attack Reply", 0x05, AttackCharacter),
-    RMSGH(ORION_SAVE_PACKET, "Text Entry Dialog", PACKET_VARIABLE_SIZE, TextEntryDialog),
-    SMSG(ORION_SAVE_PACKET, "Text Entry Dialog Reply", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Unicode Server Talk", PACKET_VARIABLE_SIZE, UnicodeTalk),
-    RMSGH(ORION_SAVE_PACKET, "Display Death", 0x0d, DisplayDeath),
-    RMSGH(ORION_IGNORE_PACKET, "Open Gump", PACKET_VARIABLE_SIZE, OpenGump),
-    SMSG(ORION_IGNORE_PACKET, "Gump Choice", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Chat Data", PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Chat Text ?", PACKET_VARIABLE_SIZE),
-    BMSG(ORION_SAVE_PACKET, "Target object list (God client)", PACKET_VARIABLE_SIZE),
-    BMSGH(ORION_SAVE_PACKET, "Open Chat Window", 0x40, OpenChat),
-    SMSG(ORION_SAVE_PACKET, "Popup Help Request", 0x09),
-    RMSG(ORION_SAVE_PACKET, "Popup Help Data", PACKET_VARIABLE_SIZE),
+    /* 0x87 */ BMSG(ORION_SAVE_PACKET, "Send resources (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x88 */ RMSGH(ORION_IGNORE_PACKET, "Open Paperdoll", 0x42, OpenPaperdoll),
+    /* 0x89 */ RMSGH(ORION_SAVE_PACKET, "Corpse Equipment", PACKET_VARIABLE_SIZE, CorpseEquipment),
+    /* 0x8A */ BMSG(ORION_SAVE_PACKET, "Trigger edit (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x8B */ RMSG(ORION_SAVE_PACKET, "Display sign gump", PACKET_VARIABLE_SIZE),
+    /* 0x8C */ RMSGH(ORION_IGNORE_PACKET, "Relay Server", 0x0b, RelayServer),
+    /* 0x8D */ SMSG(ORION_SAVE_PACKET, "UO3D create character", PACKET_VARIABLE_SIZE),
+    /* 0x8E */ BMSG(ORION_SAVE_PACKET, "Move character (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x8F */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0x90 */ RMSGH(ORION_IGNORE_PACKET, "Display Map", 0x13, DisplayMap),
+    /* 0x91 */ SMSG(ORION_IGNORE_PACKET, "Second Login", 0x41),
+    /* 0x92 */ BMSG(ORION_SAVE_PACKET, "Update multi data (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x93 */ RMSGH(ORION_IGNORE_PACKET, "Open Book", 0x63, OpenBook),
+    /* 0x94 */ BMSG(ORION_SAVE_PACKET, "Update skills data (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x95 */ BMSGH(ORION_IGNORE_PACKET, "Dye Data", 0x09, DyeData),
+    /* 0x96 */ BMSG(ORION_SAVE_PACKET, "Game central monitor (God client)", PACKET_VARIABLE_SIZE),
+    /* 0x97 */ RMSGH(ORION_SAVE_PACKET, "Move Player", 0x02, MovePlayer),
+    /* 0x98 */ BMSG(ORION_SAVE_PACKET, "All Names (3D Client Only)", PACKET_VARIABLE_SIZE),
+    /* 0x99 */ BMSGH(ORION_SAVE_PACKET, "Multi Placement", 0x1E, MultiPlacement),
+    /* 0x9A */ BMSGH(ORION_SAVE_PACKET, "ASCII Prompt", PACKET_VARIABLE_SIZE, ASCIIPrompt),
+    /* 0x9B */ SMSG(ORION_IGNORE_PACKET, "Help Request", 0x102),
+    /* 0x9C */ BMSG(ORION_SAVE_PACKET, "Assistant request (God client)", 0x135),
+    /* 0x9D */ BMSG(ORION_SAVE_PACKET, "GM single (God client)", 0x33),
+    /* 0x9E */ RMSGH(ORION_IGNORE_PACKET, "Vendor Sell List", PACKET_VARIABLE_SIZE, SellList),
+    /* 0x9F */ SMSG(ORION_IGNORE_PACKET, "Vendor Sell Reply", PACKET_VARIABLE_SIZE),
+    /* 0xA0 */ SMSG(ORION_IGNORE_PACKET, "Select Server", 0x03),
+    /* 0xA1 */ RMSGH(ORION_IGNORE_PACKET, "Update Hitpoints", 0x09, UpdateHitpoints),
+    /* 0xA2 */ RMSGH(ORION_IGNORE_PACKET, "Update Mana", 0x09, UpdateMana),
+    /* 0xA3 */ RMSGH(ORION_IGNORE_PACKET, "Update Stamina", 0x09, UpdateStamina),
+    /* 0xA4 */ SMSG(ORION_SAVE_PACKET, "System Information", 0x95),
+    /* 0xA5 */ RMSGH(ORION_SAVE_PACKET, "Open URL", PACKET_VARIABLE_SIZE, OpenUrl),
+    /* 0xA6 */ RMSGH(ORION_IGNORE_PACKET, "Tip Window", PACKET_VARIABLE_SIZE, TipWindow),
+    /* 0xA7 */ SMSG(ORION_SAVE_PACKET, "Request Tip", 0x04),
+    /* 0xA8 */ RMSGH(ORION_IGNORE_PACKET, "Server List", PACKET_VARIABLE_SIZE, ServerList),
+    /* 0xA9 */ RMSGH(ORION_IGNORE_PACKET, "Character List", PACKET_VARIABLE_SIZE, CharacterList),
+    /* 0xAA */ RMSGH(ORION_IGNORE_PACKET, "Attack Reply", 0x05, AttackCharacter),
+    /* 0xAB */ RMSGH(ORION_SAVE_PACKET, "Text Entry Dialog", PACKET_VARIABLE_SIZE, TextEntryDialog),
+    /* 0xAC */ SMSG(ORION_SAVE_PACKET, "Text Entry Dialog Reply", PACKET_VARIABLE_SIZE),
+    /* 0xAD */ SMSG(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE),
+    /* 0xAE */ RMSGH(ORION_IGNORE_PACKET, "Unicode Server Talk", PACKET_VARIABLE_SIZE, UnicodeTalk),
+    /* 0xAF */ RMSGH(ORION_SAVE_PACKET, "Display Death", 0x0d, DisplayDeath),
+    /* 0xB0 */ RMSGH(ORION_IGNORE_PACKET, "Open Gump", PACKET_VARIABLE_SIZE, OpenGump),
+    /* 0xB1 */ SMSG(ORION_IGNORE_PACKET, "Gump Choice", PACKET_VARIABLE_SIZE),
+    /* 0xB2 */ BMSG(ORION_SAVE_PACKET, "Chat Data", PACKET_VARIABLE_SIZE),
+    /* 0xB3 */ RMSG(ORION_SAVE_PACKET, "Chat Text ?", PACKET_VARIABLE_SIZE),
+    /* 0xB4 */ BMSG(ORION_SAVE_PACKET, "Target object list (God client)", PACKET_VARIABLE_SIZE),
+    /* 0xB5 */ BMSGH(ORION_SAVE_PACKET, "Open Chat Window", 0x40, OpenChat),
+    /* 0xB6 */ SMSG(ORION_SAVE_PACKET, "Popup Help Request", 0x09),
+    /* 0xB7 */ RMSG(ORION_SAVE_PACKET, "Popup Help Data", PACKET_VARIABLE_SIZE),
+    /* 0xB8 */
     BMSGH(ORION_IGNORE_PACKET, "Character Profile", PACKET_VARIABLE_SIZE, CharacterProfile),
-    RMSGH(ORION_SAVE_PACKET, "Enable locked client features", 0x03, EnableLockedFeatures),
-    RMSGH(ORION_IGNORE_PACKET, "Display Quest Arrow", 0x06, DisplayQuestArrow),
-    SMSG(ORION_SAVE_PACKET, "Account ID ?", 0x09),
-    RMSGH(ORION_IGNORE_PACKET, "Season", 0x03, Season),
-    BMSGH(ORION_SAVE_PACKET, "Client Version", PACKET_VARIABLE_SIZE, ClientVersion),
-    BMSGH(ORION_SAVE_PACKET, "Assist Version", PACKET_VARIABLE_SIZE, AssistVersion),
-    BMSGH(ORION_SAVE_PACKET, "Extended Command", PACKET_VARIABLE_SIZE, ExtendedCommand),
-    RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x24, GraphicEffect),
+    /* 0xB9 */
+    RMSGH(ORION_SAVE_PACKET, "Enable locked client features", 0x05, EnableLockedFeatures),
+    /* 0xBA */ RMSGH(ORION_IGNORE_PACKET, "Display Quest Arrow", 0x0A, DisplayQuestArrow),
+    /* 0xBB */ SMSG(ORION_SAVE_PACKET, "Account ID ?", 0x09),
+    /* 0xBC */ RMSGH(ORION_IGNORE_PACKET, "Season", 0x03, Season),
+    /* 0xBD */ BMSGH(ORION_SAVE_PACKET, "Client Version", PACKET_VARIABLE_SIZE, ClientVersion),
+    /* 0xBE */ BMSGH(ORION_SAVE_PACKET, "Assist Version", PACKET_VARIABLE_SIZE, AssistVersion),
+    /* 0xBF */ BMSGH(ORION_SAVE_PACKET, "Extended Command", PACKET_VARIABLE_SIZE, ExtendedCommand),
+    /* 0xC0 */ RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x24, GraphicEffect),
+    /* 0xC1 */
     RMSGH(ORION_IGNORE_PACKET, "Display cliloc String", PACKET_VARIABLE_SIZE, DisplayClilocString),
-    BMSGH(ORION_SAVE_PACKET, "Unicode prompt", PACKET_VARIABLE_SIZE, UnicodePrompt),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, 0x06),
-    BMSG(ORION_SAVE_PACKET, "Invalid map (God client)", 0xcb),
-    RMSG(ORION_SAVE_PACKET, "Invalid map enable", 0x01),
-    RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x31, GraphicEffect),
-    BMSGH(ORION_SAVE_PACKET, "Client View Range", 0x02, ClientViewRange),
-    BMSG(ORION_SAVE_PACKET, "Trip time", 0x06),
-    BMSG(ORION_SAVE_PACKET, "UTrip time", 0x06),
-    UMSG(ORION_SAVE_PACKET, 0x07),
+    /* 0xC2 */ BMSGH(ORION_SAVE_PACKET, "Unicode prompt", PACKET_VARIABLE_SIZE, UnicodePrompt),
+    /* 0xC3 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xC4 */ UMSG(ORION_SAVE_PACKET, 0x06),
+    /* 0xC5 */ BMSG(ORION_SAVE_PACKET, "Invalid map (God client)", 0xcb),
+    /* 0xC6 */ RMSG(ORION_SAVE_PACKET, "Invalid map enable", 0x01),
+    /* 0xC7 */ RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x31, GraphicEffect),
+    /* 0xC8 */ BMSGH(ORION_SAVE_PACKET, "Client View Range", 0x02, ClientViewRange),
+    /* 0xC9 */ BMSG(ORION_SAVE_PACKET, "Trip time", 0x06),
+    /* 0xCA */ BMSG(ORION_SAVE_PACKET, "UTrip time", 0x06),
+    /* 0xCB */ UMSG(ORION_SAVE_PACKET, 0x07),
+    /* 0xCC */
     RMSGH(
         ORION_IGNORE_PACKET,
         "Localized Text Plus String",
         PACKET_VARIABLE_SIZE,
         DisplayClilocString),
-    UMSG(ORION_SAVE_PACKET, 0x01),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, 0x4e),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Logout", 0x02, Logout),
-    RMSGH(ORION_SAVE_PACKET, "Update Character (New)", 0x19, UpdateCharacter),
-    RMSGH(ORION_SAVE_PACKET, "Update Object (New)", PACKET_VARIABLE_SIZE, UpdateObject),
-    BMSGH(ORION_IGNORE_PACKET, "Open Book (New)", PACKET_VARIABLE_SIZE, OpenBookNew),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    BMSGH(ORION_IGNORE_PACKET, "Mega cliloc", PACKET_VARIABLE_SIZE, MegaCliloc),
-    SMSG(ORION_SAVE_PACKET, "+AoS command", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Custom house", PACKET_VARIABLE_SIZE, CustomHouse),
-    SMSG(ORION_SAVE_PACKET, "+Metrics", 0x10c),
-    BMSG(ORION_SAVE_PACKET, "Mahjong game command", PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Character transfer log", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "OPL Info Packet", 9, OPLInfo),
+    /* 0xCD */ UMSG(ORION_SAVE_PACKET, 0x01),
+    /* 0xCE */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xCF */ UMSG(ORION_SAVE_PACKET, 0x4e),
+    /* 0xD0 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xD1 */ RMSGH(ORION_IGNORE_PACKET, "Logout", 0x02, Logout),
+    /* 0xD2 */ RMSGH(ORION_SAVE_PACKET, "Update Character (New)", 0x19, UpdateCharacter),
+    /* 0xD3 */ RMSGH(ORION_SAVE_PACKET, "Update Object (New)", PACKET_VARIABLE_SIZE, UpdateObject),
+    /* 0xD4 */ BMSGH(ORION_IGNORE_PACKET, "Open Book (New)", PACKET_VARIABLE_SIZE, OpenBookNew),
+    /* 0xD5 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xD6 */ BMSGH(ORION_IGNORE_PACKET, "Mega cliloc", PACKET_VARIABLE_SIZE, MegaCliloc),
+    /* 0xD7 */ SMSG(ORION_SAVE_PACKET, "+AoS command", PACKET_VARIABLE_SIZE),
+    /* 0xD8 */ RMSGH(ORION_IGNORE_PACKET, "Custom house", PACKET_VARIABLE_SIZE, CustomHouse),
+    /* 0xD9 */ SMSG(ORION_SAVE_PACKET, "+Metrics", 0x10c),
+    /* 0xDA */ BMSG(ORION_SAVE_PACKET, "Mahjong game command", PACKET_VARIABLE_SIZE),
+    /* 0xDB */ RMSG(ORION_SAVE_PACKET, "Character transfer log", PACKET_VARIABLE_SIZE),
+    /* 0xDC */ RMSGH(ORION_IGNORE_PACKET, "OPL Info Packet", 9, OPLInfo),
+    /* 0xDD */
     RMSGH(ORION_IGNORE_PACKET, "Compressed Gump", PACKET_VARIABLE_SIZE, OpenCompressedGump),
-    RMSG(ORION_SAVE_PACKET, "Update characters combatants", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_SAVE_PACKET, "Buff/Debuff", PACKET_VARIABLE_SIZE, BuffDebuff),
-    SMSG(ORION_SAVE_PACKET, "Bug Report KR", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_SAVE_PACKET, "Client Type KR/SA", 0x09),
-    RMSGH(ORION_IGNORE_PACKET, "New Character Animation", 0xa, NewCharacterAnimation),
-    RMSG(ORION_SAVE_PACKET, "KR Encryption Responce", 0x4d),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    SMSG(ORION_SAVE_PACKET, "Equip Macro", PACKET_VARIABLE_SIZE),
-    SMSG(ORION_SAVE_PACKET, "Unequip item macro", PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x15),
+    /* 0xDE */ RMSG(ORION_SAVE_PACKET, "Update characters combatants", PACKET_VARIABLE_SIZE),
+    /* 0xDF */ RMSGH(ORION_SAVE_PACKET, "Buff/Debuff", PACKET_VARIABLE_SIZE, BuffDebuff),
+    /* 0xE0 */ SMSG(ORION_SAVE_PACKET, "Bug Report KR", PACKET_VARIABLE_SIZE),
+    /* 0xE1 */ SMSG(ORION_SAVE_PACKET, "Client Type KR/SA", PACKET_VARIABLE_SIZE),
+    /* 0xE2 */ RMSGH(ORION_IGNORE_PACKET, "New Character Animation", 0xa, NewCharacterAnimation),
+    /* 0xE3 */ RMSG(ORION_SAVE_PACKET, "KR Encryption Responce", PACKET_VARIABLE_SIZE),
+    /* 0xE4 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xE5 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xE6 */ UMSG(ORION_SAVE_PACKET, 0x05),
+    /* 0xE7 */ UMSG(ORION_SAVE_PACKET, 0x0C),
+    /* 0xE8 */ UMSG(ORION_SAVE_PACKET, 0x0D),
+    /* 0xE9 */ UMSG(ORION_SAVE_PACKET, 0x4B),
+    /* 0xEA */ UMSG(ORION_SAVE_PACKET, 0x03),
+    /* 0xEB */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xEC */ SMSG(ORION_SAVE_PACKET, "Equip Macro", PACKET_VARIABLE_SIZE),
+    /* 0xED */ SMSG(ORION_SAVE_PACKET, "Unequip item macro", PACKET_VARIABLE_SIZE),
+    /* 0xEE */ UMSG(ORION_SAVE_PACKET, 0x2000),
+    /* 0xEF */ SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x2000),
+    /* 0xF0 */
     BMSGH(ORION_SAVE_PACKET, "Krrios client special", PACKET_VARIABLE_SIZE, KrriosClientSpecial),
-    SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_SAVE_PACKET, "Update Item (SA)", 0x18, UpdateItemSA),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    RMSGH(ORION_IGNORE_PACKET, "Display New Map", 0x15, DisplayMap),
-    RMSGH(ORION_SAVE_PACKET, "Boat moving", PACKET_VARIABLE_SIZE, BoatMoving),
-    RMSGH(ORION_SAVE_PACKET, "Packets (0xF3) list", PACKET_VARIABLE_SIZE, PacketsList),
-    SMSG(ORION_SAVE_PACKET, "Character Creation (7.0.16.0)", 0x6a),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    BMSGH(ORION_SAVE_PACKET, "Orion messages", PACKET_VARIABLE_SIZE, OrionMessages),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
-    RMSG(ORION_SAVE_PACKET, "Razor Handshake", 0x8),
-    UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE)
+    /* 0xF1 */ SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", 0x09),
+    /* 0xF2 */ RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", 0x19),
+    /* 0xF3 */ RMSGH(ORION_SAVE_PACKET, "Update Item (SA)", 0x1A, UpdateItemSA),
+    /* 0xF4 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xF5 */ RMSGH(ORION_IGNORE_PACKET, "Display New Map", 0x15, DisplayMap),
+    /* 0xF6 */ RMSGH(ORION_SAVE_PACKET, "Boat moving", PACKET_VARIABLE_SIZE, BoatMoving),
+    /* 0xF7 */ RMSGH(ORION_SAVE_PACKET, "Packets (0xF3) list", PACKET_VARIABLE_SIZE, PacketsList),
+    /* 0xF8 */ SMSG(ORION_SAVE_PACKET, "Character Creation (7.0.16.0)", 0x6a),
+    /* 0xF9 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xFA */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xFB */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xFC */ BMSGH(ORION_SAVE_PACKET, "Orion messages", PACKET_VARIABLE_SIZE, OrionMessages),
+    /* 0xFD */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xFE */ RMSG(ORION_SAVE_PACKET, "Razor Handshake", 0x8),
+    /* 0xFF */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE)
 };
 
 #define IS_MOBILE(serial) (!(serial & 0x40000000))
@@ -333,177 +350,6 @@ bool CPacketManager::AutoLoginNameExists(const string &name)
 #define CVPRINT(s)
 #endif
 
-void CPacketManager::SetClientVersion(CLIENT_VERSION newClientVersion)
-{
-    WISPFUN_DEBUG("c150_f2");
-    m_ClientVersion = newClientVersion;
-
-    if (newClientVersion >= CV_500A)
-    {
-        CVPRINT("Set new length for packet 0x0B (>= 5.0.0a)\n");
-        m_Packets[0x0B].Size = 0x07;
-        CVPRINT("Set new length for packet 0x16 (>= 5.0.0a)\n");
-        m_Packets[0x16].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set new length for packet 0x31 (>= 5.0.0a)\n");
-        m_Packets[0x31].Size = PACKET_VARIABLE_SIZE;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0x0B (< 5.0.0a)\n");
-        m_Packets[0x0B].Size = 0x10A;
-        CVPRINT("Set standart length for packet 0x16 (< 5.0.0a)\n");
-        m_Packets[0x16].Size = 0x01;
-        CVPRINT("Set standart length for packet 0x31 (< 5.0.0a)\n");
-        m_Packets[0x31].Size = 0x01;
-    }
-
-    if (newClientVersion >= CV_5090)
-    {
-        CVPRINT("Set new length for packet 0xE1 (>= 5.0.9.0)\n");
-        m_Packets[0xE1].Size = PACKET_VARIABLE_SIZE;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0xE1 (<= 5.0.9.0)\n");
-        m_Packets[0xE1].Size = 0x09;
-    }
-
-    if (newClientVersion >= CV_6013)
-    {
-        CVPRINT("Set new length for packet 0xE3 (>= 6.0.1.3)\n");
-        m_Packets[0xE3].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set new length for packet 0xE6 (>= 6.0.1.3)\n");
-        m_Packets[0xE6].Size = 0x05;
-        CVPRINT("Set new length for packet 0xE7 (>= 6.0.1.3)\n");
-        m_Packets[0xE7].Size = 0x0C;
-        CVPRINT("Set new length for packet 0xE8 (>= 6.0.1.3)\n");
-        m_Packets[0xE8].Size = 0x0D;
-        CVPRINT("Set new length for packet 0xE9 (>= 6.0.1.3)\n");
-        m_Packets[0xE9].Size = 0x4B;
-        CVPRINT("Set new length for packet 0xEA (>= 6.0.1.3)\n");
-        m_Packets[0xEA].Size = 0x03;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0xE3 (<= 6.0.1.3)\n");
-        m_Packets[0xE3].Size = 0x4D;
-        CVPRINT("Set standart length for packet 0xE6 (<= 6.0.1.3)\n");
-        m_Packets[0xE6].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xE7 (<= 6.0.1.3)\n");
-        m_Packets[0xE7].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xE8 (<= 6.0.1.3)\n");
-        m_Packets[0xE8].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xE9 (<= 6.0.1.3)\n");
-        m_Packets[0xE9].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xEA (<= 6.0.1.3)\n");
-        m_Packets[0xEA].Size = PACKET_VARIABLE_SIZE;
-    }
-
-    if (newClientVersion >= CV_6017)
-    {
-        CVPRINT("Set new length for packet 0x08 (>= 6.0.1.7)\n");
-        m_Packets[0x08].Size = 0x0F;
-        CVPRINT("Set new length for packet 0x25 (>= 6.0.1.7)\n");
-        m_Packets[0x25].Size = 0x15;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0x08 (<= 6.0.1.7)\n");
-        m_Packets[0x08].Size = 0x0E;
-        CVPRINT("Set standart length for packet 0x25 (<= 6.0.1.7)\n");
-        m_Packets[0x25].Size = 0x14;
-    }
-
-    if (newClientVersion == CV_6060)
-    {
-        CVPRINT("Set new length for packet 0xEE (>= 6.0.6.0)\n");
-        m_Packets[0xEE].Size = 0x2000;
-        CVPRINT("Set new length for packet 0xEF (>= 6.0.6.0)\n");
-        m_Packets[0xEF].Size = 0x2000;
-        CVPRINT("Set new length for packet 0xF1 (>= 6.0.6.0)\n");
-        m_Packets[0xF1].Size = 0x09;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0xEE (<= 6.0.6.0)\n");
-        m_Packets[0xEE].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xEF (<= 6.0.6.0)\n");
-        m_Packets[0xEF].Size = 0x15;
-        CVPRINT("Set standart length for packet 0xF1 (<= 6.0.6.0)\n");
-        m_Packets[0xF1].Size = PACKET_VARIABLE_SIZE;
-    }
-
-    if (newClientVersion >= CV_60142)
-    {
-        CVPRINT("Set new length for packet 0xB9 (>= 6.0.14.2)\n");
-        m_Packets[0xB9].Size = 0x05;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0xB9 (<= 6.0.14.2)\n");
-        m_Packets[0xB9].Size = 0x03;
-    }
-
-    if (newClientVersion >= CV_7000)
-    {
-        CVPRINT("Set new length for packet 0xEE (>= 7.0.0.0)\n");
-        m_Packets[0xEE].Size = 0x2000;
-        CVPRINT("Set new length for packet 0xEF (>= 7.0.0.0)\n");
-        m_Packets[0xEF].Size = 0x2000;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0xEE (<= 7.0.0.0)\n");
-        m_Packets[0xEE].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xEF (<= 7.0.0.0)\n");
-        m_Packets[0xEF].Size = 0x15;
-    }
-
-    if (newClientVersion >= CV_7090)
-    {
-        CVPRINT("Set new length for packet 0x24 (>= 7.0.9.0)\n");
-        m_Packets[0x24].Size = 0x09;
-        CVPRINT("Set new length for packet 0x99 (>= 7.0.9.0)\n");
-        m_Packets[0x99].Size = 0x1E;
-        CVPRINT("Set new length for packet 0xBA (>= 7.0.9.0)\n");
-        m_Packets[0xBA].Size = 0x0A;
-        CVPRINT("Set new length for packet 0xF3 (>= 7.0.9.0)\n");
-        m_Packets[0xF3].Size = 0x1A;
-
-        CVPRINT("Set new length for packet 0xF1 (>= 7.0.9.0)\n");
-        m_Packets[0xF1].Size = 0x09;
-        CVPRINT("Set new length for packet 0xF2 (>= 7.0.9.0)\n");
-        m_Packets[0xF2].Size = 0x19;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0x24 (<= 7.0.9.0)\n");
-        m_Packets[0x24].Size = 0x07;
-        CVPRINT("Set standart length for packet 0x99 (<= 7.0.9.0)\n");
-        m_Packets[0x99].Size = 0x1A;
-        CVPRINT("Set standart length for packet 0xBA (<= 7.0.9.0)\n");
-        m_Packets[0xBA].Size = 0x06;
-        CVPRINT("Set standart length for packet 0xF3 (<= 7.0.9.0)\n");
-        m_Packets[0xF3].Size = 0x18;
-
-        CVPRINT("Set standart length for packet 0xF1 (<= 7.0.9.0)\n");
-        m_Packets[0xF1].Size = PACKET_VARIABLE_SIZE;
-        CVPRINT("Set standart length for packet 0xF2 (<= 7.0.9.0)\n");
-        m_Packets[0xF2].Size = PACKET_VARIABLE_SIZE;
-    }
-
-    if (newClientVersion >= CV_70180)
-    {
-        CVPRINT("Set new length for packet 0x00 (>= 7.0.18.0)\n");
-        m_Packets[0x00].Size = 0x6A;
-    }
-    else
-    {
-        CVPRINT("Set standart length for packet 0x24 (<= 7.0.18.0)\n");
-        m_Packets[0x00].Size = 0x68;
-    }
-}
-
 int CPacketManager::GetPacketSize(const UCHAR_LIST &packet, int &offsetToSize)
 {
     WISPFUN_DEBUG("c150_f3");
@@ -518,18 +364,10 @@ void CPacketManager::SendMegaClilocRequests()
     WISPFUN_DEBUG("c150_f5");
     if (g_TooltipsEnabled && !m_MegaClilocRequests.empty())
     {
-        if (m_ClientVersion >= CV_500A)
-        {
-            while (!m_MegaClilocRequests.empty())
-                CPacketMegaClilocRequest(m_MegaClilocRequests).Send();
-        }
-        else
-        {
-            for (int i : m_MegaClilocRequests)
-                CPacketMegaClilocRequestOld(i).Send();
+        for (int i : m_MegaClilocRequests)
+            CPacketMegaClilocRequestOld(i).Send();
 
-            m_MegaClilocRequests.clear();
-        }
+        m_MegaClilocRequests.clear();
     }
 }
 
@@ -706,43 +544,24 @@ PACKET_HANDLER(CharacterList)
 
     g_CityList.Clear();
 
-    if (m_ClientVersion >= CV_70130)
+    IFOR (i, 0, locCount)
     {
-        IFOR (i, 0, locCount)
-        {
-            CCityItemNew *city = new CCityItemNew();
+        CCityItemNew *city = new CCityItemNew();
 
-            city->LocationIndex = ReadUInt8();
+        city->LocationIndex = ReadUInt8();
 
-            city->Name = ReadString(32);
-            city->Area = ReadString(32);
+        city->Name = ReadString(32);
+        city->Area = ReadString(32);
 
-            city->X = ReadUInt32BE();
-            city->Y = ReadUInt32BE();
-            city->Z = ReadUInt32BE();
-            city->MapIndex = ReadUInt32BE();
-            city->Cliloc = ReadUInt32BE();
+        city->X = ReadUInt32BE();
+        city->Y = ReadUInt32BE();
+        city->Z = ReadUInt32BE();
+        city->MapIndex = ReadUInt32BE();
+        city->Cliloc = ReadUInt32BE();
 
-            Move(4);
+        Move(4);
 
-            g_CityList.AddCity(city);
-        }
-    }
-    else
-    {
-        IFOR (i, 0, locCount)
-        {
-            CCityItem *city = new CCityItem();
-
-            city->LocationIndex = ReadUInt8();
-
-            city->Name = ReadString(31);
-            city->Area = ReadString(31);
-
-            city->InitCity();
-
-            g_CityList.AddCity(city);
-        }
+        g_CityList.AddCity(city);
     }
 
     g_ClientFlag = ReadUInt32BE();
@@ -750,8 +569,7 @@ PACKET_HANDLER(CharacterList)
     g_CharacterList.OnePerson = (bool)(g_ClientFlag & CLF_ONE_CHARACTER_SLOT);
 
     g_PopupEnabled = (bool)(g_ClientFlag & CLF_CONTEXT_MENU);
-    g_TooltipsEnabled =
-        (bool)((g_ClientFlag & CLF_PALADIN_NECROMANCER_TOOLTIPS) && (g_PacketManager.GetClientVersion() >= CV_308Z));
+    g_TooltipsEnabled = (bool)((g_ClientFlag & CLF_PALADIN_NECROMANCER_TOOLTIPS));
     g_PaperdollBooks = (bool)(g_ClientFlag & CLF_PALADIN_NECROMANCER_TOOLTIPS);
 
     g_CharacterListScreen.UpdateContent();
@@ -901,11 +719,9 @@ PACKET_HANDLER(EnterWorld)
 
     CPacketClientVersion(g_Orion.ClientVersionText).Send();
 
-    if (m_ClientVersion >= CV_200)
-        CPacketGameWindowSize().Send();
+    CPacketGameWindowSize().Send();
 
-    if (m_ClientVersion >= CV_200)
-        CPacketLanguage(g_Language.c_str()).Send();
+    CPacketLanguage(g_Language.c_str()).Send();
 
     g_Orion.Click(g_PlayerSerial);
     CPacketStatusRequest(g_PlayerSerial).Send();
@@ -1014,9 +830,6 @@ PACKET_HANDLER(NewHealthbarUpdate)
     if (g_World == NULL)
         return;
 
-    if (*Start == 0x16 && m_ClientVersion < CV_500A)
-        return;
-
     uint serial = ReadUInt32BE();
 
     CGameCharacter *obj = g_World->FindWorldCharacter(serial);
@@ -1039,17 +852,11 @@ PACKET_HANDLER(NewHealthbarUpdate)
 
             if (enable)
             {
-                if (m_ClientVersion >= CV_7000)
-                    obj->SA_Poisoned = true;
-                else
-                    flags |= poisonFlag;
+                obj->SA_Poisoned = true;
             }
             else
             {
-                if (m_ClientVersion >= CV_7000)
-                    obj->SA_Poisoned = false;
-                else
-                    flags &= ~poisonFlag;
+                obj->SA_Poisoned = false;
             }
         }
         else if (type == 2)
@@ -1196,10 +1003,7 @@ PACKET_HANDLER(CharacterStatus)
             }
             else
             {
-                if (m_ClientVersion >= CV_500A)
-                    g_Player->MaxWeight = 7 * (g_Player->Str / 2) + 40;
-                else
-                    g_Player->MaxWeight = (g_Player->Str * 4) + 25;
+                g_Player->MaxWeight = 7 * (g_Player->Str / 2) + 40;
             }
 
             if (flag >= 3)
@@ -1452,9 +1256,7 @@ PACKET_HANDLER(UpdateObject)
         uchar layer = ReadUInt8();
         ushort itemColor = 0;
 
-        if (m_ClientVersion >= CV_70331)
-            itemColor = ReadUInt16BE();
-        else if (itemGraphic & 0x8000)
+        if (itemGraphic & 0x8000)
         {
             itemGraphic &= 0x7FFF;
             itemColor = ReadUInt16BE();
@@ -1547,8 +1349,7 @@ PACKET_HANDLER(UpdateContainedItem)
     ushort x = ReadUInt16BE();
     ushort y = ReadUInt16BE();
 
-    if (m_ClientVersion >= CV_6017)
-        Move(1);
+    Move(1);
 
     uint containerSerial = ReadUInt32BE();
     ushort color = ReadUInt16BE();
@@ -1574,8 +1375,7 @@ PACKET_HANDLER(UpdateContainedItems)
         ushort x = ReadUInt16BE();
         ushort y = ReadUInt16BE();
 
-        if (m_ClientVersion >= CV_6017)
-            Move(1);
+        Move(1);
 
         uint containerSerial = ReadUInt32BE();
         ushort color = ReadUInt16BE();
@@ -2010,10 +1810,7 @@ PACKET_HANDLER(LightLevel)
 PACKET_HANDLER(EnableLockedFeatures)
 {
     WISPFUN_DEBUG("c150_f44");
-    if (m_ClientVersion >= CV_60142)
-        g_LockedClientFeatures = ReadUInt32BE();
-    else
-        g_LockedClientFeatures = ReadUInt16BE();
+    g_LockedClientFeatures = ReadUInt32BE();
 
     g_ChatEnabled = (bool)(g_LockedClientFeatures & LFF_T2A);
 
@@ -4045,16 +3842,8 @@ void CPacketManager::AddHTMLGumps(CGump *gump, vector<HTMLGumpDataInfo> &list)
             htmlColor = 0x010101FF;
         }
 
-        CGUIHTMLText *htmlText = (CGUIHTMLText *)htmlGump->Add(new CGUIHTMLText(
-            data.TextID,
-            (uchar)(m_ClientVersion >= CV_305D),
-            color,
-            0,
-            0,
-            width,
-            TS_LEFT,
-            0,
-            htmlColor));
+        CGUIHTMLText *htmlText = (CGUIHTMLText *)htmlGump->Add(
+            new CGUIHTMLText(data.TextID, (uchar)1, color, 0, 0, width, TS_LEFT, 0, htmlColor));
 
         if (data.IsXMF)
         {
@@ -4411,7 +4200,7 @@ PACKET_HANDLER(OpenGump)
                 int graphic = ToInt(list[3]);
                 int color = 0;
 
-                if (listSize >= 5 && m_ClientVersion >= CV_305D)
+                if (listSize >= 5)
                 {
                     WISP_FILE::CTextFileParser gumppicParser("", "=", "", "");
                     STRING_LIST hueList = gumppicParser.GetTokens(list[4].c_str());
@@ -4697,17 +4486,12 @@ PACKET_HANDLER(DisplayMap)
 
     CGumpMap *gump = new CGumpMap(serial, gumpid, startX, startY, endX, endY, width, height);
 
-    if (*Start == 0xF5 || m_ClientVersion >= CV_308Z)
-    {
-        ushort facet = 0;
+    ushort facet = 0;
 
-        if (*Start == 0xF5)
-            facet = ReadUInt16BE();
+    if (*Start == 0xF5)
+        facet = ReadUInt16BE();
 
-        g_MultiMap.LoadFacet(gump, gump->m_Texture, facet);
-    }
-    else
-        g_MultiMap.LoadMap(gump, gump->m_Texture);
+    g_MultiMap.LoadFacet(gump, gump->m_Texture, facet);
 
     g_GumpManager.AddGump(gump);
 
@@ -4966,8 +4750,7 @@ PACKET_HANDLER(OpenBook)
     Move(1);
     WORD pageCount = ReadUInt16BE();
 
-    CGumpBook *gump = new CGumpBook(
-        serial, 0, 0, pageCount, flags != 0, (g_PacketManager.GetClientVersion() >= CV_308Z));
+    CGumpBook *gump = new CGumpBook(serial, 0, 0, pageCount, flags != 0, 1);
 
     gump->m_EntryTitle->m_Entry.SetText(ReadString(60));
     gump->m_EntryAuthor->m_Entry.SetText(ReadString(30));

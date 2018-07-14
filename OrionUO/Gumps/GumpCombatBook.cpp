@@ -8,17 +8,6 @@ CGumpCombatBook::CGumpCombatBook(int x, int y)
     WISPFUN_DEBUG("c91_f1");
     Draw2Page = true;
 
-    if (g_PacketManager.GetClientVersion() < CV_7000)
-    {
-        if (g_PacketManager.GetClientVersion() >= CV_500A)
-            AbilityCount = 29;
-        else
-        {
-            AbilityCount = 13;
-            DictionaryPagesCount = 2;
-        }
-    }
-
     PagesCount = DictionaryPagesCount + (AbilityCount * 2);
 }
 

@@ -25,8 +25,8 @@ CGumpStatusbar::CGumpStatusbar(uint serial, short x, short y, bool minimized)
 CGumpStatusbar::~CGumpStatusbar()
 {
     WISPFUN_DEBUG("c128_f2");
-    if (g_ConnectionManager.Connected() && g_PacketManager.GetClientVersion() >= CV_200 &&
-        g_World != NULL && g_World->FindWorldObject(Serial) != NULL)
+    if (g_ConnectionManager.Connected() && g_World != NULL &&
+        g_World->FindWorldObject(Serial) != NULL)
         CPacketCloseStatusbarGump(Serial).Send();
 
     RemoveFromGroup();

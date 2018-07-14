@@ -678,10 +678,7 @@ bool CGumpSpellbook::OnLeftMouseButtonDoubleClick()
                 if (g_PressedObject.LeftSerial < ID_GSB_SPELL_ICON_RIGHT)
                     spellIndex = g_PressedObject.LeftSerial - ID_GSB_SPELL_ICON_LEFT + 1;
 
-                if (g_PacketManager.GetClientVersion() < CV_308Z)
-                    g_Orion.CastSpellFromBook(spellIndex, Serial);
-                else
-                    g_Orion.CastSpell(spellIndex);
+                g_Orion.CastSpell(spellIndex);
 
                 Minimized = true;
                 WantUpdateContent = true;

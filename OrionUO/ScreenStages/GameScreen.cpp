@@ -1875,7 +1875,7 @@ void CGameScreen::OnLeftMouseButtonUp()
                 {
                     STATIC_TILES *st = NULL;
 
-                    if (g_PacketManager.GetClientVersion() >= CV_7090 && rwo->IsSurface())
+                    if (rwo->IsSurface())
                         st = ((CRenderStaticObject *)rwo)->GetStaticData();
 
                     short targetZ = rwo->GetZ();
@@ -1984,22 +1984,13 @@ void CGameScreen::OnLeftMouseButtonUp()
 
                             if (str.length())
                             {
-                                if (g_PacketManager.GetClientVersion() >= CV_6000)
-                                    g_Orion.CreateUnicodeTextMessage(
-                                        TT_CLIENT,
-                                        0,
-                                        g_ConfigManager.ToolTipsTextFont,
-                                        0x03B2,
-                                        str,
-                                        rwo);
-                                else
-                                    g_Orion.CreateTextMessage(
-                                        TT_CLIENT,
-                                        0,
-                                        g_ConfigManager.ToolTipsTextFont,
-                                        0x03B2,
-                                        ToString(str),
-                                        rwo);
+                                g_Orion.CreateUnicodeTextMessage(
+                                    TT_CLIENT,
+                                    0,
+                                    g_ConfigManager.ToolTipsTextFont,
+                                    0x03B2,
+                                    str,
+                                    rwo);
                             }
                         }
                     }

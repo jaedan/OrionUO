@@ -41,26 +41,11 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
         Add(new CGUIButton(ID_GP_BUTTON_OPTIONS, 0x07D6, 0x07D8, 0x07D7, 185, 71));
         Add(new CGUIButton(ID_GP_BUTTON_LOGOUT, 0x07D9, 0x07DB, 0x07DA, 185, 98));
 
-        if (g_PacketManager.GetClientVersion() >= CV_500A)
-            Add(new CGUIButton(ID_GP_BUTTON_JOURNAL_OR_QUESTS, 0x57B5, 0x57B6, 0x57B7, 185, 125));
-        else
-            Add(new CGUIButton(ID_GP_BUTTON_JOURNAL_OR_QUESTS, 0x07DC, 0x07DE, 0x07DD, 185, 125));
+        Add(new CGUIButton(ID_GP_BUTTON_QUESTS, 0x57B5, 0x57B6, 0x57B7, 185, 125));
 
         Add(new CGUIButton(ID_GP_BUTTON_SKILLS, 0x07DF, 0x07E1, 0x07E0, 185, 152));
 
-        if (g_PacketManager.GetClientVersion() >= CV_500A)
-            Add(new CGUIButton(ID_GP_BUTTON_CHAT_OR_GUILD, 0x57B2, 0x57B3, 0x57B4, 185, 179));
-        else
-        {
-            if (!g_ChatEnabled)
-            {
-                Add(new CGUIShader(&g_DeathShader, true));
-                Add(new CGUIButton(ID_GP_BUTTON_CHAT_OR_GUILD, 0x07E2, 0x07E2, 0x07E2, 185, 179));
-                Add(new CGUIShader(&g_DeathShader, false));
-            }
-            else
-                Add(new CGUIButton(ID_GP_BUTTON_CHAT_OR_GUILD, 0x07E2, 0x07E4, 0x07E3, 185, 179));
-        }
+        Add(new CGUIButton(ID_GP_BUTTON_GUILD, 0x57B2, 0x57B3, 0x57B4, 185, 179));
 
         if (g_Player->WarMode == WarModeState::War)
             m_ButtonWarmode = (CGUIButton *)Add(
@@ -146,13 +131,9 @@ void CGumpPaperdoll::InitToolTip()
                 g_ToolTip.Set(L"Open the logout gump");
                 break;
             }
-            case ID_GP_BUTTON_JOURNAL_OR_QUESTS:
+            case ID_GP_BUTTON_QUESTS:
             {
-                if (g_PacketManager.GetClientVersion() >= CV_500A)
-                    g_ToolTip.Set(L"Open the quests gump");
-                else
-                    g_ToolTip.Set(L"Open the journal gump");
-
+                g_ToolTip.Set(L"Open the quests gump");
                 break;
             }
             case ID_GP_BUTTON_SKILLS:
@@ -160,13 +141,9 @@ void CGumpPaperdoll::InitToolTip()
                 g_ToolTip.Set(L"Open the skills gump");
                 break;
             }
-            case ID_GP_BUTTON_CHAT_OR_GUILD:
+            case ID_GP_BUTTON_GUILD:
             {
-                if (g_PacketManager.GetClientVersion() >= CV_500A)
-                    g_ToolTip.Set(L"Open the guild gump");
-                else
-                    g_ToolTip.Set(L"Open the chat gump");
-
+                g_ToolTip.Set(L"Open the guild gump");
                 break;
             }
             case ID_GP_BUTTON_WARMODE:
@@ -741,12 +718,9 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
             g_Orion.OpenLogOut();
             break;
         }
-        case ID_GP_BUTTON_JOURNAL_OR_QUESTS:
+        case ID_GP_BUTTON_QUESTS:
         {
-            if (g_PacketManager.GetClientVersion() >= CV_500A)
-                CPacketQuestMenuRequest().Send();
-            else
-                g_Orion.OpenJournal();
+            CPacketQuestMenuRequest().Send();
             break;
         }
         case ID_GP_BUTTON_SKILLS:
@@ -754,12 +728,9 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
             g_Orion.OpenSkills();
             break;
         }
-        case ID_GP_BUTTON_CHAT_OR_GUILD:
+        case ID_GP_BUTTON_GUILD:
         {
-            if (g_PacketManager.GetClientVersion() >= CV_500A)
-                CPacketGuildMenuRequest().Send();
-            else
-                g_Orion.OpenChat();
+            CPacketGuildMenuRequest().Send();
             break;
         }
         case ID_GP_BUTTON_WARMODE:

@@ -195,7 +195,7 @@ bool CSpeechManager::LoadLangCodes()
 void CSpeechManager::GetKeywords(const wchar_t *text, UINT_LIST &codes)
 {
     WISPFUN_DEBUG("c157_f4");
-    if (!m_Loaded || g_PacketManager.GetClientVersion() < CV_305D)
+    if (!m_Loaded)
         return;
 
     size_t size = m_SpeechEntries.size();

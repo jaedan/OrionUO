@@ -19,53 +19,31 @@ CGumpBulletinBoardItem::CGumpBulletinBoardItem(
     ID = id;
     m_MinHeight = 200;
 
-    bool useUnicode = (g_PacketManager.GetClientVersion() >= CV_305D);
     int unicodeFontIndex = 1;
-    int unicodeHeightOffset = 0;
-    ushort textColor = 0x0386;
-
-    if (useUnicode)
-    {
-        unicodeHeightOffset = -6;
-        textColor = 0;
-    }
+    int unicodeHeightOffset = -6;
+    ushort textColor = 0;
 
     CGUIText *text = (CGUIText *)Add(new CGUIText(0, 30, 40));
 
-    if (useUnicode)
-        text->CreateTextureW(unicodeFontIndex, L"Author:");
-    else
-        text->CreateTextureA(6, "Author:");
+    text->CreateTextureW(unicodeFontIndex, L"Author:");
 
     CGUIText *text2 = (CGUIText *)Add(
         new CGUIText(textColor, 30 + text->m_Texture.Width, 46 + unicodeHeightOffset));
 
-    if (useUnicode)
-        text2->CreateTextureW(unicodeFontIndex, poster);
-    else
-        text2->CreateTextureA(9, ToString(poster));
+    text2->CreateTextureW(unicodeFontIndex, poster);
 
     text = (CGUIText *)Add(new CGUIText(0, 30, 56));
 
-    if (useUnicode)
-        text->CreateTextureW(unicodeFontIndex, L"Time:");
-    else
-        text->CreateTextureA(6, "Time:");
+    text->CreateTextureW(unicodeFontIndex, L"Time:");
 
     text2 = (CGUIText *)Add(
         new CGUIText(textColor, 30 + text->m_Texture.Width, 62 + unicodeHeightOffset));
 
-    if (useUnicode)
-        text2->CreateTextureW(unicodeFontIndex, dataTime);
-    else
-        text2->CreateTextureA(9, ToString(dataTime));
+    text2->CreateTextureW(unicodeFontIndex, dataTime);
 
     text = (CGUIText *)Add(new CGUIText(0, 30, 72));
 
-    if (useUnicode)
-        text->CreateTextureW(unicodeFontIndex, L"Subject:");
-    else
-        text->CreateTextureA(6, "Subject:");
+    text->CreateTextureW(unicodeFontIndex, L"Subject:");
 
     ushort subjectColor = textColor;
 
@@ -82,8 +60,8 @@ CGumpBulletinBoardItem::CGumpBulletinBoardItem(
         30 + text->m_Texture.Width,
         78 + unicodeHeightOffset,
         150,
-        useUnicode,
-        (useUnicode ? unicodeFontIndex : 9)));
+        1,
+        unicodeFontIndex));
     m_EntrySubject->m_Entry.SetText(subject);
 
     if (!m_Variant)
@@ -99,15 +77,7 @@ CGumpBulletinBoardItem::CGumpBulletinBoardItem(
     Add(new CGUIGumppicTiled(0x0835, 30, 100, 204, 0));
 
     m_Entry = (CGUITextEntry *)m_HTMLGump->Add(new CGUITextEntry(
-        ID_GBBI_TEXT_FIELD,
-        textColor,
-        textColor,
-        textColor,
-        3,
-        3,
-        220,
-        useUnicode,
-        (useUnicode ? unicodeFontIndex : 9)));
+        ID_GBBI_TEXT_FIELD, textColor, textColor, textColor, 3, 3, 220, 1, unicodeFontIndex));
     m_Entry->m_Entry.MaxWidth = 0;
     m_Entry->m_Entry.SetText(data);
     m_Entry->m_Entry.CreateTextureA(9, m_Entry->m_Entry.c_str(), textColor, 220, TS_LEFT, 0);

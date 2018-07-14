@@ -333,19 +333,15 @@ void CGameObject::ClearNotOpenedItems()
 bool CGameObject::Poisoned()
 {
     WISPFUN_DEBUG("c20_f12");
-    if (g_PacketManager.GetClientVersion() >= CV_7000)
-        return SA_Poisoned;
-    else
-        return (m_Flags & 0x04);
+
+    return SA_Poisoned;
 }
 
 bool CGameObject::Flying()
 {
     WISPFUN_DEBUG("c20_f13");
-    if (g_PacketManager.GetClientVersion() >= CV_7000)
-        return (m_Flags & 0x04);
-    else
-        return false;
+
+    return (m_Flags & 0x04);
 }
 
 int CGameObject::IsGold(ushort graphic)

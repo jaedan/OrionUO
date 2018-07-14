@@ -45,9 +45,7 @@ const int FRAME_DELAY_ACTIVE_WINDOW = 30;
 
 const int MIN_VIEW_RANGE = 5;
 
-const int MAX_VIEW_RANGE_OLD = 18;
-
-const int MAX_VIEW_RANGE_NEW = 24;
+const int MAX_VIEW_RANGE = 18;
 
 const int MAX_MAPS_COUNT = 6;
 

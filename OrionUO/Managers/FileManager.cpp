@@ -63,7 +63,7 @@ CFileManager::~CFileManager()
 
 bool CFileManager::Load()
 {
-    if (g_PacketManager.GetClientVersion() >= CV_7000 && LoadUOPFile(m_MainMisc, "MainMisc.uop"))
+    if (LoadUOPFile(m_MainMisc, "MainMisc.uop"))
         return LoadWithUOP();
 
     if (!m_ArtIdx.Load(g_App.UOFilesPath("artidx.mul")))

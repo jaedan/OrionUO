@@ -637,9 +637,6 @@ void CGameItem::LoadMulti(bool dropAlpha)
     {
         int itemOffset = sizeof(MULTI_BLOCK);
 
-        if (g_PacketManager.GetClientVersion() >= CV_7090)
-            itemOffset = sizeof(MULTI_BLOCK_NEW);
-
         IFOR (j, 0, count)
         {
             PMULTI_BLOCK pmb = (PMULTI_BLOCK)(address + (j * itemOffset));

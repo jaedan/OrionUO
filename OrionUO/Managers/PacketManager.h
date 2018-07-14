@@ -59,12 +59,7 @@ struct HTMLGumpDataInfo
 
 class CPacketManager : public WISP_NETWORK::CPacketReader
 {
-protected:
-    CLIENT_VERSION m_ClientVersion = CV_OLD;
-
 public:
-    CLIENT_VERSION GetClientVersion() { return m_ClientVersion; };
-    void SetClientVersion(CLIENT_VERSION val);
     string AutoLoginNames = "";
     uint ConfigSerial = 0;
 

@@ -33,235 +33,6 @@ void CGumpScreenSelectProfession::UpdateContent()
         return;
     }
 
-    if (g_PacketManager.GetClientVersion() >= CV_308Z)
-        UpdateContentNew();
-    else
-        UpdateContentOld();
-}
-
-void CGumpScreenSelectProfession::UpdateContentOld()
-{
-    WISPFUN_DEBUG("c117_f3");
-    CBaseProfession *obj = g_ProfessionManager.Selected;
-
-    if (obj == NULL)
-    {
-        g_OrionWindow.ShowMessage("No items in profession manager!", "Profession error!");
-        return;
-    }
-
-    IFOR (i, 0, 3)
-    {
-        m_StatsSliders[i] = NULL;
-        m_SkillsSliders[i] = NULL;
-    }
-
-    m_SkillsSliders[3] = NULL;
-
-    Add(new CGUIGumppicTiled(0x0E14, 0, 0, 640, 480));
-    Add(new CGUIGumppic(0x157C, 0, 0));
-    Add(new CGUIGumppic(0x15A0, 0, 4));
-    Add(new CGUIButton(ID_SPS_QUIT, 0x1589, 0x158A, 0x158B, 555, 4));
-    Add(new CGUIButton(ID_SPS_ARROW_PREV, 0x15A1, 0x15A2, 0x15A3, 586, 445));
-    Add(new CGUIResizepic(0, 0x0A28, 80, 80, 546, 352));
-    Add(new CGUIGumppic(0x058B, 145, 57));
-    Add(new CGUIGumppic(0x0589, 222, 44));
-    Add(new CGUIButton(ID_SPS_ARROW_BACK_PROFESSION, 0x119C, 0x119D, 0x119E, 200, 356));
-
-    CGUIHTMLGump *htmlGump =
-        new CGUIHTMLGump(ID_SPS_HTMLGUMP, 0x0BB8, 120, 137, 221, 214, true, true);
-    Add(htmlGump);
-
-    if (!g_SelectProfessionScreen.GetSkillSelection())
-    {
-        g_FontManager.SetUseHTML(true);
-
-        CGUIText *text = new CGUIText(0, 3, 3);
-        text->CreateTextureW(1, obj->Description, 30, 195);
-        htmlGump->Add(text);
-
-        g_FontManager.SetUseHTML(false);
-    }
-    else
-    {
-        int yPtr = 4;
-
-        IFOR (i, 0, g_SkillsManager.Count)
-        {
-            CSkill *skill = g_SkillsManager.Get(g_SkillsManager.GetSortedIndex((uint)i));
-
-            if (skill == NULL)
-                continue;
-
-            CGUITextEntry *entry = new CGUITextEntry(
-                ID_SPS_SKILLS_LIST + (int)i, 1, 0x0035, 0x0035, 3, yPtr, 0, false, 9);
-            entry->m_Entry.SetText(skill->Name);
-            entry->m_Entry.CreateTextureA(9, skill->Name, 1, 0, TS_LEFT, 0);
-            entry->CheckOnSerial = true;
-            entry->ReadOnly = true;
-
-            htmlGump->Add(new CGUIHitBox(
-                ID_SPS_SKILLS_LIST + (int)i, 3, yPtr, 195, entry->m_Entry.m_Texture.Height));
-            htmlGump->Add(entry);
-
-            yPtr += entry->m_Entry.m_Texture.Height;
-        }
-    }
-
-    htmlGump->CalculateDataSize();
-
-    if (obj->Type == PT_CATEGORY)
-    {
-        Add(new CGUIButton(
-            ID_SPS_LABEL_BACK_PROFESSION, obj->Gump, obj->Gump, obj->Gump + 1, 231, 53));
-
-        int offsY = 0;
-
-        int index = 0;
-
-        QFOR(child, obj->m_Items, CBaseProfession *)
-        {
-            Add(new CGUIGumppic(0x0589, 500, 100 + offsY));
-
-            Add(new CGUIButton(
-                ID_SPS_LABEL + index, child->Gump, child->Gump, child->Gump + 1, 509, 109 + offsY));
-
-            CGUIText *text = (CGUIText *)Add(new CGUIText(0, 350, 135 + offsY));
-            text->CreateTextureW(2, ToWString(child->Name), 30, 185, TS_LEFT, UOFONT_SOLID);
-
-            offsY += 79;
-
-            index++;
-        }
-    }
-    else if (obj->Type == PT_PROFESSION)
-    {
-        Add(new CGUIButton(
-            ID_SPS_LABEL_BACK_PROFESSION, obj->Gump, obj->Gump, obj->Gump + 1, 231, 53));
-
-        const float SphereListWidth = 95.0f;
-        float ValPer = 0.0f;
-
-        CProfession *profession = (CProfession *)obj;
-        int statVal[3] = { profession->Str, profession->Dex, profession->Int };
-
-        const string statName[3] = { "Strength", "Dexterity", "Intelligence" };
-
-        int yPtr = 136;
-
-        IFOR (i, 0, 3)
-        {
-            CGUIText *text = new CGUIText(1, 360, yPtr);
-            text->CreateTextureA(1, statName[i]);
-            Add(text);
-
-            m_StatsSliders[i] = (CGUISlider *)Add(new CGUISlider(
-                ID_SPS_STATS_SPHERE + (int)i,
-                0x00D8,
-                0x00D8,
-                0x00D8,
-                0x00D5,
-                true,
-                false,
-                496,
-                yPtr,
-                95,
-                10,
-                45,
-                statVal[i]));
-            m_StatsSliders[i]->DefaultTextOffset = -10;
-            m_StatsSliders[i]->SetTextParameters(true, STP_LEFT, 1, 1, false);
-
-            yPtr += 30;
-        }
-
-        if (profession->DescriptionIndex >= 0)
-        {
-            yPtr = 260;
-
-            IFOR (i, 0, 3)
-            {
-                int skillID = profession->GetSkillIndex((int)i);
-
-                if (skillID >= g_SkillsManager.Count)
-                    skillID = 0;
-
-                CGUIText *text = new CGUIText(1, 360, yPtr);
-
-                CSkill *skill = g_SkillsManager.Get(skillID);
-
-                if (skill != NULL)
-                    text->CreateTextureA(1, skill->Name, 90, TS_LEFT, UOFONT_FIXED);
-
-                Add(text);
-
-                yPtr += 32;
-            }
-        }
-        else
-        {
-            yPtr = 256;
-
-            IFOR (i, 0, 3)
-            {
-                Add(new CGUIResizepic(ID_SPS_SKILLS_FILED + (int)i, 0x0BB8, 350, yPtr, 105, 25));
-
-                int skillID = profession->GetSkillIndex((uint)i);
-
-                CGUITextEntry *entry = (CGUITextEntry *)Add(new CGUITextEntry(
-                    ID_SPS_SKILLS_FILED + (int)i,
-                    0x0386,
-                    0,
-                    0x0021,
-                    354,
-                    yPtr + 5,
-                    90,
-                    false,
-                    9,
-                    TS_LEFT,
-                    UOFONT_FIXED));
-
-                CSkill *skill = g_SkillsManager.Get(skillID);
-
-                if (skillID >= g_SkillsManager.Count || skill == NULL)
-                    entry->m_Entry.SetText("Click here");
-                else
-                    entry->m_Entry.SetText(skill->Name);
-
-                entry->CheckOnSerial = true;
-                entry->ReadOnly = true;
-
-                yPtr += 32;
-            }
-        }
-
-        IFOR (i, 0, 3)
-        {
-            m_SkillsSliders[i] = (CGUISlider *)Add(new CGUISlider(
-                ID_SPS_SKILLS_SPHERE + (int)i,
-                0x00D8,
-                0x00D8,
-                0x00D8,
-                0x00D5,
-                true,
-                false,
-                496,
-                258 + ((int)i * 32),
-                95,
-                0,
-                50,
-                profession->GetSkillValue((int)i)));
-            m_SkillsSliders[i]->DefaultTextOffset = -10;
-            m_SkillsSliders[i]->SetTextParameters(true, STP_LEFT, 1, 1, false);
-        }
-
-        Add(new CGUIButton(ID_SPS_ARROW_NEXT, 0x15A4, 0x15A5, 0x15A6, 610, 445));
-    }
-}
-
-void CGumpScreenSelectProfession::UpdateContentNew()
-{
-    WISPFUN_DEBUG("c117_f4");
     CBaseProfession *obj = g_ProfessionManager.Selected;
 
     Add(new CGUIGumppicTiled(0x0E14, 0, 0, 640, 480));
@@ -396,13 +167,6 @@ void CGumpScreenSelectProfession::UpdateContentNew()
             int skillsCount = 3;
             int skillStep = 80;
 
-            if (g_PacketManager.GetClientVersion() >= CV_70160)
-            {
-                yPtr -= 12;
-                skillStep = 70;
-                skillsCount++;
-            }
-
             IFOR (i, 0, skillsCount)
             {
                 Add(new CGUIResizepic(ID_SPS_SKILLS_FILED + (int)i, 0x0BB8, 340, yPtr, 175, 25));
@@ -523,8 +287,7 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
         g_SelectProfessionScreen.CreateSmoothAction(CSelectProfessionScreen::ID_SMOOTH_SPS_QUIT);
     else if (serial == ID_SPS_ARROW_PREV)
     {
-        if (g_PacketManager.GetClientVersion() >= CV_308Z &&
-            g_ProfessionManager.Selected->Type == PT_PROFESSION &&
+        if (g_ProfessionManager.Selected->Type == PT_PROFESSION &&
             g_ProfessionManager.Selected->DescriptionIndex == -1)
         {
             g_ProfessionManager.Selected =
@@ -546,9 +309,6 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
             if (profession->DescriptionIndex == -1)
             {
                 int skillsCount = 3;
-
-                if (g_PacketManager.GetClientVersion() >= CV_70160)
-                    skillsCount++;
 
                 IFOR (i, 0, skillsCount)
                 {
@@ -595,8 +355,7 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
                 g_ProfessionManager.Selected = child;
                 g_SelectProfessionScreen.SetSkillSelection(0);
 
-                if (g_PacketManager.GetClientVersion() >= CV_308Z && child->Type == PT_PROFESSION &&
-                    child->DescriptionIndex != -1)
+                if (child->Type == PT_PROFESSION && child->DescriptionIndex != -1)
                     g_SelectProfessionScreen.CreateSmoothAction(
                         CSelectProfessionScreen::ID_SMOOTH_SPS_GO_SCREEN_CREATE);
 
@@ -623,9 +382,6 @@ void CGumpScreenSelectProfession::GUMP_BUTTON_EVENT_C
         {
             int skillsCount = 3;
 
-            if (g_PacketManager.GetClientVersion() >= CV_70160)
-                skillsCount++;
-
             IFOR (i, 0, skillsCount)
             {
                 if (serial == ID_SPS_SKILLS_FILED + (int)i)
@@ -650,20 +406,9 @@ void CGumpScreenSelectProfession::GUMP_SLIDER_MOVE_EVENT_C
     WISPFUN_DEBUG("c117_f8");
     int skillsCount = 3;
 
-    if (g_PacketManager.GetClientVersion() >= CV_70160)
-        skillsCount++;
-
     if (serial >= ID_SPS_STATS_SPHERE && (int)serial < ID_SPS_STATS_SPHERE + skillsCount)
     {
-        if (g_PacketManager.GetClientVersion() >= CV_308Z)
-        {
-            if (g_PacketManager.GetClientVersion() >= CV_70160)
-                ShuffleStats(serial - ID_SPS_STATS_SPHERE, 90, 60);
-            else
-                ShuffleStats(serial - ID_SPS_STATS_SPHERE, 80, 60);
-        }
-        else
-            ShuffleStats(serial - ID_SPS_STATS_SPHERE, 65, 45);
+        ShuffleStats(serial - ID_SPS_STATS_SPHERE, 80, 60);
     }
 
     if (serial >= ID_SPS_SKILLS_SPHERE && (int)serial < ID_SPS_SKILLS_SPHERE + skillsCount)
@@ -778,13 +523,6 @@ void CGumpScreenSelectProfession::ShuffleSkills(int id)
 
     int skillsCount = 3;
     bool use4Skill = false;
-
-    if (g_PacketManager.GetClientVersion() >= CV_70160)
-    {
-        use4Skill = true;
-        skillsCount++;
-        skills[3] = m_SkillsSliders[3]->Value;
-    }
 
     skills[used_skill] = m_SkillsSliders[id]->Value;
 

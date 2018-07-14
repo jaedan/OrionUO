@@ -9,10 +9,7 @@ CGUIBulletinBoardObject::CGUIBulletinBoardObject(int serial, int x, int y, const
     WISPFUN_DEBUG("c43_f1");
     MoveOnDrag = true;
 
-    if (g_PacketManager.GetClientVersion() >= CV_305D)
-        g_FontManager.GenerateW(1, m_Texture, text, 0);
-    else
-        g_FontManager.GenerateA(9, m_Texture, ToString(text), 0x0386);
+    g_FontManager.GenerateW(1, m_Texture, text, 0);
 }
 
 CGUIBulletinBoardObject::~CGUIBulletinBoardObject()
