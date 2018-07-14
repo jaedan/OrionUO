@@ -35,9 +35,6 @@ void CGumpRacialAbility::OnAbilityUse(ushort index)
     {
         case 0x5DDA:
         {
-            if (g_Player->Race == RT_GARGOYLE)
-                CPacketToggleGargoyleFlying().Send();
-
             break;
         }
         default:

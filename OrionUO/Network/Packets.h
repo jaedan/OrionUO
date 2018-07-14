@@ -470,12 +470,6 @@ public:
     CPacketTargetSelectedObject(int useObjectSerial, int targetObjectSerial);
 };
 
-class CPacketToggleGargoyleFlying : public CPacket
-{
-public:
-    CPacketToggleGargoyleFlying();
-};
-
 class CPacketStunReq : public CPacket
 {
 public:

@@ -115,10 +115,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
             false,
             9));
 
-        if (g_CreateCharacterManager.GetRace() == RT_GARGOYLE)
-            entry->m_Entry.SetText("Robe Color");
-        else
-            entry->m_Entry.SetText("Shirt Color");
+        entry->m_Entry.SetText("Shirt Color");
 
         entry->CheckOnSerial = true;
         entry->ReadOnly = true;
@@ -133,37 +130,33 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         Add(new CGUIColoredPolygone(ID_CCS_SHIRT_COLOR, color, 490, 199, 120, 25, clr));
 
-        if (g_CreateCharacterManager.GetRace() != RT_GARGOYLE)
-        {
-            entry = (CGUITextEntry *)Add(new CGUITextEntry(
-                ID_CCS_SKIRT_OR_PANTS_COLOR,
-                toneTextColorRange[0],
-                toneTextColorRange[1],
-                toneTextColorRange[1],
-                490,
-                230,
-                0,
-                false,
-                9));
-            entry->CheckOnSerial = true;
-            entry->ReadOnly = true;
+        entry = (CGUITextEntry *)Add(new CGUITextEntry(
+            ID_CCS_SKIRT_OR_PANTS_COLOR,
+            toneTextColorRange[0],
+            toneTextColorRange[1],
+            toneTextColorRange[1],
+            490,
+            230,
+            0,
+            false,
+            9));
+        entry->CheckOnSerial = true;
+        entry->ReadOnly = true;
 
-            if (g_CreateCharacterManager.GetFemale())
-                entry->m_Entry.SetText("Skirt Color");
-            else
-                entry->m_Entry.SetText("Pants Color");
+        if (g_CreateCharacterManager.GetFemale())
+            entry->m_Entry.SetText("Skirt Color");
+        else
+            entry->m_Entry.SetText("Pants Color");
 
-            color = g_CreateCharacterManager.PantsColor - 1;
+        color = g_CreateCharacterManager.PantsColor - 1;
 
-            colorIndex = (color + ((color + (color << 2)) << 1)) << 3;
-            colorIndex += (colorIndex / colorOffsetDivider) << 2;
-            color = *(pushort)(huesData + colorIndex);
+        colorIndex = (color + ((color + (color << 2)) << 1)) << 3;
+        colorIndex += (colorIndex / colorOffsetDivider) << 2;
+        color = *(pushort)(huesData + colorIndex);
 
-            clr = g_ColorManager.Color16To32(color);
+        clr = g_ColorManager.Color16To32(color);
 
-            Add(new CGUIColoredPolygone(
-                ID_CCS_SKIRT_OR_PANTS_COLOR, color, 490, 244, 120, 25, clr));
-        }
+        Add(new CGUIColoredPolygone(ID_CCS_SKIRT_OR_PANTS_COLOR, color, 490, 244, 120, 25, clr));
 
         entry = (CGUITextEntry *)Add(new CGUITextEntry(
             ID_CCS_HAIR_COLOR,
@@ -230,13 +223,6 @@ void CGumpScreenCreateCharacter::UpdateContent()
             {
                 maxX = 4;
                 polygoneWidth = 30;
-            }
-            else if (g_CreateCharacterManager.GetRace() == RT_GARGOYLE)
-            {
-                maxX = 4;
-                polygoneWidth = 30;
-                maxY = 7;
-                polygoneHeight = 40;
             }
 
             IFOR (y, 0, maxY)
@@ -307,11 +293,6 @@ void CGumpScreenCreateCharacter::UpdateContent()
             {
                 maxY = 9;
                 polygoneHeight = 31;
-            }
-            else if (g_CreateCharacterManager.GetRace() == RT_GARGOYLE)
-            {
-                maxY = 3;
-                polygoneHeight = 93;
             }
 
             IFOR (y, 0, maxY)

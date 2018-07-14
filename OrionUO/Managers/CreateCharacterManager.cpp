@@ -64,41 +64,6 @@ const CC_HAIR_STYLE CCreateCharacterManager::m_ElfFemaleHairStyleTable[ELF_FEMAL
     { 0x06F7, 0x2FD1, "Spiked" }
 };
 
-const CC_HAIR_STYLE
-    CCreateCharacterManager::m_GargoyleMaleHairStyleTable[GARGOYLE_MALE_HAIR_COUNT] = {
-        { 0, 0, "NONE" },
-        { 0x076C, 0x4258, "Horn Style 1" },
-        { 0x076D, 0x4259, "Horn Style 2" },
-        { 0x0773, 0x425A, "Horn Style 3" },
-        { 0x076E, 0x425B, "Horn Style 4" },
-        { 0x0774, 0x425C, "Horn Style 5" },
-        { 0x0775, 0x425D, "Horn Style 6" },
-        { 0x0776, 0x425E, "Horn Style 7" },
-        { 0x0777, 0x425F, "Horn Style 8" },
-    };
-
-const CC_HAIR_STYLE
-    CCreateCharacterManager::m_GargoyleFemaleHairStyleTable[GARGOYLE_FEMALE_HAIR_COUNT] = {
-        { 0, 0, "NONE" },
-        { 0x07A0, 0x4261, "Horn Style 1" },
-        { 0x07A1, 0x4262, "Horn Style 2" },
-        { 0x079E, 0x4273, "Horn Style 3" },
-        { 0x07A2, 0x4274, "Horn Style 4" },
-        { 0x077B, 0x4275, "Horn Style 5" },
-        { 0x077C, 0x42AA, "Horn Style 6" },
-        { 0x077D, 0x42AB, "Horn Style 7" },
-        { 0x077E, 0x42B1, "Horn Style 8" },
-    };
-
-const CC_HAIR_STYLE
-    CCreateCharacterManager::m_GargoyleBeardStyleTable[GARGOYLE_MALE_FACIAL_HAIR_COUNT] = {
-        { 0, 0, "NONE" },
-        { 0x076F, 0x42AD, "Horn Style 1" },
-        { 0x0770, 0x42AE, "Horn Style 2" },
-        { 0x0771, 0x42AF, "Horn Style 3" },
-        { 0x0772, 0x42B0, "Horn Style 4" },
-    };
-
 const ushort CCreateCharacterManager::m_HumanSkinTone[HUMAN_SKIN_TONE_COUNT] = {
     0x03E9, 0x03F1, 0x03F9, 0x0401, 0x0409, 0x0411, 0x0419, 0x0421, 0x03EA, 0x03F2, 0x03FA,
     0x0402, 0x040A, 0x0412, 0x041A, 0x0421, 0x03EB, 0x03F3, 0x03FB, 0x0403, 0x040B, 0x0413,
@@ -114,12 +79,6 @@ const ushort CCreateCharacterManager::m_ElfSkinTone[ELF_SKIN_TONE_COUNT] = {
     0x0384, 0x0375, 0x053E, 0x0380, 0x0381, 0x0382, 0x076A, 0x03E4, 0x051C, 0x03E5
 };
 
-const ushort CCreateCharacterManager::m_GargoyleSkinTone[GARGOYLE_SKIN_TONE_COUNT] = {
-    0x06DA, 0x06DB, 0x06DC, 0x06DD, 0x06DE, 0x06DF, 0x06E0, 0x06E1, 0x06E2, 0x06E3,
-    0x06E4, 0x06E5, 0x06E6, 0x06E7, 0x06E8, 0x06E9, 0x06EA, 0x06EB, 0x06EC, 0x06ED,
-    0x06EE, 0x06EF, 0x06F0, 0x06F1, 0x06F2, 0x06DA, 0x06DB, 0x06DC
-};
-
 const ushort CCreateCharacterManager::m_HumanHairColor[HUMAN_HAIR_COLOR_COUNT] = {
     0x044D, 0x0455, 0x045D, 0x0465, 0x046D, 0x0475, 0x044E, 0x0456, 0x045E, 0x0466, 0x046E, 0x0476,
     0x044F, 0x0457, 0x045F, 0x0467, 0x046F, 0x0477, 0x0450, 0x0458, 0x0460, 0x0468, 0x0470, 0x0478,
@@ -133,11 +92,6 @@ const ushort CCreateCharacterManager::m_ElfHairColor[ELF_HAIR_COLOR_COUNT] = {
     0x0091, 0x0158, 0x0159, 0x015A, 0x015B, 0x015C, 0x015D, 0x01BC, 0x0724, 0x0057, 0x0127,
     0x012E, 0x01F2, 0x0250, 0x031C, 0x031D, 0x031E, 0x031F, 0x0320, 0x0321, 0x0322, 0x0323,
     0x0324, 0x0325, 0x0385, 0x0386, 0x0387, 0x0388, 0x0389, 0x0385, 0x0386, 0x0387
-};
-
-const ushort CCreateCharacterManager::m_GargoyleHairColor[GARGOYLE_HAIR_COLOR_COUNT] = {
-    0x0708, 0x070A, 0x070C, 0x070E, 0x0710, 0x0762, 0x0764, 0x0767, 0x076A,
-    0x06F2, 0x06F0, 0x06EE, 0x06E3, 0x06E1, 0x06DF, 0x0708, 0x070A, 0x070C
 };
 
 CCreateCharacterManager::CCreateCharacterManager()
@@ -209,9 +163,10 @@ void CCreateCharacterManager::Clear()
 int CCreateCharacterManager::GetCurrentHairCount()
 {
     WISPFUN_DEBUG("c140_f5");
-    static const int count[3][2] = { { HUMAN_MALE_HAIR_COUNT, HUMAN_FEMALE_HAIR_COUNT },
-                                     { ELF_MALE_HAIR_COUNT, ELF_FEMALE_HAIR_COUNT },
-                                     { GARGOYLE_MALE_HAIR_COUNT, GARGOYLE_FEMALE_HAIR_COUNT } };
+    static const int count[3][2] = {
+        { HUMAN_MALE_HAIR_COUNT, HUMAN_FEMALE_HAIR_COUNT },
+        { ELF_MALE_HAIR_COUNT, ELF_FEMALE_HAIR_COUNT },
+    };
 
     return count[m_Race - 1][m_Female];
 }
@@ -219,9 +174,10 @@ int CCreateCharacterManager::GetCurrentHairCount()
 int CCreateCharacterManager::GetCurrentFacialHairCount()
 {
     WISPFUN_DEBUG("c140_f6");
-    static const int count[3] = { HUMAN_MALE_FACIAL_HAIR_COUNT,
-                                  0,
-                                  GARGOYLE_MALE_FACIAL_HAIR_COUNT };
+    static const int count[3] = {
+        HUMAN_MALE_FACIAL_HAIR_COUNT,
+        0,
+    };
 
     return count[m_Race - 1];
 }
@@ -261,9 +217,10 @@ ushort CCreateCharacterManager::GetBootsGump()
 pushort CCreateCharacterManager::GetSkinTonePtr()
 {
     WISPFUN_DEBUG("c140_f11");
-    static const pushort ptr[3] = { (pushort)&m_HumanSkinTone[0],
-                                    (pushort)&m_ElfSkinTone[0],
-                                    (pushort)&m_GargoyleSkinTone[0] };
+    static const pushort ptr[3] = {
+        (pushort)&m_HumanSkinTone[0],
+        (pushort)&m_ElfSkinTone[0],
+    };
 
     return ptr[m_Race - 1];
 }
@@ -271,9 +228,10 @@ pushort CCreateCharacterManager::GetSkinTonePtr()
 pushort CCreateCharacterManager::GetHairColorPtr()
 {
     WISPFUN_DEBUG("c140_f12");
-    static const pushort ptr[3] = { (pushort)&m_HumanHairColor[0],
-                                    (pushort)&m_ElfHairColor[0],
-                                    (pushort)&m_GargoyleHairColor[0] };
+    static const pushort ptr[3] = {
+        (pushort)&m_HumanHairColor[0],
+        (pushort)&m_ElfHairColor[0],
+    };
 
     return ptr[m_Race - 1];
 }
@@ -307,19 +265,6 @@ CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
                 return m_ElfMaleHairStyleTable[pos];
         }
     }
-    else if (m_Race == RT_GARGOYLE)
-    {
-        if (m_Female)
-        {
-            if (pos < GARGOYLE_FEMALE_HAIR_COUNT)
-                return m_GargoyleFemaleHairStyleTable[pos];
-        }
-        else
-        {
-            if (pos < GARGOYLE_MALE_HAIR_COUNT)
-                return m_GargoyleMaleHairStyleTable[pos];
-        }
-    }
 
     return m_HumanMaleHairStyleTable[0];
 }
@@ -331,11 +276,6 @@ CC_HAIR_STYLE CCreateCharacterManager::GetBeard(uchar pos) const
     {
         if (pos < HUMAN_MALE_FACIAL_HAIR_COUNT)
             return m_HumanBeardStyleTable[pos];
-    }
-    else if (m_Race == RT_GARGOYLE)
-    {
-        if (pos < GARGOYLE_MALE_FACIAL_HAIR_COUNT)
-            return m_GargoyleBeardStyleTable[pos];
     }
 
     return m_HumanBeardStyleTable[0];

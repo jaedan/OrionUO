@@ -158,8 +158,7 @@ bool CRenderStaticObject::IsNoDrawTile(ushort graphic)
 
         long long flags = g_Orion.GetStaticFlags(graphic);
 
-        if (!::IsNoDiagonal(flags) ||
-            (::IsAnimated(flags) && g_Player != NULL && g_Player->Race == RT_GARGOYLE))
+        if (!::IsNoDiagonal(flags))
             return false;
     }
 

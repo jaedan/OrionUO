@@ -496,7 +496,7 @@ void CGumpOptions::InitToolTip()
         }
         case ID_GO_P2_DRAW_STATUS_FOR_HUMANOIDS:
         {
-            g_ToolTip.Set(L"Draw status in the world only for humanoids (humans, elfs, gargoyles)");
+            g_ToolTip.Set(L"Draw status in the world only for humanoids (humans, elves)");
             break;
         }
         case ID_GO_P2_DEV_MODE_1:

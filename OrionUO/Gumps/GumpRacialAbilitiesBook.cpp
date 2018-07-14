@@ -78,13 +78,6 @@ void CGumpRacialAbilitiesBook::GetSummaryBookInfo(int &abilityOnPage, ushort &ic
             TooltipOffset = 1112202;
             break;
         }
-        case RT_GARGOYLE:
-        {
-            AbilityCount = 5;
-            iconStartGraphic = 0x5DDA;
-            TooltipOffset = 1112208;
-            break;
-        }
         default:
             break;
     }
@@ -102,9 +95,6 @@ string CGumpRacialAbilitiesBook::GetAbilityName(int offset, bool &passive)
     static const string elfNames[] = { "Night Sight",         "Infused with Magic",
                                        "Knowledge of Nature", "Difficult to Track",
                                        "Perception",          "Wisdom" };
-    static const string gargoyleNames[] = {
-        "Flying", "Berserk", "Master Artisan", "Deadly Aim", "Mystic Insight"
-    };
 
     switch (g_Player->Race)
     {
@@ -117,15 +107,6 @@ string CGumpRacialAbilitiesBook::GetAbilityName(int offset, bool &passive)
         case RT_ELF:
         {
             result = elfNames[offset];
-
-            break;
-        }
-        case RT_GARGOYLE:
-        {
-            if (!offset)
-                passive = false;
-
-            result = gargoyleNames[offset];
 
             break;
         }

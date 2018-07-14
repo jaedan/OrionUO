@@ -98,7 +98,6 @@ void CGameWorld::ProcessAnimation()
 
                 ushort id = gc->GetMountAnimation();
                 int animGroup = gc->GetAnimationGroup(id);
-                gc->ProcessGargoyleAnims(animGroup);
 
                 CGameItem *mount = gc->FindLayer(OL_MOUNT);
                 if (mount != NULL)

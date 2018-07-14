@@ -1285,16 +1285,6 @@ CPacketTargetSelectedObject::CPacketTargetSelectedObject(
     WriteUInt32BE(targetObjectSerial);
 }
 
-CPacketToggleGargoyleFlying::CPacketToggleGargoyleFlying()
-    : CPacket(11)
-{
-    WriteUInt8(0xBF);
-    WriteUInt16BE(0x000B);
-    WriteUInt16BE(0x0032);
-    WriteUInt16BE(0x0001);
-    WriteUInt32BE(0x00000000);
-}
-
 CPacketStunReq::CPacketStunReq()
     : CPacket(5)
 {

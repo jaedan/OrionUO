@@ -554,18 +554,6 @@ void CGameCharacter::OnGraphicChange(int direction)
             Race = RT_ELF;
             break;
         }
-        case 0x029A:
-        {
-            Gender = GENDER_MALE;
-            Race = RT_GARGOYLE;
-            break;
-        }
-        case 0x029B:
-        {
-            Gender = GENDER_FEMALE;
-            Race = RT_GARGOYLE;
-            break;
-        }
         default:
             break;
     }
@@ -891,66 +879,8 @@ uchar CGameCharacter::GetAnimationGroup(ushort checkGraphic)
 
             AnimIndex = 0;
         }
-
-        if (Race == RT_GARGOYLE)
-        {
-            if (Flying())
-            {
-                if (result == 0 || result == 1)
-                    result = 62;
-                else if (result == 2 || result == 3)
-                    result = 63;
-                else if (result == 4)
-                    result = 64;
-                else if (result == 6)
-                    result = 66;
-                else if (result == 7 || result == 8)
-                    result = 65;
-                else if (result >= 9 && result <= 11)
-                {
-                    result = 71;
-                }
-                else if (result >= 12 && result <= 14)
-                {
-                    result = 72;
-                }
-                else if (result == 15)
-                {
-                    result = 62;
-                }
-                else if (result == 20)
-                {
-                    result = 77;
-                }
-                else if (result == 31)
-                {
-                    result = 71;
-                }
-                else if (result == 34)
-                {
-                    result = 78;
-                }
-                else if (result >= 200 && result <= 259)
-                {
-                    result = 75;
-                }
-                else if (result >= 260 && result <= 270)
-                {
-                    result = 75;
-                }
-            }
-        }
     }
     return result;
-}
-
-void CGameCharacter::ProcessGargoyleAnims(int &animGroup)
-{
-    if (animGroup == 64 || animGroup == 65)
-    {
-        animGroup = InWarMode() == true ? 65 : 64;
-        AnimationGroup = animGroup;
-    }
 }
 
 ushort CGameCharacter::GetMountAnimation()

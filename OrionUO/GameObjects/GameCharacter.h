@@ -116,8 +116,6 @@ public:
 
     void UpdateHitsTexture(uchar hits);
 
-    void ProcessGargoyleAnims(int &animGroup);
-
     int IsSitting();
 
     virtual void Draw(int x, int y);

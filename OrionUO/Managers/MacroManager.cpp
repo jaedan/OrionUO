@@ -1174,13 +1174,6 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
 
             break;
         }
-        case MC_TOGGLE_GARGOYLE_FLYING:
-        {
-            if (g_Player->Race == RT_GARGOYLE)
-                CPacketToggleGargoyleFlying().Send();
-
-            break;
-        }
         case MC_EQUIP_LAST_WEAPON:
         {
             CPacketEquipLastWeapon().Send();

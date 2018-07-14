@@ -425,7 +425,6 @@ const char *CMacro::m_MacroActionName[MACRO_ACTION_NAME_COUNT] = {
     "ToggleBuficonWindow",
     "BandageSelf",
     "BandageTarget",
-    "ToggleGargoyleFlying",
     "Resynchronize",
 };
 
