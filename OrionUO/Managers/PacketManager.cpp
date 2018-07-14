@@ -1192,12 +1192,7 @@ PACKET_HANDLER(CharacterStatus)
             if (flag >= 5)
             {
                 g_Player->MaxWeight = ReadInt16BE();
-                uint race = ReadUInt8();
-
-                if (!race)
-                    race = 1;
-
-                g_Player->Race = (RACE_TYPE)race;
+                ReadUInt8(); // Race
             }
             else
             {

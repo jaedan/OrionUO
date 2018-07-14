@@ -481,13 +481,10 @@ void CGumpScreenCreateCharacter::GUMP_TEXT_ENTRY_EVENT_C
 
             if (g_CreateCharacterScreen.GetColorSelection() == CCSID_SKIN_TONE)
             {
-                if (g_CreateCharacterManager.GetRace() == RT_HUMAN)
-                {
-                    if (color < 0x03EA)
-                        color = 0x03EA;
-                    else if (color > 0x0422)
-                        color = 0x0422;
-                }
+                if (color < 0x03EA)
+                    color = 0x03EA;
+                else if (color > 0x0422)
+                    color = 0x0422;
 
                 g_CreateCharacterManager.SkinTone = color;
             }
@@ -504,13 +501,10 @@ void CGumpScreenCreateCharacter::GUMP_TEXT_ENTRY_EVENT_C
                 g_CreateCharacterScreen.GetColorSelection() == CCSID_HAIR_COLOR ||
                 g_CreateCharacterScreen.GetColorSelection() == CCSID_FACIAL_HAIR_COLOR)
             {
-                if (g_CreateCharacterManager.GetRace() == RT_HUMAN)
-                {
-                    if (color < 0x044E)
-                        color = 0x044E;
-                    else if (color > 0x047C)
-                        color = 0x047C;
-                }
+                if (color < 0x044E)
+                    color = 0x044E;
+                else if (color > 0x047C)
+                    color = 0x047C;
 
                 if (g_CreateCharacterScreen.GetColorSelection() == CCSID_HAIR_COLOR)
                     g_CreateCharacterManager.HairColor = color;

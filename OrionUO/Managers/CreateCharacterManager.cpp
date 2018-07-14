@@ -76,18 +76,6 @@ void CCreateCharacterManager::SetFemale(bool female)
         BeardStyle = 0;
 }
 
-void CCreateCharacterManager::SetRace(RACE_TYPE newRace)
-{
-    WISPFUN_DEBUG("c140_f2");
-    m_Race = newRace;
-    SetFemale(m_Female);
-
-    SkinTone = (*GetSkinTonePtr()) + 1;
-    pushort ptr = GetHairColorPtr();
-    HairColor = (*ptr) + 1;
-    BeardColor = (*ptr) + 1;
-}
-
 void CCreateCharacterManager::Init()
 {
     WISPFUN_DEBUG("c140_f3");
@@ -107,7 +95,6 @@ void CCreateCharacterManager::Clear()
     m_Female = false;
     HairStyle = 1;
     BeardStyle = 0;
-    m_Race = RT_HUMAN;
 
     SkinTone = 0x03EA;
     ShirtColor = 0x0084;
@@ -119,91 +106,114 @@ void CCreateCharacterManager::Clear()
 int CCreateCharacterManager::GetCurrentHairCount()
 {
     WISPFUN_DEBUG("c140_f5");
-    static const int count[3][2] = {
-        { HUMAN_MALE_HAIR_COUNT, HUMAN_FEMALE_HAIR_COUNT },
-    };
 
-    return count[m_Race - 1][m_Female];
+    if (m_Female)
+    {
+        return HUMAN_FEMALE_HAIR_COUNT;
+    }
+    else
+    {
+        return HUMAN_MALE_HAIR_COUNT;
+    }
 }
 
 int CCreateCharacterManager::GetCurrentFacialHairCount()
 {
     WISPFUN_DEBUG("c140_f6");
-    static const int count[3] = {
-        HUMAN_MALE_FACIAL_HAIR_COUNT,
-        0,
-    };
 
-    return count[m_Race - 1];
+    if (m_Female)
+    {
+        return 0;
+    }
+    else
+    {
+        return HUMAN_MALE_FACIAL_HAIR_COUNT;
+    }
 }
 
 ushort CCreateCharacterManager::GetBodyGump()
 {
     WISPFUN_DEBUG("c140_f7");
-    static const ushort gump[3][2] = { { 0x0761, 0x0760 }, { 0x0766, 0x0765 }, { 0x076B, 0x076A } };
 
-    return gump[m_Race - 1][m_Female];
+    if (m_Female)
+    {
+        return 0x0760;
+    }
+    else
+    {
+        return 0x0761;
+    }
 }
 
 ushort CCreateCharacterManager::GetShirtGump()
 {
     WISPFUN_DEBUG("c140_f8");
-    static const ushort gump[3][2] = { { 0x0739, 0x0714 }, { 0x0739, 0x0714 }, { 0x0778, 0x07A7 } };
 
-    return gump[m_Race - 1][m_Female];
+    if (m_Female)
+    {
+        return 0x0714;
+    }
+    else
+    {
+        return 0x0739;
+    }
 }
 
 ushort CCreateCharacterManager::GetPantsGump()
 {
     WISPFUN_DEBUG("c140_f9");
-    static const ushort gump[3][2] = { { 0x0738, 0x0764 }, { 0x0738, 0x0764 }, { 0, 0 } };
 
-    return gump[m_Race - 1][m_Female];
+    if (m_Female)
+    {
+        return 0x0764;
+    }
+    else
+    {
+        return 0x0738;
+    }
 }
 
 ushort CCreateCharacterManager::GetBootsGump()
 {
     WISPFUN_DEBUG("c140_f10");
-    static const ushort gump[3][2] = { { 0x0762, 0x0763 }, { 0x0762, 0x0763 }, { 0, 0 } };
 
-    return gump[m_Race - 1][m_Female];
+    if (m_Female)
+    {
+        return 0x0763;
+    }
+    else
+    {
+        return 0x0762;
+    }
 }
 
 pushort CCreateCharacterManager::GetSkinTonePtr()
 {
     WISPFUN_DEBUG("c140_f11");
-    static const pushort ptr[3] = {
-        (pushort)&m_HumanSkinTone[0],
-    };
 
-    return ptr[m_Race - 1];
+    return (pushort)m_HumanSkinTone;
 }
 
 pushort CCreateCharacterManager::GetHairColorPtr()
 {
     WISPFUN_DEBUG("c140_f12");
-    static const pushort ptr[3] = {
-        (pushort)&m_HumanHairColor[0],
-    };
 
-    return ptr[m_Race - 1];
+    return (pushort)m_HumanHairColor;
 }
 
 CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
 {
     WISPFUN_DEBUG("c140_f13");
-    if (m_Race == RT_HUMAN)
+
+    if (m_Female)
     {
-        if (m_Female)
-        {
-            if (pos < HUMAN_FEMALE_HAIR_COUNT)
-                return m_HumanFemaleHairStyleTable[pos];
-        }
-        else
-        {
-            if (pos < HUMAN_MALE_HAIR_COUNT)
-                return m_HumanMaleHairStyleTable[pos];
-        }
+        if (pos < HUMAN_FEMALE_HAIR_COUNT)
+            return m_HumanFemaleHairStyleTable[pos];
+    }
+    else
+    {
+        if (pos < HUMAN_MALE_HAIR_COUNT)
+            return m_HumanMaleHairStyleTable[pos];
     }
 
     return m_HumanMaleHairStyleTable[0];
@@ -212,11 +222,9 @@ CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
 CC_HAIR_STYLE CCreateCharacterManager::GetBeard(uchar pos) const
 {
     WISPFUN_DEBUG("c140_f14");
-    if (m_Race == RT_HUMAN)
-    {
-        if (pos < HUMAN_MALE_FACIAL_HAIR_COUNT)
-            return m_HumanBeardStyleTable[pos];
-    }
+
+    if (pos < HUMAN_MALE_FACIAL_HAIR_COUNT)
+        return m_HumanBeardStyleTable[pos];
 
     return m_HumanBeardStyleTable[0];
 }

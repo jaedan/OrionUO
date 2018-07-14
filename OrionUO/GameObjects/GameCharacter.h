@@ -46,8 +46,6 @@ public:
 
     GENDER Gender = GENDER_MALE;
 
-    RACE_TYPE Race = RT_HUMAN;
-
     Direction Dir = DIR_NORTH;
     bool Run = false;
 

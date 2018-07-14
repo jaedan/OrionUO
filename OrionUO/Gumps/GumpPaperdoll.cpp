@@ -74,13 +74,6 @@ CGumpPaperdoll::CGumpPaperdoll(uint serial, short x, short y, bool minimized)
         if (g_PaperdollBooks)
         {
             Add(new CGUIButton(ID_GP_COMBAT_BOOK, 0x2B34, 0x2B34, 0x2B34, 156, 200));
-
-            if (g_PacketManager.GetClientVersion() >= CV_7000)
-            {
-                Add(new CGUIButton(ID_GP_RACIAL_ABILITIES_BOOK, 0x2B28, 0x2B28, 0x2B28, 23, 200));
-                profileX += SCROLLS_STEP;
-                partyManifestX += SCROLLS_STEP;
-            }
         }
 
         Add(new CGUIButton(
@@ -209,11 +202,6 @@ void CGumpPaperdoll::InitToolTip()
             case ID_GP_COMBAT_BOOK:
             {
                 g_ToolTip.Set(L"Open combat book");
-                break;
-            }
-            case ID_GP_RACIAL_ABILITIES_BOOK:
-            {
-                g_ToolTip.Set(L"Open racial abilities book");
                 break;
             }
             case ID_GP_LOCK_MOVING:
@@ -808,7 +796,6 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
             break;
         }
         case ID_GP_COMBAT_BOOK:
-        case ID_GP_RACIAL_ABILITIES_BOOK:
         {
             break;
         }
@@ -947,12 +934,6 @@ bool CGumpPaperdoll::OnLeftMouseButtonDoubleClick()
         else if (serial == ID_GP_COMBAT_BOOK)
         {
             g_Orion.OpenCombatBookGump();
-
-            result = true;
-        }
-        else if (serial == ID_GP_RACIAL_ABILITIES_BOOK)
-        {
-            g_Orion.OpenRacialAbilitiesBookGump();
 
             result = true;
         }

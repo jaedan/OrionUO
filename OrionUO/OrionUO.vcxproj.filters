@@ -747,12 +747,6 @@
     <ClInclude Include="GUI\GUIGlobalColor.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Gumps\GumpRacialAbilitiesBook.h">
-      <Filter>Header Files\Gumps</Filter>
-    </ClInclude>
-    <ClInclude Include="Gumps\GumpRacialAbility.h">
-      <Filter>Header Files\Gumps</Filter>
-    </ClInclude>
     <ClInclude Include="StackWalker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1435,12 +1429,6 @@
     </ClCompile>
     <ClCompile Include="GUI\GUIGlobalColor.cpp">
       <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Gumps\GumpRacialAbilitiesBook.cpp">
-      <Filter>Source Files\Gumps</Filter>
-    </ClCompile>
-    <ClCompile Include="Gumps\GumpRacialAbility.cpp">
-      <Filter>Source Files\Gumps</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUIVirtireGump.cpp">
       <Filter>Source Files\GUI</Filter>

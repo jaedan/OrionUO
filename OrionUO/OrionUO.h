@@ -375,8 +375,6 @@ public:
 
     void OpenCombatBookGump();
 
-    void OpenRacialAbilitiesBookGump();
-
     void StartReconnect();
 };
 

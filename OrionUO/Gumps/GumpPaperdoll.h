@@ -22,7 +22,6 @@ protected:
     static const int ID_GP_PARTY_MANIFEST_SCROLL = 11;
     static const int ID_GP_BUTTON_VIRTURE = 12;
     static const int ID_GP_COMBAT_BOOK = 13;
-    static const int ID_GP_RACIAL_ABILITIES_BOOK = 14;
     static const int ID_GP_LOCK_MOVING = 15;
 
     CTextRenderer m_TextRenderer{ CTextRenderer() };

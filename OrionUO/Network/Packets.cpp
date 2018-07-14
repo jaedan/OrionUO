@@ -90,18 +90,7 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     WriteUInt8(val);
     Move(15);
 
-    if (g_PacketManager.GetClientVersion() < CV_4011D)
-        val = (uchar)g_CreateCharacterManager.GetFemale();
-    else
-    {
-        val = (uchar)g_CreateCharacterManager.GetRace();
-
-        if (g_PacketManager.GetClientVersion() < CV_7000)
-            val--;
-
-        val = (val * 2) + (uchar)g_CreateCharacterManager.GetFemale();
-    }
-
+    val = (uchar)g_CreateCharacterManager.GetFemale();
     WriteUInt8(val);
     val = profession->Str;
     WriteUInt8(val);

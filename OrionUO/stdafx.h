@@ -193,8 +193,6 @@ class CGump;
 #include "Gumps/GumpPopupMenu.h"
 #include "Gumps/GumpProfile.h"
 #include "Gumps/GumpQuestion.h"
-#include "Gumps/GumpRacialAbilitiesBook.h"
-#include "Gumps/GumpRacialAbility.h"
 #include "Gumps/GumpScreenCharacterList.h"
 #include "Gumps/GumpScreenConnection.h"
 #include "Gumps/GumpScreenCreateCharacter.h"

@@ -244,8 +244,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClInclude Include="Gumps\GumpCombatBook.h" />
     <ClInclude Include="Gumps\GumpProperty.h" />
     <ClInclude Include="Gumps\GumpPropertyIcon.h" />
-    <ClInclude Include="Gumps\GumpRacialAbilitiesBook.h" />
-    <ClInclude Include="Gumps\GumpRacialAbility.h" />
     <ClInclude Include="Gumps\GumpShop.h" />
     <ClInclude Include="Gumps\GumpConsoleType.h" />
     <ClInclude Include="Gumps\GumpContainer.h" />
@@ -481,8 +479,6 @@ xcopy /y /d  "$(SolutionDir)OrionUO\shaders\LightColorizerShader.frag" "$(OutDir
     <ClCompile Include="Gumps\GumpCombatBook.cpp" />
     <ClCompile Include="Gumps\GumpProperty.cpp" />
     <ClCompile Include="Gumps\GumpPropertyIcon.cpp" />
-    <ClCompile Include="Gumps\GumpRacialAbilitiesBook.cpp" />
-    <ClCompile Include="Gumps\GumpRacialAbility.cpp" />
     <ClCompile Include="Gumps\GumpShop.cpp" />
     <ClCompile Include="Gumps\GumpConsoleType.cpp" />
     <ClCompile Include="Gumps\GumpContainer.cpp" />

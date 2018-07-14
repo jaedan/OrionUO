@@ -530,18 +530,12 @@ void CGameCharacter::OnGraphicChange(int direction)
     {
         case 0x0190:
         case 0x0192:
-        {
             Gender = GENDER_MALE;
-            Race = RT_HUMAN;
             break;
-        }
         case 0x0191:
         case 0x0193:
-        {
             Gender = GENDER_FEMALE;
-            Race = RT_HUMAN;
             break;
-        }
         default:
             break;
     }

@@ -5139,25 +5139,6 @@ void COrion::OpenCombatBookGump()
     g_GumpManager.AddGump(new CGumpCombatBook(x, y));
 }
 
-void COrion::OpenRacialAbilitiesBookGump()
-{
-    WISPFUN_DEBUG("c194_f151");
-    int gameWindowCenterX = (g_ConfigManager.GameWindowX - 4) + g_ConfigManager.GameWindowWidth / 2;
-    int gameWindowCenterY =
-        (g_ConfigManager.GameWindowY - 4) + g_ConfigManager.GameWindowHeight / 2;
-
-    int x = gameWindowCenterX - 200;
-    int y = gameWindowCenterY - 100;
-
-    if (x < 0)
-        x = 0;
-
-    if (y < 0)
-        y = 0;
-
-    g_GumpManager.AddGump(new CGumpRacialAbilitiesBook(x, y));
-}
-
 void COrion::StartReconnect()
 {
     if (!g_ConnectionManager.Connected() || g_World == NULL)
