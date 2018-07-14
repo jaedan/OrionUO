@@ -125,7 +125,6 @@ enum GENDER
 enum RACE_TYPE
 {
     RT_HUMAN = 1,
-    RT_ELF,
 };
 
 enum PROFESSION_TYPE

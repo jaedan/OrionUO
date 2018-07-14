@@ -46,8 +46,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
     CGUIComboBox *combo = (CGUIComboBox *)Add(new CGUIComboBox(
         ID_CCS_FACIAL_HAIR_STYLE, 0x0BB8, false, 0x0BB8, 97, 199, 120, facialHairCount, false));
     combo->SelectedIndex = g_CreateCharacterManager.BeardStyle;
-    combo->Visible =
-        (!g_CreateCharacterManager.GetFemale() && g_CreateCharacterManager.GetRace() != RT_ELF);
+    combo->Visible = !g_CreateCharacterManager.GetFemale();
 
     CGUIText *text = new CGUIText(0x0481, 3, -12);
     text->CreateTextureA(9, "Facial Hair Style");
@@ -182,7 +181,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
         Add(new CGUIColoredPolygone(ID_CCS_HAIR_COLOR, color, 490, 289, 120, 25, clr));
 
-        if (!g_CreateCharacterManager.GetFemale() && g_CreateCharacterManager.GetRace() != RT_ELF)
+        if (!g_CreateCharacterManager.GetFemale())
         {
             entry = (CGUITextEntry *)Add(new CGUITextEntry(
                 ID_CCS_FACIAL_HAIR_COLOR,
@@ -218,12 +217,6 @@ void CGumpScreenCreateCharacter::UpdateContent()
             int polygoneWidth = 15;
             int maxY = 8;
             int polygoneHeight = 35;
-
-            if (g_CreateCharacterManager.GetRace() == RT_ELF)
-            {
-                maxX = 4;
-                polygoneWidth = 30;
-            }
 
             IFOR (y, 0, maxY)
             {
@@ -288,12 +281,6 @@ void CGumpScreenCreateCharacter::UpdateContent()
             pushort colorPtr = g_CreateCharacterManager.GetHairColorPtr();
             int maxY = 8;
             int polygoneHeight = 35;
-
-            if (g_CreateCharacterManager.GetRace() == RT_ELF)
-            {
-                maxY = 9;
-                polygoneHeight = 31;
-            }
 
             IFOR (y, 0, maxY)
             {
@@ -360,8 +347,7 @@ void CGumpScreenCreateCharacter::UpdateContent()
         gumppic->Color = g_CreateCharacterManager.HairColor;
     }
 
-    if (!g_CreateCharacterManager.GetFemale() && g_CreateCharacterManager.BeardStyle &&
-        g_CreateCharacterManager.GetRace() != RT_ELF)
+    if (!g_CreateCharacterManager.GetFemale() && g_CreateCharacterManager.BeardStyle)
     {
         CGUIGumppic *gumppic = (CGUIGumppic *)Add(new CGUIGumppic(
             g_CreateCharacterManager.GetBeard(g_CreateCharacterManager.BeardStyle).GumpID,

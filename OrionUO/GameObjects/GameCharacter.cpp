@@ -542,18 +542,6 @@ void CGameCharacter::OnGraphicChange(int direction)
             Race = RT_HUMAN;
             break;
         }
-        case 0x025D:
-        {
-            Gender = GENDER_MALE;
-            Race = RT_ELF;
-            break;
-        }
-        case 0x025E:
-        {
-            Gender = GENDER_FEMALE;
-            Race = RT_ELF;
-            break;
-        }
         default:
             break;
     }

@@ -40,30 +40,6 @@ const CC_HAIR_STYLE CCreateCharacterManager::m_HumanBeardStyleTable[HUMAN_MALE_F
       { 0x075A, 0x204C, "Long beard/moustache" },
       { 0x075F, 0x204D, "Vandyke" } };
 
-const CC_HAIR_STYLE CCreateCharacterManager::m_ElfMaleHairStyleTable[ELF_MALE_HAIR_COUNT] = {
-    { 0, 0, "NONE" },
-    { 0x06F8, 0x2FBF, "Mid Long" },
-    { 0x06F9, 0x2FC0, "Long Feather" },
-    { 0x06FA, 0x2FC1, "Short" },
-    { 0x06FB, 0x2FC2, "Mullet" },
-    { 0x06FD, 0x2FCD, "Long" },
-    { 0x06FE, 0x2FCE, "Topknot" },
-    { 0x06FF, 0x2FCF, "Long Braid" },
-    { 0x0701, 0x2FD1, "Spiked" }
-};
-
-const CC_HAIR_STYLE CCreateCharacterManager::m_ElfFemaleHairStyleTable[ELF_FEMALE_HAIR_COUNT] = {
-    { 0, 0, "NONE" },
-    { 0x06EF, 0x2FC0, "Long Feather" },
-    { 0x06F0, 0x2FC1, "Short" },
-    { 0x06F1, 0x2FC2, "Mullet" },
-    { 0x06F2, 0x2FCC, "Flower" },
-    { 0x06F4, 0x2FCE, "Topknot" },
-    { 0x06F5, 0x2FCF, "Long Braid" },
-    { 0x06F6, 0x2FD0, "Buns" },
-    { 0x06F7, 0x2FD1, "Spiked" }
-};
-
 const ushort CCreateCharacterManager::m_HumanSkinTone[HUMAN_SKIN_TONE_COUNT] = {
     0x03E9, 0x03F1, 0x03F9, 0x0401, 0x0409, 0x0411, 0x0419, 0x0421, 0x03EA, 0x03F2, 0x03FA,
     0x0402, 0x040A, 0x0412, 0x041A, 0x0421, 0x03EB, 0x03F3, 0x03FB, 0x0403, 0x040B, 0x0413,
@@ -73,25 +49,11 @@ const ushort CCreateCharacterManager::m_HumanSkinTone[HUMAN_SKIN_TONE_COUNT] = {
     0x0421, 0x03F0, 0x03F8, 0x0400, 0x0408, 0x0410, 0x0418, 0x0420, 0x0421
 };
 
-const ushort CCreateCharacterManager::m_ElfSkinTone[ELF_SKIN_TONE_COUNT] = {
-    0x04DD, 0x076B, 0x0834, 0x042F, 0x024C, 0x024D, 0x024E, 0x00BE, 0x04A6, 0x0360, 0x0374,
-    0x0366, 0x03E7, 0x03DD, 0x0352, 0x0902, 0x076C, 0x0383, 0x0578, 0x03E8, 0x0373, 0x0388,
-    0x0384, 0x0375, 0x053E, 0x0380, 0x0381, 0x0382, 0x076A, 0x03E4, 0x051C, 0x03E5
-};
-
 const ushort CCreateCharacterManager::m_HumanHairColor[HUMAN_HAIR_COLOR_COUNT] = {
     0x044D, 0x0455, 0x045D, 0x0465, 0x046D, 0x0475, 0x044E, 0x0456, 0x045E, 0x0466, 0x046E, 0x0476,
     0x044F, 0x0457, 0x045F, 0x0467, 0x046F, 0x0477, 0x0450, 0x0458, 0x0460, 0x0468, 0x0470, 0x0478,
     0x0451, 0x0459, 0x0461, 0x0469, 0x0471, 0x0479, 0x0452, 0x045A, 0x0462, 0x046A, 0x0472, 0x047A,
     0x0453, 0x045B, 0x0463, 0x046B, 0x0473, 0x047B, 0x0454, 0x045C, 0x0464, 0x046C, 0x0474, 0x047C
-};
-
-const ushort CCreateCharacterManager::m_ElfHairColor[ELF_HAIR_COLOR_COUNT] = {
-    0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0100, 0x06B7, 0x0206, 0x0210, 0x026B,
-    0x02C2, 0x02C8, 0x01E3, 0x0238, 0x0368, 0x059C, 0x0852, 0x008D, 0x008E, 0x008F, 0x0090,
-    0x0091, 0x0158, 0x0159, 0x015A, 0x015B, 0x015C, 0x015D, 0x01BC, 0x0724, 0x0057, 0x0127,
-    0x012E, 0x01F2, 0x0250, 0x031C, 0x031D, 0x031E, 0x031F, 0x0320, 0x0321, 0x0322, 0x0323,
-    0x0324, 0x0325, 0x0385, 0x0386, 0x0387, 0x0388, 0x0389, 0x0385, 0x0386, 0x0387
 };
 
 CCreateCharacterManager::CCreateCharacterManager()
@@ -137,12 +99,6 @@ void CCreateCharacterManager::Init()
 
     IFOR (i, 1, HUMAN_MALE_FACIAL_HAIR_COUNT)
         g_Orion.ExecuteGump(m_HumanBeardStyleTable[i].GumpID);
-
-    IFOR (i, 1, ELF_MALE_HAIR_COUNT)
-        g_Orion.ExecuteGump(m_ElfMaleHairStyleTable[i].GumpID);
-
-    IFOR (i, 1, ELF_FEMALE_HAIR_COUNT)
-        g_Orion.ExecuteGump(m_ElfFemaleHairStyleTable[i].GumpID);
 }
 
 void CCreateCharacterManager::Clear()
@@ -165,7 +121,6 @@ int CCreateCharacterManager::GetCurrentHairCount()
     WISPFUN_DEBUG("c140_f5");
     static const int count[3][2] = {
         { HUMAN_MALE_HAIR_COUNT, HUMAN_FEMALE_HAIR_COUNT },
-        { ELF_MALE_HAIR_COUNT, ELF_FEMALE_HAIR_COUNT },
     };
 
     return count[m_Race - 1][m_Female];
@@ -219,7 +174,6 @@ pushort CCreateCharacterManager::GetSkinTonePtr()
     WISPFUN_DEBUG("c140_f11");
     static const pushort ptr[3] = {
         (pushort)&m_HumanSkinTone[0],
-        (pushort)&m_ElfSkinTone[0],
     };
 
     return ptr[m_Race - 1];
@@ -230,7 +184,6 @@ pushort CCreateCharacterManager::GetHairColorPtr()
     WISPFUN_DEBUG("c140_f12");
     static const pushort ptr[3] = {
         (pushort)&m_HumanHairColor[0],
-        (pushort)&m_ElfHairColor[0],
     };
 
     return ptr[m_Race - 1];
@@ -250,19 +203,6 @@ CC_HAIR_STYLE CCreateCharacterManager::GetHair(uchar pos) const
         {
             if (pos < HUMAN_MALE_HAIR_COUNT)
                 return m_HumanMaleHairStyleTable[pos];
-        }
-    }
-    else if (m_Race == RT_ELF)
-    {
-        if (m_Female)
-        {
-            if (pos < ELF_FEMALE_HAIR_COUNT)
-                return m_ElfFemaleHairStyleTable[pos];
-        }
-        else
-        {
-            if (pos < ELF_MALE_HAIR_COUNT)
-                return m_ElfMaleHairStyleTable[pos];
         }
     }
 

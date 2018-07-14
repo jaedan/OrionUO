@@ -71,13 +71,6 @@ void CGumpRacialAbilitiesBook::GetSummaryBookInfo(int &abilityOnPage, ushort &ic
             TooltipOffset = 1112198;
             break;
         }
-        case RT_ELF:
-        {
-            AbilityCount = 6;
-            iconStartGraphic = 0x5DD4;
-            TooltipOffset = 1112202;
-            break;
-        }
         default:
             break;
     }
@@ -92,21 +85,12 @@ string CGumpRacialAbilitiesBook::GetAbilityName(int offset, bool &passive)
     static const string humanNames[] = {
         "Strong Back", "Tough", "Workhorse", "Jack of All Trades"
     };
-    static const string elfNames[] = { "Night Sight",         "Infused with Magic",
-                                       "Knowledge of Nature", "Difficult to Track",
-                                       "Perception",          "Wisdom" };
 
     switch (g_Player->Race)
     {
         case RT_HUMAN:
         {
             result = humanNames[offset];
-
-            break;
-        }
-        case RT_ELF:
-        {
-            result = elfNames[offset];
 
             break;
         }

@@ -40,28 +40,18 @@ public:
     static const int HUMAN_FEMALE_HAIR_COUNT = 11;
     static const int HUMAN_MALE_FACIAL_HAIR_COUNT = 8;
 
-    static const int ELF_MALE_HAIR_COUNT = 9;
-    static const int ELF_FEMALE_HAIR_COUNT = 9;
-
     static const int HUMAN_SKIN_TONE_COUNT = 64;
-    static const int ELF_SKIN_TONE_COUNT = 32;
 
     static const int HUMAN_HAIR_COLOR_COUNT = 48;
-    static const int ELF_HAIR_COLOR_COUNT = 54;
 
 private:
     static const CC_HAIR_STYLE m_HumanMaleHairStyleTable[HUMAN_MALE_HAIR_COUNT];
     static const CC_HAIR_STYLE m_HumanFemaleHairStyleTable[HUMAN_FEMALE_HAIR_COUNT];
     static const CC_HAIR_STYLE m_HumanBeardStyleTable[HUMAN_MALE_FACIAL_HAIR_COUNT];
 
-    static const CC_HAIR_STYLE m_ElfMaleHairStyleTable[ELF_MALE_HAIR_COUNT];
-    static const CC_HAIR_STYLE m_ElfFemaleHairStyleTable[ELF_FEMALE_HAIR_COUNT];
-
     static const ushort m_HumanSkinTone[HUMAN_SKIN_TONE_COUNT];
-    static const ushort m_ElfSkinTone[ELF_SKIN_TONE_COUNT];
 
     static const ushort m_HumanHairColor[HUMAN_HAIR_COLOR_COUNT];
-    static const ushort m_ElfHairColor[ELF_HAIR_COLOR_COUNT];
 
 public:
     CCreateCharacterManager();
