@@ -54,16 +54,8 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
                 uint flags = POF_IMPASSABLE_OR_SURFACE;
                 uint64 tiledataFlags = g_Orion.GetLandFlags(graphic);
 
-                if (stepState == PSS_ON_SEA_HORSE)
-                {
-                    if (IsWet(tiledataFlags))
-                        flags = POF_IMPASSABLE_OR_SURFACE | POF_SURFACE | POF_BRIDGE;
-                }
-                else
-                {
-                    if (!IsImpassable(tiledataFlags))
-                        flags = POF_IMPASSABLE_OR_SURFACE | POF_SURFACE | POF_BRIDGE;
-                }
+                if (!IsImpassable(tiledataFlags))
+                    flags = POF_IMPASSABLE_OR_SURFACE | POF_SURFACE | POF_BRIDGE;
 
                 int landMinZ = land->MinZ;
                 int landAverageZ = land->AverageZ;
@@ -111,40 +103,32 @@ bool CPathFinder::CreateItemsList(vector<CPathObject> &list, int x, int y, int s
             {
                 uint flags = 0;
 
-                if (stepState == PSS_ON_SEA_HORSE)
+                if (obj->IsImpassable() || obj->IsSurface())
+                    flags = POF_IMPASSABLE_OR_SURFACE;
+
+                if (!obj->IsImpassable())
                 {
-                    if (obj->IsWet())
-                        flags = POF_SURFACE | POF_BRIDGE;
+                    if (obj->IsSurface())
+                        flags |= POF_SURFACE;
+
+                    if (obj->IsBridge())
+                        flags |= POF_BRIDGE;
                 }
-                else
+
+                if (stepState == PSS_DEAD_OR_GM)
                 {
-                    if (obj->IsImpassable() || obj->IsSurface())
-                        flags = POF_IMPASSABLE_OR_SURFACE;
-
-                    if (!obj->IsImpassable())
+                    if (graphic <= 0x0846)
                     {
-                        if (obj->IsSurface())
-                            flags |= POF_SURFACE;
-
-                        if (obj->IsBridge())
-                            flags |= POF_BRIDGE;
-                    }
-
-                    if (stepState == PSS_DEAD_OR_GM)
-                    {
-                        if (graphic <= 0x0846)
-                        {
-                            if (!(graphic != 0x0846 && graphic != 0x0692 &&
-                                  (graphic <= 0x06F4 || graphic > 0x06F6)))
-                                dropFlags = true;
-                        }
-                        else if (graphic == 0x0873)
+                        if (!(graphic != 0x0846 && graphic != 0x0692 &&
+                              (graphic <= 0x06F4 || graphic > 0x06F6)))
                             dropFlags = true;
                     }
-
-                    if (dropFlags)
-                        flags &= 0xFFFFFFFE;
+                    else if (graphic == 0x0873)
+                        dropFlags = true;
                 }
+
+                if (dropFlags)
+                    flags &= 0xFFFFFFFE;
 
                 if (flags)
                 {
@@ -252,9 +236,6 @@ bool CPathFinder::CalculateNewZ(int x, int y, char &z, int direction)
     else
     {
         CGameItem *mount = g_Player->FindLayer(OL_MOUNT);
-
-        if (mount != NULL && mount->Graphic == 0x3EB3)
-            stepState = PSS_ON_SEA_HORSE;
     }
 
     int minZ = -128;

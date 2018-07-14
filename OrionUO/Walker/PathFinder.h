@@ -9,7 +9,6 @@ enum PATH_STEP_STATE
 {
     PSS_NORMAL = 0,
     PSS_DEAD_OR_GM,
-    PSS_ON_SEA_HORSE,
 };
 
 enum PATH_OBJECT_FLAGS
