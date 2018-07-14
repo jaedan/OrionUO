@@ -60,13 +60,6 @@ CPacketCreateCharacter::CPacketCreateCharacter(const string &name)
     int skillsCount = 3;
     uint packetID = 0x00;
 
-    if (g_PacketManager.GetClientVersion() >= CV_70160)
-    {
-        skillsCount++;
-        Resize(106, true);
-        packetID = 0xF8;
-    }
-
     WriteUInt8(packetID);
     WriteUInt32BE(0xEDEDEDED);
     WriteUInt16BE(0xFFFF);
@@ -189,19 +182,7 @@ CPacketPickupRequest::CPacketPickupRequest(uint serial, ushort count)
     WriteUInt16BE(count);
 }
 
-CPacketDropRequestOld::CPacketDropRequestOld(
-    uint serial, ushort x, ushort y, char z, uint container)
-    : CPacket(14)
-{
-    WriteUInt8(0x08);
-    WriteUInt32BE(serial);
-    WriteUInt16BE(x);
-    WriteUInt16BE(y);
-    WriteUInt8(z);
-    WriteUInt32BE(container);
-}
-
-CPacketDropRequestNew::CPacketDropRequestNew(
+CPacketDropRequest::CPacketDropRequest(
     uint serial, ushort x, ushort y, char z, uchar slot, uint container)
     : CPacket(15)
 {
@@ -394,30 +375,17 @@ CPacketUnicodeSpeechRequest::CPacketUnicodeSpeechRequest(
 CPacketCastSpell::CPacketCastSpell(int index)
     : CPacket(1)
 {
-    if (g_PacketManager.GetClientVersion() >= CV_60142)
-    {
-        Resize(9, true);
+    char spell[10] = { 0 };
+    sprintf_s(spell, "%i", index);
 
-        WriteUInt8(0xBF);
-        WriteUInt16BE(0x0009);
-        WriteUInt16BE(0x001C);
-        WriteUInt16BE(0x0002);
-        WriteUInt16BE(index);
-    }
-    else
-    {
-        char spell[10] = { 0 };
-        sprintf_s(spell, "%i", index);
+    size_t len = strlen(spell);
+    size_t size = 5 + len;
+    Resize(size, true);
 
-        size_t len = strlen(spell);
-        size_t size = 5 + len;
-        Resize(size, true);
-
-        WriteUInt8(0x12);
-        WriteUInt16BE((ushort)size);
-        WriteUInt8(0x56);
-        WriteString(spell, len, false);
-    }
+    WriteUInt8(0x12);
+    WriteUInt16BE((ushort)size);
+    WriteUInt8(0x56);
+    WriteString(spell, len, false);
 }
 
 CPacketCastSpellFromBook::CPacketCastSpellFromBook(int index, uint serial)

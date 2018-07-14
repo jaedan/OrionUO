@@ -282,40 +282,36 @@ void CAnimationManager::Load(puint verdata)
 void CAnimationManager::InitIndexReplaces(puint verdata)
 {
     WISPFUN_DEBUG("c133_f4");
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
+
+    static const string typeNames[5] = { "monster", "sea_monster", "animal", "human", "equipment" };
+
+    WISP_FILE::CTextFileParser mobtypesParser(
+        g_App.UOFilesPath("mobtypes.txt").c_str(), " \t", "#;//", "");
+
+    while (!mobtypesParser.IsEOF())
     {
-        static const string typeNames[5] = {
-            "monster", "sea_monster", "animal", "human", "equipment"
-        };
+        STRING_LIST strings = mobtypesParser.ReadTokens();
 
-        WISP_FILE::CTextFileParser mobtypesParser(
-            g_App.UOFilesPath("mobtypes.txt").c_str(), " \t", "#;//", "");
-
-        while (!mobtypesParser.IsEOF())
+        if (strings.size() >= 3)
         {
-            STRING_LIST strings = mobtypesParser.ReadTokens();
+            ushort index = atoi(strings[0].c_str());
 
-            if (strings.size() >= 3)
+            if (index >= MAX_ANIMATIONS_DATA_INDEX_COUNT)
+                continue;
+
+            string testType = ToLowerA(strings[1]);
+
+            IFOR (i, 0, 5)
             {
-                ushort index = atoi(strings[0].c_str());
-
-                if (index >= MAX_ANIMATIONS_DATA_INDEX_COUNT)
-                    continue;
-
-                string testType = ToLowerA(strings[1]);
-
-                IFOR (i, 0, 5)
+                if (testType == typeNames[i])
                 {
-                    if (testType == typeNames[i])
-                    {
-                        m_DataIndex[index].Type = (ANIMATION_GROUPS_TYPE)i;
+                    m_DataIndex[index].Type = (ANIMATION_GROUPS_TYPE)i;
 
-                        char *endP = NULL;
-                        m_DataIndex[index].Flags =
-                            0x80000000 | strtoul(("0x" + strings[2]).c_str(), &endP, 16);
+                    char *endP = NULL;
+                    m_DataIndex[index].Flags =
+                        0x80000000 | strtoul(("0x" + strings[2]).c_str(), &endP, 16);
 
-                        break;
-                    }
+                    break;
                 }
             }
         }
@@ -343,9 +339,6 @@ void CAnimationManager::InitIndexReplaces(puint verdata)
             m_GroupReplaces[i].push_back(std::pair<ushort, uchar>(group, (uchar)replaceGroup));
         }
     }
-
-    if (g_PacketManager.GetClientVersion() < CV_305D)
-        return;
 
     WISP_FILE::CTextFileParser newBodyParser("", " \t,{}", "#;//", "");
     WISP_FILE::CTextFileParser bodyParser(
@@ -544,7 +537,7 @@ void CAnimationManager::InitIndexReplaces(puint verdata)
                     CIndexAnimation &dataIndex = m_DataIndex[index];
                     dataIndex.MountedHeightOffset = mountedHeightOffset;
 
-                    if (g_PacketManager.GetClientVersion() < CV_500A || groupType == AGT_UNKNOWN)
+                    if (groupType == AGT_UNKNOWN)
                     {
                         if (realAnimID >= 200)
                         {

@@ -384,7 +384,7 @@ void CGumpManager::RemoveRangedGumps()
                 case GT_SHOP:
                 {
                     if (GetTopObjDistance(g_Player, g_World->FindWorldObject(gump->Serial)) >
-                        MAX_VIEW_RANGE_OLD)
+                        MAX_VIEW_RANGE)
                         RemoveGump(gump);
                     break;
                 }

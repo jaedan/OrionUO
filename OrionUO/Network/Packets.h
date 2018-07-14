@@ -53,16 +53,10 @@ public:
     CPacketPickupRequest(uint serial, ushort count);
 };
 
-class CPacketDropRequestOld : public CPacket
+class CPacketDropRequest : public CPacket
 {
 public:
-    CPacketDropRequestOld(uint serial, ushort x, ushort y, char z, uint container);
-};
-
-class CPacketDropRequestNew : public CPacket
-{
-public:
-    CPacketDropRequestNew(uint serial, ushort x, ushort y, char z, uchar slot, uint container);
+    CPacketDropRequest(uint serial, ushort x, ushort y, char z, uchar slot, uint container);
 };
 
 class CPacketEquipRequest : public CPacket

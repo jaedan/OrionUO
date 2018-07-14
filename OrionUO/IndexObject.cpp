@@ -105,10 +105,7 @@ void CIndexObject::ReadIndexFile(size_t address, PBASE_IDX_BLOCK ptr, const usho
 void CIndexMulti::ReadIndexFile(size_t address, PBASE_IDX_BLOCK ptr, const ushort id)
 {
     CIndexObject::ReadIndexFile(address, ptr, id);
-    if (g_PacketManager.GetClientVersion() >= CV_7090)
-        Count = (ushort)(DataSize / sizeof(MULTI_BLOCK_NEW));
-    else
-        Count = (ushort)(DataSize / sizeof(MULTI_BLOCK));
+    Count = (ushort)(DataSize / sizeof(MULTI_BLOCK));
 };
 
 void CIndexLight::ReadIndexFile(size_t address, PBASE_IDX_BLOCK ptr, const ushort id)

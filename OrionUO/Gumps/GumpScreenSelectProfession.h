@@ -18,9 +18,6 @@ private:
     static const int ID_SPS_LABEL = 50;
     static const int ID_SPS_SKILLS_LIST = 100;
 
-    void UpdateContentOld();
-    void UpdateContentNew();
-
     void ShuffleStats(int id, int maxSum, int maxVal);
     void ShuffleSkills(int id);
 

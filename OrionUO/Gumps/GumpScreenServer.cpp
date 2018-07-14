@@ -27,34 +27,23 @@ void CGumpScreenServer::UpdateContent()
 
     CCliloc *cliloc = g_ClilocManager.Cliloc(g_Language);
 
-    ushort textColor = 0x0481;
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
-        textColor = 0xFFFF;
+    ushort textColor = 0xFFFF;
 
     CGUIText *text = new CGUIText(textColor, 155, 70);
 
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
-        text->CreateTextureW(0, cliloc->GetW(1044579, false, "Select which shard to play on:"));
-    else
-        text->CreateTextureA(9, "Select which shard to play on:");
+    text->CreateTextureW(0, cliloc->GetW(1044579, false, "Select which shard to play on:"));
 
     Add(text);
 
     text = new CGUIText(textColor, 400, 70);
 
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
-        text->CreateTextureW(0, cliloc->GetW(1044577, false, "Latency:"));
-    else
-        text->CreateTextureA(9, "Latency:");
+    text->CreateTextureW(0, cliloc->GetW(1044577, false, "Latency:"));
 
     Add(text);
 
     text = new CGUIText(textColor, 470, 70);
 
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
-        text->CreateTextureW(0, cliloc->GetW(1044578, false, "Packet Loss:"));
-    else
-        text->CreateTextureA(9, "Packet Loss:");
+    text->CreateTextureW(0, cliloc->GetW(1044578, false, "Packet Loss:"));
 
     Add(text);
 
@@ -66,10 +55,7 @@ void CGumpScreenServer::UpdateContent()
 
     text = new CGUIText(textColor, 153, 368);
 
-    if (g_PacketManager.GetClientVersion() >= CV_500A)
-        text->CreateTextureW(0, cliloc->GetW(1044580, false, "Sort by:"));
-    else
-        text->CreateTextureA(9, "Sort by:");
+    text->CreateTextureW(0, cliloc->GetW(1044580, false, "Sort by:"));
 
     Add(text);
 

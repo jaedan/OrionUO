@@ -41,10 +41,7 @@ void CConfigManager::Init()
     GameWindowX = 0;
     GameWindowY = 0;
 
-    if (g_PacketManager.GetClientVersion() >= CV_70331)
-        g_MaxViewRange = MAX_VIEW_RANGE_NEW;
-    else
-        g_MaxViewRange = MAX_VIEW_RANGE_OLD;
+    g_MaxViewRange = MAX_VIEW_RANGE;
 
     UpdateRange = g_MaxViewRange;
 }

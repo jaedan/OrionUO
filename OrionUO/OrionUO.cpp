@@ -112,12 +112,6 @@ bool COrion::Install()
 
     CreateDirectoryA(g_App.ExeFilePath("snapshots").c_str(), NULL);
 
-    if (g_PacketManager.GetClientVersion() < CV_4011D)
-    {
-        g_DefaultMapSize[0].Width = 6144;
-        g_DefaultMapSize[1].Width = 6144;
-    }
-
     for (int i = 0; i < MAX_MAPS_COUNT; i++)
     {
         if (g_MapSize[i].Width == 0)
@@ -132,21 +126,14 @@ bool COrion::Install()
         g_MapBlockSize[i].Height = g_DefaultMapSize[i].Height / 8;
     }
 
-    if (g_PacketManager.GetClientVersion() >= CV_70331)
-    {
-        g_MaxViewRange = MAX_VIEW_RANGE_NEW;
-    }
-    else
-    {
-        g_MaxViewRange = MAX_VIEW_RANGE_OLD;
-    }
+    g_MaxViewRange = MAX_VIEW_RANGE;
 
     LoadAutoLoginNames();
 
     LOG("Load files\n");
 
-    if (g_PacketManager.GetClientVersion() >= CV_7000)
-        g_FileManager.TryReadUOPAnimations();
+    g_FileManager.TryReadUOPAnimations();
+
     if (!g_FileManager.Load())
     {
         string tmp = string("Error loading file:\n") + WISP_FILE::g_WispMappedFileError;
@@ -167,14 +154,8 @@ bool COrion::Install()
 
     LOG("Load tiledata\n");
 
-    int staticsCount = 512;
-
-    if (g_PacketManager.GetClientVersion() >= CV_7090)
-        staticsCount = (int)(g_FileManager.m_TiledataMul.Size - (512 * sizeof(LAND_GROUP_NEW))) /
+    int staticsCount = (int)(g_FileManager.m_TiledataMul.Size - (512 * sizeof(LAND_GROUP_NEW))) /
                        sizeof(STATIC_GROUP_NEW);
-    else
-        staticsCount = (int)(g_FileManager.m_TiledataMul.Size - (512 * sizeof(LAND_GROUP_OLD))) /
-                       sizeof(STATIC_GROUP_OLD);
 
     if (staticsCount > 2048)
         staticsCount = 2048;
@@ -822,59 +803,6 @@ void COrion::LoadContaierOffsets()
     LOG("g_ContainerOffset.size()=%i\n", g_ContainerOffset.size());
 }
 
-CLIENT_VERSION COrion::ParseVersion(std::string &version)
-{
-    uint8_t shift = 3;
-    uint32_t version_int = 0;
-    size_t start = 0;
-    size_t end = 0;
-
-    for (char &c : version)
-    {
-        c = tolower(c);
-
-        if (isdigit(c))
-        {
-            end++;
-        }
-        else if (c == '.')
-        {
-            if (shift == 0)
-            {
-                g_OrionWindow.ShowMessage("Invalid version string: %s. Too many '.'\n", "Error!");
-                ExitProcess(EINVAL);
-                return CV_OLD;
-            }
-            version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
-            end++;
-            start = end;
-            shift--;
-        }
-        else if (isalpha(c))
-        {
-            if (shift != 1)
-            {
-                g_OrionWindow.ShowMessage("Invalid version string: %s. Too many '.'\n", "Error!");
-                ExitProcess(EINVAL);
-                return CV_OLD;
-            }
-
-            version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
-            version_int |= c - 0x61;
-            end++;
-            start = end;
-            shift--;
-        }
-    }
-
-    if (start != end)
-    {
-        version_int |= std::stoi(version.substr(start, end)) << (8 * shift);
-    }
-
-    return (CLIENT_VERSION)version_int;
-}
-
 bool COrion::ParseMapSize(std::string &mapName, std::string &dimensions)
 {
     int mapNum = atoi(&mapName[3]);
@@ -949,11 +877,6 @@ void COrion::LoadClientConfig()
             {
                 Config.Port = std::stoi(strings[2]);
             }
-        }
-        else if (_stricmp("clientversion", strings[0].c_str()) == 0)
-        {
-            ClientVersionText = strings[1];
-            g_PacketManager.SetClientVersion(ParseVersion(strings[1]));
         }
         else if (_stricmp("useverdata", strings[0].c_str()) == 0)
         {
@@ -1033,9 +956,6 @@ void COrion::SaveClientConfig()
         sprintf_s(buf, "LoginServer=%s,%d\n", Config.HostName.c_str(), Config.Port);
         fputs(buf, uo_cfg);
     }
-
-    sprintf_s(buf, "ClientVersion=%s\n", ClientVersionText.c_str());
-    fputs(buf, uo_cfg);
 
     sprintf_s(buf, "UseVerdata=%s\n", (g_FileManager.UseVerdata ? "yes" : "no"));
     fputs(buf, uo_cfg);
@@ -1706,11 +1626,9 @@ void COrion::LoginComplete(bool reload)
         CPacketSkillsRequest(g_PlayerSerial).Send();
         g_UseItemActions.Add(g_PlayerSerial);
 
-        if (g_PacketManager.GetClientVersion() >= CV_306E)
-            CPacketClientType().Send();
+        CPacketClientType().Send();
 
-        if (g_PacketManager.GetClientVersion() >= CV_305D)
-            CPacketClientViewRange(g_ConfigManager.UpdateRange).Send();
+        CPacketClientViewRange(g_ConfigManager.UpdateRange).Send();
 
         LoadLocalConfig(g_PacketManager.ConfigSerial);
     }
@@ -2190,7 +2108,6 @@ void COrion::LoadTiledata(int landSize, int staticsSize)
 
     if (file.Size)
     {
-        bool isOldVersion = (g_PacketManager.GetClientVersion() < CV_7090);
         file.ResetPtr();
 
         m_LandData.resize(landSize * 32);
@@ -2205,10 +2122,7 @@ void COrion::LoadTiledata(int landSize, int staticsSize)
             {
                 LAND_TILES &tile = m_LandData[(i * 32) + j];
 
-                if (isOldVersion)
-                    tile.Flags = file.ReadUInt32LE();
-                else
-                    tile.Flags = file.ReadInt64LE();
+                tile.Flags = file.ReadInt64LE();
 
                 tile.TexID = file.ReadUInt16LE();
                 tile.Name = file.ReadString(20);
@@ -2223,10 +2137,7 @@ void COrion::LoadTiledata(int landSize, int staticsSize)
             {
                 STATIC_TILES &tile = m_StaticData[(i * 32) + j];
 
-                if (isOldVersion)
-                    tile.Flags = file.ReadUInt32LE();
-                else
-                    tile.Flags = file.ReadInt64LE();
+                tile.Flags = file.ReadInt64LE();
 
                 tile.Weight = file.ReadInt8();
                 tile.Layer = file.ReadInt8();
@@ -2942,10 +2853,7 @@ void COrion::PatchFiles()
                 {
                     LAND_TILES &tile = m_LandData[offset + j];
 
-                    if (g_PacketManager.GetClientVersion() < CV_7090)
-                        tile.Flags = file.ReadUInt32LE();
-                    else
-                        tile.Flags = file.ReadInt64LE();
+                    tile.Flags = file.ReadInt64LE();
 
                     tile.TexID = file.ReadUInt16LE();
                     tile.Name = file.ReadString(20);
@@ -2964,10 +2872,7 @@ void COrion::PatchFiles()
                 {
                     STATIC_TILES &tile = m_StaticData[offset + j];
 
-                    if (g_PacketManager.GetClientVersion() < CV_7090)
-                        tile.Flags = file.ReadUInt32LE();
-                    else
-                        tile.Flags = file.ReadInt64LE();
+                    tile.Flags = file.ReadInt64LE();
 
                     tile.Weight = file.ReadInt8();
                     tile.Layer = file.ReadInt8();
@@ -3000,8 +2905,6 @@ void COrion::PatchFiles()
 void COrion::IndexReplaces()
 {
     WISPFUN_DEBUG("c194_f55");
-    if (g_PacketManager.GetClientVersion() < CV_305D)
-        return;
 
     WISP_FILE::CTextFileParser newDataParser("", " \t,{}", "#;//", "");
     WISP_FILE::CTextFileParser artParser(g_App.UOFilesPath("Art.def"), " \t", "#;//", "{}");
@@ -3478,12 +3381,7 @@ void COrion::LoadClientStartupConfig()
 
     if (g_ConfigManager.GetMusic())
     {
-        if (g_PacketManager.GetClientVersion() >= CV_7000)
-            PlayMusic(78);
-        else if (g_PacketManager.GetClientVersion() > CV_308Z)
-            PlayMusic(0);
-        else
-            PlayMusic(8);
+        PlayMusic(78);
     }
 }
 
@@ -3496,13 +3394,8 @@ void COrion::PlayMusic(int index, bool warmode)
         g_SoundManager.IsPlayingNormalMusic())
         return;
 
-    if (g_PacketManager.GetClientVersion() >= CV_306E)
-    {
-        CIndexMusic &mp3Info = m_MP3Data[index];
-        g_SoundManager.PlayMP3(mp3Info.FilePath, index, mp3Info.Loop, warmode);
-    }
-    else
-        g_SoundManager.PlayMidi(index, warmode);
+    CIndexMusic &mp3Info = m_MP3Data[index];
+    g_SoundManager.PlayMP3(mp3Info.FilePath, index, mp3Info.Loop, warmode);
 }
 
 void COrion::PauseSound()
@@ -4626,10 +4519,7 @@ void COrion::DropItem(int container, ushort x, ushort y, char z)
     WISPFUN_DEBUG("c194_f104");
     if (g_ObjectInHand.Enabled && g_ObjectInHand.Serial != container)
     {
-        if (g_PacketManager.GetClientVersion() >= CV_6017)
-            CPacketDropRequestNew(g_ObjectInHand.Serial, x, y, z, 0, container).Send();
-        else
-            CPacketDropRequestOld(g_ObjectInHand.Serial, x, y, z, container).Send();
+        CPacketDropRequest(g_ObjectInHand.Serial, x, y, z, 0, container).Send();
 
         g_ObjectInHand.Enabled = false;
         g_ObjectInHand.Dropped = true;

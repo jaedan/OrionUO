@@ -13,7 +13,7 @@ CGUIGenericTextEntry::CGUIGenericTextEntry(
           y,
           maxWidth,
           true,
-          (uchar)(g_PacketManager.GetClientVersion() >= CV_305D),
+          1,
           TS_LEFT,
           UOFONT_BLACK_BORDER,
           maxLength)

@@ -2068,60 +2068,51 @@ void CGumpOptions::DrawPage7()
         g_OptionsConfig.LightLevel));
     m_SliderLightLevel->SetTextParameters(true, STP_RIGHT, 0, g_OptionsTextColor, true);
 
-    if (g_PacketManager.GetClientVersion() >= CV_6000)
-    {
-        Add(new CGUIButton(ID_GO_P7_GUILD_MESSAGE_COLOR, 0x00D4, 0x00D4, 0x00D4, 354, 204));
+    Add(new CGUIButton(ID_GO_P7_GUILD_MESSAGE_COLOR, 0x00D4, 0x00D4, 0x00D4, 354, 204));
 
-        if (g_OptionsConfig.GuildMessageColor != 0xFFFF)
-            color = g_ColorManager.GetPolygonColor(
-                g_OptionsPolygonColorOffset, g_OptionsConfig.GuildMessageColor);
-        else
-            color = 0xFF7F7F7F;
+    if (g_OptionsConfig.GuildMessageColor != 0xFFFF)
+        color = g_ColorManager.GetPolygonColor(
+            g_OptionsPolygonColorOffset, g_OptionsConfig.GuildMessageColor);
+    else
+        color = 0xFF7F7F7F;
 
-        m_ColorGuildMessage = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
-            ID_GO_P7_GUILD_MESSAGE_COLOR,
-            g_OptionsConfig.GuildMessageColor,
-            357,
-            207,
-            13,
-            14,
-            color));
-        m_ColorGuildMessage->CallOnMouseUp = true;
+    m_ColorGuildMessage = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
+        ID_GO_P7_GUILD_MESSAGE_COLOR, g_OptionsConfig.GuildMessageColor, 357, 207, 13, 14, color));
+    m_ColorGuildMessage->CallOnMouseUp = true;
 
-        text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 376, 204));
-        text->CreateTextureW(0, L"Guild Message Color");
+    text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 376, 204));
+    text->CreateTextureW(0, L"Guild Message Color");
 
-        Add(new CGUIButton(ID_GO_P7_ALLIANCE_MESSAGE_COLOR, 0x00D4, 0x00D4, 0x00D4, 354, 223));
+    Add(new CGUIButton(ID_GO_P7_ALLIANCE_MESSAGE_COLOR, 0x00D4, 0x00D4, 0x00D4, 354, 223));
 
-        if (g_OptionsConfig.AllianceMessageColor != 0xFFFF)
-            color = g_ColorManager.GetPolygonColor(
-                g_OptionsPolygonColorOffset, g_OptionsConfig.AllianceMessageColor);
-        else
-            color = 0xFF7F7F7F;
+    if (g_OptionsConfig.AllianceMessageColor != 0xFFFF)
+        color = g_ColorManager.GetPolygonColor(
+            g_OptionsPolygonColorOffset, g_OptionsConfig.AllianceMessageColor);
+    else
+        color = 0xFF7F7F7F;
 
-        m_ColorAllianceMessage = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
-            ID_GO_P7_ALLIANCE_MESSAGE_COLOR,
-            g_OptionsConfig.AllianceMessageColor,
-            357,
-            226,
-            13,
-            14,
-            color));
-        m_ColorAllianceMessage->CallOnMouseUp = true;
+    m_ColorAllianceMessage = (CGUIColoredPolygon *)Add(new CGUIColoredPolygon(
+        ID_GO_P7_ALLIANCE_MESSAGE_COLOR,
+        g_OptionsConfig.AllianceMessageColor,
+        357,
+        226,
+        13,
+        14,
+        color));
+    m_ColorAllianceMessage->CallOnMouseUp = true;
 
-        text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 376, 223));
-        text->CreateTextureW(0, L"Alliance Message Color");
+    text = (CGUIText *)Add(new CGUIText(g_OptionsTextColor, 376, 223));
+    text->CreateTextureW(0, L"Alliance Message Color");
 
-        checkbox = (CGUICheckbox *)Add(
-            new CGUICheckbox(ID_GO_P7_IGNORE_GUILD_MESSAGE, 0x00D2, 0x00D3, 0x00D2, 354, 245));
-        checkbox->Checked = g_OptionsConfig.IgnoreGuildMessage;
-        checkbox->SetTextParameters(0, L"Ignore Guild Messages", g_OptionsTextColor);
+    checkbox = (CGUICheckbox *)Add(
+        new CGUICheckbox(ID_GO_P7_IGNORE_GUILD_MESSAGE, 0x00D2, 0x00D3, 0x00D2, 354, 245));
+    checkbox->Checked = g_OptionsConfig.IgnoreGuildMessage;
+    checkbox->SetTextParameters(0, L"Ignore Guild Messages", g_OptionsTextColor);
 
-        checkbox = (CGUICheckbox *)Add(
-            new CGUICheckbox(ID_GO_P7_IGNORE_ALLIANCE_MESSAGE, 0x00D2, 0x00D3, 0x00D2, 354, 265));
-        checkbox->Checked = g_OptionsConfig.IgnoreAllianceMessage;
-        checkbox->SetTextParameters(0, L"Ignore Alliance Messages", g_OptionsTextColor);
-    }
+    checkbox = (CGUICheckbox *)Add(
+        new CGUICheckbox(ID_GO_P7_IGNORE_ALLIANCE_MESSAGE, 0x00D2, 0x00D3, 0x00D2, 354, 265));
+    checkbox->Checked = g_OptionsConfig.IgnoreAllianceMessage;
+    checkbox->SetTextParameters(0, L"Ignore Alliance Messages", g_OptionsTextColor);
 }
 
 void CGumpOptions::DrawPage8()
@@ -3573,8 +3564,7 @@ void CGumpOptions::ApplyPageChanges()
             g_OptionsConfig.GameWindowHeight = curY;
             g_ConfigManager.GameWindowHeight = curY;
 
-            if (g_PacketManager.GetClientVersion() >= CV_200)
-                CPacketGameWindowSize().Send();
+            CPacketGameWindowSize().Send();
 
             g_ConfigManager.SpeechDelay = g_OptionsConfig.SpeechDelay;
             g_ConfigManager.ScaleSpeechDelay = g_OptionsConfig.ScaleSpeechDelay;

@@ -16,7 +16,7 @@ struct ClientConfiguration
 class COrion
 {
 public:
-    string ClientVersionText = "2.0.3";
+    string ClientVersionText = "7.0.15.1";
     int TexturesDataCount = 0;
     uint OrionVersionNumeric = 0;
 
@@ -45,7 +45,6 @@ private:
 
     string m_GameServerIP = "";
 
-    CLIENT_VERSION ParseVersion(std::string &version);
     bool ParseMapSize(std::string &mapName, std::string &dimensions);
 
     void LoadClientConfig();

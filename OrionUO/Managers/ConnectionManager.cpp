@@ -129,46 +129,41 @@ bool CConnectionManager::Connect(const string &address, int port, puchar gameSee
             g_LastPacketTime = g_Ticks;
             g_LastSendTime = g_LastPacketTime;
 
-            if (g_PacketManager.GetClientVersion() < CV_6060)
-                SendIP(m_LoginSocket, m_Seed);
-            else
+            BYTE buf = 0xEF;
+            m_LoginSocket.Send(&buf, 1);
+
+            SendIP(m_LoginSocket, m_Seed);
+
+            WISP_DATASTREAM::CDataWriter stream;
+
+            string str = g_Orion.ClientVersionText;
+
+            if (str.length())
             {
-                BYTE buf = 0xEF;
-                m_LoginSocket.Send(&buf, 1);
+                char ver[20] = { 0 };
+                char *ptr = ver;
+                strncpy_s(ver, str.c_str(), str.length());
+                int idx = 0;
 
-                SendIP(m_LoginSocket, m_Seed);
-
-                WISP_DATASTREAM::CDataWriter stream;
-
-                string str = g_Orion.ClientVersionText;
-
-                if (str.length())
+                for (int i = 0; i < (int)str.length(); i++)
                 {
-                    char ver[20] = { 0 };
-                    char *ptr = ver;
-                    strncpy_s(ver, str.c_str(), str.length());
-                    int idx = 0;
-
-                    for (int i = 0; i < (int)str.length(); i++)
+                    if (ver[i] == '.')
                     {
-                        if (ver[i] == '.')
-                        {
-                            ver[i] = 0;
-                            stream.WriteUInt32BE(atoi(ptr));
-                            ptr = ver + (i + 1);
-                            idx++;
+                        ver[i] = 0;
+                        stream.WriteUInt32BE(atoi(ptr));
+                        ptr = ver + (i + 1);
+                        idx++;
 
-                            if (idx > 3)
-                                break;
-                        }
+                        if (idx > 3)
+                            break;
                     }
-
-                    stream.WriteUInt32BE(atoi(ptr));
                 }
 
-                g_TotalSendSize = 21;
-                m_LoginSocket.Send(stream.Data());
+                stream.WriteUInt32BE(atoi(ptr));
             }
+
+            g_TotalSendSize = 21;
+            m_LoginSocket.Send(stream.Data());
         }
         else
             m_LoginSocket.Disconnect();

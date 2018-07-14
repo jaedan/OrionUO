@@ -87,13 +87,6 @@ void CGumpSecureTrading::UpdateContent()
     {
         Add(new CGUIGumppic(0x0866, 0, 0));
 
-        if (g_PacketManager.GetClientVersion() < CV_500A)
-        {
-            Add(new CGUIColoredPolygon(0, 0, 45, 90, 110, 60, 0xFF000001));
-
-            Add(new CGUIColoredPolygon(0, 0, 192, 70, 110, 60, 0xFF000001));
-        }
-
         if (StateMy)
             m_MyCheck =
                 (CGUIButton *)Add(new CGUIButton(ID_GST_CHECKBOX, 0x0869, 0x086A, 0x086A, 52, 29));

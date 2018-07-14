@@ -173,17 +173,8 @@ typedef struct MULTI_BLOCK
     short Y;
     short Z;
     unsigned int Flags;
-} * PMULTI_BLOCK;
-
-typedef struct MULTI_BLOCK_NEW
-{
-    unsigned short ID;
-    short X;
-    short Y;
-    short Z;
-    unsigned int Flags;
     int Unknown;
-} * PMULTI_BLOCK_NEW;
+} * PMULTI_BLOCK;
 
 typedef struct HUES_BLOCK
 {

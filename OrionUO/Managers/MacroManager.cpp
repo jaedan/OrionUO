@@ -603,18 +603,13 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
                         break;
                 }
 
-                if (g_PacketManager.GetClientVersion() >= CV_500A)
-                    CPacketUnicodeSpeechRequest(
-                        ToWString(mos->String).c_str(),
-                        st,
-                        3,
-                        g_ConfigManager.SpeechColor,
-                        (puchar)g_Language.c_str())
-                        .Send();
-                else
-                    CPacketASCIISpeechRequest(
-                        mos->String.c_str(), st, 3, g_ConfigManager.SpeechColor)
-                        .Send();
+                CPacketUnicodeSpeechRequest(
+                    ToWString(mos->String).c_str(),
+                    st,
+                    3,
+                    g_ConfigManager.SpeechColor,
+                    (puchar)g_Language.c_str())
+                    .Send();
             }
 
             break;
@@ -981,59 +976,16 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         case MC_BANDAGE_SELF:
         case MC_BANDAGE_TARGET:
         {
-            if (g_PacketManager.GetClientVersion() < CV_5020)
+            CGameItem *bandage = g_Player->FindBandage();
+
+            if (bandage != NULL)
             {
-                if (WaitingBandageTarget)
-                {
-                    if (WaitForTargetTimer == 0)
-                        WaitForTargetTimer = g_Ticks + 500;
-
-                    if (g_Target.IsTargeting())
-                    {
-                        if (macro->Code == MC_BANDAGE_SELF)
-                            g_Target.SendTargetObject(g_PlayerSerial);
-                        else if (
-                            !g_ConfigManager.DisableNewTargetSystem && g_NewTargetSystem.Serial)
-                            g_Target.SendTargetObject(g_NewTargetSystem.Serial);
-
-                        WaitingBandageTarget = false;
-                        WaitForTargetTimer = 0;
-                    }
-                    else if (WaitForTargetTimer < g_Ticks)
-                    {
-                        WaitingBandageTarget = false;
-                        WaitForTargetTimer = 0;
-                    }
-                    else
-                        result = MRC_BREAK_PARSER;
-                }
-                else
-                {
-                    CGameItem *bandage = g_Player->FindBandage();
-
-                    if (bandage != NULL)
-                    {
-                        WaitingBandageTarget = true;
-                        g_Orion.DoubleClick(bandage->Serial);
-
-                        result = MRC_BREAK_PARSER;
-                    }
-                }
-            }
-            else
-            {
-                CGameItem *bandage = g_Player->FindBandage();
-
-                if (bandage != NULL)
-                {
-                    if (macro->Code == MC_BANDAGE_SELF)
-                        CPacketTargetSelectedObject(bandage->Serial, g_PlayerSerial).Send();
-                    else if (
-                        !g_ConfigManager.DisableNewTargetSystem && g_NewTargetSystem.Serial &&
-                        g_NewTargetSystem.Serial < 0x40000000)
-                        CPacketTargetSelectedObject(bandage->Serial, g_NewTargetSystem.Serial)
-                            .Send();
-                }
+                if (macro->Code == MC_BANDAGE_SELF)
+                    CPacketTargetSelectedObject(bandage->Serial, g_PlayerSerial).Send();
+                else if (
+                    !g_ConfigManager.DisableNewTargetSystem && g_NewTargetSystem.Serial &&
+                    g_NewTargetSystem.Serial < 0x40000000)
+                    CPacketTargetSelectedObject(bandage->Serial, g_NewTargetSystem.Serial).Send();
             }
 
             break;

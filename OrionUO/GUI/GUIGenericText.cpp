@@ -21,6 +21,5 @@ void CGUIGenericText::CreateTexture(const wstring &str)
     if (MaxWidth)
         flags |= UOFONT_CROPPED;
 
-    CreateTextureW(
-        (uchar)(g_PacketManager.GetClientVersion() >= CV_305D), str, 30, MaxWidth, TS_LEFT, flags);
+    CreateTextureW(1, str, 30, MaxWidth, TS_LEFT, flags);
 }

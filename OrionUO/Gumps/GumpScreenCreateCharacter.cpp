@@ -355,29 +355,18 @@ void CGumpScreenCreateCharacter::UpdateContent()
 
     Add(new CGUIShader(NULL, false));
 
-    if (g_PacketManager.GetClientVersion() < CV_4011D)
-    {
-        if (g_CreateCharacterManager.GetFemale())
-            Add(new CGUIButton(ID_CCS_MALE_BUTTON, 0x070D, 0x070E, 0x070F, 310, 408));
-        else
-            Add(new CGUIButton(ID_CCS_FEMALE_BUTTON, 0x0710, 0x0711, 0x0712, 310, 408));
-    }
-    else
-    {
-        Add(new CGUIGroup(1));
+    Add(new CGUIGroup(1));
 
-        CGUIRadio *radio =
-            (CGUIRadio *)Add(new CGUIRadio(ID_CCS_MALE_BUTTON, 0x0768, 0x0767, 0x0767, 425, 435));
-        radio->Checked = !g_CreateCharacterManager.GetFemale();
-        radio =
-            (CGUIRadio *)Add(new CGUIRadio(ID_CCS_FEMALE_BUTTON, 0x0768, 0x0767, 0x0767, 425, 455));
-        radio->Checked = g_CreateCharacterManager.GetFemale();
+    CGUIRadio *radio =
+        (CGUIRadio *)Add(new CGUIRadio(ID_CCS_MALE_BUTTON, 0x0768, 0x0767, 0x0767, 425, 435));
+    radio->Checked = !g_CreateCharacterManager.GetFemale();
+    radio = (CGUIRadio *)Add(new CGUIRadio(ID_CCS_FEMALE_BUTTON, 0x0768, 0x0767, 0x0767, 425, 455));
+    radio->Checked = g_CreateCharacterManager.GetFemale();
 
-        Add(new CGUIGroup(0));
+    Add(new CGUIGroup(0));
 
-        Add(new CGUIButton(ID_CCS_MALE_BUTTON, 0x0710, 0x0711, 0x0712, 445, 435));
-        Add(new CGUIButton(ID_CCS_FEMALE_BUTTON, 0x070D, 0x070E, 0x070F, 445, 455));
-    }
+    Add(new CGUIButton(ID_CCS_MALE_BUTTON, 0x0710, 0x0711, 0x0712, 445, 435));
+    Add(new CGUIButton(ID_CCS_FEMALE_BUTTON, 0x070D, 0x070E, 0x070F, 445, 455));
 }
 
 void CGumpScreenCreateCharacter::InitToolTip()
