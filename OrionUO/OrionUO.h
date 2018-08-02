@@ -122,8 +122,8 @@ public:
 
     void Process(bool rendering = false);
 
-    void LoadPlayerConfig(int serial);
-    void SavePlayerConfig(int serial);
+    void LoadPlayerConfig();
+    void SavePlayerConfig();
 
     void LoadPluginConfig();
 
