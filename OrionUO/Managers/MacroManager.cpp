@@ -909,8 +909,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_SAVE_DESKTOP:
         {
-            g_Orion.SaveLocalConfig(g_PacketManager.ConfigSerial);
-
+            g_Orion.SavePlayerConfig(g_PacketManager.ConfigSerial);
             break;
         }
         case MC_ENABLE_RANGE_COLOR:

@@ -68,8 +68,6 @@ private:
 
     void IndexReplaces();
 
-    void LoadClientStartupConfig();
-
     void LoadShaders();
 
     void CreateAuraTexture();
@@ -124,13 +122,10 @@ public:
 
     void Process(bool rendering = false);
 
-    void LoadStartupConfig(int serial);
+    void LoadPlayerConfig(int serial);
+    void SavePlayerConfig(int serial);
 
     void LoadPluginConfig();
-
-    void LoadLocalConfig(int serial);
-
-    void SaveLocalConfig(int serial);
 
     CIndexObjectLand m_LandDataIndex[MAX_LAND_DATA_INDEX_COUNT];
     CIndexObjectStatic m_StaticDataIndex[MAX_STATIC_DATA_INDEX_COUNT];
