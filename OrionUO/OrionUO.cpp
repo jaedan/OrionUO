@@ -329,7 +329,6 @@ void COrion::Uninstall()
 {
     WISPFUN_DEBUG("c194_f6");
     LOG("COrion::Uninstall()\n");
-    SavePlayerConfig(g_PacketManager.ConfigSerial);
     SaveClientConfig();
     g_GumpManager.OnDelete();
 
@@ -1225,7 +1224,7 @@ string COrion::FixServerName(string name)
     return name;
 }
 
-void COrion::LoadPlayerConfig(int serial)
+void COrion::LoadPlayerConfig()
 {
     WISPFUN_DEBUG("c194_f19");
     if (g_ConfigLoaded)
@@ -1233,23 +1232,11 @@ void COrion::LoadPlayerConfig(int serial)
 
     g_CheckContainerStackTimer = g_Ticks + 30000;
 
-    char buf[MAX_PATH] = { 0 };
-    CServer *server = g_ServerList.GetSelectedServer();
-    if (server != NULL)
-        sprintf_s(
-            buf,
-            "Desktop\\%s\\%s\\0x%08X",
-            g_MainScreen.m_Account->c_str(),
-            FixServerName(server->Name).c_str(),
-            serial);
-    else
-        sprintf_s(buf, "Desktop\\%s\\0x%08X", g_MainScreen.m_Account->c_str(), serial);
+    string path = g_App.ExeFilePath("Profiles\\%s", g_Player->GetName().c_str());
 
-    string path = g_App.ExeFilePath(buf);
-
-    g_SkillGroupManager.Load(path + "\\skills_debug.cuo");
-    g_MacroManager.Load(path + "\\macros_debug.cuo", path + "\\macros.txt");
-    g_GumpManager.Load(path + "\\gumps_debug.cuo");
+    g_SkillGroupManager.Load(path + "\\skills.cuo");
+    g_MacroManager.Load(path + "\\macros.cuo", path + "\\macros.txt");
+    g_GumpManager.Load(path + "\\gumps.cuo");
 
     if (g_ConfigManager.OffsetInterfaceWindows)
         g_ContainerRect.MakeDefault();
@@ -1270,70 +1257,37 @@ void COrion::LoadPlayerConfig(int serial)
     g_ConfigLoaded = true;
 }
 
-void COrion::SavePlayerConfig(int serial)
+void COrion::SavePlayerConfig()
 {
     WISPFUN_DEBUG("c194_f20");
     if (!g_ConfigLoaded)
         return;
-    char buf[MAX_PATH] = { 0 };
-    string path = g_App.ExeFilePath("Desktop");
+
+    string path = g_App.ExeFilePath("Profiles");
+
     struct stat info;
 
     if (stat(path.c_str(), &info) != 0)
     {
-        LOG("%s Does not exist, creating.\n", path);
+        LOG("%s Does not exist, creating.\n", path.c_str());
         CreateDirectoryA(path.c_str(), NULL);
     }
 
-    path += string("\\") + g_MainScreen.m_Account->c_str();
+    path += "\\" + g_Player->GetName();
 
     if (stat(path.c_str(), &info) != 0)
     {
-        LOG("%s Does not exist, creating.\n", path);
+        LOG("%s Does not exist, creating.\n", path.c_str());
         CreateDirectoryA(path.c_str(), NULL);
     }
-    CServer *server = g_ServerList.GetSelectedServer();
-    if (server != NULL)
-        path += string("\\") + FixServerName(server->Name);
-    if (stat(path.c_str(), &info) != 0)
-    {
-        LOG("%s Does not exist, creating.\n", path);
-        CreateDirectoryA(path.c_str(), NULL);
-    }
-    char serbuf[20] = { 0 };
-    sprintf_s(serbuf, "\\0x%08X", g_PlayerSerial);
-    path += serbuf;
-    if (stat(path.c_str(), &info) != 0)
-    {
-        LOG("%s Does not exist, creating.\n", path);
-        CreateDirectoryA(path.c_str(), NULL);
-    }
-    else if (info.st_mode & S_IFDIR)
-        LOG("SaveLocalConfig using path: %s\n", path);
 
-    LOG("managers:saving\n");
-    g_SkillGroupManager.Save(path + "\\skills_debug.cuo");
-    g_MacroManager.Save(path + "\\macros_debug.cuo");
-    g_GumpManager.Save(path + "\\gumps_debug.cuo");
+    LOG("Saving Player Configuration Data to %s\n", path.c_str());
 
-    if (g_Player != NULL)
-    {
-        LOG("player exists\n");
-        LOG("name len: %i\n", g_Player->GetName().length());
-        path += string("_") + g_Player->GetName() + ".cuo";
+    g_SkillGroupManager.Save(path + "\\skills.cuo");
+    g_MacroManager.Save(path + "\\macros.cuo");
+    g_GumpManager.Save(path + "\\gumps.cuo");
 
-        if (!PathFileExistsA(path.c_str()))
-        {
-            LOG("file saving\n");
-            FILE *file = NULL;
-            fopen_s(&file, path.c_str(), "wb");
-
-            LOG("file closing\n");
-            if (file != NULL)
-                fclose(file);
-        }
-    }
-    LOG("SaveLocalConfig end\n");
+    LOG("SavePlayerConfig end\n");
 }
 
 void COrion::ClearUnusedTextures()
@@ -4727,7 +4681,7 @@ void COrion::LogOut()
 {
     WISPFUN_DEBUG("c194_f124");
     LOG("COrion::LogOut->Start\n");
-    SavePlayerConfig(g_PacketManager.ConfigSerial);
+    SavePlayerConfig();
 
     if (g_SendLogoutNotification)
         CPacketLogoutNotification().Send();

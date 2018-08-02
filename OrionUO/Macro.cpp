@@ -398,7 +398,6 @@ const char *CMacro::m_MacroActionName[MACRO_ACTION_NAME_COUNT] = {
     "CircleTrans",
     "CloseGumps",
     "AlwaysRun",
-    "SaveDesktop",
     "KillGumpOpen",
     "PrimaryAbility",
     "SecondaryAbility",

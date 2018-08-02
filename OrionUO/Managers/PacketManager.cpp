@@ -674,7 +674,7 @@ PACKET_HANDLER(EnterWorld)
     {
         LOG("Warning!!! Duplicate enter world message\n");
 
-        g_Orion.SavePlayerConfig(g_PacketManager.ConfigSerial);
+        g_Orion.SavePlayerConfig();
         ConfigSerial = g_PlayerSerial;
         g_ConfigLoaded = false;
         loadConfig = true;
@@ -712,7 +712,7 @@ PACKET_HANDLER(EnterWorld)
     g_MapManager.Init();
     g_MapManager.AddRender(g_Player);
 
-    g_Orion.LoadPlayerConfig(ConfigSerial);
+    g_Orion.LoadPlayerConfig();
 
     g_LastSpellIndex = 1;
     g_LastSkillIndex = 1;
