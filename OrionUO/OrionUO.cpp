@@ -241,8 +241,11 @@ bool COrion::Install()
 
     g_AnimationManager.InitIndexReplaces((puint)g_FileManager.m_VerdataMul.Start);
 
-    LOG("Load client startup.\n");
-    LoadClientStartupConfig();
+    g_SoundManager.SetMusicVolume(g_ConfigManager.GetMusicVolume());
+    if (g_ConfigManager.GetMusic())
+    {
+        PlayMusic(78);
+    }
 
     ushort b = 0x0000;
     ushort r = 0xFC00;
@@ -326,7 +329,7 @@ void COrion::Uninstall()
 {
     WISPFUN_DEBUG("c194_f6");
     LOG("COrion::Uninstall()\n");
-    SaveLocalConfig(g_PacketManager.ConfigSerial);
+    SavePlayerConfig(g_PacketManager.ConfigSerial);
     SaveClientConfig();
     g_GumpManager.OnDelete();
 
@@ -903,6 +906,11 @@ void COrion::LoadClientConfig()
             m_Plugins.push_back(strings[1]);
         }
     }
+
+    if (!g_ConfigManager.Load(g_App.ExeFilePath("options.cfg")))
+    {
+        g_ConfigManager.Init();
+    }
 }
 
 void COrion::SaveClientConfig()
@@ -973,6 +981,8 @@ void COrion::SaveClientConfig()
     }
 
     fclose(uo_cfg);
+
+    g_ConfigManager.Save(g_App.ExeFilePath("options.cfg"));
 }
 
 void COrion::LoadAutoLoginNames()
@@ -1192,35 +1202,6 @@ void COrion::Process(bool rendering)
     }
 }
 
-void COrion::LoadStartupConfig(int serial)
-{
-    WISPFUN_DEBUG("c194_f15");
-    char buf[MAX_PATH] = { 0 };
-    CServer *server = g_ServerList.GetSelectedServer();
-    if (server != NULL)
-        sprintf_s(
-            buf,
-            "Desktop\\%s\\%s\\0x%08X",
-            g_MainScreen.m_Account->c_str(),
-            FixServerName(server->Name).c_str(),
-            serial);
-    else
-        sprintf_s(buf, "Desktop\\%s\\0x%08X", g_MainScreen.m_Account->c_str(), serial);
-
-    if (!g_ConfigManager.Load(g_App.ExeFilePath(buf) + "/orion_options.cfg"))
-    {
-        g_ConfigManager.Load(g_App.UOFilesPath(buf) + "/orion_options.cfg");
-    }
-
-    g_SoundManager.SetMusicVolume(g_ConfigManager.GetMusicVolume());
-
-    if (!g_ConfigManager.GetSound())
-        AdjustSoundEffects(g_Ticks + 100000);
-
-    if (!g_ConfigManager.GetMusic())
-        g_SoundManager.StopMusic();
-}
-
 void COrion::LoadPluginConfig()
 {
     WISPFUN_DEBUG("c194_f17");
@@ -1244,7 +1225,7 @@ string COrion::FixServerName(string name)
     return name;
 }
 
-void COrion::LoadLocalConfig(int serial)
+void COrion::LoadPlayerConfig(int serial)
 {
     WISPFUN_DEBUG("c194_f19");
     if (g_ConfigLoaded)
@@ -1266,31 +1247,8 @@ void COrion::LoadLocalConfig(int serial)
 
     string path = g_App.ExeFilePath(buf);
 
-    if (!g_ConfigManager.Load(path + "\\orion_options.cfg"))
-    {
-        if (!g_ConfigManager.Load(g_App.UOFilesPath("orion_options.cfg")))
-        {
-            g_ConfigManager.Init();
-
-            if (g_GameState >= GS_GAME)
-            {
-                SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_RESTORE, 0);
-                SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            }
-        }
-    }
-
-    if (!g_SkillGroupManager.Load(path + "\\skills_debug.cuo"))
-        g_SkillGroupManager.Load(g_App.UOFilesPath("skills_debug.cuo"));
-
-    if (!g_MacroManager.Load(path + "\\macros_debug.cuo", path + "\\macros.txt"))
-    {
-        if (!g_MacroManager.Load(
-                g_App.UOFilesPath("\\macros_debug.cuo"), g_App.UOFilesPath("\\macros.txt")))
-        {
-        }
-    }
-
+    g_SkillGroupManager.Load(path + "\\skills_debug.cuo");
+    g_MacroManager.Load(path + "\\macros_debug.cuo", path + "\\macros.txt");
     g_GumpManager.Load(path + "\\gumps_debug.cuo");
 
     if (g_ConfigManager.OffsetInterfaceWindows)
@@ -1312,7 +1270,7 @@ void COrion::LoadLocalConfig(int serial)
     g_ConfigLoaded = true;
 }
 
-void COrion::SaveLocalConfig(int serial)
+void COrion::SavePlayerConfig(int serial)
 {
     WISPFUN_DEBUG("c194_f20");
     if (!g_ConfigLoaded)
@@ -1354,7 +1312,6 @@ void COrion::SaveLocalConfig(int serial)
         LOG("SaveLocalConfig using path: %s\n", path);
 
     LOG("managers:saving\n");
-    g_ConfigManager.Save(path + "\\orion_options.cfg");
     g_SkillGroupManager.Save(path + "\\skills_debug.cuo");
     g_MacroManager.Save(path + "\\macros_debug.cuo");
     g_GumpManager.Save(path + "\\gumps_debug.cuo");
@@ -1630,7 +1587,8 @@ void COrion::LoginComplete(bool reload)
 
         CPacketClientViewRange(g_ConfigManager.UpdateRange).Send();
 
-        LoadLocalConfig(g_PacketManager.ConfigSerial);
+        SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_RESTORE, 0);
+        SendMessage(g_OrionWindow.Handle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
     }
 }
 
@@ -3369,22 +3327,6 @@ void COrion::LoadShaders()
     }
 }
 
-void COrion::LoadClientStartupConfig()
-{
-    WISPFUN_DEBUG("c194_f60");
-    if (!g_ConfigManager.Load(g_App.ExeFilePath("orion_options.cfg")))
-    {
-        g_ConfigManager.Load(g_App.UOFilesPath("orion_options.cfg"));
-    }
-
-    g_SoundManager.SetMusicVolume(g_ConfigManager.GetMusicVolume());
-
-    if (g_ConfigManager.GetMusic())
-    {
-        PlayMusic(78);
-    }
-}
-
 void COrion::PlayMusic(int index, bool warmode)
 {
     WISPFUN_DEBUG("c194_f61");
@@ -4785,7 +4727,7 @@ void COrion::LogOut()
 {
     WISPFUN_DEBUG("c194_f124");
     LOG("COrion::LogOut->Start\n");
-    SaveLocalConfig(g_PacketManager.ConfigSerial);
+    SavePlayerConfig(g_PacketManager.ConfigSerial);
 
     if (g_SendLogoutNotification)
         CPacketLogoutNotification().Send();
