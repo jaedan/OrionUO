@@ -1,6 +1,8 @@
-
-
 #include "stdafx.h"
+
+#include "Dependencies/json.h"
+
+using json = nlohmann::json;
 
 CConfigManager g_ConfigManager;
 CConfigManager g_OptionsConfig;
@@ -678,541 +680,168 @@ ushort CConfigManager::GetColorByNotoriety(uchar notoriety)
     return color;
 }
 
-int CConfigManager::GetConfigKeyCode(const string &key)
-{
-    WISPFUN_DEBUG("");
-
-    static const string keys[CMKC_COUNT] = { "Sound",
-                                             "SoundVolume",
-                                             "Music",
-                                             "MusicVolume",
-                                             "FootstepsSound",
-                                             "CombatMusic",
-                                             "BackgroundSound",
-                                             "ClientFPS",
-                                             "RemoveTextWithBlending",
-                                             "DrawStatusState",
-                                             "DrawStumps",
-                                             "MarkingCaves",
-                                             "NoAnimateFields",
-                                             "NoVegetation",
-                                             "HiddenCharactersRenderMode",
-                                             "HiddenAlpha",
-                                             "UseHiddenModeOnlyForSelf",
-                                             "TransparentSpellIcons",
-                                             "SpellIconAlpha",
-                                             "OldStyleStatusbar",
-                                             "OriginalPartyStatusbar",
-                                             "ApplyStateColorOnCharacters",
-                                             "ChangeFieldsGraphic",
-                                             "PaperdollSlots",
-                                             "DrawStatusConditionState",
-                                             "DrawStatusConditionValue",
-                                             "RemoveStatusbarsWithoutObjects",
-                                             "ShowDefaultConsoleEntryMode",
-                                             "DrawAuraState",
-                                             "DrawAuraWithCtrlPressed",
-                                             "ScreenshotFormat",
-                                             "ScaleImagesInPaperdollSlots",
-                                             "RemoveOrCreateObjectsWithBlending",
-                                             "DrawHelmetsOnShroud",
-                                             "UseGlobalMapLayer",
-                                             "NoDrawRoofs",
-                                             "HighlightTargetByType",
-                                             "AutoDisplayWorldMap",
-                                             "UseGLListsForInterface",
-                                             "UseToolTips",
-                                             "ToolTipsTextColor",
-                                             "ToolTipsTextFont",
-                                             "ToolTipsDelay",
-                                             "ChatColorInputText",
-                                             "ChatColorMenuOption",
-                                             "ChatColorPlayerInMemberList",
-                                             "ChatColorText",
-                                             "ChatColorPlayerNameWithout",
-                                             "ChatColorMuted",
-                                             "ChatColorChannelModeratorName",
-                                             "ChatColorChannelModeratorText",
-                                             "ChatColorMyName",
-                                             "ChatColorMyText",
-                                             "ChatColorSystemMessage",
-                                             "ChatFont",
-                                             "ChatColorBGOutputText",
-                                             "ChatColorBGInputText",
-                                             "ChatColorBGUserList",
-                                             "ChatColorBGConfList",
-                                             "ChatColorBGCommandList",
-                                             "EnablePathfind",
-                                             "HoldTabForCombat",
-                                             "OffsetInterfaceWindows",
-                                             "AutoArrange",
-                                             "AlwaysRun",
-                                             "DisableMenubar",
-                                             "GrayOutOfRangeObjects",
-                                             "DisableNewTargetSystem",
-                                             "ItemPropertiesMode",
-                                             "ItemPropertiesIcon",
-                                             "HoldShiftForContextMenus",
-                                             "HoldShiftForEnablePathfind",
-                                             "ContainerDefaultX",
-                                             "ContainerDefaultY",
-                                             "GameWindowWidth",
-                                             "GameWindowHeight",
-                                             "SpeechDelay",
-                                             "ScaleSpeechDelay",
-                                             "SpeechColor",
-                                             "EmoteColor",
-                                             "PartyMessageColor",
-                                             "GuildMessageColor",
-                                             "AllianceMessageColor",
-                                             "IgnoreGuildMessage",
-                                             "IgnoreAllianceMessage",
-                                             "LightLevel",
-                                             "Reserved",
-                                             "LockResizingGameWindow",
-                                             "LockGumpsMoving",
-                                             "InnocentColor",
-                                             "FriendlyColor",
-                                             "SomeoneColor",
-                                             "CriminalColor",
-                                             "EnemyColor",
-                                             "MurdererColor",
-                                             "CriminalActionsQuery",
-                                             "ShowIncomingNames",
-                                             "UseCircleTrans",
-                                             "StatReport",
-                                             "ConsoleNeedEnter",
-                                             "CircleTransRadius",
-                                             "SkillReport",
-                                             "SpeechFont",
-                                             "GameWindowX",
-                                             "GameWindowY",
-                                             "Zoomed",
-                                             "RealX",
-                                             "RealY",
-                                             "RealWidth",
-                                             "RealHeight",
-                                             "ToggleBufficonWindow",
-                                             "DeveloperMode",
-                                             "LastServer",
-                                             "LastCharacter",
-                                             "CharacterBackpackStyle",
-                                             "CheckPing",
-                                             "PingTimer",
-                                             "CancelNewTargetSystemOnShiftEsc",
-                                             "DrawStatusForHumanoids" };
-
-    string str = ToLowerA(key);
-
-    IFOR (i, 0, CMKC_COUNT)
-    {
-        if (str == ToLowerA(keys[i]))
-            return (int)i;
-    }
-
-    return -1;
-}
-
 bool CConfigManager::Load(const string &path)
 {
-    WISP_FILE::CTextFileParser file(path, "=", "#;", "");
+    std::ifstream i;
 
     bool zoomed = false;
     int windowX = -1;
     int windowY = -1;
     int windowWidth = -1;
     int windowHeight = -1;
-    UpdateRange = g_MaxViewRange;
 
-    while (!file.IsEOF())
+    try
     {
-        std::vector<std::string> strings = file.ReadTokens();
+        json j;
+        i.open(path);
+        i >> j;
 
-        if (strings.size() >= 2)
-        {
-            int code = GetConfigKeyCode(strings[0]);
+        UpdateRange = g_MaxViewRange;
 
-            if (code == -1)
-                continue;
+        j.at("Sound");
 
-            switch (code)
-            {
-                case CMKC_SOUND:
-                    SetSound(ToBool(strings[1]));
-                    break;
-                case CMKC_SOUND_VOLUME:
-                    m_SoundVolume = atoi(strings[1].c_str());
-                    break;
-                case CMKC_MUSIC:
-                    SetMusic(ToBool(strings[1]));
-                    break;
-                case CMKC_MUSIC_VOLUME:
-                    m_MusicVolume = atoi(strings[1].c_str());
-                    break;
-                case CMKC_FOOTSTEPS_SOUND:
-                    FootstepsSound = ToBool(strings[1]);
-                    break;
-                case CMKC_COMBAT_MUSIC:
-                    CombatMusic = ToBool(strings[1]);
-                    break;
-                case CMKC_BACKGROUND_SOUND:
-                    BackgroundSound = ToBool(strings[1]);
-                    break;
+        SetSound(j["Sound"]);
+        m_SoundVolume = j["Soundvolume"];
+        SetMusic(j["Music"]);
+        m_MusicVolume = j["MusicVolume"];
+        FootstepsSound = j["FootstepsSound"];
+        CombatMusic = j["CombatMusic"];
+        BackgroundSound = j["BackgroundSound"];
 
-                case CMKC_CLIENT_FPS:
-                    SetClientFPS(atoi(strings[1].c_str()));
-                    break;
-                case CMKC_AUTOMATICALLY_OPEN_DOORS:
-                    AutomaticallyOpenDoors = ToBool(strings[1]);
-                    break;
-                case CMKC_REMOVE_TEXT_WITH_BLENDING:
-                    RemoveTextWithBlending = ToBool(strings[1]);
-                    break;
-                case CMKC_DRAW_STATUS_STATE:
-                    m_DrawStatusState = atoi(strings[1].c_str());
-                    break;
-                case CMKC_DRAW_STUMPS:
-                    SetDrawStumps(ToBool(strings[1]));
-                    break;
-                case CMKC_MARKING_CAVES:
-                    SetMarkingCaves(ToBool(strings[1]));
-                    break;
-                case CMKC_NO_ANIMATE_FIELDS:
-                    SetNoAnimateFields(ToBool(strings[1]));
-                    break;
-                case CMKC_NO_VEGETATION:
-                    SetNoVegetation(ToBool(strings[1]));
-                    break;
-                case CMKC_HIDDEN_CHARACTERS_RENDER_MODE:
-                    HiddenCharactersRenderMode = atoi(strings[1].c_str());
-                    break;
-                case CMKC_HIDDEN_ALPHA:
-                    HiddenAlpha = atoi(strings[1].c_str());
-                    break;
-                case CMKC_USE_HIDDEN_MODE_ONLY_FOR_SELF:
-                    UseHiddenModeOnlyForSelf = ToBool(strings[1]);
-                    break;
-                case CMKC_TRANSPARENT_SPELL_ICONS:
-                    TransparentSpellIcons = atoi(strings[1].c_str());
-                    break;
-                case CMKC_SPELL_ICON_ALPHA:
-                    m_SpellIconAlpha = atoi(strings[1].c_str());
-                    break;
-                case CMKC_OLD_STYLE_STATUSBAR:
-                    m_OldStyleStatusbar = ToBool(strings[1]);
-                    break;
-                case CMKC_ORIGINAL_PARTY_STATUSBAR:
-                    m_OriginalPartyStatusbar = ToBool(strings[1]);
-                    break;
-                case CMKC_APPLY_STATE_COLOR_ON_CHARACTERS:
-                    SetApplyStateColorOnCharacters(ToBool(strings[1]));
-                    break;
-                case CMKC_CHANGE_FIELDS_GRAPHIC:
-                    SetChangeFieldsGraphic(ToBool(strings[1]));
-                    break;
-                case CMKC_PAPERDOLL_SLOTS:
-                    SetPaperdollSlots(ToBool(strings[1]));
-                    break;
-                case CMKC_DRAW_STATUS_CONDITION_STATE:
-                    DrawStatusConditionState = atoi(strings[1].c_str());
-                    break;
-                case CMKC_DRAW_STATUS_CONDITION_VALUE:
-                    DrawStatusConditionValue = atoi(strings[1].c_str());
-                    break;
-                case CMKC_REMOVE_STATUSBARS_WITHOUT_OBJECTS:
-                    RemoveStatusbarsWithoutObjects = ToBool(strings[1]);
-                    break;
-                case CMKC_SHOW_DEFAULT_CONSOLE_ENTRY_MODE:
-                    ShowDefaultConsoleEntryMode = ToBool(strings[1]);
-                    break;
-                case CMKC_DRAW_AURA_STATE:
-                    SetDrawAuraState(atoi(strings[1].c_str()));
-                    break;
-                case CMKC_DRAW_AURA_WITH_CTRL_PRESSED:
-                    DrawAuraWithCtrlPressed = ToBool(strings[1]);
-                    break;
-                case CMKC_SCREENSHOT_FORMAT:
-                    ScreenshotFormat = atoi(strings[1].c_str());
-                    break;
-                case CMKC_SCALE_IMAGES_IN_PAPERDOLL_SLOTS:
-                    SetScaleImagesInPaperdollSlots(ToBool(strings[1]));
-                    break;
-                case CMKC_REMOVE_OR_CREATE_OBJECTS_WITH_BLENDING:
-                    RemoveOrCreateObjectsWithBlending = ToBool(strings[1]);
-                    break;
-                case CMKC_DRAW_HELMETS_ON_SHROUD:
-                    DrawHelmetsOnShroud = ToBool(strings[1]);
-                    break;
-                case CMKC_USE_GLOBAL_MAP_LAYER:
-                    SetUseGlobalMapLayer(ToBool(strings[1]));
-                    break;
-                case CMKC_NO_DRAW_ROOFS:
-                    SetNoDrawRoofs(ToBool(strings[1]));
-                    break;
-                case CMKC_HIGHLIGHT_TARGET_BY_TYPE:
-                    HighlightTargetByType = ToBool(strings[1]);
-                    break;
-                case CMKC_AUTO_DISPLAY_WORLD_MAP:
-                    AutoDisplayWorldMap = ToBool(strings[1]);
-                    break;
-                case CMKC_USE_GL_LISTS_FOR_INTERFACE:
-                    SetUseGLListsForInterface(ToBool(strings[1]));
-                    break;
-                case CMKC_CHECK_PING:
-                    CheckPing = ToBool(strings[1]);
-                    break;
-                case CMKC_PING_TIMER:
-                    SetPingTimer(atoi(strings[1].c_str()));
-                    break;
-                case CMKC_CANCEL_NEW_TARGET_SYSTEM_ON_SHIFT_ESC:
-                    CancelNewTargetSystemOnShiftEsc = ToBool(strings[1]);
-                    break;
-                case CMKC_DRAW_STATUS_FOR_HUMANOIDS:
-                    DrawStatusForHumanoids = ToBool(strings[1]);
-                    break;
+        SetClientFPS(j["ClientFPS"]);
+        AutomaticallyOpenDoors = j["AutomaticallyOpenDoors"];
+        RemoveTextWithBlending = j["RemoveTextWithBlending"];
+        m_DrawStatusState = j["DrawStatusState"];
+        SetDrawStumps(j["DrawStumps"]);
+        SetMarkingCaves(j["MarkingCaves"]);
+        SetNoAnimateFields(j["NoAnimateFields"]);
+        SetNoVegetation(j["NoVegetation"]);
+        HiddenCharactersRenderMode = j["HiddenCharactersRenderMode"];
+        HiddenAlpha = j["HiddenAlpha"];
+        UseHiddenModeOnlyForSelf = j["UseHiddenModeOnlyForSelf"];
+        TransparentSpellIcons = j["TransparentSpellIcons"];
+        m_SpellIconAlpha = j["SpellIconAlpha"];
+        m_OldStyleStatusbar = j["OldStyleStatusbar"];
+        m_OriginalPartyStatusbar = j["OriginalPartyStatusbar"];
+        SetApplyStateColorOnCharacters(j["ApplyStateColorOnCharacters"]);
+        SetChangeFieldsGraphic(j["ChangeFieldsGraphic"]);
+        SetPaperdollSlots(j["PaperdollSlots"]);
+        DrawStatusConditionState = j["DrawStatusConditionState"];
+        DrawStatusConditionValue = j["DrawStatusConditionValue"];
+        RemoveStatusbarsWithoutObjects = j["RemoveStatusbarsWithoutObjects"];
+        ShowDefaultConsoleEntryMode = j["ShowDefaultConsoleEntryMode"];
+        SetDrawAuraState(j["DrawAuraState"]);
+        DrawAuraWithCtrlPressed = j["DrawAuraWithCtrlPressed"];
+        ScreenshotFormat = j["ScreenshotFormat"];
+        SetScaleImagesInPaperdollSlots(j["ScaleImagesInPaperdollSlots"]);
+        RemoveOrCreateObjectsWithBlending = j["RemoveOrCreateObjectsWithBlending"];
+        DrawHelmetsOnShroud = j["DrawHelmetsOnShroud"];
+        SetUseGlobalMapLayer(j["UseGlobalMapLayer"]);
+        SetNoDrawRoofs(j["NoDrawRoofs"]);
+        HighlightTargetByType = j["HighlightTargetByType"];
+        AutoDisplayWorldMap = j["AutoDisplayWorldMap"];
+        SetUseGLListsForInterface(j["UseGLListsForInterface"]);
+        CheckPing = j["CheckPing"];
+        SetPingTimer(j["PingTimer"]);
+        CancelNewTargetSystemOnShiftEsc = j["CancelNewTargetSystemOnShiftEsc"];
+        DrawStatusForHumanoids = j["DrawStatusForHumanoids"];
 
-                case CMKC_USE_TOOLTIPS:
-                    UseToolTips = ToBool(strings[1]);
-                    break;
-                case CMKC_TOOLTIPS_TEXT_COLOR:
-                    ToolTipsTextColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_TOOLTIPS_TEXT_FONT:
-                    ToolTipsTextFont = atoi(strings[1].c_str());
-                    break;
-                case CMKC_TOOLTIPS_DELAY:
-                    ToolTipsDelay = atoi(strings[1].c_str());
-                    break;
+        UseToolTips = j["UseToolTips"];
+        ToolTipsTextColor = j["ToolTipsTextColor"];
+        ToolTipsTextFont = j["ToolTipsTextFont"];
+        ToolTipsDelay = j["ToolTipsDelay"];
 
-                case CMKC_CHAT_COLOR_INPUT_TEXT:
-                    ChatColorInputText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_MENU_OPTION:
-                    ChatColorMenuOption = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_PLAYER_IN_MEMBER_LIST:
-                    ChatColorPlayerInMemberList = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_TEXT:
-                    ChatColorText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_PLAYER_NAME_WITHOUT:
-                    ChatColorPlayerNameWithout = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_MUTED:
-                    ChatColorMuted = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_CHANNEL_MODERATOR_NAME:
-                    ChatColorChannelModeratorName = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_CHANNEL_MODERATOR_TEXT:
-                    ChatColorChannelModeratorText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_MY_NAME:
-                    ChatColorMyName = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_MY_TEXT:
-                    ChatColorMyText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_SYSTEM_MESSAGE:
-                    ChatColorSystemMessage = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_FONT:
-                    ChatFont = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_BG_OUTPUT_TEXT:
-                    ChatColorBGOutputText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_BG_INPUT_TEXT:
-                    ChatColorBGInputText = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_BG_USER_LIST:
-                    ChatColorBGUserList = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_BG_CONF_LIST:
-                    ChatColorBGConfList = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CHAT_COLOR_BG_COMMAND_LIST:
-                    ChatColorBGCommandList = atoi(strings[1].c_str());
-                    break;
+        ChatColorInputText = j["ChatColorInputText"];
+        ChatColorMenuOption = j["ChatColorMenuOption"];
+        ChatColorPlayerInMemberList = j["ChatColorPlayerInMemberList"];
+        ChatColorText = j["ChatColorText"];
+        ChatColorPlayerNameWithout = j["ChatColorPlayerNameWithout"];
+        ChatColorMuted = j["ChatColorMuted"];
+        ChatColorChannelModeratorName = j["ChatColorChannelModeratorName"];
+        ChatColorChannelModeratorText = j["ChatColorChannelModeratorText"];
+        ChatColorMyName = j["ChatColorMyName"];
+        ChatColorMyText = j["ChatColorMyText"];
+        ChatColorSystemMessage = j["ChatColorSystemMessage"];
+        ChatFont = j["ChatFont"];
+        ChatColorBGOutputText = j["ChatColorBGOutputText"];
+        ChatColorBGInputText = j["ChatColorBGInputText"];
+        ChatColorBGUserList = j["ChatColorBGUserList"];
+        ChatColorBGConfList = j["ChatColorBGConfList"];
+        ChatColorBGCommandList = j["ChatColorBGCommandList"];
 
-                case CMKC_ENABLE_PATHFIND:
-                    EnablePathfind = ToBool(strings[1]);
-                    break;
-                case CMKC_HOLD_TAB_FOR_COMBAT:
-                    HoldTabForCombat = ToBool(strings[1]);
-                    break;
-                case CMKC_OFFSET_INTERFACE_WINDOWS:
-                    OffsetInterfaceWindows = ToBool(strings[1]);
-                    break;
-                case CMKC_AUTO_ARRANGE:
-                    AutoArrange = ToBool(strings[1]);
-                    break;
-                case CMKC_ALWAYS_RUN:
-                    AlwaysRun = ToBool(strings[1]);
-                    break;
-                case CMKC_DISABLE_MENUBAR:
-                    DisableMenubar = ToBool(strings[1]);
-                    break;
-                case CMKC_GRAY_OUT_OF_RANGE_OBJECTS:
-                    GrayOutOfRangeObjects = ToBool(strings[1]);
-                    break;
-                case CMKC_DISABLE_NEW_TARGET_SYSTEM:
-                    DisableNewTargetSystem = ToBool(strings[1]);
-                    break;
-                case CMKC_ITEMP_ROPERTIES_MODE:
-                    m_ItemPropertiesMode = atoi(strings[1].c_str());
-                    break;
-                case CMKC_ITEMP_ROPERTIES_ICON:
-                    m_ItemPropertiesIcon = ToBool(strings[1]);
-                    break;
-                case CMKC_HOLD_SHIFT_FOR_CONTEXT_MENUS:
-                    HoldShiftForContextMenus = ToBool(strings[1]);
-                    break;
-                case CMKC_HOLD_SHIFT_FOR_ENABLE_PATHFIND:
-                    HoldShiftForEnablePathfind = ToBool(strings[1]);
-                    break;
-                case CMKC_CONTAINER_DEFAULT_X:
-                    g_ContainerRect.DefaultX = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CONTAINER_DEFAULT_Y:
-                    g_ContainerRect.DefaultY = atoi(strings[1].c_str());
-                    break;
+        EnablePathfind = j["EnablePathfind"];
+        HoldTabForCombat = j["HoldTabForCombat"];
+        OffsetInterfaceWindows = j["OffsetInterfaceWindows"];
+        AutoArrange = j["AutoArrange"];
+        AlwaysRun = j["AlwaysRun"];
+        DisableMenubar = j["DisableMenubar"];
+        GrayOutOfRangeObjects = j["GrayOutOfRangeObjects"];
+        DisableNewTargetSystem = j["DisableNewTargetSystem"];
+        m_ItemPropertiesMode = j["ItemPropertiesMode"];
+        m_ItemPropertiesIcon = j["ItemPropertiesIcon"];
+        HoldShiftForContextMenus = j["HoldShiftForContextMenus"];
+        HoldShiftForEnablePathfind = j["HoldShiftForEnablePathfind"];
+        g_ContainerRect.DefaultX = j["ContainerDefaultX"];
+        g_ContainerRect.DefaultY = j["ContainerDefaultY"];
+        m_CharacterBackpackStyle = j["CharacterBackpackStyle"];
 
-                case CMKC_GAME_WINDOW_WIDTH:
-                    GameWindowWidth = atoi(strings[1].c_str());
-                    break;
-                case CMKC_GAME_WINDOW_HEIGHT:
-                    GameWindowHeight = atoi(strings[1].c_str());
-                    break;
-                case CMKC_SPEECH_DELAY:
-                    SpeechDelay = atoi(strings[1].c_str());
-                    if (SpeechDelay > 100)
-                    {
-                        SpeechDelay = 40;
-                    }
-                    break;
-                case CMKC_SCALE_SPEECH_DELAY:
-                    ScaleSpeechDelay = ToBool(strings[1]);
-                    break;
-                case CMKC_SPEECH_COLOR:
-                    SpeechColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_EMOTE_COLOR:
-                    EmoteColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_PARTY_MESSAGE_COLOR:
-                    PartyMessageColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_GUILD_MESSAGE_COLOR:
-                    GuildMessageColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_ALLIANCE_MESSAGE_COLOR:
-                    AllianceMessageColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_IGNORE_GUILD_MESSAGE:
-                    IgnoreGuildMessage = ToBool(strings[1]);
-                    break;
-                case CMKC_IGNORE_ALLIANCE_MESSAGE:
-                    IgnoreAllianceMessage = ToBool(strings[1]);
-                    break;
-                case CMKC_LIGHT_LEVEL:
-                    SetLightLevel(atoi(strings[1].c_str()));
-                    break;
-                case CMKC_LOCK_RESIZING_GAME_WINDOW:
-                    LockResizingGameWindow = ToBool(strings[1]);
-                    break;
-                case CMKC_LOCK_GUMPS_MOVING:
-                    LockGumpsMoving = ToBool(strings[1]);
-                    break;
+        GameWindowWidth = j["GameWindowWidth"];
+        GameWindowHeight = j["GameWindowHeight"];
+        SpeechDelay = j["SpeechDelay"];
+        ScaleSpeechDelay = j["ScaleSpeechDelay"];
+        SpeechColor = j["SpeechColor"];
+        EmoteColor = j["EmoteColor"];
+        PartyMessageColor = j["PartyMessageColor"];
+        GuildMessageColor = j["GuildMessageColor"];
+        AllianceMessageColor = j["AllianceMessageColor"];
+        IgnoreGuildMessage = j["IgnoreGuildMessage"];
+        IgnoreAllianceMessage = j["IgnoreAllianceMessage"];
+        SetLightLevel(j["LightLevel"]);
+        LockResizingGameWindow = j["LockResizingGameWindow"];
+        LockGumpsMoving = j["LockGumpsMoving"];
 
-                case CMKC_INNOCENT_COLOR:
-                    InnocentColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_FRIENDLY_COLOR:
-                    FriendlyColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_SOMEONE_COLOR:
-                    SomeoneColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CRIMINAL_COLOR:
-                    CriminalColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_ENEMY_COLOR:
-                    EnemyColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_MURDERER_COLOR:
-                    MurdererColor = atoi(strings[1].c_str());
-                    break;
-                case CMKC_CRIMINAL_ACTIONS_QUERY:
-                    CriminalActionsQuery = ToBool(strings[1]);
-                    break;
+        InnocentColor = j["InnocentColor"];
+        FriendlyColor = j["FriendlyColor"];
+        SomeoneColor = j["SomeoneColor"];
+        CriminalColor = j["CriminalColor"];
+        EnemyColor = j["EnemyColor"];
+        MurdererColor = j["MurdererColor"];
+        CriminalActionsQuery = j["CriminalActionsQuery"];
 
-                case CMKC_SHOW_INCOMING_NAMES:
-                    ShowIncomingNames = ToBool(strings[1]);
-                    break;
-                case CMKC_USE_CIRCLE_TRANS:
-                    UseCircleTrans = ToBool(strings[1]);
-                    break;
-                case CMKC_STAT_REPORT:
-                    StatReport = ToBool(strings[1]);
-                    break;
-                case CMKC_CONSOLE_NEED_ENTER:
-                    SetConsoleNeedEnter(ToBool(strings[1]));
-                    break;
-                case CMKC_CIRCLE_TRANS_RADIUS:
-                    CircleTransRadius = atoi(strings[1].c_str());
-                    g_CircleOfTransparency.Create(CircleTransRadius);
-                    break;
-                case CMKC_SKILL_REPORT:
-                    SkillReport = atoi(strings[1].c_str());
-                    break;
-                case CMKC_SPEECH_FONT:
-                    SpeechFont = atoi(strings[1].c_str());
-                    break;
+        ShowIncomingNames = j["ShowIncomingNames"];
+        UseCircleTrans = j["UseCircleTrans"];
+        StatReport = j["StatReport"];
+        m_ConsoleNeedEnter = j["ConsoleNeedEnter"];
+        g_CircleOfTransparency.Create(j["CircleTransRadius"]);
+        SkillReport = j["SkillReport"];
+        SpeechFont = j["SpeechFont"];
 
-                case CMKC_GAME_WINDOW_X:
-                    GameWindowX = atoi(strings[1].c_str());
-                    break;
-                case CMKC_GAME_WINDOW_Y:
-                    GameWindowY = atoi(strings[1].c_str());
-                    break;
-                case CMKC_ZOOMED:
-                    zoomed = ToBool(strings[1]);
-                    break;
-                case CMKC_REAL_X:
-                    windowX = atoi(strings[1].c_str());
-                    break;
-                case CMKC_REAL_Y:
-                    windowY = atoi(strings[1].c_str());
-                    break;
-                case CMKC_REAL_WIDTH:
-                    windowWidth = atoi(strings[1].c_str());
-                    break;
-                case CMKC_REAL_HEIGHT:
-                    windowHeight = atoi(strings[1].c_str());
-                    break;
-                case CMKC_TOGGLE_BUFFICON_WINDOW:
-                    ToggleBufficonWindow = ToBool(strings[1]);
-                    break;
-                case CMKC_DEVELOPER_MODE:
-                    g_DeveloperMode = (DEVELOPER_MODE)atoi(strings[1].c_str());
-                    break;
-                case CMKC_LAST_SERVER:
-                    if (g_World == NULL)
-                        g_ServerList.LastServerName = strings[1];
-                    break;
-                case CMKC_LAST_CHARACTER:
-                    if (g_World == NULL)
-                        g_CharacterList.LastCharacterName = strings[1];
-                    break;
-                case CMKC_CHARACTER_BACKPACK_STYLE:
-                    m_CharacterBackpackStyle = atoi(strings[1].c_str());
-                    break;
-                default:
-                    break;
-            }
-        }
+        GameWindowX = j["GameWindowX"];
+        GameWindowY = j["GameWindowY"];
+
+        zoomed = j["Zoomed"];
+        windowX = j["RealX"];
+        windowY = j["RealY"];
+        windowWidth = j["RealWidth"];
+        windowHeight = j["RealHeight"];
+
+        ToggleBufficonWindow = j["ToggleBufficonWindow"];
+        g_DeveloperMode = j["DeveloperMode"];
+
+        if (g_World == NULL)
+            g_ServerList.LastServerName = j["LastServer"].get<std::string>();
+
+        if (g_World == NULL)
+            g_CharacterList.LastCharacterName = j["LastCharacter"].get<std::string>();
+    }
+    catch (std::ios_base::failure &fail)
+    {
+        return false;
+    }
+
+    if (SpeechDelay > 100)
+    {
+        SpeechDelay = 40;
     }
 
     if (GameWindowX < 0)
@@ -1271,145 +900,144 @@ bool CConfigManager::Load(const string &path)
 void CConfigManager::Save(const string &path)
 {
     WISPFUN_DEBUG("");
-    WISP_FILE::CTextFileWriter writer(path);
 
-    if (writer.Opened())
-    {
-        writer.WriteBool("Sound", m_Sound);
-        writer.WriteInt("SoundVolume", m_SoundVolume);
-        writer.WriteBool("Music", m_Music);
-        writer.WriteInt("MusicVolume", m_MusicVolume);
-        writer.WriteBool("FootstepsSound", FootstepsSound);
-        writer.WriteBool("CombatMusic", CombatMusic);
-        writer.WriteBool("BackgroundSound", BackgroundSound);
+    json j = json::object();
 
-        writer.WriteInt("ClientFPS", m_ClientFPS);
-        writer.WriteInt("AutomaticallyOpenDoors", AutomaticallyOpenDoors);
-        writer.WriteBool("RemoveTextWithBlending", RemoveTextWithBlending);
-        writer.WriteInt("DrawStatusState", m_DrawStatusState);
-        writer.WriteBool("DrawStumps", m_DrawStumps);
-        writer.WriteBool("MarkingCaves", m_MarkingCaves);
-        writer.WriteBool("NoAnimateFields", m_NoAnimateFields);
-        writer.WriteBool("NoVegetation", m_NoVegetation);
-        writer.WriteInt("HiddenCharactersRenderMode", HiddenCharactersRenderMode);
-        writer.WriteInt("HiddenAlpha", HiddenAlpha);
-        writer.WriteBool("UseHiddenModeOnlyForSelf", UseHiddenModeOnlyForSelf);
-        writer.WriteInt("TransparentSpellIcons", TransparentSpellIcons);
-        writer.WriteInt("SpellIconAlpha", m_SpellIconAlpha);
-        writer.WriteBool("OldStyleStatusbar", m_OldStyleStatusbar);
-        writer.WriteBool("OriginalPartyStatusbar", m_OriginalPartyStatusbar);
-        writer.WriteBool("ApplyStateColorOnCharacters", m_ApplyStateColorOnCharacters);
-        writer.WriteBool("ChangeFieldsGraphic", m_ChangeFieldsGraphic);
-        writer.WriteBool("PaperdollSlots", m_PaperdollSlots);
-        writer.WriteInt("DrawStatusConditionState", DrawStatusConditionState);
-        writer.WriteInt("DrawStatusConditionValue", DrawStatusConditionValue);
-        writer.WriteBool("RemoveStatusbarsWithoutObjects", RemoveStatusbarsWithoutObjects);
-        writer.WriteBool("ShowDefaultConsoleEntryMode", ShowDefaultConsoleEntryMode);
-        writer.WriteInt("DrawAuraState", m_DrawAuraState);
-        writer.WriteBool("DrawAuraWithCtrlPressed", DrawAuraWithCtrlPressed);
-        writer.WriteInt("ScreenshotFormat", ScreenshotFormat);
-        writer.WriteBool("ScaleImagesInPaperdollSlots", m_ScaleImagesInPaperdollSlots);
-        writer.WriteBool("RemoveOrCreateObjectsWithBlending", RemoveOrCreateObjectsWithBlending);
-        writer.WriteBool("DrawHelmetsOnShroud", DrawHelmetsOnShroud);
-        writer.WriteBool("UseGlobalMapLayer", m_UseGlobalMapLayer);
-        writer.WriteBool("NoDrawRoofs", m_NoDrawRoofs);
-        writer.WriteBool("HighlightTargetByType", HighlightTargetByType);
-        writer.WriteBool("AutoDisplayWorldMap", AutoDisplayWorldMap);
-        writer.WriteBool("UseGLListsForInterface", m_UseGLListsForInterface);
-        writer.WriteBool("CheckPing", CheckPing);
-        writer.WriteInt("PingTimer", m_PingTimer);
-        writer.WriteBool("CancelNewTargetSystemOnShiftEsc", CancelNewTargetSystemOnShiftEsc);
-        writer.WriteBool("DrawStatusForHumanoids", DrawStatusForHumanoids);
+    j["Sound"] = m_Sound;
+    j["Soundvolume"] = m_SoundVolume;
+    j["Music"] = m_Music;
+    j["MusicVolume"] = m_MusicVolume;
+    j["FootstepsSound"] = FootstepsSound;
+    j["CombatMusic"] = CombatMusic;
+    j["BackgroundSound"] = BackgroundSound;
 
-        writer.WriteBool("UseToolTips", UseToolTips);
-        writer.WriteInt("ToolTipsTextColor", ToolTipsTextColor);
-        writer.WriteInt("ToolTipsTextFont", ToolTipsTextFont);
-        writer.WriteInt("ToolTipsDelay", ToolTipsDelay);
+    j["ClientFPS"] = m_ClientFPS;
+    j["AutomaticallyOpenDoors"] = AutomaticallyOpenDoors;
+    j["RemoveTextWithBlending"] = RemoveTextWithBlending;
+    j["DrawStatusState"] = m_DrawStatusState;
+    j["DrawStumps"] = m_DrawStumps;
+    j["MarkingCaves"] = m_MarkingCaves;
+    j["NoAnimateFields"] = m_NoAnimateFields;
+    j["NoVegetation"] = m_NoVegetation;
+    j["HiddenCharactersRenderMode"] = HiddenCharactersRenderMode;
+    j["HiddenAlpha"] = HiddenAlpha;
+    j["UseHiddenModeOnlyForSelf"] = UseHiddenModeOnlyForSelf;
+    j["TransparentSpellIcons"] = TransparentSpellIcons;
+    j["SpellIconAlpha"] = m_SpellIconAlpha;
+    j["OldStyleStatusbar"] = m_OldStyleStatusbar;
+    j["OriginalPartyStatusbar"] = m_OriginalPartyStatusbar;
+    j["ApplyStateColorOnCharacters"] = m_ApplyStateColorOnCharacters;
+    j["ChangeFieldsGraphic"] = m_ChangeFieldsGraphic;
+    j["PaperdollSlots"] = m_PaperdollSlots;
+    j["DrawStatusConditionState"] = DrawStatusConditionState;
+    j["DrawStatusConditionValue"] = DrawStatusConditionValue;
+    j["RemoveStatusbarsWithoutObjects"] = RemoveStatusbarsWithoutObjects;
+    j["ShowDefaultConsoleEntryMode"] = ShowDefaultConsoleEntryMode;
+    j["DrawAuraState"] = m_DrawAuraState;
+    j["DrawAuraWithCtrlPressed"] = DrawAuraWithCtrlPressed;
+    j["ScreenshotFormat"] = ScreenshotFormat;
+    j["ScaleImagesInPaperdollSlots"] = m_ScaleImagesInPaperdollSlots;
+    j["RemoveOrCreateObjectsWithBlending"] = RemoveOrCreateObjectsWithBlending;
+    j["DrawHelmetsOnShroud"] = DrawHelmetsOnShroud;
+    j["UseGlobalMapLayer"] = m_UseGlobalMapLayer;
+    j["NoDrawRoofs"] = m_NoDrawRoofs;
+    j["HighlightTargetByType"] = HighlightTargetByType;
+    j["AutoDisplayWorldMap"] = AutoDisplayWorldMap;
+    j["UseGLListsForInterface"] = m_UseGLListsForInterface;
+    j["CheckPing"] = CheckPing;
+    j["PingTimer"] = m_PingTimer;
+    j["CancelNewTargetSystemOnShiftEsc"] = CancelNewTargetSystemOnShiftEsc;
+    j["DrawStatusForHumanoids"] = DrawStatusForHumanoids;
 
-        writer.WriteInt("ChatColorInputText", ChatColorInputText);
-        writer.WriteInt("ChatColorMenuOption", ChatColorMenuOption);
-        writer.WriteInt("ChatColorPlayerInMemberList", ChatColorPlayerInMemberList);
-        writer.WriteInt("ChatColorText", ChatColorText);
-        writer.WriteInt("ChatColorPlayerNameWithout", ChatColorPlayerNameWithout);
-        writer.WriteInt("ChatColorMuted", ChatColorMuted);
-        writer.WriteInt("ChatColorChannelModeratorName", ChatColorChannelModeratorName);
-        writer.WriteInt("ChatColorChannelModeratorText", ChatColorChannelModeratorText);
-        writer.WriteInt("ChatColorMyName", ChatColorMyName);
-        writer.WriteInt("ChatColorMyText", ChatColorMyText);
-        writer.WriteInt("ChatColorSystemMessage", ChatColorSystemMessage);
-        writer.WriteInt("ChatFont", ChatFont);
-        writer.WriteInt("ChatColorBGOutputText", ChatColorBGOutputText);
-        writer.WriteInt("ChatColorBGInputText", ChatColorBGInputText);
-        writer.WriteInt("ChatColorBGUserList", ChatColorBGUserList);
-        writer.WriteInt("ChatColorBGConfList", ChatColorBGConfList);
-        writer.WriteInt("ChatColorBGCommandList", ChatColorBGCommandList);
+    j["UseToolTips"] = UseToolTips;
+    j["ToolTipsTextColor"] = ToolTipsTextColor;
+    j["ToolTipsTextFont"] = ToolTipsTextFont;
+    j["ToolTipsDelay"] = ToolTipsDelay;
 
-        writer.WriteBool("EnablePathfind", EnablePathfind);
-        writer.WriteBool("HoldTabForCombat", HoldTabForCombat);
-        writer.WriteBool("OffsetInterfaceWindows", OffsetInterfaceWindows);
-        writer.WriteBool("AutoArrange", AutoArrange);
-        writer.WriteBool("AlwaysRun", AlwaysRun);
-        writer.WriteBool("DisableMenubar", DisableMenubar);
-        writer.WriteBool("GrayOutOfRangeObjects", GrayOutOfRangeObjects);
-        writer.WriteBool("DisableNewTargetSystem", DisableNewTargetSystem);
-        writer.WriteInt("ItemPropertiesMode", m_ItemPropertiesMode);
-        writer.WriteBool("ItemPropertiesIcon", m_ItemPropertiesIcon);
-        writer.WriteBool("HoldShiftForContextMenus", HoldShiftForContextMenus);
-        writer.WriteBool("HoldShiftForEnablePathfind", HoldShiftForEnablePathfind);
-        writer.WriteInt("ContainerDefaultX", g_ContainerRect.DefaultX);
-        writer.WriteInt("ContainerDefaultY", g_ContainerRect.DefaultY);
-        writer.WriteInt("CharacterBackpackStyle", GetCharacterBackpackStyle());
+    j["ChatColorInputText"] = ChatColorInputText;
+    j["ChatColorMenuOption"] = ChatColorMenuOption;
+    j["ChatColorPlayerInMemberList"] = ChatColorPlayerInMemberList;
+    j["ChatColorText"] = ChatColorText;
+    j["ChatColorPlayerNameWithout"] = ChatColorPlayerNameWithout;
+    j["ChatColorMuted"] = ChatColorMuted;
+    j["ChatColorChannelModeratorName"] = ChatColorChannelModeratorName;
+    j["ChatColorChannelModeratorText"] = ChatColorChannelModeratorText;
+    j["ChatColorMyName"] = ChatColorMyName;
+    j["ChatColorMyText"] = ChatColorMyText;
+    j["ChatColorSystemMessage"] = ChatColorSystemMessage;
+    j["ChatFont"] = ChatFont;
+    j["ChatColorBGOutputText"] = ChatColorBGOutputText;
+    j["ChatColorBGInputText"] = ChatColorBGInputText;
+    j["ChatColorBGUserList"] = ChatColorBGUserList;
+    j["ChatColorBGConfList"] = ChatColorBGConfList;
+    j["ChatColorBGCommandList"] = ChatColorBGCommandList;
 
-        writer.WriteInt("GameWindowWidth", GameWindowWidth);
-        writer.WriteInt("GameWindowHeight", GameWindowHeight);
-        writer.WriteInt("SpeechDelay", SpeechDelay);
-        writer.WriteBool("ScaleSpeechDelay", ScaleSpeechDelay);
-        writer.WriteInt("SpeechColor", SpeechColor);
-        writer.WriteInt("EmoteColor", EmoteColor);
-        writer.WriteInt("PartyMessageColor", PartyMessageColor);
-        writer.WriteInt("GuildMessageColor", GuildMessageColor);
-        writer.WriteInt("AllianceMessageColor", AllianceMessageColor);
-        writer.WriteBool("IgnoreGuildMessage", IgnoreGuildMessage);
-        writer.WriteBool("IgnoreAllianceMessage", IgnoreAllianceMessage);
-        writer.WriteBool("LightLevel", LightLevel);
-        writer.WriteBool("LockResizingGameWindow", LockResizingGameWindow);
-        writer.WriteBool("LockGumpsMoving", LockGumpsMoving);
+    j["EnablePathfind"] = EnablePathfind;
+    j["HoldTabForCombat"] = HoldTabForCombat;
+    j["OffsetInterfaceWindows"] = OffsetInterfaceWindows;
+    j["AutoArrange"] = AutoArrange;
+    j["AlwaysRun"] = AlwaysRun;
+    j["DisableMenubar"] = DisableMenubar;
+    j["GrayOutOfRangeObjects"] = GrayOutOfRangeObjects;
+    j["DisableNewTargetSystem"] = DisableNewTargetSystem;
+    j["ItemPropertiesMode"] = m_ItemPropertiesMode;
+    j["ItemPropertiesIcon"] = m_ItemPropertiesIcon;
+    j["HoldShiftForContextMenus"] = HoldShiftForContextMenus;
+    j["HoldShiftForEnablePathfind"] = HoldShiftForEnablePathfind;
+    j["ContainerDefaultX"] = g_ContainerRect.DefaultX;
+    j["ContainerDefaultY"] = g_ContainerRect.DefaultY;
+    j["CharacterBackpackStyle"] = GetCharacterBackpackStyle();
 
-        writer.WriteInt("InnocentColor", InnocentColor);
-        writer.WriteInt("FriendlyColor", FriendlyColor);
-        writer.WriteInt("SomeoneColor", SomeoneColor);
-        writer.WriteInt("CriminalColor", CriminalColor);
-        writer.WriteInt("EnemyColor", EnemyColor);
-        writer.WriteInt("MurdererColor", MurdererColor);
-        writer.WriteBool("CriminalActionsQuery", CriminalActionsQuery);
+    j["GameWindowWidth"] = GameWindowWidth;
+    j["GameWindowHeight"] = GameWindowHeight;
+    j["SpeechDelay"] = SpeechDelay;
+    j["ScaleSpeechDelay"] = ScaleSpeechDelay;
+    j["SpeechColor"] = SpeechColor;
+    j["EmoteColor"] = EmoteColor;
+    j["PartyMessageColor"] = PartyMessageColor;
+    j["GuildMessageColor"] = GuildMessageColor;
+    j["AllianceMessageColor"] = AllianceMessageColor;
+    j["IgnoreGuildMessage"] = IgnoreGuildMessage;
+    j["IgnoreAllianceMessage"] = IgnoreAllianceMessage;
+    j["LightLevel"] = LightLevel;
+    j["LockResizingGameWindow"] = LockResizingGameWindow;
+    j["LockGumpsMoving"] = LockGumpsMoving;
 
-        writer.WriteBool("ShowIncomingNames", ShowIncomingNames);
-        writer.WriteBool("UseCircleTrans", UseCircleTrans);
-        writer.WriteBool("StatReport", StatReport);
-        writer.WriteBool("ConsoleNeedEnter", m_ConsoleNeedEnter);
-        writer.WriteInt("CircleTransRadius", CircleTransRadius);
-        writer.WriteInt("SkillReport", SkillReport);
-        writer.WriteInt("SpeechFont", SpeechFont);
+    j["InnocentColor"] = InnocentColor;
+    j["FriendlyColor"] = FriendlyColor;
+    j["SomeoneColor"] = SomeoneColor;
+    j["CriminalColor"] = CriminalColor;
+    j["EnemyColor"] = EnemyColor;
+    j["MurdererColor"] = MurdererColor;
+    j["CriminalActionsQuery"] = CriminalActionsQuery;
 
-        writer.WriteInt("GameWindowX", GameWindowX);
-        writer.WriteInt("GameWindowY", GameWindowY);
+    j["ShowIncomingNames"] = ShowIncomingNames;
+    j["UseCircleTrans"] = UseCircleTrans;
+    j["StatReport"] = StatReport;
+    j["ConsoleNeedEnter"] = m_ConsoleNeedEnter;
+    j["CircleTransRadius"] = CircleTransRadius;
+    j["SkillReport"] = SkillReport;
+    j["SpeechFont"] = SpeechFont;
 
-        writer.WriteBool("Zoomed", g_OrionWindow.Zoomed());
+    j["GameWindowX"] = GameWindowX;
+    j["GameWindowY"] = GameWindowY;
 
-        RECT rect = { 0 };
-        GetWindowRect(g_OrionWindow.Handle, &rect);
+    j["Zoomed"] = g_OrionWindow.Zoomed();
 
-        writer.WriteInt("RealX", rect.left);
-        writer.WriteInt("RealY", rect.top);
-        writer.WriteInt("RealWidth", (rect.right - rect.left));
-        writer.WriteInt("RealHeight", (rect.bottom - rect.top));
+    RECT rect = { 0 };
+    GetWindowRect(g_OrionWindow.Handle, &rect);
 
-        writer.WriteBool("ToggleBufficonWindow", ToggleBufficonWindow);
-        writer.WriteInt("DeveloperMode", g_DeveloperMode);
+    j["RealX"] = rect.left;
+    j["RealY"] = rect.top;
+    j["RealWidth"] = (rect.right - rect.left);
+    j["RealHeight"] = (rect.bottom - rect.top);
 
-        writer.WriteString("LastServer", g_ServerList.LastServerName);
-        writer.WriteString("LastCharacter", g_CharacterList.LastCharacterName);
+    j["ToggleBufficonWindow"] = ToggleBufficonWindow;
+    j["DeveloperMode"] = g_DeveloperMode;
 
-        writer.Close();
-    }
+    j["LastServer"] = g_ServerList.LastServerName;
+    j["LastCharacter"] = g_CharacterList.LastCharacterName;
+
+    std::ofstream o(path);
+    o << std::setw(4) << j << std::endl;
 }
