@@ -906,7 +906,7 @@ void COrion::LoadClientConfig()
         }
     }
 
-    if (!g_ConfigManager.Load(g_App.ExeFilePath("options.cfg")))
+    if (!g_ConfigManager.Load(g_App.ExeFilePath("options.json")))
     {
         g_ConfigManager.Init();
     }
@@ -981,7 +981,7 @@ void COrion::SaveClientConfig()
 
     fclose(uo_cfg);
 
-    g_ConfigManager.Save(g_App.ExeFilePath("options.cfg"));
+    g_ConfigManager.Save(g_App.ExeFilePath("options.json"));
 }
 
 void COrion::LoadAutoLoginNames()
