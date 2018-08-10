@@ -528,7 +528,15 @@ namespace Assistant
 			switch ( button )
 			{
 				case 0:
-					key = wheel > 0 ? -1 : -2;
+                    if (wheel == 1)
+                    {
+                        // Wheel down
+                        key = -2;
+                    } else
+                    {
+                        // Wheel up
+                        key = -1;
+                    }
 					break;
 				case 1:
 					key = -3;
