@@ -432,6 +432,11 @@ void Cast(int index)
     g_plugin->client.cast_spell(index);
 }
 
+void Attack(uint32_t serial)
+{
+    g_plugin->client.attack(serial);
+}
+
 String ^
     GetUOClientVersion() {
         return msclr::interop::marshal_as<String ^>(g_plugin->ClientVersionText);
@@ -458,6 +463,8 @@ public:
             gcnew ClientCommunication::UOClient::SendToClientDelegate(SendToClient);
         ClientCommunication::UOClient::Cast =
             gcnew ClientCommunication::UOClient::CastDelegate(Cast);
+        ClientCommunication::UOClient::Attack =
+            gcnew ClientCommunication::UOClient::AttackDelegate(Attack);
         ClientCommunication::UOClient::GetUOClientVersion =
             gcnew ClientCommunication::UOClient::GetUOClientVersionDelegate(GetUOClientVersion);
 

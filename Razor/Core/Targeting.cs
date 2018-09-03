@@ -110,15 +110,15 @@ namespace Assistant
 
 		private static void AttackLastComb()
 		{
-			if ( m_LastCombatant.IsMobile )
-				ClientCommunication.SendToServer( new AttackReq( m_LastCombatant ) );
+            if (m_LastCombatant.IsMobile)
+                ClientCommunication.Attack(m_LastCombatant.Value);
 		}
 
 		private static void AttackLastTarg()
 		{
 			if ( m_LastTarget != null && m_LastTarget.Serial.IsMobile )
-				ClientCommunication.SendToServer( new AttackReq( m_LastTarget.Serial ) );
-		}
+                ClientCommunication.Attack(m_LastCombatant.Value);
+        }
 
 		private static void OnClearQueue()
 		{

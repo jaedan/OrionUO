@@ -94,6 +94,7 @@ namespace Assistant
             public delegate void SendToServerDelegate(Byte* packet, int len);
             public delegate void SendToClientDelegate(Byte* packet, int len);
             public delegate void CastDelegate(int index);
+            public delegate void AttackDelegate(uint serial);
             public delegate String GetUOClientVersionDelegate();
 
             public static InstallLibraryDelegate InstallLibrary;
@@ -103,6 +104,7 @@ namespace Assistant
             public static SendToServerDelegate SendToServer;
             public static SendToClientDelegate SendToClient;
             public static CastDelegate Cast;
+            public static AttackDelegate Attack;
             public static GetUOClientVersionDelegate GetUOClientVersion;
         }
 
@@ -343,6 +345,11 @@ namespace Assistant
         internal static void Cast(int index)
         {
             UOClient.Cast(index);
+        }
+
+        internal static void Attack(uint serial)
+        {
+            UOClient.Attack(serial);
         }
 
         private static bool OnRecv(byte *packet, int len)

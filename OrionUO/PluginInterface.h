@@ -107,6 +107,7 @@ extern "C"
     typedef bool __cdecl SEND_PACKET(uint8_t *packet, size_t sz);
     typedef bool __cdecl RECV_PACKET(uint8_t *packet, size_t sz);
     typedef void __cdecl CAST_SPELL(uint32_t index);
+    typedef void __cdecl ATTACK(uint32_t serial);
 
     struct orion_plugin
     {
@@ -121,6 +122,7 @@ extern "C"
             SEND_PACKET *send_packet;
             RECV_PACKET *recv_packet;
             CAST_SPELL *cast_spell;
+            ATTACK *attack;
         } client;
 
         ON_MESSAGE *OnMessage;

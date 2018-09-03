@@ -2323,9 +2323,9 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     if (wParam == VK_TAB)
     {
         if (g_ConfigManager.HoldTabForCombat)
-            g_Player->ChangeWarMode(WarModeState::War);
+            g_Player->RequestWarMode(WarModeState::War);
         else
-            g_Player->ChangeWarMode(WarModeState::Toggle);
+            g_Player->RequestWarMode(WarModeState::Toggle);
     }
 
     {
@@ -2353,6 +2353,6 @@ void CGameScreen::OnKeyUp(const WPARAM &wParam, const LPARAM &lParam)
     if (wParam == VK_TAB && g_GameState == GS_GAME)
     {
         if (g_ConfigManager.HoldTabForCombat)
-            g_Player->ChangeWarMode(WarModeState::Peace);
+            g_Player->RequestWarMode(WarModeState::Peace);
     }
 }

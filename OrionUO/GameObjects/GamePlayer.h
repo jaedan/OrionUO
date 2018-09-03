@@ -67,7 +67,8 @@ public:
     PlayerMovementState m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
 
     std::deque<WarModeState> m_WarModeRequests;
-    void ChangeWarMode(WarModeState state);
+    void RequestWarMode(WarModeState state);
+    bool SetWarMode(WarModeState state);
 
     CPlayer(int serial);
 
