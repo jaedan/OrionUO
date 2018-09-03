@@ -220,14 +220,6 @@ namespace Assistant
 			Write( (ushort) 0 );
 		}
 	}
-
-	public sealed class AttackReq : Packet
-	{
-		public AttackReq( Serial serial ) : base( 0x05, 5 )
-		{
-			Write( (uint)serial );
-		}
-	}
 	
 	public sealed class CancelTarget : Packet
 	{
@@ -1150,18 +1142,6 @@ namespace Assistant
 
 			Write( (short) m.StamMax );
 			Write( (short) m.Stam );
-		}
-	}
-
-	public sealed class SetWarMode : Packet
-	{
-		public SetWarMode( bool mode ) : base( 0x72, 5 )
-		{
-			Write( mode );
-			Write( (byte) 0x00 );
-			Write( (byte) 0x32 );
-			Write( (byte) 0x00 );
-			//Fill();
 		}
 	}
 

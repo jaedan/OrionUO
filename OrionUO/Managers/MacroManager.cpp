@@ -633,7 +633,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_WAR_PEACE:
         {
-            g_Player->ChangeWarMode(WarModeState::Toggle);
+            g_Player->RequestWarMode(WarModeState::Toggle);
 
             break;
         }

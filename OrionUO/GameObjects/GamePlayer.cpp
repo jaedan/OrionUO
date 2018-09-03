@@ -16,51 +16,38 @@ CPlayer::~CPlayer()
     WISPFUN_DEBUG("c21_f2");
 }
 
-void CPlayer::ChangeWarMode(WarModeState state)
+void CPlayer::RequestWarMode(WarModeState state)
 {
     WISPFUN_DEBUG("c194_f106");
 
+    if (SetWarMode(state))
+    {
+        CPacketChangeWarmode((uchar)WarMode).Send();
+        m_WarModeRequests.push_back(WarMode);
+    }
+}
+
+bool CPlayer::SetWarMode(WarModeState state)
+{
     if (state == WarModeState::Toggle)
     {
         /* Toggle warmode */
         if (WarMode == WarModeState::Peace)
         {
-            WarMode = WarModeState::War;
+            state = WarModeState::War;
         }
         else
         {
-            WarMode = WarModeState::Peace;
+            state = WarModeState::Peace;
         }
-
-        CPacketChangeWarmode((uchar)WarMode).Send();
-        m_WarModeRequests.push_back(WarMode);
     }
-    else
+
+    if (WarMode == state)
     {
-        WarModeState previousMode = WarMode;
-
-        if (state != previousMode)
-        {
-            WarMode = state;
-            if (state == WarModeState::War)
-            {
-                /* Entering warmode */
-                if (g_ConfigManager.GetMusic())
-                {
-                    g_Orion.PlayMusic(rand() % 3 + 38, true);
-                }
-            }
-            else
-            {
-                /* Exiting warmode */
-                g_SoundManager.StopWarMusic();
-            }
-
-            CPacketChangeWarmode((uchar)WarMode).Send();
-            m_WarModeRequests.push_back(WarMode);
-        }
+        return false;
     }
 
+    WarMode = state;
     g_GumpManager.UpdateContent(g_PlayerSerial, 0, GT_STATUSBAR);
 
     CGumpPaperdoll *gump = (CGumpPaperdoll *)g_GumpManager.GetGump(g_PlayerSerial, 0, GT_PAPERDOLL);
@@ -79,7 +66,23 @@ void CPlayer::ChangeWarMode(WarModeState state)
         gump->WantRedraw = true;
     }
 
+    if (WarMode == WarModeState::War)
+    {
+        /* Entering warmode */
+        if (g_ConfigManager.GetMusic())
+        {
+            g_Orion.PlayMusic(rand() % 3 + 38, true);
+        }
+    }
+    else
+    {
+        /* Exiting warmode */
+        g_SoundManager.StopWarMusic();
+    }
+
     g_World->MoveToTop(this);
+
+    return true;
 }
 
 bool CPlayer::Walk(Direction direction, bool run)

@@ -52,6 +52,11 @@ void __cdecl plugin_cast_spell(uint32_t index)
     }
 }
 
+void __cdecl plugin_attack(uint32_t serial)
+{
+    SendNotifyMessage(g_OrionWindow.Handle, ASSISTANTMSG_ATTACK, (WPARAM)serial, 0);
+}
+
 CPluginManager::CPluginManager()
 {
 }
@@ -101,6 +106,7 @@ void CPluginManager::LoadPlugin(const string &lib_path)
     plugin->client.recv_packet = plugin_send_to_client;
     plugin->client.send_packet = plugin_send_to_server;
     plugin->client.cast_spell = plugin_cast_spell;
+    plugin->client.attack = plugin_attack;
 
     entry(plugin);
 

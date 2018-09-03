@@ -735,7 +735,7 @@ void CGumpPaperdoll::GUMP_BUTTON_EVENT_C
         }
         case ID_GP_BUTTON_WARMODE:
         {
-            g_Player->ChangeWarMode(WarModeState::Toggle);
+            g_Player->RequestWarMode(WarModeState::Toggle);
             break;
         }
         case ID_GP_BUTTON_STATUS:

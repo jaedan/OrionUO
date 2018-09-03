@@ -1657,7 +1657,7 @@ PACKET_HANDLER(Warmode)
     if (g_Player->m_WarModeRequests.empty())
     {
         /* Unsolicited. */
-        g_Player->ChangeWarMode(newState);
+        g_Player->SetWarMode(newState);
         return;
     }
 
@@ -1666,7 +1666,8 @@ PACKET_HANDLER(Warmode)
 
     if (newState != expectedState)
     {
-        LOG("Expected war mode state to be %d, but got %d\n", expectedState, newState);
+        g_Player->SetWarMode(newState);
+        g_Player->m_WarModeRequests.clear();
     }
 }
 
@@ -2910,7 +2911,7 @@ PACKET_HANDLER(DeathScreen)
         if (g_ConfigManager.GetMusic())
             g_Orion.PlayMusic(42, true);
 
-        g_Player->ChangeWarMode(WarModeState::Peace);
+        g_Player->SetWarMode(WarModeState::Peace);
 
         g_DeathScreenTimer = g_Ticks + DEATH_SCREEN_DELAY;
     }

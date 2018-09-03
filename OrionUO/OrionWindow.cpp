@@ -517,6 +517,9 @@ LRESULT COrionWindow::OnUserMessages(int message, const WPARAM &wParam, const LP
         case ASSISTANTMSG_CAST_SPELL:
             g_Orion.CastSpell(wParam);
             break;
+        case ASSISTANTMSG_ATTACK:
+            g_Orion.Attack(wParam);
+            break;
         case CPingThread::MessageID:
         {
             PING_INFO_DATA *info = (PING_INFO_DATA *)wParam;
