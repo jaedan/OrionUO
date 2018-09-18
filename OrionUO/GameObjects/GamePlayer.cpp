@@ -95,6 +95,7 @@ bool CPlayer::Walk(Direction direction, bool run)
 
     if (m_RequestedSteps.size() >= MAX_STEPS_COUNT)
     {
+        CPacketResend().Send();
         return false;
     }
 
@@ -241,7 +242,7 @@ void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, 
     if (m_RequestedSteps.empty())
     {
         LOG("Received Walk Confirmation, but no steps pending.\n");
-        /* TODO: Resynchronize */
+        CPacketResend().Send();
         return;
     }
 
@@ -251,7 +252,7 @@ void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, 
     {
         LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
             sequence);
-        /* TODO: Resynchronize */
+        CPacketResend().Send();
         return;
     }
 
@@ -279,7 +280,7 @@ void CPlayer::ConfirmWalk(uchar sequence)
     if (m_RequestedSteps.empty())
     {
         LOG("Received Walk Confirmation, but no steps pending.\n");
-        /* TODO: Resynchronize */
+        CPacketResend().Send();
         return;
     }
 
@@ -289,7 +290,7 @@ void CPlayer::ConfirmWalk(uchar sequence)
     {
         LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
             sequence);
-        /* TODO: Resynchronize */
+        CPacketResend().Send();
         return;
     }
 
