@@ -275,6 +275,20 @@ bool CGameCharacter::QueueStep(int x, int y, char z, Direction dir, bool run)
     return true;
 }
 
+void CGameCharacter::ForcePosition(int x, int y, char z, Direction dir)
+{
+    m_Steps.clear();
+
+    SetX(x);
+    SetY(y);
+    SetZ(z);
+    Dir = dir;
+
+    OffsetX = 0;
+    OffsetY = 0;
+    OffsetZ = 0;
+}
+
 void CGameCharacter::GetEndPosition(int &x, int &y, char &z, Direction &dir)
 {
     if (m_Steps.empty())

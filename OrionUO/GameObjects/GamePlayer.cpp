@@ -88,9 +88,15 @@ bool CPlayer::SetWarMode(WarModeState state)
 bool CPlayer::Walk(Direction direction, bool run)
 {
     WISPFUN_DEBUG("c177_f7");
-    if (LastStepRequestTime > g_Ticks || m_RequestedSteps.size() >= MAX_STEPS_COUNT ||
-        g_DeathScreenTimer || g_GameState != GS_GAME)
+    if (LastStepRequestTime > g_Ticks || g_DeathScreenTimer || g_GameState != GS_GAME)
+    {
         return false;
+    }
+
+    if (m_RequestedSteps.size() >= MAX_STEPS_COUNT)
+    {
+        return false;
+    }
 
     if (g_SpeedMode >= CST_CANT_RUN)
         run = false;
@@ -177,6 +183,7 @@ bool CPlayer::Walk(Direction direction, bool run)
     step.z = z;
     step.dir = direction;
     step.run = run;
+    step.rej = 0;
     step.seq = SequenceNumber;
 
     if (g_Player->m_MovementState == PlayerMovementState::ANIMATE_IMMEDIATELY)
@@ -220,40 +227,51 @@ bool CPlayer::Walk(Direction direction, bool run)
 
 void CPlayer::ResetSteps()
 {
-    m_RequestedSteps.clear();
-    m_Steps.clear();
+    for (auto &s : m_RequestedSteps)
+    {
+        s.rej = 1;
+    }
 
     SequenceNumber = 0;
     LastStepRequestTime = 0;
-
-    OffsetX = 0;
-    OffsetY = 0;
-    OffsetZ = 0;
 }
 
 void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, uint8_t z)
 {
-    for (const auto &step : m_RequestedSteps)
+    if (m_RequestedSteps.empty())
     {
-        if (step.seq == sequence)
-        {
-            /* Found the step. Reset the player's movement. */
-            ResetSteps();
-
-            SetX(x);
-            SetY(y);
-            SetZ(z);
-            Dir = dir;
-            Run = false;
-
-            g_RemoveRangeXY.X = x;
-            g_RemoveRangeXY.Y = y;
-
-            return;
-        }
+        LOG("Received Walk Confirmation, but no steps pending.\n");
+        /* TODO: Resynchronize */
+        return;
     }
 
-    LOG("Ignoring erroneous DenyWalk\n");
+    Step &step = m_RequestedSteps.front();
+
+    if (step.seq != sequence)
+    {
+        LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
+            sequence);
+        /* TODO: Resynchronize */
+        return;
+    }
+
+    m_RequestedSteps.pop_front();
+
+    if (step.rej == 0)
+    {
+        LOG("Received new reject sequence beginning at #%u\n", step.seq);
+        ResetSteps();
+        ForcePosition(x, y, z, dir);
+
+        g_RemoveRangeXY.X = x;
+        g_RemoveRangeXY.Y = y;
+    }
+    else
+    {
+        /* Step was already rejected, so our position has already been reset
+         * back to the correct place. We only needed to pop it off of the list. */
+        LOG("Received expected reject for sequence #%u\n", step.seq);
+    }
 }
 
 void CPlayer::ConfirmWalk(uchar sequence)
