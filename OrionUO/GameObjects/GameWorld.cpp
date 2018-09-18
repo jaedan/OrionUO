@@ -1114,6 +1114,7 @@ void CGameWorld::UpdatePlayer(
     if (resync)
     {
         /* Only update position on packets that represent a resynchronization point. */
+        g_Player->ResetSteps();
 
         Direction dir = (Direction)(direction & 0x7);
         bool run = direction & 0x80;
@@ -1124,14 +1125,11 @@ void CGameWorld::UpdatePlayer(
 
         g_Player->GetEndPosition(endX, endY, endZ, endDir);
 
-        g_Player->SequenceNumber = 0;
-
         if (endX == x && endY == y)
         {
             /* The player was moving toward this location anyway. */
             if (endDir != dir)
             {
-                g_Player->m_RequestedSteps.clear();
                 g_Player->QueueStep(x, y, z, dir, run);
             }
         }
@@ -1146,18 +1144,13 @@ void CGameWorld::UpdatePlayer(
                 y,
                 z,
                 dir);
-            g_Player->ResetSteps();
-            g_Player->SetX(x);
-            g_Player->SetY(y);
-            g_Player->SetZ(z);
-            g_Player->Dir = dir;
-            g_Player->Run = run;
+
+            g_Player->ForcePosition(x, y, z, dir);
+            g_Player->CloseBank();
+
+            g_RemoveRangeXY.X = x;
+            g_RemoveRangeXY.Y = y;
         }
-
-        g_Player->CloseBank();
-
-        g_RemoveRangeXY.X = x;
-        g_RemoveRangeXY.Y = y;
     }
 
     bool updateStatusbar = (g_Player->GetFlags() != flags);

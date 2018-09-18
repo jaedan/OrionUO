@@ -22,9 +22,10 @@ struct Step
     int y;
     char z;
 
-    uint8_t dir : 6;
+    uint8_t dir : 5;
     uint8_t anim : 1;
     uint8_t run : 1;
+    uint8_t rej : 1;
 
     uint8_t seq;
 };
@@ -102,6 +103,8 @@ public:
     Direction CalculateDirection(int curX, int curY, int newX, int newY);
 
     bool QueueStep(int x, int y, char z, Direction dir, bool run);
+
+    void ForcePosition(int x, int y, char z, Direction dir);
 
     int GetWalkSpeed(bool run, bool onMount);
 
