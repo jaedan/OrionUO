@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
@@ -13,24 +13,33 @@ namespace Assistant
 {
 	public class FeatureBit
 	{
-		public static readonly uint WeatherFilter	=  0;
-		public static readonly uint LightFilter		=  1;
-		public static readonly uint SmartLT			=  2;
-		public static readonly uint RangeCheckLT	=  3;
-		public static readonly uint UnequipBeforeCast= 5;
-		public static readonly uint AutoPotionEquip	=  6;
-		public static readonly uint BlockHealPoisoned= 7;
-		public static readonly uint LoopingMacros	=  8; // includes fors and macros running macros
-		public static readonly uint UseOnceAgent	=  9;
-		public static readonly uint RestockAgent	= 10;
-		public static readonly uint SellAgent		= 11;
-		public static readonly uint BuyAgent		= 12;
-		public static readonly uint PotionHotkeys	= 13;
-		public static readonly uint RandomTargets	= 14;
-		public static readonly uint ClosestTargets	= 15;
-		public static readonly uint OverheadHealth	= 16;
+		public static readonly ulong WeatherFilter	    = 0;
+		public static readonly ulong LightFilter	    = 1;
+		public static readonly ulong SmartLT		    = 2;	
+		public static readonly ulong RangeCheckLT	    = 3;
+		public static readonly ulong AutoOpenDoors	    = 4;
+		public static readonly ulong UnequipBeforeCast  = 5;
+		public static readonly ulong AutoPotionEquip	= 6;
+		public static readonly ulong BlockHealPoisoned  = 7;
+		public static readonly ulong LoopingMacros	    = 8; // includes fors and macros running macros
+		public static readonly ulong UseOnceAgent   	= 9;
+		public static readonly ulong RestockAgent   	= 10;
+		public static readonly ulong SellAgent		    = 11;
+		public static readonly ulong BuyAgent		    = 12;
+		public static readonly ulong PotionHotkeys	    = 13;
+		public static readonly ulong RandomTargets	    = 14;
+		public static readonly ulong ClosestTargets 	= 15;
+		public static readonly ulong OverheadHealth 	= 16;
+        public static readonly ulong AutoLootAgent      = 17;
+        public static readonly ulong BoneCutterAgent    = 18;
+        public static readonly ulong JScriptMacros      = 19;
+        public static readonly ulong AutoRemount        = 20;
+        public static readonly ulong AutoBandage        = 21;
+        public static readonly ulong EnemyTargetShare   = 22;
+        public static readonly ulong FilterSeason       = 23;
+        public static readonly ulong SpellTargetShare   = 24;
 
-		public static readonly uint MaxBit			= 16;
+        public static readonly ulong MaxBit			    = 24;
 	}
 
     public unsafe sealed class ClientCommunication
@@ -61,9 +70,8 @@ namespace Assistant
             MOUSEWHEEL,
             KEYDOWN,
             KEYUP,
-            ACTIVEWINDOW,
 
-            Last = ACTIVEWINDOW,
+            Last = KEYUP
         }
 
         public struct UOMSG_PACKET
@@ -109,7 +117,9 @@ namespace Assistant
         }
 
         [DllImport("msvcrt.dll", SetLastError = false)]
+#pragma warning disable IDE1006 // Stili di denominazione
         static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+#pragma warning restore IDE1006 // Stili di denominazione
 
         [DllImport("user32.dll")]
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -123,6 +133,9 @@ namespace Assistant
 
         [DllImport("Advapi32.dll")]
         private static extern int GetUserNameA(StringBuilder buff, int* len);
+
+        [DllImport("user32.dll")]
+        private static extern uint SendMessage(IntPtr hWnd, uint Msg, int wParam, IntPtr lParam);
 
         public static string GetWindowsUserName()
         {
@@ -138,13 +151,13 @@ namespace Assistant
 
         public static void DoFeatures(int features) { }
 
-        public static bool AllowBit(uint bit) { return true; }
+        //public static bool AllowBit(ulong bit) { return true; }
 
         internal static void SetAllowDisconn(bool allowed) { }
 
         public static int HandleNegotiate(ulong word) { return 1; }
 
-        internal static string GetUOVersion() { return "7.0.15.1"; }
+        internal static string GetUOVersion() { return "6.0.17.10"; }
 
         public static void PostCounterUpdate(int counter, int count) { }
 
@@ -181,9 +194,6 @@ namespace Assistant
         private static DateTime m_ConnStart;
         public static DateTime ConnectionStart { get { return m_ConnStart; } }
 
-        private static IPAddress m_LastConnection;
-        public static IPAddress LastConnection { get { return m_LastConnection; } }
-
         internal static bool ClientEncrypted { get { return false; } }
         internal static bool ServerEncrypted { get { return false; } }
 
@@ -198,7 +208,170 @@ namespace Assistant
 
         public static void SetNegotiate(bool negotiate) { }
 
-        public static void RequestTitlebarUpdate() { }
+        private static Timer m_TBTimer;
+        public static void RequestTitlebarUpdate()
+        {
+            if (m_TBTimer == null)
+                m_TBTimer = new TitleBarThrottle();
+
+            if (!m_TBTimer.Running)
+                m_TBTimer.Start();
+        }
+
+        private class TitleBarThrottle : Timer
+        {
+            public TitleBarThrottle() : base(TimeSpan.FromSeconds(0.1))
+            {
+            }
+
+            protected override void OnTick()
+            {
+                UpdateTitleBar();
+            }
+        }
+
+        private static StringBuilder m_TBBuilder = new StringBuilder();
+        private static string m_LastPlayerName = "";
+
+        private static void UpdateTitleBar()
+        {
+            if (World.Player != null && Config.GetBool("TitleBarDisplay"))
+            {
+                // reuse the same sb each time for less damn allocations
+                m_TBBuilder.Remove(0, m_TBBuilder.Length);
+                m_TBBuilder.Insert(0, Config.GetString("TitleBarText"));
+                StringBuilder sb = m_TBBuilder;
+                //StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity 
+
+                PlayerData p = World.Player;
+
+                if (p.Name != m_LastPlayerName)
+                {
+                    m_LastPlayerName = p.Name;
+
+                    Engine.MainWindow.UpdateTitle();
+                }
+
+                if (Config.GetBool("ShowNotoHue"))
+                    sb.Replace(@"{char}", String.Format("~#{0:X6}{1}~#~", p.GetNotorietyColor() & 0x00FFFFFF, p.Name));
+                else
+                    sb.Replace(@"{char}", p.Name);
+                sb.Replace(@"{shard}", World.ShardName);
+
+                if (p.CriminalTime != 0)
+                    sb.Replace(@"{crimtime}", String.Format("~^C0C0C0{0}~#~", p.CriminalTime));
+                else
+                    sb.Replace(@"{crimtime}", "-");
+
+                sb.Replace(@"{str}", p.Str.ToString());
+                sb.Replace(@"{hpmax}", p.HitsMax.ToString());
+                if (p.Poisoned)
+                    sb.Replace(@"{hp}", String.Format("~#FF8000{0}~#~", p.Hits));
+                else
+                    sb.Replace(@"{hp}", EncodeColorStat(p.Hits, p.HitsMax));
+                sb.Replace(@"{dex}", World.Player.Dex.ToString());
+                sb.Replace(@"{stammax}", World.Player.StamMax.ToString());
+                sb.Replace(@"{stam}", EncodeColorStat(p.Stam, p.StamMax));
+                sb.Replace(@"{int}", World.Player.Int.ToString());
+                sb.Replace(@"{manamax}", World.Player.ManaMax.ToString());
+                sb.Replace(@"{mana}", EncodeColorStat(p.Mana, p.ManaMax));
+
+                sb.Replace(@"{ar}", p.AR.ToString());
+                sb.Replace(@"{tithe}", p.Tithe.ToString());
+
+                sb.Replace(@"{physresist}", p.AR.ToString());
+                sb.Replace(@"{fireresist}", p.FireResistance.ToString());
+                sb.Replace(@"{coldresist}", p.ColdResistance.ToString());
+                sb.Replace(@"{poisonresist}", p.PoisonResistance.ToString());
+                sb.Replace(@"{energyresist}", p.EnergyResistance.ToString());
+
+                sb.Replace(@"{luck}", p.Luck.ToString());
+
+                sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
+
+                if (World.Player.Weight >= World.Player.MaxWeight)
+                    sb.Replace(@"{weight}", String.Format("~#FF0000{0}~#~", World.Player.Weight));
+                else
+                    sb.Replace(@"{weight}", World.Player.Weight.ToString());
+                sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
+
+                sb.Replace(@"{followers}", World.Player.Followers.ToString());
+                sb.Replace(@"{followersmax}", World.Player.FollowersMax.ToString());
+
+                sb.Replace(@"{gold}", World.Player.Gold.ToString());
+                if (BandageTimer.Running)
+                    sb.Replace(@"{bandage}", String.Format("~#FF8000{0}~#~", BandageTimer.Count));
+                else
+                    sb.Replace(@"{bandage}", "-");
+
+                if (StealthSteps.Counting)
+                    sb.Replace(@"{stealthsteps}", StealthSteps.Count.ToString());
+                else
+                    sb.Replace(@"{stealthsteps}", "-");
+
+                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+                    (int)(p.GetStatusCode()),
+                    (int)(World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99),
+                    (int)(World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99),
+                    (int)(World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99));
+
+                sb.Replace(@"{statbar}", String.Format("~SR{0}", statStr));
+                sb.Replace(@"{mediumstatbar}", String.Format("~SL{0}", statStr));
+                sb.Replace(@"{largestatbar}", String.Format("~SX{0}", statStr));
+
+                bool dispImg = Config.GetBool("TitlebarImages");
+                for (int i = 0; i < Counter.List.Count; i++)
+                {
+                    Counter c = Counter.List[i];
+                    if (c.Enabled)
+                        sb.Replace(String.Format("{{{0}}}", c.Format), c.GetTitlebarString(dispImg && c.DisplayImage));
+                }
+
+                SetTitleStr(sb.ToString());
+            }
+            else
+            {
+                SetTitleStr("");
+            }
+        }
+
+        private static string m_LastStr;
+        private static IntPtr m_TitleData = Marshal.AllocCoTaskMem(1024);
+
+        private static void SetTitleStr(string str)
+        {
+            if (m_LastStr == str)
+                return;
+
+            m_LastStr = str;
+            byte[] copy = System.Text.Encoding.ASCII.GetBytes(str);
+            Array.Resize<byte>(ref copy, copy.Length + 1);
+            int clen = copy.Length;
+            copy[clen - 1] = 0;
+
+            if (clen > 0)
+            {
+                if (clen >= 512)
+                    clen = 511;
+                Marshal.Copy(copy, 0, m_TitleData, clen);
+            }
+
+            bool active = Config.GetBool("TitleBarDisplay") && clen>1;
+            SendMessage(FindUOWindow(), 1800, active ? clen : 0, active ? m_TitleData : IntPtr.Zero);
+            //PostMessage(FindUOWindow(), WM_CUSTOMTITLE, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        public static string EncodeColorStat(int val, int max)
+        {
+            double perc = ((double)val) / ((double)max);
+
+            if (perc <= 0.25)
+                return String.Format("~#FF0000{0}~#~", val);
+            else if (perc <= 0.75)
+                return String.Format("~#FFFF00{0}~#~", val);
+            else
+                return val.ToString();
+        }
 
         public static int GetZ(int x, int y, int z) { return World.Player.Position.Z; }
 
@@ -234,8 +407,14 @@ namespace Assistant
             public byte Direction;
         }
 
-        internal static int OnMessage(UOMSG_TYPE msg, IntPtr wParam, IntPtr lParam) {
-
+        static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+        const UInt32 SWP_NOSIZE = 0x0001;
+        const UInt32 SWP_NOMOVE = 0x0002;
+        const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+        
+        internal static int OnMessage(UOMSG_TYPE msg, IntPtr wParam, IntPtr lParam)
+        {
             int block = 0;
 
             switch (msg) {
@@ -259,7 +438,7 @@ namespace Assistant
                     break;
                 case UOMSG_TYPE.CLOSE:
                     OnLogout();
-                    Engine.MainWindow.Close();
+                    Engine.MainWindow.OnClientClose();
                     break;
                 case UOMSG_TYPE.DISCONNECT:
                     OnLogout(false);
@@ -276,30 +455,6 @@ namespace Assistant
                     block = HotKey.OnKeyDown((int)wParam) ? 0 : 1;
                     break;
                 case UOMSG_TYPE.KEYUP:
-                    break;
-                case UOMSG_TYPE.ACTIVEWINDOW:
-                    /*
-                    if (Config.GetBool("AlwaysOnTop")) {
-                        if (lParam != 0 && !razor.TopMost) {
-                            razor.TopMost = true;
-                            SetForegroundWindow(FindUOWindow());
-                        } else if (lParam == 0 && razor.TopMost) {
-                            razor.TopMost = false;
-                            razor.SendToBack();
-                        }
-                    }
-
-                    // always use smartness for the map window
-                    if (razor.MapWindow != null && razor.MapWindow.Visible) {
-                        if (lParam != 0 && !razor.MapWindow.TopMost) {
-                            razor.MapWindow.TopMost = true;
-                            SetForegroundWindow(FindUOWindow());
-                        } else if (lParam == 0 && razor.MapWindow.TopMost) {
-                            razor.MapWindow.TopMost = false;
-                            razor.MapWindow.SendToBack();
-                        }
-                    }
-                    */
                     break;
             }
 

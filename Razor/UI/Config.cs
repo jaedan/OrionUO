@@ -3,7 +3,7 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Assistant.Filters;
@@ -13,13 +13,13 @@ namespace Assistant
 	public class Profile
 	{
 		private string m_Name;
-		private Hashtable m_Props;
+		private Dictionary<string, object> m_Props;
 		private System.Threading.Mutex m_Mutex;
 
 		public Profile( string name )
 		{
 			Name = name;
-			m_Props = new Hashtable(16, 1.0f, StringComparer.OrdinalIgnoreCase);
+			m_Props = new Dictionary<string, object>(68, StringComparer.OrdinalIgnoreCase);
 
 			MakeDefault();
 		}
@@ -27,17 +27,17 @@ namespace Assistant
 		public void MakeDefault()
 		{
 			m_Props.Clear();
-
-			AddProperty( "ShowMobNames", false );
+            AddProperty( "ShowFactionMap", true);
+            AddProperty( "ShowPartyMap", true );
 			AddProperty( "ShowCorpseNames", false );
 			AddProperty( "DisplaySkillChanges", false );
 			AddProperty( "TitleBarText", @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}" );
 			AddProperty( "TitleBarDisplay", true );
 			AddProperty( "AutoSearch", true );
-			AddProperty( "NoSearchPouches", true );
+			AddProperty( "NoSearchPouches", false );
 			AddProperty( "CounterWarnAmount", (int)5 );
 			AddProperty( "CounterWarn", true );
-			AddProperty( "ObjectDelay", (int)600 );
+			AddProperty( "ObjectDelay", (int)100 );
 			AddProperty( "AlwaysOnTop", false );
 			AddProperty( "SortCounters", true );
 			AddProperty( "QueueActions", true );
@@ -69,7 +69,8 @@ namespace Assistant
 
 			AddProperty( "UndressConflicts", true );
 			AddProperty( "HighlightReagents", true );
-			AddProperty( "TitlebarImages", true );
+            AddProperty("Systray", true);
+            AddProperty( "TitlebarImages", true );
 
 			AddProperty( "SellAgentMax", (int)99 );
 			AddProperty( "SkillListCol", (int)-1 );
@@ -279,10 +280,10 @@ namespace Assistant
 			xml.WriteStartDocument( true );
 			xml.WriteStartElement( "profile" );
 				
-			foreach( DictionaryEntry de in m_Props )
+			foreach( KeyValuePair<string, object> de in m_Props )
 			{
 				xml.WriteStartElement( "property" );
-				xml.WriteAttributeString( "name", (string)de.Key );
+				xml.WriteAttributeString( "name", de.Key);
 				if ( de.Value == null )
 				{
 					xml.WriteAttributeString( "type", "-null-" );
@@ -348,9 +349,9 @@ namespace Assistant
 
 		public object GetProperty( string name )
 		{
-			if ( !m_Props.ContainsKey( name ) )
-				throw new Exception( Language.Format( LocString.NoProp, name ) );
-			return m_Props[name];
+            if (!m_Props.TryGetValue(name, out object obj))
+                throw new Exception(Language.Format(LocString.NoProp, name));
+            return obj;
 		}
 
 		public void SetProperty( string name, object val )
@@ -362,15 +363,14 @@ namespace Assistant
 
 		public void AddProperty( string name, object val )
 		{
-			if ( !m_Props.Contains( name ) )
-				m_Props.Add( name, val );
+			m_Props[name]=val;
 		}
 	}
 
 	public class Config
 	{
 		private static Profile m_Current;
-		private static Hashtable m_Chars;
+		private static Dictionary<Serial, string> m_Chars;
 
 		public static Profile CurrentProfile
 		{
@@ -416,7 +416,7 @@ namespace Assistant
 		public static void LoadCharList()
 		{
 			if ( m_Chars == null )
-				m_Chars = new Hashtable();
+				m_Chars = new Dictionary<Serial, string>();
 			else
 				m_Chars.Clear();
 
@@ -434,7 +434,7 @@ namespace Assistant
 					string[] split = line.Split( '=' );
 					try
 					{
-						m_Chars.Add( Serial.Parse( split[0] ), split[1] );
+						m_Chars[Serial.Parse( split[0] )]=split[1];
 					}
 					catch
 					{
@@ -446,13 +446,13 @@ namespace Assistant
 		public static void SaveCharList()
 		{
 			if ( m_Chars == null )
-				m_Chars = new Hashtable();
+				m_Chars = new Dictionary<Serial, string>();
 
 			try
 			{
 				using ( StreamWriter writer = new StreamWriter( Path.Combine( Config.GetUserDirectory( "Profiles" ), "chars.lst" ) ) )
 				{
-					foreach ( DictionaryEntry de in m_Chars )
+					foreach ( KeyValuePair<Serial, string> de in m_Chars )
 					{
 						writer.WriteLine( "{0}={1}", de.Key, de.Value );
 					}
@@ -466,35 +466,34 @@ namespace Assistant
 		public static void LoadProfileFor( PlayerData player )
 		{
 			if ( m_Chars == null )
-				m_Chars = new Hashtable();
-			string prof = m_Chars[player.Serial] as string;
-			if ( m_Current != null && prof != null && ( m_Current.Name == prof || m_Current.Name.Trim() == prof.Trim() ) )
-				return;
+				m_Chars = new Dictionary<Serial, string>();
+            if (m_Chars.TryGetValue(player.Serial, out string prof) && prof != null)
+            {
+                if (m_Current != null && (m_Current.Name == prof || m_Current.Name.Trim() == prof.Trim()))
+                    return;
 
-			if ( prof != null )
-			{
-				Save();
+                Save();
 
-				if ( !LoadProfile( prof ) )
-				{
-					if ( prof != "default" )
-					{
-						if ( !LoadProfile( "default" ) )
-							m_Current.MakeDefault();
-					}
-					else
-					{
-						m_Current.MakeDefault();
-					}
-				}
+                if (!LoadProfile(prof))
+                {
+                    if (prof != "default")
+                    {
+                        if (!LoadProfile("default"))
+                            m_Current.MakeDefault();
+                    }
+                    else
+                    {
+                        m_Current.MakeDefault();
+                    }
+                }
 
-				Engine.MainWindow.InitConfig();
-			}
-			else
-			{
-				m_Chars.Add( player.Serial, m_Current != null ? m_Current.Name : "default" );
-			}
-			Engine.MainWindow.SelectProfile( m_Current == null ? "default" : m_Current.Name );
+                Engine.MainWindow.InitConfig();
+            }
+            else
+            {
+                m_Chars[player.Serial] = (m_Current != null ? m_Current.Name : "default");
+            }
+            Engine.MainWindow.SelectProfile(m_Current != null ? m_Current.Name : "default");
 		}
 
 		public static void SetProfileFor( PlayerData player )
@@ -705,7 +704,7 @@ namespace Assistant
 
         public static string GetInstallDirectory(string name)
         {
-            var dir = Directory.GetCurrentDirectory();
+            string dir = Directory.GetCurrentDirectory();
 
             if (name.Length > 0)
                 dir = Path.Combine(dir, name);

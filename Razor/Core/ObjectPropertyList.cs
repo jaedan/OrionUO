@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -22,13 +22,13 @@ namespace Assistant
 			}
 		}
 
-		private ArrayList m_StringNums = new ArrayList();
+		private List<int> m_StringNums = new List<int>();
 
 		private int m_Hash = 0;
-		private ArrayList m_Content = new ArrayList();
+		private List<OPLEntry> m_Content = new List<OPLEntry>();
 		
 		private int m_CustomHash = 0;
-		private ArrayList m_CustomContent = new ArrayList();
+		private List<OPLEntry> m_CustomContent = new List<OPLEntry>();
 
 		private UOEntity m_Owner = null;
 
@@ -81,7 +81,7 @@ namespace Assistant
 
 			for(int i=0;i<m_CustomContent.Count;i++)
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( m_StringNums.Contains( ent.Number ) )
 				{
 					m_StringNums.Remove( ent.Number );
@@ -164,7 +164,7 @@ namespace Assistant
 		{
 			if ( m_StringNums.Count > 0 )
 			{
-				int num = (int)m_StringNums[0];
+				int num = m_StringNums[0];
 				m_StringNums.RemoveAt( 0 );
 				return num;
 			}
@@ -205,7 +205,7 @@ namespace Assistant
 		{
 			for ( int i = 0; i < m_Content.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_Content[i];
+				OPLEntry ent = m_Content[i];
 				if ( ent == null )
 					continue;
 
@@ -231,7 +231,7 @@ namespace Assistant
 
 			for ( int i = 0; i < m_CustomContent.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( ent == null )
 					continue;
 
@@ -286,7 +286,7 @@ namespace Assistant
 
 			for ( int i = 0; i < m_CustomContent.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( ent == null )
 					continue;
 

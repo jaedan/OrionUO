@@ -158,7 +158,7 @@ const int CHARACTER_ANIMATION_DELAY_TABLE[2][2] = {
       STEP_DELAY_MOUNT_RUN }
 };
 
-const int DCLICK_DELAY = 350;
+const int DCLICK_DELAY = 340;
 
 const int SCROLL_LISTING_DELAY = 150;
 

@@ -37,7 +37,7 @@ namespace Assistant.Macros
 
 		public bool Loop
 		{
-			get { return m_Loop && ClientCommunication.AllowBit( FeatureBit.LoopingMacros ); }
+			get { return m_Loop; }// && ClientCommunication.AllowBit( FeatureBit.LoopingMacros ); }
 			set { m_Loop = value; }
 		}
 
@@ -243,9 +243,11 @@ namespace Assistant.Macros
 					}
 					else if ( line[0] == '/' && line[1] == '/' )
 					{
-						MacroAction a = new MacroComment( line.Substring( 2 ) ); 
-						a.Parent = this;
-						m_Actions.Add( a );
+                        MacroAction a = new MacroComment(line.Substring(2))
+                        {
+                            Parent = this
+                        };
+                        m_Actions.Add( a );
 						continue;
 					}
 
@@ -345,7 +347,7 @@ namespace Assistant.Macros
 
 				if ( m_Wait != null )
 				{
-					TimeSpan waitLen = DateTime.Now - m_Wait.StartTime;
+					TimeSpan waitLen = DateTime.UtcNow - m_Wait.StartTime;
 					if ( !( m_Wait is PauseAction ) && waitLen >= m_Wait.Timeout )
 					{
 						if ( Loop )
@@ -474,69 +476,68 @@ namespace Assistant.Macros
 					{
 						m_IfStatus.Pop();
 					}
-					else if ( action is ForAction )
-					{
-						ForAction fa = (ForAction)action;
-						fa.Count++;
+					else if (action is ForAction fa)
+                    {
+                        fa.Count++;
 
-						if ( fa.Count > fa.Max )
-						{
-							fa.Count = 0;
+                        if (fa.Count > fa.Max)
+                        {
+                            fa.Count = 0;
 
-							int forcount = 0;
-							m_CurrentAction++;
-							while ( m_CurrentAction < m_Actions.Count )
-							{
-								if ( m_Actions[m_CurrentAction] is ForAction )
-								{
-									forcount++;
-								}
-								else if ( m_Actions[m_CurrentAction] is EndForAction )
-								{
-									if ( forcount <= 0 )
-										break;
-									else
-										forcount--;
-								}
-								
-								m_CurrentAction++;
-							}
+                            int forcount = 0;
+                            m_CurrentAction++;
+                            while (m_CurrentAction < m_Actions.Count)
+                            {
+                                if (m_Actions[m_CurrentAction] is ForAction)
+                                {
+                                    forcount++;
+                                }
+                                else if (m_Actions[m_CurrentAction] is EndForAction)
+                                {
+                                    if (forcount <= 0)
+                                        break;
+                                    else
+                                        forcount--;
+                                }
 
-							if ( m_CurrentAction < m_Actions.Count )
-								action = (MacroAction)m_Actions[m_CurrentAction];
-						}
-					}
-					else if ( action is EndForAction && ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) )
-					{
-						int ca = m_CurrentAction - 1;
-						int forcount = 0;
+                                m_CurrentAction++;
+                            }
 
-						while ( ca >= 0 )
-						{
-							if ( m_Actions[ca] is EndForAction )
-							{
-								forcount--;
-							}
-							else if ( m_Actions[ca] is ForAction )
-							{
-								if ( forcount >= 0 )
-									break;
-								else
-									forcount++;
-							}
+                            if (m_CurrentAction < m_Actions.Count)
+                                action = (MacroAction)m_Actions[m_CurrentAction];
+                        }
+                    }
+                    else if (action is EndForAction) //&& ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) )
+                    {
+                        int ca = m_CurrentAction - 1;
+                        int forcount = 0;
 
-							ca--;
-						}
+                        while (ca >= 0)
+                        {
+                            if (m_Actions[ca] is EndForAction)
+                            {
+                                forcount--;
+                            }
+                            else if (m_Actions[ca] is ForAction)
+                            {
+                                if (forcount >= 0)
+                                    break;
+                                else
+                                    forcount++;
+                            }
 
-						if ( ca >= 0 && m_Actions[ca] is ForAction )
-							m_CurrentAction = ca - 1;
-					}
-					
-					bool isWait = action is MacroWaitAction;
+                            ca--;
+                        }
+
+                        if (ca >= 0 && m_Actions[ca] is ForAction)
+                            m_CurrentAction = ca - 1;
+                    }
+
+                    bool isWait = action is MacroWaitAction;
 					if ( !action.Perform() && isWait )
 					{
 						m_Wait = (MacroWaitAction)action;
-						m_Wait.StartTime = DateTime.Now;
+						m_Wait.StartTime = DateTime.UtcNow;
 					}
 					else if ( NextIsInstantWait() && !isWait )
 					{

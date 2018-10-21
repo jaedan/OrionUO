@@ -1079,6 +1079,46 @@ CPacketChangeStatLockStateRequest::CPacketChangeStatLockStateRequest(uchar stat,
     WriteUInt8(state);
 }
 
+CPacketBookHeaderChange::CPacketBookHeaderChange(CGumpBook *gump) : CPacket(1)
+{
+	string title = EncodeUTF8(gump->m_EntryTitle->m_Entry.Data());
+	string author = EncodeUTF8(gump->m_EntryAuthor->m_Entry.Data());
+	size_t titlelen = title.length();
+	size_t authorlen = author.length();
+	size_t size = 16 + title.length() + author.length();
+	Resize(size, true);
+
+	WriteUInt8(0xD4);
+	WriteUInt16BE((ushort)size);
+	WriteUInt32BE(gump->Serial);
+	WriteUInt16BE((ushort)0x0000);//flags
+	WriteUInt16BE((ushort)gump->PageCount);
+	WriteUInt16BE(titlelen);
+	if (titlelen)
+	{
+		const char *str = title.c_str();
+
+		IFOR(i, 0, titlelen)
+		{
+			char ch = *(str + i);
+			*Ptr++ = ch;
+		}
+		*Ptr = 0;
+	}
+	WriteUInt16BE(authorlen);
+	if (authorlen)
+	{
+		const char *str = author.c_str();
+
+		IFOR(i, 0, authorlen)
+		{
+			char ch = *(str + i);
+			*Ptr++ = ch;
+		}
+		*Ptr = 0;
+	}
+}
+
 CPacketBookPageData::CPacketBookPageData(CGumpBook *gump, int page)
     : CPacket(1)
 {

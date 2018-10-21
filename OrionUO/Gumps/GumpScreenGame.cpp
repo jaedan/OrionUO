@@ -3,7 +3,7 @@
 #include "stdafx.h"
 
 CGumpScreenGame::CGumpScreenGame()
-    : CGump(GT_NONE, 0, 0, 0)
+    : CGump(GT_NOTHING, 0, 0, 0)
 {
     WISPFUN_DEBUG("c115_f1");
     NoMove = true;

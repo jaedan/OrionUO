@@ -417,6 +417,12 @@ void CMacroManager::ProcessSubMenu()
 
                     break;
                 }
+                /*case MSC_G2_QUEST_LOG:
+                {
+                    CPacketQuestMenuRequest().Send();
+
+                    break;
+                }*/
                 case MSC_G2_PARTY_CHAT:
                 {
                     break;
@@ -523,6 +529,7 @@ void CMacroManager::ProcessSubMenu()
                 }
                 case MSC_G2_PARTY_CHAT:
                 case MSC_G2_GUILD:
+                //case MSC_G2_QUEST_LOG:
                 {
                     break;
                 }
@@ -701,7 +708,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_CAST_SPELL:
         {
-            int spell = (macro->SubCode - MSC_G6_CLUMSY);
+            int spell = (macro->SubCode - MSC_G6_CLUMSY) + 1;
 
             if (spell > 0 && spell <= 151)
             {

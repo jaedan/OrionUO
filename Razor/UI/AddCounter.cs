@@ -168,7 +168,7 @@ namespace Assistant
 			this.cancel.Size = new System.Drawing.Size(56, 20);
 			this.cancel.TabIndex = 9;
 			this.cancel.Text = "Cancel";
-			this.cancel.Click += new System.EventHandler(this.cancel_Click);
+			this.cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
 			// target
 			// 
@@ -177,7 +177,7 @@ namespace Assistant
 			this.target.Size = new System.Drawing.Size(56, 20);
 			this.target.TabIndex = 10;
 			this.target.Text = "Target ";
-			this.target.Click += new System.EventHandler(this.target_Click);
+			this.target.Click += new System.EventHandler(this.Target_Click);
 			// 
 			// delete
 			// 
@@ -187,7 +187,7 @@ namespace Assistant
 			this.delete.TabIndex = 11;
 			this.delete.Text = "Delete";
 			this.delete.Visible = false;
-			this.delete.Click += new System.EventHandler(this.delete_Click);
+			this.delete.Click += new System.EventHandler(this.Delete_Click);
 			// 
 			// dispImg
 			// 
@@ -275,12 +275,12 @@ namespace Assistant
 			DisplayImage = dispImg.Checked;
 		}
 
-		private void cancel_Click(object sender, System.EventArgs e)
+		private void Cancel_Click(object sender, System.EventArgs e)
 		{
 			Targeting.CancelOneTimeTarget();
 		}
 
-		private void target_Click(object sender, System.EventArgs e)
+		private void Target_Click(object sender, System.EventArgs e)
 		{
 			if ( World.Player != null )
 			{
@@ -316,7 +316,7 @@ namespace Assistant
 			Language.LoadControlNames( this );
 		}
 
-		private void delete_Click(object sender, System.EventArgs e)
+		private void Delete_Click(object sender, System.EventArgs e)
 		{
 			if ( MessageBox.Show( this, "Are you sure you want to delete this counter?", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
 			{

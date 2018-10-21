@@ -93,9 +93,9 @@ bool CPlayer::Walk(Direction direction, bool run)
         return false;
     }
 
-    if (m_RequestedSteps.size() >= MAX_STEPS_COUNT)
+	if (m_RequestedSteps.size() >= MAX_STEPS_COUNT)
     {
-        CPacketResend().Send();
+		//CPacketResend().Send();
         return false;
     }
 
@@ -184,7 +184,7 @@ bool CPlayer::Walk(Direction direction, bool run)
     step.z = z;
     step.dir = direction;
     step.run = run;
-    step.rej = 0;
+	step.rej = 0;
     step.seq = SequenceNumber;
 
     if (g_Player->m_MovementState == PlayerMovementState::ANIMATE_IMMEDIATELY)
@@ -241,28 +241,24 @@ void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, 
 {
     if (m_RequestedSteps.empty())
     {
-        LOG("Received Walk Confirmation, but no steps pending.\n");
+		LOG("Received Deny Walk, but no steps pending.\n");
         CPacketResend().Send();
         return;
     }
-
-    Step &step = m_RequestedSteps.front();
-
-    if (step.seq != sequence)
-    {
-        LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
-            sequence);
-        CPacketResend().Send();
-        return;
-    }
-
+	Step &step = m_RequestedSteps.front();
     m_RequestedSteps.pop_front();
-
     if (step.rej == 0)
     {
         LOG("Received new reject sequence beginning at #%u\n", step.seq);
         ResetSteps();
         ForcePosition(x, y, z, dir);
+
+		if (step.seq != sequence)
+		{
+			LOG("Received DenyWalk for Sequence Number %d but it is not the next expected confirmation.\n",
+				sequence);
+			CPacketResend().Send();
+		}
 
         g_RemoveRangeXY.X = x;
         g_RemoveRangeXY.Y = y;
@@ -285,6 +281,7 @@ void CPlayer::ConfirmWalk(uchar sequence)
     }
 
     Step &step = m_RequestedSteps.front();
+	m_RequestedSteps.pop_front();
 
     if (step.seq != sequence)
     {
@@ -293,8 +290,6 @@ void CPlayer::ConfirmWalk(uchar sequence)
         CPacketResend().Send();
         return;
     }
-
-    m_RequestedSteps.pop_front();
 
     if (!step.anim)
     {

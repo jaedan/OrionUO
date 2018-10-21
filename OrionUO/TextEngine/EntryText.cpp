@@ -45,28 +45,28 @@ void CEntryText::OnClick(
 {
     WISPFUN_DEBUG("c169_f4");
 
-    if (g_EntryPointer == this)
+    if (g_EntryPointer != this)
     {
-        int oldPos = m_Position;
+		CGump *gumpEntry = g_GumpManager.GetTextEntryOwner();
 
-        if (unicode)
-            m_Position =
-                g_FontManager.CalculateCaretPosW(font, Text.c_str(), x, y, Width, align, flags);
-        else
-            m_Position = g_FontManager.CalculateCaretPosA(font, c_str(), x, y, Width, align, flags);
+		if (gumpEntry != NULL)
+			gumpEntry->FrameCreated = false;
 
-        if (oldPos != m_Position)
-            Changed = true;
+		g_EntryPointer = this;
+		Changed = true;
     }
-    else
+	if (g_EntryPointer == this)
     {
-        CGump *gumpEntry = g_GumpManager.GetTextEntryOwner();
+		int oldPos = m_Position;
 
-        if (gumpEntry != NULL)
-            gumpEntry->FrameCreated = false;
+		if (unicode)
+			m_Position =
+			g_FontManager.CalculateCaretPosW(font, Text.c_str(), x, y, Width, align, flags);
+		else
+			m_Position = g_FontManager.CalculateCaretPosA(font, c_str(), x, y, Width, align, flags);
 
-        g_EntryPointer = this;
-        Changed = true;
+		if (oldPos != m_Position)
+			Changed = true;
     }
 
     if (gump != NULL)
@@ -166,6 +166,8 @@ int CEntryText::GetLinesCountW(uchar font, TEXT_ALIGN_TYPE align, ushort flags, 
 bool CEntryText::Insert(wchar_t ch, CGump *gump)
 {
     WISPFUN_DEBUG("c169_f8");
+	if (ch == '\r')
+		return false;
 
     if (m_Position < 0)
         m_Position = 0;

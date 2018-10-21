@@ -40,6 +40,14 @@ static int OnMessage(struct UOMSG *msg)
 	 */
 
     ULONG block = 0;
+#ifdef _DEBUG //after this time the pointers and all that matters will get deleted from memory, for debug reason I raised the timeout, for very long packet examination one could rise the time
+	const UINT timeout = 3000;
+#else
+	const UINT timeout = 500;
+#endif
+	//this is an idea, create a local c++ dictionary with an increasing number written into it and memoryze a copy of the packet, put the packet discarded or processed code here, and eventually immediately block it from orion and in the meantime let razor postprocess it, this way the threads could be asynchronous
+	/*UOMSG *newmsg = (UOMSG*)malloc(msg->totalsize);
+	memcpy(newmsg, msg, msg->totalsize);*/
 
     switch (msg->type)
     {
@@ -56,7 +64,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)&msg->u.update_position,
                 0,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_RECV:
@@ -66,7 +74,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.recv.packet,
                 (LPARAM)msg->u.recv.sz,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_SEND:
@@ -76,7 +84,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.send.packet,
                 (LPARAM)msg->u.send.sz,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_CLOSE:
@@ -90,7 +98,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.mouse_button_down.button,
                 0,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_MOUSEBUTTONUP:
@@ -100,7 +108,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.mouse_button_up.button,
                 0,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_MOUSEWHEEL:
@@ -114,7 +122,7 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.key_down.key_code,
                 0,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
         case UOMSG_KEYUP:
@@ -124,11 +132,9 @@ static int OnMessage(struct UOMSG *msg)
                 (WPARAM)msg->u.key_up.key_code,
                 0,
                 SMTO_BLOCK,
-                500,
+				timeout,
                 &block);
             return block;
-        case UOMSG_ACTIVEWINDOW:
-            return SendMessage(g_razor_hwnd, msg->type, (WPARAM)msg->u.active_window.active, 0);
     }
 
     return 0;

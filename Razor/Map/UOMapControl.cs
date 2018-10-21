@@ -27,7 +27,7 @@ namespace Assistant.MapUO
 		{
 			get 
 			{
-				if ( m_Focus == null || m_Focus.Deleted || !PacketHandlers.Party.Contains( m_Focus.Serial ) )
+				if ( m_Focus == null || m_Focus.Deleted || (!PacketHandlers.Party.Contains( m_Focus.Serial ) && !PacketHandlers.Faction.Contains(m_Focus.Serial)) )
 				{
 					/*if ( World.Player == null )
 						return new Mobile( Serial.Zero );
@@ -54,10 +54,10 @@ namespace Assistant.MapUO
 		private static Font m_RegFont = new Font( "Arial", 8 );
         public override void Refresh()
         {
-            TimeSpan now =  DateTime.Now - LastRefresh;
+            TimeSpan now =  DateTime.UtcNow - LastRefresh;
             if (now.TotalMilliseconds <= 100)
                 return;
-            LastRefresh = DateTime.Now;
+            LastRefresh = DateTime.UtcNow;
             base.Refresh();
         }
 
@@ -234,34 +234,69 @@ namespace Assistant.MapUO
 						PointF drawPointF = RotatePoint(new Point(xtrans,ytrans),drawPoint);
 						//gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
 					}*/
-					foreach ( Serial s in PacketHandlers.Party )
-					{
-						Mobile mob = World.FindMobile( s );
-						if ( mob == null )
-							continue;
+                    if (Config.GetBool("ShowPartyMap"))
+                    {
+                        foreach (Serial s in PacketHandlers.Party)
+                        {
+                            Mobile mob = World.FindMobile(s);
+                            if (mob == null)
+                                continue;
 
-						if (mob == this.FocusMobile && mob == World.Player)
-							continue;
-						
-						string name = mob.Name;
-						if ( name == null || name.Length < 1 )
-							name = "(Not Seen)";
-						if (name != null && name.Length > 8)
-							name = name.Substring(0, 8);
-						Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
-						if (drawPoint.X < 0)
-							drawPoint.X = 0;
-						if (drawPoint.X > this.Width)
-							drawPoint.X = this.Width;
-						if (drawPoint.Y < 0)
-							drawPoint.Y = 0;
-						if (drawPoint.Y > this.Height)
-							drawPoint.Y = this.Height;
+                            if (mob == this.FocusMobile && mob == World.Player)
+                                continue;
 
-						PointF drawPointF = RotatePoint(new Point(xtrans,ytrans),drawPoint);
-						gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
-						gfx.DrawString(name, m_RegFont, Brushes.White, drawPointF.X, drawPointF.Y);
-					}
+                            string name = mob.Name;
+                            if (string.IsNullOrEmpty(name))
+                                name = "(Not Seen)";
+                            if (name.Length > 10)
+                                name = name.Substring(0, 8);
+                            Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+                            if (drawPoint.X < 0)
+                                drawPoint.X = 0;
+                            if (drawPoint.X > this.Width)
+                                drawPoint.X = this.Width;
+                            if (drawPoint.Y < 0)
+                                drawPoint.Y = 0;
+                            if (drawPoint.Y > this.Height)
+                                drawPoint.Y = this.Height;
+
+                            PointF drawPointF = RotatePoint(new Point(xtrans, ytrans), drawPoint);
+                            gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
+                            gfx.DrawString(name, m_RegFont, Brushes.White, drawPointF.X, drawPointF.Y);
+                            PacketHandlers.Faction.Remove(s);
+                        }
+                    }
+                    if (Config.GetBool("ShowFactionMap"))
+                    {
+                        foreach (Serial s in PacketHandlers.Faction)
+                        {
+                            Mobile mob = World.FindMobile(s);
+                            if (mob == null)
+                                continue;
+
+                            if (mob == this.FocusMobile && mob == World.Player)
+                                continue;
+
+                            string name = mob.Name;
+                            if (string.IsNullOrEmpty(name))
+                                name = "(Not Seen)";
+                            if (name.Length > 10)
+                                name = name.Substring(0, 8);
+                            Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+                            if (drawPoint.X < 0)
+                                drawPoint.X = 0;
+                            if (drawPoint.X > this.Width)
+                                drawPoint.X = this.Width;
+                            if (drawPoint.Y < 0)
+                                drawPoint.Y = 0;
+                            if (drawPoint.Y > this.Height)
+                                drawPoint.Y = this.Height;
+
+                            PointF drawPointF = RotatePoint(new Point(xtrans, ytrans), drawPoint);
+                            gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
+                            gfx.DrawString(name, m_RegFont, Brushes.White, drawPointF.X, drawPointF.Y);
+                        }
+                    }
 
 					if (World.Player != null)
 					{
@@ -399,13 +434,11 @@ namespace Assistant.MapUO
 				return false;
 
 			int x = p.X, y = p.Y;
-			int xCenter, yCenter;
-			int xWidth, yHeight;
 
-			if (!ComputeMapDetails(map, x, y, out xCenter, out yCenter, out xWidth, out yHeight))
-				return false;
+            if (!ComputeMapDetails(map, x, y, out int xCenter, out int yCenter, out int xWidth, out int yHeight))
+                return false;
 
-			double absLong = (double)((x - xCenter) * 360) / xWidth;
+            double absLong = (double)((x - xCenter) * 360) / xWidth;
 			double absLat = (double)((y - yCenter) * 360) / yHeight;
 
 			if (absLong > 180.0)

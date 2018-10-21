@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using System.Collections;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
@@ -33,7 +32,7 @@ namespace Assistant
 			using ( StreamWriter txt = new StreamWriter( "Crash.log", true ) )
 			{
 				txt.AutoFlush = true;
-				txt.WriteLine( "Exception @ {0}", DateTime.Now.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
+				txt.WriteLine( "Exception @ {0}", Engine.MistedDateTime.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
 				txt.WriteLine( exception.ToString() );
 				txt.WriteLine( "" );
 				txt.WriteLine( "" );
@@ -58,9 +57,9 @@ namespace Assistant
 					if ( split.Length > 3 )
 						rev = Utility.ToInt32( split[3], 0 ) ;
 
-					m_ClientVersion = new Version(
-						Utility.ToInt32( split[0], 0 ),
-						Utility.ToInt32( split[1], 0 ),
+					m_ClientVersion = new Version( 
+						Utility.ToInt32( split[0], 0 ), 
+						Utility.ToInt32( split[1], 0 ), 
 						Utility.ToInt32( split[2], 0 ),
 						rev );
 
@@ -121,9 +120,9 @@ namespace Assistant
 			}
 		}
 
-		public static bool UsePostKRPackets
+		public static bool UsePostKRPackets 
 		{
-			get
+			get 
 			{
 				if ( ClientVersion.Major >= 7 )
 				{
@@ -149,7 +148,7 @@ namespace Assistant
 					}
 				}
 
-				return false;
+				return false; 
 			}
 		}
 
@@ -157,18 +156,18 @@ namespace Assistant
 		public static MainForm MainWindow{ get{ return m_MainWnd; } }
 		public static bool Running{ get{ return m_Running; } }
 		public static Form ActiveWindow{ get{ return m_ActiveWnd; } set{ m_ActiveWnd = value; } }
-
-		public static string Version
-		{
+		
+		public static string Version 
+		{ 
 			get
-			{
+			{ 
 				if ( m_Version == null )
 				{
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
 					m_Version = String.Format( "{0}.{1}.{2}", v.Major, v.Minor, v.Build );//, v.Revision
 				}
 
-				return m_Version;
+				return m_Version; 
 			}
 		}
 
@@ -176,12 +175,30 @@ namespace Assistant
 		private static Form m_ActiveWnd;
 		private static bool m_Running;
 		private static string m_Version;
+        private static int _PreviousHour = -1;
+        private static int _Differential;
+        public static int Differential//to use in all cases where you rectify normal clocks obtained with utctimer!
+        {
+            get
+            {
+                if (_PreviousHour != DateTime.UtcNow.Hour)
+                {
+                    _PreviousHour = DateTime.UtcNow.Hour;
+                    _Differential = DateTime.Now.Subtract(DateTime.UtcNow).Hours;
+                }
+                return _Differential;
+            }
+        }
+        public static DateTime MistedDateTime
+        {
+            get { return DateTime.UtcNow.AddHours(Differential); }
+        }
 
 		public static void Run(String clientPath)
 		{
 			m_Running = true;
             Thread.CurrentThread.Name = "Razor Main Thread";
-
+            
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
@@ -189,7 +206,7 @@ namespace Assistant
 
             Ultima.Files.SetMulPath(clientPath);
 
-            if ( !Language.Load( "ENU" ) )
+			if ( !Language.Load( "ENU" ) )
 			{
 				MessageBox.Show( "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.", "No Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 				return;

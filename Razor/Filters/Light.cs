@@ -20,23 +20,23 @@ namespace Assistant.Filters
 
 		public override void OnFilter( PacketReader p, PacketHandlerEventArgs args )
 		{
-			if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) )
-			{
+			/*if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) )
+			{*/
 				args.Block = true;
 				if ( World.Player != null )
 				{
 					World.Player.LocalLightLevel = 0;
 					World.Player.GlobalLightLevel = 0;
 				}
-			}
+			//}
 		}
 
 		public override void OnEnable()
 		{
 			base.OnEnable ();
 
-			if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) && World.Player != null )
-			{
+			if ( World.Player != null ) //ClientCommunication.AllowBit( FeatureBit.LightFilter ) && 
+            {
 				World.Player.LocalLightLevel = 0;
 				World.Player.GlobalLightLevel = 0;
 

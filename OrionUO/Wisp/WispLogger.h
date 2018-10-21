@@ -4,7 +4,11 @@
 
 namespace WISP_LOGGER
 {
+#ifdef _DEBUG
 #define CWISPLOGGER 1
+#else
+#define CWISPLOGGER 0
+#endif
 
 #if CWISPLOGGER != 0
 #define INITLOGGER(path) WISP_LOGGER::g_WispLogger.Init(path);

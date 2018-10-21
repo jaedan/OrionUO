@@ -6,9 +6,13 @@
 class CPacketManager;
 typedef void (CPacketManager::*PACKET_FUNCTION)();
 
+#ifdef _DEBUG
 #define ORION_SAVE_ALL_PACKETS 1
-
 #define ORION_SAVE_PACKET 1
+#else
+#define ORION_SAVE_ALL_PACKETS 0
+#define ORION_SAVE_PACKET 0
+#endif
 
 #if ORION_SAVE_ALL_PACKETS == 1
 #define ORION_IGNORE_PACKET 1
@@ -53,6 +57,7 @@ struct HTMLGumpDataInfo
     int HaveScrollbar;
     int Color;
     bool IsXMF;
+	wstring Args;
 };
 
 #define HANDLER_PACKET(name) void Handle##name()
@@ -79,7 +84,7 @@ private:
     CRITICAL_SECTION m_CSPluginNetwork;
 
 protected:
-    virtual void OnPacket();
+	virtual void OnPacket();
 
     virtual void OnReadFailed();
 
@@ -178,6 +183,8 @@ protected:
     HANDLER_PACKET(MovePlayer);
     HANDLER_PACKET(Pathfinding);
     HANDLER_PACKET(BoatMoving);
+	HANDLER_PACKET(OnUltimaLiveCommand);
+	HANDLER_PACKET(OnReceiveSendPacket);
 
 public:
     CPacketManager();

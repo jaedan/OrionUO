@@ -69,22 +69,48 @@ namespace Assistant.MapUO
 			cm.MenuItems.Clear();
 			if (World.Player != null && PacketHandlers.Party.Count > 0)
 			{
-				MapMenuItem mi  = new MapMenuItem("You", new EventHandler(FocusChange));
-				mi.Tag = World.Player.Serial;
-				cm.MenuItems.Add(mi);
-				foreach (Serial s in PacketHandlers.Party)
-				{
-					Mobile m = World.FindMobile(s);
-					if (m.Name != null)
+                MapMenuItem mi = new MapMenuItem("You", new EventHandler(FocusChange))
+                {
+                    Tag = World.Player.Serial
+                };
+                cm.MenuItems.Add(mi);
+                bool psend = Config.GetBool("ShowPartyMap"), fsend = Config.GetBool("ShowFactionMap");
+                if (psend && PacketHandlers.Party.Count > 0)
+                {
+					foreach (Serial s in PacketHandlers.Party)
 					{
-						mi = new MapMenuItem(m.Name, new EventHandler(FocusChange));
-						mi.Tag = s;
-						if ( this.Map.FocusMobile == m )
-							mi.Checked = true;
-						cm.MenuItems.Add(mi);
+						Mobile m = World.FindMobile(s);
+                        if (!string.IsNullOrEmpty(m.Name))
+						{
+                            mi = new MapMenuItem(m.Name, new EventHandler(FocusChange))
+                            {
+                                Tag = s
+                            };
+                            if ( this.Map.FocusMobile == m )
+								mi.Checked = true;
+							cm.MenuItems.Add(mi);
 
+						}
+                        PacketHandlers.Faction.Remove(s);//per evitare un duplicato sul minimap lo rimuoviamo dal faction se presente, il party ha precedenza...
 					}
 				}
+                if (fsend && PacketHandlers.Faction.Count > 0)
+                {
+                    foreach (Serial s in PacketHandlers.Faction)
+                    {
+                        Mobile m = World.FindMobile(s);
+                        if (m!=null && !string.IsNullOrEmpty(m.Name))
+                        {
+                            mi = new MapMenuItem(m.Name, new EventHandler(FocusChange))
+                            {
+                                Tag = s
+                            };
+                            if (this.Map.FocusMobile == m)
+                                mi.Checked = true;
+                            cm.MenuItems.Add(mi);
+                        }
+                    }
+                }
 			}
 			this.ContextMenu = cm;
 		}
@@ -94,20 +120,37 @@ namespace Assistant.MapUO
 		{
 			if (sender != null)
 			{
-				MapMenuItem mItem = sender as MapMenuItem;
-
-				if ( mItem != null )
-				{
-					Serial s = (Serial)mItem.Tag;
-					Mobile m = World.FindMobile(s);
-					this.Map.FocusMobile = m;
+                if (sender is MapMenuItem mItem)
+                {
+                    Serial s = (Serial)mItem.Tag;
+                    Mobile m = World.FindMobile(s);
+                    this.Map.FocusMobile = m;
                     this.Map.FullUpdate();
-				}
-			}
+                }
+            }
 		}
+
+        public void FocusCleanUp(bool faction)
+        {
+            if(this.Map.FocusMobile!=null && World.Player!=null && World.Player!=this.Map.FocusMobile)
+            {
+                if (faction)
+                {
+                    if (PacketHandlers.Faction.Contains(this.Map.FocusMobile.Serial))
+                        this.Map.FocusMobile = World.Player;
+                }
+                else if (PacketHandlers.Party.Contains(this.Map.FocusMobile.Serial))
+                {
+                    this.Map.FocusMobile = World.Player;
+                }
+            }
+            this.Map.FullUpdate();
+        }
+
 		public static void Initialize()
 		{
 			new ReqPartyLocTimer().Start();
+            new ReqFactionTimer().Start();
 
 			HotKey.Add( HKCategory.Misc, LocString.ToggleMap, new HotKeyCallback( ToggleMap ) );
 		}
@@ -189,7 +232,7 @@ namespace Assistant.MapUO
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "MapWindow";
-			this.ShowInTaskbar = true;
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "UO Positioning System";
 			this.TopMost = true;
@@ -205,7 +248,7 @@ namespace Assistant.MapUO
 
 		public void CheckLocalUpdate( Mobile mob )
 		{
-			if ( mob.InParty )
+            if ( mob.InParty || mob.InFaction )
                 this.Map.FullUpdate();
 		}
 
@@ -259,61 +302,101 @@ namespace Assistant.MapUO
 		}
 
 		}*/
+        private class ReqFactionTimer : Timer
+        {
+            public ReqFactionTimer() : base(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5))
+            {
+            }
 
+            protected override void OnTick()
+            {
+                if (Engine.MainWindow == null || Engine.MainWindow.MapWindow == null || !Engine.MainWindow.MapWindow.Visible)
+                    return; // don't bother when the map window isnt visible
+                PlayerData pd = World.Player;
+                if (pd != null && Config.GetBool("ShowFactionMap"))
+                {
+                    if (PacketHandlers.SpecialFactionSent > PacketHandlers.SpecialFactionReceived)
+                    {
+                        // If we sent more than we received then the server stopped responding
+                        // in that case, wait a long while before trying again
+                        PacketHandlers.SpecialFactionSent = PacketHandlers.SpecialFactionReceived = 0;
+                        this.Interval = TimeSpan.FromSeconds(3.0);
+                    }
+                    else
+                    {
+                        bool locations = false;
+                        int count = PacketHandlers.Faction.Count;
+                        for(int i=count - 1; i>=0; --i)
+                        {
+                            Mobile m = World.FindMobile(PacketHandlers.Faction[i]);
+                            if (m == null || Utility.Distance(pd.Position, m.Position) > pd.VisRange || !m.Visible)
+                            { 
+                                locations = true;
+                                break;
+                            }
+                        }
+                        this.Interval = TimeSpan.FromSeconds(0.5);
+                        PacketHandlers.SpecialFactionSent++;
+                        ClientCommunication.SendToServer(new QueryGuildLocs(locations));
+                    }
+                }
+                else
+                {
+                    this.Interval = TimeSpan.FromSeconds(1.0);
+                }
+            }
+        }
 		private class ReqPartyLocTimer : Timer
 		{
-			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.0 ) )
+			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 0.25 ), TimeSpan.FromSeconds( 0.5 ) )
 			{
 			}
 
 			protected override void OnTick()
 			{
 				// never send this packet to encrypted servers (could lead to OSI detecting razor)
-				if ( ClientCommunication.ServerEncrypted )
+				/*if ( ClientCommunication.ServerEncrypted )
 				{
 					Stop();
 					return;
-				}
+				}*/
 
 				if ( Engine.MainWindow == null || Engine.MainWindow.MapWindow == null || !Engine.MainWindow.MapWindow.Visible )
 					return; // don't bother when the map window isnt visible
-
-				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
+				if ( World.Player != null && Config.GetBool("ShowPartyMap") && PacketHandlers.Party.Count > 0)
 				{
 					if ( PacketHandlers.SpecialPartySent > PacketHandlers.SpecialPartyReceived )
 					{
 						// If we sent more than we received then the server stopped responding
 						// in that case, wait a long while before trying again
 						PacketHandlers.SpecialPartySent = PacketHandlers.SpecialPartyReceived = 0;
-						this.Interval = TimeSpan.FromSeconds( 5.0 );
-						return;
+                        this.Interval = TimeSpan.FromSeconds(3.0);
 					}
 					else
 					{
-						this.Interval = TimeSpan.FromSeconds( 1.0 );
-					}
-
-					bool send = false;
-					foreach ( Serial s in PacketHandlers.Party )
-					{
-						Mobile m = World.FindMobile( s );
-
-						if ( m == World.Player )
-							continue;
-
-						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange || !m.Visible )
+                        this.Interval = TimeSpan.FromSeconds(0.5);
+						bool send = false;
+						foreach ( Serial s in PacketHandlers.Party )
 						{
-							send = true;
-							break;
+							Mobile m = World.FindMobile( s );
+
+							if ( m == World.Player )
+								continue;
+
+							if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange || !m.Visible )
+							{
+								send = true;
+								break;
+							}
+						}
+
+						if ( send )
+						{
+							PacketHandlers.SpecialPartySent++;
+							ClientCommunication.SendToServer( new QueryPartyLocs() );
 						}
 					}
-
-					if ( send )
-					{
-						PacketHandlers.SpecialPartySent++;
-						ClientCommunication.SendToServer( new QueryPartyLocs() );
-					}
-				}
+                }
 				else
 				{
 					this.Interval = TimeSpan.FromSeconds( 1.0 );
@@ -413,8 +496,8 @@ namespace Assistant.MapUO
 
 		private void MapWindow_Deactivate(object sender, System.EventArgs e)
 		{
-			if ( this.TopMost )
-				this.TopMost = false;
+			if (!Engine.MainWindow.MapWindow.Visible)//this.TopMost )
+                this.TopMost = false;
 		}
 	}
 }

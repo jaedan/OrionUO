@@ -51,7 +51,7 @@ namespace Assistant
 				sw.WriteLine();
 				sw.WriteLine();
 				sw.WriteLine();
-				sw.WriteLine( ">>>>>>>>>> Logging started {0} <<<<<<<<<<", DateTime.Now );
+				sw.WriteLine( ">>>>>>>>>> Logging started {0} <<<<<<<<<<", Engine.MistedDateTime );
 				sw.WriteLine();
 				sw.WriteLine();
 			}
@@ -220,7 +220,7 @@ namespace Assistant
 							break;
 					}
 
-					sw.WriteLine( "{0}: {1}{2}0x{3:X2} (Length: {4})", DateTime.Now.ToString( "HH:mm:ss.ffff" ), pathStr, blocked ? " [BLOCKED] " : " ", buff[0], len );
+					sw.WriteLine( "{0}: {1}{2}0x{3:X2} (Length: {4})", Engine.MistedDateTime.ToString( "HH:mm:ss.ffff" ), pathStr, blocked ? " [BLOCKED] " : " ", buff[0], len );
 					//if ( buff[0] != 0x80 && buff[0] != 0x91 )
 						Utility.FormatBuffer( sw, buff, len );
 					//else
@@ -1015,12 +1015,29 @@ namespace Assistant
 
 		public string ReadUnicodeStringLE()
 		{
-			return ReadUnicodeString();
+			StringBuilder sb = new StringBuilder();
+
+			int c;
+            
+			while ( Position+1 < Length && (c = ReadByte() | (ReadByte()<<8)) != 0 )
+				sb.Append( (char)c );
+
+			return sb.ToString();
 		}
 
 		public string ReadUnicodeStringLESafe()
 		{
-			return ReadUnicodeStringSafe();
+			StringBuilder sb = new StringBuilder();
+
+			int c;
+
+			while ( Position+1 < Length && (c = ReadByte() | (ReadByte()<<8)) != 0 )
+			{
+				if ( IsSafeChar( c ) )
+					sb.Append( (char)c );
+			}
+
+			return sb.ToString();
 		}
 
 		public string ReadUnicodeStringSafe()

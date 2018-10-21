@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -335,7 +336,7 @@ namespace Assistant
             {
                 if (m_CriminalStart != DateTime.MinValue)
                 {
-                    int sec = (int)(DateTime.Now - m_CriminalStart).TotalSeconds;
+					int sec = (int)(DateTime.UtcNow - m_CriminalStart).TotalSeconds;
                     if (sec > 300)
                     {
                         if (m_CriminalTime != null)
@@ -386,10 +387,10 @@ namespace Assistant
 
         public override void OnPositionChanging(Point3D newPos)
         {
-            ArrayList list = new ArrayList(World.Mobiles.Values);
-            for (int i = 0; i < list.Count; i++)
+            List<Mobile> mlist = new List<Mobile>( World.Mobiles.Values );
+			for (int i=0;i<mlist.Count;i++)
             {
-                Mobile m = (Mobile)list[i];
+				Mobile m = mlist[i];
                 if (m != this)
                 {
                     if (!Utility.InRange(m.Position, newPos, VisRange))
@@ -398,12 +399,12 @@ namespace Assistant
                         Targeting.CheckLastTargetRange(m);
                 }
             }
-
-            list = new ArrayList(World.Items.Values);
+            mlist = null;
+            List<Item> ilist = new List<Item>( World.Items.Values );
             ScavengerAgent s = ScavengerAgent.Instance;
-            for (int i = 0; i < list.Count; i++)
+			for (int i=0;i<ilist.Count;i++)
             {
-                Item item = (Item)list[i];
+				Item item = ilist[i];
                 if (item.Deleted || item.Container != null)
                     continue;
 
@@ -413,25 +414,25 @@ namespace Assistant
                 else if (!IsGhost && Visible && dist <= 2 && s.Enabled && item.Movable)
                     s.Scavenge(item);
             }
-
+            ilist = null;
             base.OnPositionChanging(newPos);
         }
 
         public override void OnMapChange(byte old, byte cur)
         {
-            ArrayList list = new ArrayList(World.Mobiles.Values);
+            List<Mobile> list = new List<Mobile>( World.Mobiles.Values );
             for (int i = 0; i < list.Count; i++)
             {
-                Mobile m = (Mobile)list[i];
+				Mobile m = list[i];
                 if (m != this && m.Map != cur)
                     m.Remove();
             }
-
+            list = null;
             World.Items.Clear();
             Counter.Reset();
             for (int i = 0; i < Contains.Count; i++)
             {
-                Item item = (Item)Contains[i];
+				Item item = Contains[i];
                 World.AddItem(item);
                 item.Contains.Clear();
             }
@@ -465,9 +466,9 @@ namespace Assistant
 
         public void ResetCriminalTimer()
         {
-            if (m_CriminalStart == DateTime.MinValue || DateTime.Now - m_CriminalStart >= TimeSpan.FromSeconds(1))
+			if ( m_CriminalStart == DateTime.MinValue || DateTime.UtcNow - m_CriminalStart >= TimeSpan.FromSeconds( 1 ) )
             {
-                m_CriminalStart = DateTime.Now;
+				m_CriminalStart = DateTime.UtcNow;
                 if (m_CriminalTime == null)
                     m_CriminalTime = new CriminalTimer(this);
                 m_CriminalTime.Start();
@@ -513,6 +514,11 @@ namespace Assistant
         {
             SendMessage(lvl, String.Format(format, args));
         }
+
+		internal void SendMessage( string format, params object[] args )
+		{
+			SendMessage( MsgLevel.Info, String.Format( format, args ) );
+		}
 
         internal void SendMessage(string text)
         {
@@ -589,7 +595,7 @@ namespace Assistant
             if (s != Serial.Zero)
             {
                 Item free = null, pack = World.Player.Backpack;
-                if (s.IsItem && pack != null && Config.GetBool("PotionEquip") && ClientCommunication.AllowBit(FeatureBit.AutoPotionEquip))
+                if (s.IsItem && pack != null && Config.GetBool("PotionEquip") )// && ClientCommunication.AllowBit(FeatureBit.AutoPotionEquip))
                 {
                     Item i = World.FindItem(s);
                     if (i != null && i.IsPotion && i.ItemID != 3853) // dont unequip for exploison potions

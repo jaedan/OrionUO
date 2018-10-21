@@ -14,6 +14,11 @@ CPacketManager g_PacketManager;
         save, name, size, DIR_SEND, 0                                                              \
     }
 
+#define SMSGH(save, name, size, smethod)                                                           \
+    {                                                                                              \
+        save, name, size, DIR_SEND, &CPacketManager::Handle##smethod                               \
+    }
+
 #define RMSG(save, name, size)                                                                     \
     {                                                                                              \
         save, name, size, DIR_RECV, 0                                                              \
@@ -37,7 +42,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0x0 */ SMSG(ORION_SAVE_PACKET, "Create Character", 0x68),
     /* 0x1 */ SMSG(ORION_SAVE_PACKET, "Disconnect", 0x05),
     /* 0x2 */ SMSG(ORION_IGNORE_PACKET, "Walk Request", 0x07),
-    /* 0x3 */ BMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
+    /* 0x3 */ SMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
     /* 0x4 */ BMSG(ORION_SAVE_PACKET, "Request God mode (God client)", 0x02),
     /* 0x5 */ SMSG(ORION_IGNORE_PACKET, "Attack", 0x05),
     /* 0x6 */ SMSG(ORION_IGNORE_PACKET, "Double Click", 0x05),
@@ -51,24 +56,13 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xE */ BMSG(ORION_SAVE_PACKET, "Edit template data (God client)", 0x01),
     /* 0xF */ UMSG(ORION_SAVE_PACKET, 0x3d),
     /* 0x10 */ BMSG(ORION_SAVE_PACKET, "Edit hue data (God client)", 0xd7),
-    /* 0x11 */
-    RMSGH(ORION_IGNORE_PACKET, "Character Status", PACKET_VARIABLE_SIZE, CharacterStatus),
+    /* 0x11 */ RMSGH(ORION_IGNORE_PACKET, "Character Status", PACKET_VARIABLE_SIZE, CharacterStatus),
     /* 0x12 */ SMSG(ORION_IGNORE_PACKET, "Perform Action", PACKET_VARIABLE_SIZE),
     /* 0x13 */ SMSG(ORION_IGNORE_PACKET, "Client Equip Item", 0x0a),
     /* 0x14 */ BMSG(ORION_SAVE_PACKET, "Change tile Z (God client)", 0x06),
     /* 0x15 */ BMSG(ORION_SAVE_PACKET, "Follow", 0x09),
-    /* 0x16 */
-    RMSGH(
-        ORION_SAVE_PACKET,
-        "Health status bar update (0x16)",
-        PACKET_VARIABLE_SIZE,
-        NewHealthbarUpdate),
-    /* 0x17 */
-    RMSGH(
-        ORION_IGNORE_PACKET,
-        "Health status bar update (KR)",
-        PACKET_VARIABLE_SIZE,
-        NewHealthbarUpdate),
+    /* 0x16 */ RMSGH(ORION_SAVE_PACKET, "Health status bar update (0x16)", PACKET_VARIABLE_SIZE, NewHealthbarUpdate),
+    /* 0x17 */ RMSGH(ORION_IGNORE_PACKET, "Health status bar update (KR)", PACKET_VARIABLE_SIZE, NewHealthbarUpdate),
     /* 0x18 */ BMSG(ORION_SAVE_PACKET, "Add script (God client)", PACKET_VARIABLE_SIZE),
     /* 0x19 */ BMSG(ORION_SAVE_PACKET, "Edit NPC speech (God client)", PACKET_VARIABLE_SIZE),
     /* 0x1A */ RMSGH(ORION_SAVE_PACKET, "Update Item", PACKET_VARIABLE_SIZE, UpdateItem),
@@ -105,11 +99,10 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0x39 */ BMSG(ORION_SAVE_PACKET, "Remove group (God client)", 0x09),
     /* 0x3A */ BMSGH(ORION_IGNORE_PACKET, "Update Skills", PACKET_VARIABLE_SIZE, UpdateSkills),
     /* 0x3B */ BMSGH(ORION_IGNORE_PACKET, "Vendor Buy Reply", PACKET_VARIABLE_SIZE, BuyReply),
-    /* 0x3C */
-    RMSGH(ORION_SAVE_PACKET, "Update Contained Items", PACKET_VARIABLE_SIZE, UpdateContainedItems),
+    /* 0x3C */ RMSGH(ORION_SAVE_PACKET, "Update Contained Items", PACKET_VARIABLE_SIZE, UpdateContainedItems),
     /* 0x3D */ BMSG(ORION_SAVE_PACKET, "Ship (God client)", 0x02),
     /* 0x3E */ BMSG(ORION_SAVE_PACKET, "Versions (God client)", 0x25),
-    /* 0x3F */ BMSG(ORION_SAVE_PACKET, "Update Statics (God Client)", PACKET_VARIABLE_SIZE),
+	/* 0x3F */ BMSGH(ORION_IGNORE_PACKET, "UltimaLive Commands", PACKET_VARIABLE_SIZE, OnUltimaLiveCommand),
     /* 0x40 */ BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", 0xc9),
     /* 0x41 */ BMSG(ORION_SAVE_PACKET, "Update terrains (God client)", PACKET_VARIABLE_SIZE),
     /* 0x42 */ BMSG(ORION_SAVE_PACKET, "Update art (God client)", PACKET_VARIABLE_SIZE),
@@ -159,8 +152,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0x6E */ RMSGH(ORION_IGNORE_PACKET, "Character Animation", 0x0e, CharacterAnimation),
     /* 0x6F */ BMSGH(ORION_IGNORE_PACKET, "Secure Trading", PACKET_VARIABLE_SIZE, SecureTrading),
     /* 0x70 */ RMSGH(ORION_IGNORE_PACKET, "Graphic Effect", 0x1c, GraphicEffect),
-    /* 0x71 */
-    BMSGH(ORION_IGNORE_PACKET, "Bulletin Board Data", PACKET_VARIABLE_SIZE, BulletinBoardData),
+    /* 0x71 */ BMSGH(ORION_IGNORE_PACKET, "Bulletin Board Data", PACKET_VARIABLE_SIZE, BulletinBoardData),
     /* 0x72 */ BMSGH(ORION_IGNORE_PACKET, "War Mode", 0x05, Warmode),
     /* 0x73 */ BMSGH(ORION_IGNORE_PACKET, "Ping", 0x02, Ping),
     /* 0x74 */ RMSGH(ORION_IGNORE_PACKET, "Vendor Buy List", PACKET_VARIABLE_SIZE, BuyList),
@@ -180,10 +172,8 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0x82 */ RMSGH(ORION_IGNORE_PACKET, "Login Error", 0x02, LoginError),
     /* 0x83 */ SMSG(ORION_IGNORE_PACKET, "Delete Character", 0x27),
     /* 0x84 */ BMSG(ORION_SAVE_PACKET, "Change password", 0x45),
-    /* 0x85 */
-    RMSGH(ORION_IGNORE_PACKET, "Character List Notification", 0x02, CharacterListNotification),
-    /* 0x86 */
-    RMSGH(ORION_IGNORE_PACKET, "Resend Character List", PACKET_VARIABLE_SIZE, ResendCharacterList),
+    /* 0x85 */ RMSGH(ORION_IGNORE_PACKET, "Character List Notification", 0x02, CharacterListNotification),
+    /* 0x86 */ RMSGH(ORION_IGNORE_PACKET, "Resend Character List", PACKET_VARIABLE_SIZE, ResendCharacterList),
     /* 0x87 */ BMSG(ORION_SAVE_PACKET, "Send resources (God client)", PACKET_VARIABLE_SIZE),
     /* 0x88 */ RMSGH(ORION_IGNORE_PACKET, "Open Paperdoll", 0x42, OpenPaperdoll),
     /* 0x89 */ RMSGH(ORION_SAVE_PACKET, "Corpse Equipment", PACKET_VARIABLE_SIZE, CorpseEquipment),
@@ -222,7 +212,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xAA */ RMSGH(ORION_IGNORE_PACKET, "Attack Reply", 0x05, AttackCharacter),
     /* 0xAB */ RMSGH(ORION_SAVE_PACKET, "Text Entry Dialog", PACKET_VARIABLE_SIZE, TextEntryDialog),
     /* 0xAC */ SMSG(ORION_SAVE_PACKET, "Text Entry Dialog Reply", PACKET_VARIABLE_SIZE),
-    /* 0xAD */ SMSG(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE),
+    /* 0xAD */ SMSGH(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE, OnReceiveSendPacket),
     /* 0xAE */ RMSGH(ORION_IGNORE_PACKET, "Unicode Server Talk", PACKET_VARIABLE_SIZE, UnicodeTalk),
     /* 0xAF */ RMSGH(ORION_SAVE_PACKET, "Display Death", 0x0d, DisplayDeath),
     /* 0xB0 */ RMSGH(ORION_IGNORE_PACKET, "Open Gump", PACKET_VARIABLE_SIZE, OpenGump),
@@ -233,10 +223,8 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xB5 */ BMSGH(ORION_SAVE_PACKET, "Open Chat Window", 0x40, OpenChat),
     /* 0xB6 */ SMSG(ORION_SAVE_PACKET, "Popup Help Request", 0x09),
     /* 0xB7 */ RMSG(ORION_SAVE_PACKET, "Popup Help Data", PACKET_VARIABLE_SIZE),
-    /* 0xB8 */
-    BMSGH(ORION_IGNORE_PACKET, "Character Profile", PACKET_VARIABLE_SIZE, CharacterProfile),
-    /* 0xB9 */
-    RMSGH(ORION_SAVE_PACKET, "Enable locked client features", 0x05, EnableLockedFeatures),
+    /* 0xB8 */ BMSGH(ORION_IGNORE_PACKET, "Character Profile", PACKET_VARIABLE_SIZE, CharacterProfile),
+    /* 0xB9 */ RMSGH(ORION_SAVE_PACKET, "Enable locked client features", 0x05, EnableLockedFeatures),
     /* 0xBA */ RMSGH(ORION_IGNORE_PACKET, "Display Quest Arrow", 0x0A, DisplayQuestArrow),
     /* 0xBB */ SMSG(ORION_SAVE_PACKET, "Account ID ?", 0x09),
     /* 0xBC */ RMSGH(ORION_IGNORE_PACKET, "Season", 0x03, Season),
@@ -244,8 +232,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xBE */ BMSGH(ORION_SAVE_PACKET, "Assist Version", PACKET_VARIABLE_SIZE, AssistVersion),
     /* 0xBF */ BMSGH(ORION_SAVE_PACKET, "Extended Command", PACKET_VARIABLE_SIZE, ExtendedCommand),
     /* 0xC0 */ RMSGH(ORION_IGNORE_PACKET, "Graphical Effect", 0x24, GraphicEffect),
-    /* 0xC1 */
-    RMSGH(ORION_IGNORE_PACKET, "Display cliloc String", PACKET_VARIABLE_SIZE, DisplayClilocString),
+    /* 0xC1 */ RMSGH(ORION_IGNORE_PACKET, "Display cliloc String", PACKET_VARIABLE_SIZE, DisplayClilocString),
     /* 0xC2 */ BMSGH(ORION_SAVE_PACKET, "Unicode prompt", PACKET_VARIABLE_SIZE, UnicodePrompt),
     /* 0xC3 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xC4 */ UMSG(ORION_SAVE_PACKET, 0x06),
@@ -256,12 +243,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xC9 */ BMSG(ORION_SAVE_PACKET, "Trip time", 0x06),
     /* 0xCA */ BMSG(ORION_SAVE_PACKET, "UTrip time", 0x06),
     /* 0xCB */ UMSG(ORION_SAVE_PACKET, 0x07),
-    /* 0xCC */
-    RMSGH(
-        ORION_IGNORE_PACKET,
-        "Localized Text Plus String",
-        PACKET_VARIABLE_SIZE,
-        DisplayClilocString),
+    /* 0xCC */ RMSGH(ORION_IGNORE_PACKET, "Localized Text Plus String", PACKET_VARIABLE_SIZE, DisplayClilocString),
     /* 0xCD */ UMSG(ORION_SAVE_PACKET, 0x01),
     /* 0xCE */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xCF */ UMSG(ORION_SAVE_PACKET, 0x4e),
@@ -278,8 +260,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xDA */ BMSG(ORION_SAVE_PACKET, "Mahjong game command", PACKET_VARIABLE_SIZE),
     /* 0xDB */ RMSG(ORION_SAVE_PACKET, "Character transfer log", PACKET_VARIABLE_SIZE),
     /* 0xDC */ RMSGH(ORION_IGNORE_PACKET, "OPL Info Packet", 9, OPLInfo),
-    /* 0xDD */
-    RMSGH(ORION_IGNORE_PACKET, "Compressed Gump", PACKET_VARIABLE_SIZE, OpenCompressedGump),
+    /* 0xDD */ RMSGH(ORION_IGNORE_PACKET, "Compressed Gump", PACKET_VARIABLE_SIZE, OpenCompressedGump),
     /* 0xDE */ RMSG(ORION_SAVE_PACKET, "Update characters combatants", PACKET_VARIABLE_SIZE),
     /* 0xDF */ RMSGH(ORION_SAVE_PACKET, "Buff/Debuff", PACKET_VARIABLE_SIZE, BuffDebuff),
     /* 0xE0 */ SMSG(ORION_SAVE_PACKET, "Bug Report KR", PACKET_VARIABLE_SIZE),
@@ -296,12 +277,11 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xEB */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xEC */ SMSG(ORION_SAVE_PACKET, "Equip Macro", PACKET_VARIABLE_SIZE),
     /* 0xED */ SMSG(ORION_SAVE_PACKET, "Unequip item macro", PACKET_VARIABLE_SIZE),
-    /* 0xEE */ UMSG(ORION_SAVE_PACKET, 0x2000),
-    /* 0xEF */ SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x2000),
-    /* 0xF0 */
-    BMSGH(ORION_SAVE_PACKET, "Krrios client special", PACKET_VARIABLE_SIZE, KrriosClientSpecial),
-    /* 0xF1 */ SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", 0x09),
-    /* 0xF2 */ RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", 0x19),
+    /* 0xEE */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xEF */ SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x15),
+    /* 0xF0 */ BMSGH(ORION_SAVE_PACKET, "Krrios client special", PACKET_VARIABLE_SIZE, KrriosClientSpecial),
+    /* 0xF1 */ SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", PACKET_VARIABLE_SIZE),
+    /* 0xF2 */ RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", PACKET_VARIABLE_SIZE),
     /* 0xF3 */ RMSGH(ORION_SAVE_PACKET, "Update Item (SA)", 0x1A, UpdateItemSA),
     /* 0xF4 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xF5 */ RMSGH(ORION_IGNORE_PACKET, "Display New Map", 0x15, DisplayMap),
@@ -1998,7 +1978,7 @@ PACKET_HANDLER(OpenContainer)
         if (obj != NULL)
         {
             obj->Opened = true;
-            if (!obj->IsCorpse())
+            if (!obj->IsCorpse())// && gumpid != 0xFFFF) //this is only for sphere
                 g_World->ClearContainer(obj);
         }
     }
@@ -2760,6 +2740,11 @@ PACKET_HANDLER(ClientTalk)
     }
 
     g_AbyssPacket03First = false;
+}
+
+PACKET_HANDLER(OnReceiveSendPacket)
+{
+	OnPacket();
 }
 
 PACKET_HANDLER(MultiPlacement)
@@ -3848,7 +3833,11 @@ void CPacketManager::AddHTMLGumps(CGump *gump, vector<HTMLGumpDataInfo> &list)
 
         if (data.IsXMF)
         {
-            htmlText->Text = g_ClilocManager.Cliloc(g_Language)->GetW(data.TextID);
+			if (!data.Args.empty())
+				htmlText->Text = g_ClilocManager.ParseArgumentsToClilocString(data.TextID, false, data.Args);
+			else
+				htmlText->Text = g_ClilocManager.Cliloc(g_Language)->GetW(data.TextID);
+				
             htmlText->CreateTexture(!data.HaveBackground);
             htmlGump->CalculateDataSize();
         }
@@ -3901,7 +3890,7 @@ PACKET_HANDLER(OpenGump)
 
     for (const string &str : commandList)
     {
-        STRING_LIST list = cmdParser.GetTokens(str.c_str());
+        STRING_LIST list = cmdParser.GetTokens(str.c_str(), false);
 
         int listSize = (int)list.size();
 
@@ -4298,10 +4287,16 @@ PACKET_HANDLER(OpenGump)
                     htmlInfo.Color = 0x00FFFFFF;
 
                 htmlInfo.TextID = ToInt(list[8]);
-
-                if (listSize >= 10)
-                {
-                }
+				listSize--;
+				if (list[9].size() > 1 && list[listSize].size() > 1)
+				{
+					for (int i = 9; i <= listSize; i++)
+					{
+						htmlInfo.Args.append(list[i].begin() + ((i == 9) ? 1 : 0), list[i].end() - ((i == listSize) ? 1 : 0));
+						if (i < listSize)
+							htmlInfo.Args.append(L" ");
+					}
+				}
 
                 htmlGumlList.push_back(htmlInfo);
             }
@@ -4756,7 +4751,8 @@ PACKET_HANDLER(OpenBook)
     Move(1);
     WORD pageCount = ReadUInt16BE();
 
-    CGumpBook *gump = new CGumpBook(serial, 0, 0, pageCount, flags != 0, 1);
+    CGumpBook *gump = new CGumpBook(
+        serial, 0, 0, pageCount, flags != 0, 1);
 
     gump->m_EntryTitle->m_Entry.SetText(ReadString(60));
     gump->m_EntryAuthor->m_Entry.SetText(ReadString(30));
@@ -5467,3 +5463,90 @@ PACKET_HANDLER(BoatMoving)
         g_World->MoveObject(boatObjectSerial, boatObjectX, boatObjectY, boatObjectZ);
     }
 }
+//----------------------------------------------------------------------------------
+PACKET_HANDLER(OnUltimaLiveCommand)
+{
+	WISPFUN_DEBUG("c150_f903");
+	Move(10);
+	//live map streaming, this is work in progress
+	uchar command = ReadUInt8();//commands
+	if (command == 0xFF)//hash query - crc check
+	{
+		Move(-11);//we return to the block number contained in packet...
+		uint32_t blocknum = ReadUInt32BE();//byte 003 to 006 - central block number for the query (block that player is standing in)
+		Move(7);//sequence number is not used at the moment...also the command type can be skipped...
+		uint8_t mapNumber = ReadUInt8();//byte 14 - map file index number
+		if (g_MapManager.GetActualMap() == mapNumber)
+		{
+			CMapBlock *block = g_MapManager.GetBlock(blocknum);
+			/*if (block != NULL)
+			{
+				unsigned char* pData = new uint8_t[192];
+				block->Block
+				uint16_t crc = 0;
+				uint8_t* pBlockData = readLandBlock(mapNumber, blockNumber);
+				uint32_t staticsLength = 0;
+
+				uint8_t* pStaticsData = m_pFileManager->readStaticsBlock(mapNumber, blockNumber, staticsLength);
+
+				if (pBlockData != NULL)
+				{
+					crc = fletcher16(pBlockData, pStaticsData, staticsLength);
+					delete pBlockData;
+				}
+
+				if (pStaticsData != NULL)
+				{
+					delete pStaticsData;
+				}
+			}*/
+		}
+	}
+	else if (command == 0x00)//update statics
+	{
+
+	}
+	else if (command == 0xF1) //processes
+	{
+
+	}
+	else if (command == 0x01)//Update Map Definitions
+	{
+		/*Move(-7);
+		int count = ReadInt32BE();
+		Move(4);
+		int newNumMaps = (count * 7) / 9;
+		for (int i = 0; i < newNumMaps; i++)
+		{
+			int offset = 15 + (i * 9);
+			uint8_t mapNumber = ReadUInt8(); //iteration byte 000         -  map file index number
+			uint16_t width = ReadUInt16BE();   //iteration byte 001 to 002  -  map width
+			uint16_t height = ReadUInt16BE();  //iteration byte 003 to 004  -  map height
+			uint16_t wrapX = ReadUInt16BE();   //iteration byte 005 to 006  -  wrap around dimension X
+			uint16_t wrapY = ReadUInt16BE();   //iteration byte 007 to 008  -  wrap around dimension Y
+			if ((width > 0) && (height > 0) && (wrapX > 0) && (wrapY > 0))
+			{
+				g_MapSize[i].Width = width;
+				g_MapBlockSize[i].Width = width / 8;
+				g_MapSize[i].Height = height;
+				g_MapBlockSize[i].Height = height / 8;
+				
+			}
+#ifdef _DEBUG
+			else
+			{
+				LOG("Received bad definition for map %i\n", i);
+			}
+#endif
+		}*/
+	}
+	else if (command == 0x02)//Live Login Complete
+	{
+		//we should send confirmation and prepare the directory where we will place our new modified statics...
+	}
+	else if (command == 0xF0)//extended commands
+	{
+		
+	}
+}
+//----------------------------------------------------------------------------------

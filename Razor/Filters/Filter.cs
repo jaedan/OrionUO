@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -7,8 +7,8 @@ namespace Assistant.Filters
 {
 	public abstract class Filter
 	{
-		private static ArrayList m_Filters = new ArrayList();
-		public static ArrayList List { get{ return m_Filters; } }
+		private static List<Filter> m_Filters = new List<Filter>();
+		public static List<Filter> List { get{ return m_Filters; } }
 
 		public static void Register( Filter filter )
 		{
@@ -31,7 +31,7 @@ namespace Assistant.Filters
 
 					for(int i=0;i<m_Filters.Count;i++)
 					{
-						Filter f = (Filter)m_Filters[i];
+						Filter f = m_Filters[i];
 						if ( f.Name == name )
 						{
 							if ( Convert.ToBoolean( enable ) )
@@ -49,7 +49,7 @@ namespace Assistant.Filters
 		public static void DisableAll()
 		{
 			for(int i=0;i<m_Filters.Count;i++)
-				((Filter)m_Filters[i]).OnDisable();
+				m_Filters[i].OnDisable();
 		}
 
 		public static void Save( XmlTextWriter xml )
@@ -74,7 +74,7 @@ namespace Assistant.Filters
 
 			for (int i=0;i<m_Filters.Count;i++)
 			{
-				Filter f = (Filter)m_Filters[i];
+				Filter f = m_Filters[i];
 				list.Items.Add( f );
 				list.SetItemChecked( i, f.Enabled );
 			}

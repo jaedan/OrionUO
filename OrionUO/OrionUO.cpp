@@ -329,6 +329,7 @@ void COrion::Uninstall()
 {
     WISPFUN_DEBUG("c194_f6");
     LOG("COrion::Uninstall()\n");
+	g_PluginManager.CloseNotify();
     SaveClientConfig();
     g_GumpManager.OnDelete();
 
@@ -341,7 +342,7 @@ void COrion::Uninstall()
 
     g_AuraTexture.Clear();
 
-    IFOR (i, 0, 6)
+    IFOR (i, 0, MAX_MAPS_COUNT)
         g_MapTexture[i].Clear();
 
     IFOR (i, 0, 2)
@@ -4621,6 +4622,7 @@ void COrion::RemoveRangedObjects()
 
 void COrion::ClearWorld()
 {
+	g_OrionWindow.OnMainScreen();
     g_CorpseManager.Clear();
     g_ObjectInHand.Clear();
     g_UseItemActions.Clear();

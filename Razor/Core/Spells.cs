@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Assistant
@@ -94,7 +94,7 @@ namespace Assistant
 
         public void OnCast()
 		{
-			if ( Config.GetBool( "SpellUnequip" ) && ClientCommunication.AllowBit( FeatureBit.UnequipBeforeCast ) )
+			if ( Config.GetBool( "SpellUnequip" ) ) //&& ClientCommunication.AllowBit( FeatureBit.UnequipBeforeCast ) )
 			{
 				Item pack = World.Player.Backpack;
 				if ( pack != null )
@@ -125,7 +125,7 @@ namespace Assistant
 			}
 
 			for(int i=0;i<Counter.List.Count;i++)
-				((Counter)Counter.List[i]).Flag = false;
+                Counter.List[i].Flag = false;
 
 			if ( Config.GetBool( "HighlightReagents" ) )
 			{
@@ -133,7 +133,7 @@ namespace Assistant
 				{
 					for(int i=0;i<Counter.List.Count;i++)
 					{
-						Counter c = (Counter)Counter.List[i];
+                        Counter c = Counter.List[i];
 						if ( c.Enabled && c.Format.ToLower() == Reagents[r] )
 						{
 							c.Flag = true;
@@ -154,7 +154,7 @@ namespace Assistant
 			if ( World.Player != null )
 			{
 				World.Player.LastSpell = GetID();
-				LastCastTime = DateTime.Now;
+                LastCastTime = DateTime.UtcNow;
 				Targeting.SpellTargetID = 0;
 			}
 		}
@@ -170,20 +170,19 @@ namespace Assistant
 			protected override void OnTick()
 			{
 				for(int i=0;i<Counter.List.Count;i++)
-					((Counter)Counter.List[i]).Flag = false;
+                    Counter.List[i].Flag = false;
 				ClientCommunication.RequestTitlebarUpdate();
 			}
 		}
 
-		private static Hashtable m_SpellsByPower;
-		private static Hashtable m_SpellsByID;
+        private static Dictionary<string, Spell> m_SpellsByPower;
+        private static Dictionary<int, Spell> m_SpellsByID;
 		private static HotKeyCallbackState HotKeyCallback;
 		static Spell()
 		{
-			ArrayList list = new ArrayList();
 			string filename = Path.Combine( Config.GetInstallDirectory(), "spells.def" );
-			m_SpellsByPower = new Hashtable( 64 + 10 + 16 );
-			m_SpellsByID = new Hashtable( 64 + 10 + 16 );
+			m_SpellsByPower = new Dictionary<string, Spell>( 64 + 10 + 16 );
+			m_SpellsByID = new Dictionary<int, Spell>( 64 + 10 + 16 );
 
 			if ( !File.Exists( filename ) )
 			{
@@ -208,12 +207,14 @@ namespace Assistant
 							string[] reags = new string[split.Length-5];
 							for(int i=5;i<split.Length;i++)
 								reags[i-5] = split[i].ToLower().Trim();
-							Spell s = new Spell( split[0].Trim()[0], Convert.ToInt32( split[1].Trim() ), Convert.ToInt32( split[2].Trim() ), /*split[3].Trim(),*/ split[4].Trim(), reags );
+							int.TryParse(split[1], out int n);
+							int.TryParse(split[2], out int c);
+							Spell s = new Spell(split[0].Trim()[0], n, c, split[4].Trim(), reags);
 
 							m_SpellsByID[s.GetID()] = s;
+							if (s.WordsOfPower != null && s.WordsOfPower.Trim().Length > 0)
+                        		m_SpellsByPower[s.WordsOfPower] = s;
 
-							if ( s.WordsOfPower != null && s.WordsOfPower.Trim().Length > 0 )
-								m_SpellsByPower[s.WordsOfPower] = s;
 						}
 					}
 					catch
@@ -223,8 +224,8 @@ namespace Assistant
 			}
 
 			HotKeyCallback = new HotKeyCallbackState( OnHotKey );
-			foreach ( Spell s in m_SpellsByID.Values )
-				HotKey.Add( HKCategory.Spells, HKSubCat.SpellOffset+s.Circle, s.Name, HotKeyCallback, (ushort)s.GetID() );
+			foreach ( KeyValuePair<int, Spell> kvp in m_SpellsByID )
+				HotKey.Add( HKCategory.Spells, HKSubCat.SpellOffset+kvp.Value.Circle, kvp.Value.Name, HotKeyCallback, (ushort)kvp.Value.GetID() );
 			HotKey.Add( HKCategory.Spells, LocString.HealOrCureSelf, new HotKeyCallback( HealOrCureSelf ) );
 			HotKey.Add( HKCategory.Spells, LocString.MiniHealOrCureSelf, new HotKeyCallback( MiniHealOrCureSelf ) );
 		}
@@ -233,16 +234,16 @@ namespace Assistant
 		{
 			Spell s = null;
 
-			if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				if ( World.Player.Hits+30 < World.Player.HitsMax && World.Player.Mana >= 12 )
 					s = Get( 4, 5 ); // greater heal
 				else 
 					s = Get( 1, 4 ); // mini heal
 			}
-			else
+			else*/
 			{
-				if ( World.Player.Poisoned && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+				if ( World.Player.Poisoned ) //&& ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 				{
 					s = Get( 2, 3 ); // cure 
 				}
@@ -274,11 +275,11 @@ namespace Assistant
 		{
 			Spell s = null;
 
-			if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				s = Get( 1, 4 ); // mini heal
 			}
-			else
+			else*/
 			{
 				if ( World.Player.Poisoned )
 					s = Get( 2, 3 ); // cure
@@ -319,12 +320,14 @@ namespace Assistant
 
 		public static Spell Get( string power )
 		{
-			return m_SpellsByPower[power] as Spell;
+            m_SpellsByPower.TryGetValue(power, out Spell s);
+            return s;
 		}
 
 		public static Spell Get( int num )
 		{
-			return m_SpellsByID[num] as Spell;
+            m_SpellsByID.TryGetValue(num, out Spell s);
+            return s;
 		}
 
 		public static Spell Get( int circle, int num )

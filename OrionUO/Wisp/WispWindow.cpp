@@ -505,7 +505,13 @@ LRESULT CWindow::OnWindowProc(HWND &hWnd, UINT &message, WPARAM &wParam, LPARAM 
             return res;
         }
         case WM_NCPAINT:
-            return OnRepaint(wParam, lParam);
+		{
+			HRESULT res = (HRESULT)DefWindowProc(Handle, WM_NCPAINT, wParam, lParam);
+
+			OnRepaint();
+
+			return res;
+		}
         case WM_SHOWWINDOW:
         {
             HRESULT res = (HRESULT)DefWindowProc(Handle, WM_SHOWWINDOW, wParam, lParam);

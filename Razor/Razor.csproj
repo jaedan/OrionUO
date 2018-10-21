@@ -108,6 +108,7 @@
     <Compile Include="Core\BandageTimer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Commands.cs" />
     <Compile Include="Core\Counters.cs">
       <SubType>Code</SubType>
     </Compile>

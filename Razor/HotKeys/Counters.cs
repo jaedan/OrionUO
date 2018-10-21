@@ -20,7 +20,7 @@ namespace Assistant.HotKeys
 		{
 			for (int i=0;i<Counter.List.Count;i++)
 			{
-				Counter c = (Counter)Counter.List[i];
+				Counter c = Counter.List[i];
 
 				if ( c.Enabled )
 					World.Player.SendMessage( MsgLevel.Force, "{0}: {1}", c.Name, c.Amount );

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
@@ -264,8 +265,8 @@ namespace Assistant.Macros
 
 			if ( m_Item )
 			{
-				Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID( m_Gfx ) : null;
-				ArrayList list = new ArrayList();
+				Item item = World.Player.Backpack?.FindItemByID( m_Gfx );
+				List<Item> list = new List<Item>();
 				if ( item == null )
 				{
 					foreach ( Item i in World.Items.Values )
@@ -286,7 +287,7 @@ namespace Assistant.Macros
 					}
 
 					if ( list.Count > 0 )
-						click = ((Item)list[ Utility.Random( list.Count ) ]).Serial;
+						click = list[Utility.Random(list.Count)].Serial;
 				}
 				else
 				{
@@ -295,7 +296,7 @@ namespace Assistant.Macros
 			}
 			else
 			{
-				ArrayList list = new ArrayList();
+				List<Mobile> list = new List<Mobile>();
 				foreach ( Mobile m in World.MobilesInRange() )
 				{
 					if ( m.Body == m_Gfx )
@@ -303,7 +304,7 @@ namespace Assistant.Macros
 				}
 
 				if ( list.Count > 0 )
-					click = ((Mobile)list[Utility.Random( list.Count )]).Serial;
+					click = list[Utility.Random(list.Count)].Serial;
 			}
 
 			if ( click != Serial.Zero )
@@ -463,7 +464,7 @@ namespace Assistant.Macros
 		private int m_Id;
 		public override bool Perform()
 		{
-			Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID( m_Gfx ) : null;
+			Item item = World.Player.Backpack?.FindItemByID( m_Gfx );
 			/*if ( item == null )
 			{
 				ArrayList list = new ArrayList();
@@ -708,10 +709,12 @@ namespace Assistant.Macros
 
 		public override string Serialize()
 		{
-			ArrayList list = new ArrayList( 3 + m_Switches.Length + m_TextEntries.Length );
-			list.Add( m_ButtonID );
-			list.Add( m_Switches.Length );
-			list.AddRange( m_Switches );
+            ArrayList list = new ArrayList(3 + m_Switches.Length + m_TextEntries.Length)
+            {
+                m_ButtonID,
+                m_Switches.Length
+            };
+            list.AddRange( m_Switches );
 			list.Add( m_TextEntries.Length );
 			for(int i=0;i<m_TextEntries.Length;i++)
 				list.Add( String.Format( "{0}&{1}", m_TextEntries[i].EntryID, m_TextEntries[i].Text ) );
@@ -769,28 +772,31 @@ namespace Assistant.Macros
 
 		public AbsoluteTargetAction( string[] args )
 		{
-			m_Info = new TargetInfo();
-			
-			m_Info.Type = Convert.ToByte( args[1] );
-			m_Info.Flags = Convert.ToByte( args[2] );
-			m_Info.Serial = Convert.ToUInt32( args[3] );
-			m_Info.X = Convert.ToUInt16( args[4] );
-			m_Info.Y = Convert.ToUInt16( args[5] );
-			m_Info.Z = Convert.ToInt16( args[6] );
-			m_Info.Gfx = Convert.ToUInt16( args[7] );
-		}
+            m_Info = new TargetInfo()
+            {
+                Type = Convert.ToByte(args[1]),
+                Flags = Convert.ToByte(args[2]),
+                Serial = Convert.ToUInt32(args[3]),
+                X = Convert.ToUInt16(args[4]),
+                Y = Convert.ToUInt16(args[5]),
+                Z = Convert.ToInt16(args[6]),
+                Gfx = Convert.ToUInt16(args[7])
+            };
+        }
 
 		public AbsoluteTargetAction( TargetInfo info )
 		{
-			m_Info = new TargetInfo();
-			m_Info.Type = info.Type;
-			m_Info.Flags = info.Flags;
-			m_Info.Serial = info.Serial;
-			m_Info.X = info.X;
-			m_Info.Y = info.Y;
-			m_Info.Z = info.Z;
-			m_Info.Gfx = info.Gfx;
-		}
+            m_Info = new TargetInfo()
+            {
+                Type = info.Type,
+                Flags = info.Flags,
+                Serial = info.Serial,
+                X = info.X,
+                Y = info.Y,
+                Z = info.Z,
+                Gfx = info.Gfx
+            };
+        }
 
 		public override bool Perform()
 		{
@@ -883,7 +889,7 @@ namespace Assistant.Macros
 
 		public override bool Perform()
 		{
-			ArrayList list = new ArrayList();
+			List<UOEntity> list = new List<UOEntity>();
 			if ( m_Mobile )
 			{
 				foreach ( Mobile find in World.MobilesInRange() )
@@ -1098,10 +1104,11 @@ namespace Assistant.Macros
 			int count = Convert.ToInt32( args[5] );
 			if ( count > 0 )
 			{
-				m_Keywords = new ArrayList( count );
-				m_Keywords.Add( Convert.ToUInt16( args[6] ) );
-
-				for ( int i = 1; i < count; i++ )
+                m_Keywords = new ArrayList(count)
+                {
+                    Convert.ToUInt16(args[6])
+                };
+                for ( int i = 1; i < count; i++ )
 					m_Keywords.Add( Convert.ToByte( args[6+i] ) );
 			}
 
@@ -1118,8 +1125,48 @@ namespace Assistant.Macros
 			m_Speech = speech;
 		}
 
-		public override bool Perform()
+        public override bool Perform()
+        {
+            int hue = m_Hue;
+
+            if (m_Type != MessageType.Emote)
+            {
+                if (World.Player.SpeechHue == 0)
+                    World.Player.SpeechHue = m_Hue;
+                hue = World.Player.SpeechHue;
+            }
+
+            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
+            return true;
+        }
+        /*public override bool Perform()
 		{
+			if ( m_Speech.Length > 1 && m_Speech[0] == '-' )
+			{
+				string text = m_Speech.Substring( 1 );
+				string[] split = text.Split( ' ', '\t' );
+                CommandCallback call;
+                Command.List.TryGetValue(split[0], out call);
+				if ( call == null && text[0] == '-' )
+				{
+                    Command.List.TryGetValue("-", out call);
+					if ( call != null && split.Length > 1 && split[1] != null && split[1].Length > 1 )
+						split[1] = split[1].Substring( 1 );
+				}
+
+				if ( call != null )
+				{
+					List<string> list = new List<string>();
+					for(int i=1;i<split.Length;i++)
+					{
+						if ( split[i] != null && split[i].Length > 0 )
+							list.Add( split[i] );
+					}
+					call(list.ToArray());
+					return true;
+				}
+			}
+
 			int hue = m_Hue;
 
 			if ( m_Type != MessageType.Emote )
@@ -1131,16 +1178,18 @@ namespace Assistant.Macros
 			
 			ClientCommunication.SendToServer( new ClientUniMessage( m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech ) );
 			return true;
-		}
+		}*/
 
 		public override string Serialize()
 		{
-			ArrayList list = new ArrayList( 6 );
-			list.Add( (int)m_Type );
-			list.Add( m_Hue );
-			list.Add( m_Font );
-			list.Add( m_Lang );
-			if ( m_Keywords != null && m_Keywords.Count > 1 )
+            List<object> list = new List<object>(6)
+            {
+                (int)m_Type,
+                m_Hue,
+                m_Font,
+                m_Lang
+            };
+            if ( m_Keywords != null && m_Keywords.Count > 1 )
 			{
 				list.Add( (int)m_Keywords.Count );
 				for(int i=0;i<m_Keywords.Count;i++)
@@ -1152,7 +1201,7 @@ namespace Assistant.Macros
 			}
 			list.Add( m_Speech );
 
-			return DoSerialize( (object[])list.ToArray( typeof( object ) ) );
+			return DoSerialize(list.ToArray());
 		}
 
 		public override string ToString()
@@ -1757,13 +1806,13 @@ namespace Assistant.Macros
 
 		public override bool Perform()
 		{
-			this.StartTime = DateTime.Now;
+			this.StartTime = DateTime.UtcNow;
 			return !PerformWait();
 		}
 
 		public override bool PerformWait()
 		{
-			return ( StartTime + m_Timeout >= DateTime.Now );
+			return ( StartTime + m_Timeout >= DateTime.UtcNow );
 		}
 
 		public override string ToString()
@@ -2027,10 +2076,10 @@ namespace Assistant.Macros
 
 				case IfVarType.Poisoned:
 				{
-					if ( ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+					//if ( ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 						return World.Player.Poisoned;
-					else
-						return false;
+					/*else
+						return false;*/
 				}
 
 				case IfVarType.SysMessage:
@@ -2203,14 +2252,14 @@ namespace Assistant.Macros
 
 		public override bool Perform()
 		{
-			if ( ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) || m_Key.DispName.IndexOf( Language.GetString( LocString.PlayA1 ).Replace( @"{0}", "" ) ) == -1 )
-				m_Key.Callback();
+			if ( m_Key.DispName.IndexOf( Language.GetString( LocString.PlayA1 ).Replace( @"{0}", "" ) ) == -1 )//ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) ||
+                m_Key.Callback();
 			return true;
 		}
 
 		public override string Serialize()
 		{
-			return DoSerialize( m_Key.LocName, m_Key.StrName == null ? "" : m_Key.StrName );
+			return DoSerialize( m_Key.LocName, m_Key.StrName ?? "");
 		}
 
 		public override string ToString()

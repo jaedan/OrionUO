@@ -35,7 +35,7 @@ namespace Assistant.Macros
 			for(int i=0;i<m_List.Count;i++)
 				((Macro)m_List[i]).Save();
 		}
-		
+
 		public static ArrayList List{ get{ return m_List; } }
 		public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
 		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
@@ -204,9 +204,11 @@ namespace Assistant.Macros
 
 					if ( nodes != null )
 					{
-						TreeNode node = new TreeNode( Path.GetFileNameWithoutExtension( m.Filename ) );
-						node.Tag = m;
-						nodes.Add( node );
+                        TreeNode node = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename))
+                        {
+                            Tag = m
+                        };
+                        nodes.Add( node );
 					}
 				}
 			}
@@ -223,9 +225,11 @@ namespace Assistant.Macros
 					{
 						if ( nodes != null )
 						{
-							TreeNode node = new TreeNode( String.Format( "[{0}]", Path.GetFileName( dirs[i] ) ) );
-							node.Tag = dirs[i];
-							nodes.Add( node );
+                            TreeNode node = new TreeNode(String.Format("[{0}]", Path.GetFileName(dirs[i])))
+                            {
+                                Tag = dirs[i]
+                            };
+                            nodes.Add( node );
 							Recurse( node.Nodes, dirs[i] );
 						}
 						else

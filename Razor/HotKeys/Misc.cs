@@ -17,6 +17,7 @@ namespace Assistant.HotKeys
 			
 			HotKey.Add( HKCategory.Items, LocString.BandageSelf, new HotKeyCallback( BandageSelf ) );
 			HotKey.Add( HKCategory.Items, LocString.BandageLT, new HotKeyCallback( BandageLastTarg ) );
+            HotKey.Add( HKCategory.Items, LocString.BandageRessFriend, new HotKeyCallback(BandageRessFriend));
 			HotKey.Add( HKCategory.Items, LocString.UseHand, new HotKeyCallback( UseItemInHand ) );
 
 			HotKey.Add( HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback( PartyAccept ) );
@@ -25,13 +26,18 @@ namespace Assistant.HotKeys
 			HotKeyCallbackState call = new HotKeyCallbackState( OnUseItem );
 			HotKey.Add( HKCategory.Items,					LocString.UseBandage,	call, (ushort)3617 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkHeal,	call, (ushort)3852 );
-			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkCure,	call, (ushort)3847 );
+			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkCure,	call, new object[]{(ushort)3847,(ushort)0} );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkRef,		call, (ushort)3851 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkNS,		call, (ushort)3846 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkExp,		call, (ushort)3853 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr,		call, (ushort)3849 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg,		call, (ushort)3848 );
-			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkApple,	new HotKeyCallback( OnDrinkApple ) );
+            //those are potions used on uoitalia, since you don't use them as they are here, you can remove or do whatever you want jaedan
+            HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkMana,    call, (ushort)3845 );
+            HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkInvis,   call, new object[]{(ushort)3847, (ushort)1185} );
+            HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkSpeed,   call, new object[]{(ushort)3839, (ushort)51} );
+            HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkUrti,    call, (ushort)195 );
+            HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkApple,	new HotKeyCallback( OnDrinkApple ) );
 		}
 
 		private static void PartyAccept()
@@ -119,6 +125,24 @@ namespace Assistant.HotKeys
 			}
 		}
 
+        public static void BandageRessFriend()
+        {
+            Item pack = World.Player.Backpack;
+            if (pack != null)
+            {
+                if (!UseItem(pack, 3617))
+                {
+                    World.Player.SendMessage(MsgLevel.Warning, LocString.NoBandages);
+                }
+                else
+                {
+                    Targeting.ClearQueue();
+                    Targeting.TargetCloseGreenDead(1);//force a targetself to be queued
+                    BandageTimer.Start();
+                }
+            }
+        }
+
 		public static void BandageSelf()
 		{
 			Item pack = World.Player.Backpack;
@@ -141,7 +165,7 @@ namespace Assistant.HotKeys
 		{
 			for (int i=0;i<cont.Contains.Count;i++)
 			{
-				Item item = (Item)cont.Contains[i];
+				Item item = cont.Contains[i];
 
 				if ( item.ItemID == 12248 && item.Hue == 1160 )
 				{
@@ -172,9 +196,16 @@ namespace Assistant.HotKeys
 			Item pack = World.Player.Backpack;
 			if ( pack == null )
 				return;
-
-			ushort id = (ushort)state;
-			if ( id == 3852 && World.Player.Poisoned && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+            ushort id;
+            ushort color = ushort.MaxValue;
+            if (state is object[] states)
+            {
+                id = (ushort)states[0];
+                color = (ushort)states[1];
+            }
+            else
+                id = (ushort)state;
+            if ( id == 3852 && World.Player.Poisoned && Config.GetBool( "BlockHealPoison" ) )//&& ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				World.Player.SendMessage( MsgLevel.Force, LocString.HealPoisonBlocked );
 				return;
@@ -196,14 +227,19 @@ namespace Assistant.HotKeys
 
 		private static bool UseItem( Item cont, ushort find )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) )
-				return false;
+            return UseItem(cont, find, ushort.MaxValue);
+        }
+
+        private static bool UseItem( Item cont, ushort find, ushort hue )
+		{
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) )
+				return false;*/
 
 			for (int i=0;i<cont.Contains.Count;i++)
 			{
-				Item item = (Item)cont.Contains[i];
+				Item item = cont.Contains[i];
 
-				if ( item.ItemID == find )
+				if ( item.ItemID == find && (hue==ushort.MaxValue || hue==item.Hue))
 				{
 					PlayerData.DoubleClick( item );
 					return true;

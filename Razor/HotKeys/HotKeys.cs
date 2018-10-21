@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
@@ -71,9 +71,10 @@ namespace Assistant
 		public string DispName{ get{ return m_Name != 0 ? Language.GetString( m_Name ) : m_SName; } }
 		public int LocName{ get{ return m_Name; } }
 		public string StrName{ get{ return m_SName; } }
-		//public HotKeyCallback Callback{ get{ return m_Callback; } }
+        public object pState { get { return m_State; } }
+        //public HotKeyCallback Callback{ get{ return m_Callback; } }
 
-		public KeyData( int name, HKCategory cat, HKSubCat sub, HotKeyCallback call )
+        public KeyData( int name, HKCategory cat, HKSubCat sub, HotKeyCallback call )
 		{
 			m_Name = name;
 			m_SName = null;
@@ -114,9 +115,9 @@ namespace Assistant
 		public void Callback()
 		{
 			// protect again weird keyboard oddities which "double press" the keys when the user only wanted to do an action once
-			if ( m_LastTriggerTime+TimeSpan.FromMilliseconds( 20 ) <= DateTime.Now )
+			if ( m_LastTriggerTime+TimeSpan.FromMilliseconds( 20 ) <= DateTime.UtcNow )
 			{
-				m_LastTriggerTime = DateTime.Now;
+				m_LastTriggerTime = DateTime.UtcNow;
 
 				if ( m_Callback != null )
 					m_Callback();
@@ -243,13 +244,13 @@ namespace Assistant
 
 	public class HotKey
 	{
-		private static ArrayList m_List;
-		private static TreeNode m_Root;
+		private static List<KeyData> m_List = new List<KeyData>();
+		private static TreeNode m_Root = new TreeNode( "Hot Keys" );
 		private static bool m_Enabled;
 		private static System.Windows.Forms.Label m_Status;
 		private static KeyData m_ToggleHotKeysHandler;
 
-		public static ArrayList List { get{ return m_List; } }
+		public static List<KeyData> List { get{ return m_List; } }
 		public static TreeNode RootNode{ get{ return m_Root; } }
 		public static System.Windows.Forms.Label Status{ get{ return m_Status; } set{ m_Status = value; UpdateStatus(); } }
 
@@ -303,7 +304,7 @@ namespace Assistant
 
 		static HotKey()
 		{
-			m_List = new ArrayList();
+			m_List = new List<KeyData>();
 			m_Enabled = true;
 
 			m_Root = new TreeNode( "Hot Keys" );
@@ -377,19 +378,29 @@ namespace Assistant
 		{
 			for (int i=0;i<m_List.Count;i++)
 			{
-				KeyData kd = ((KeyData)m_List[i]);
+				KeyData kd = m_List[i];
 				kd.Key = 0;
 				kd.Mod = ModKeys.None;
 				kd.SendToUO = false;
 			}
 		}
 
-		public static KeyData Get( int name )
+        public static KeyData GetFromObj(object other)
+        {
+            for (int i = 0; i < m_List.Count; i++)
+            {
+                if (m_List[i].pState == other)
+                    return m_List[i];
+            }
+            return null;
+        }
+
+        public static KeyData Get( int name )
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				if ( ((KeyData)m_List[i]).LocName == name )
-					return (KeyData)m_List[i];
+				if (m_List[i].LocName == name )
+					return m_List[i];
 			}
 			return null;
 		}
@@ -398,8 +409,8 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				if ( ((KeyData)m_List[i]).StrName == name )
-					return (KeyData)m_List[i];
+				if (m_List[i].StrName == name )
+					return m_List[i];
 			}
 			return null;
 		}
@@ -408,7 +419,7 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				KeyData hk = (KeyData)m_List[i];
+				KeyData hk = m_List[i];
 				if ( hk.Key == key && hk.Mod == mod && hk.Key != 0 )
 					return hk;
 			}
@@ -504,7 +515,7 @@ namespace Assistant
 			{
 				for (int i=0;i<m_List.Count;i++)
 				{
-					KeyData hk = (KeyData)m_List[i];
+					KeyData hk = m_List[i];
 					if ( hk.Mod == cur && hk.Key == key )
 					{
 						if ( Macros.MacroManager.AcceptActions )
@@ -630,7 +641,7 @@ namespace Assistant
 
 			for (int i=0;i<m_List.Count;i++)
 			{
-				KeyData hk = (KeyData)m_List[i];
+				KeyData hk = m_List[i];
 				if ( hk.LocName == name )
 				{
 					hk.Remove();
@@ -649,7 +660,7 @@ namespace Assistant
 
 			for (int i=0;i<m_List.Count;i++)
 			{
-				KeyData hk = (KeyData)m_List[i];
+				KeyData hk = m_List[i];
 				if ( hk.StrName == name )
 				{
 					hk.Remove();
@@ -723,7 +734,7 @@ namespace Assistant
 		{
 			for (int i=0;i<m_List.Count;i++)
 			{
-				KeyData k = (KeyData)m_List[i];
+				KeyData k = m_List[i];
 				if ( k.Key != 0 )
 				{
 					xml.WriteStartElement( "key" );

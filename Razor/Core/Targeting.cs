@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Assistant.Macros;
 
 namespace Assistant
@@ -52,7 +52,7 @@ namespace Assistant
 		private static uint m_SpellTargID = 0;
 		public static uint SpellTargetID { get { return m_SpellTargID; } set { m_SpellTargID = value; } }
 
-		private static ArrayList m_FilterCancel = new ArrayList();
+		private static List<uint> m_FilterCancel = new List<uint>();
 
 		public static bool HasTarget { get{ return m_HasTarget; } }
 
@@ -69,6 +69,7 @@ namespace Assistant
 			HotKey.Add( HKCategory.Targets, LocString.TargRandRed, new HotKeyCallback( TargetRandRed ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargRandNFriend, new HotKeyCallback( TargetRandNonFriendly ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback( TargetRandFriendly ) );
+            HotKey.Add(HKCategory.Targets, LocString.TargRandGreen, new HotKeyCallback(TargetRandGreen));
 			HotKey.Add( HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback( TargetRandInnocent ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargRandGrey, new HotKeyCallback( TargetRandGrey ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargRandEnemy, new HotKeyCallback( TargetRandEnemy ) );
@@ -89,6 +90,7 @@ namespace Assistant
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback( TargetCloseRed ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback( TargetCloseNonFriendly ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback( TargetCloseFriendly ) );
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseGreen, new HotKeyCallback(TargetCloseGreen));
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseBlue, new HotKeyCallback( TargetCloseInnocent ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseGrey, new HotKeyCallback( TargetCloseGrey ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseEnemy, new HotKeyCallback( TargetCloseEnemy ) );
@@ -326,6 +328,11 @@ namespace Assistant
 			RandomTarget( 0, 1, 2 );
 		}
 
+        public static void TargetRandGreen()
+        {
+            RandomTarget(2);
+        }
+
 		public static void TargetRandEnemy()
 		{
 			RandomTarget( 5 );
@@ -378,10 +385,10 @@ namespace Assistant
 
 		public static void RandomTarget( params int[] noto )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
-				return;
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
+				return;*/
 
-			ArrayList list = new ArrayList();
+            List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
@@ -403,20 +410,20 @@ namespace Assistant
 			}
 
 			if ( list.Count > 0 )
-				SetLastTargetTo( (Mobile)list[Utility.Random( list.Count )] );
+				SetLastTargetTo( list[Utility.Random( list.Count )] );
 			else
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
 
 		public static void RandomHumanoidTarget( params int[] noto )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
-				return;
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
+				return;*/
 
-			ArrayList list = new ArrayList();
+            List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
-				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
+				if ( !m.IsHuman )
 					continue;
 
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
@@ -438,7 +445,7 @@ namespace Assistant
 			}
 
 			if ( list.Count > 0 )
-				SetLastTargetTo( (Mobile)list[Utility.Random( list.Count )] );
+				SetLastTargetTo( list[Utility.Random( list.Count )] );
 			else
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
@@ -453,6 +460,21 @@ namespace Assistant
 		{
 			ClosestTarget( 0, 1, 2 );
 		}
+
+        public static void TargetCloseGreenDead(byte range)
+        {
+            ClosestHumanoidDeadTarget(range, 2);
+        }
+
+        public static void TargetCloseGreen()
+        {
+            TargetCloseGreen(12);
+        }
+
+        public static void TargetCloseGreen(byte range)
+        {
+            ClosestTarget(range, 2);
+        }
 
 		public static void TargetCloseEnemy()
 		{
@@ -506,27 +528,39 @@ namespace Assistant
 
 		public static void ClosestTarget( params int[] noto )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
-				return;
+            ClosestTarget((byte)12, false, noto);
+        }
 
-			ArrayList list = new ArrayList();
-			foreach ( Mobile m in World.MobilesInRange( 12 ) )
+        public static void ClosestTarget( byte range, bool friends, params int[] noto )
+		{
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
+				return;*/
+
+            List<Mobile> list = new List<Mobile>();
+			foreach ( Mobile m in World.MobilesInRange( range ) )
 			{
-				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
-					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                if (!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
 					Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
 				{
-					for(int i=0;i<noto.Length;i++)
-					{
-						if ( noto[i] == m.Notoriety )
+                    if (noto.Length == 0)
+                    {
+                        list.Add(m);
+                    }
+                    else if (friends && FriendsAgent.IsFriend(m))
+                    {
+                        list.Add(m);
+                    }
+                    else
+                    {
+						for(int i=0;i<noto.Length;i++)
 						{
-							list.Add( m );
-							break;
+							if ( noto[i] == m.Notoriety )
+							{
+								list.Add( m );
+								break;
+							}
 						}
-					}
-
-					if ( noto.Length == 0 )
-						list.Add( m );
+                    }
 				}
 			}
 
@@ -550,15 +584,71 @@ namespace Assistant
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
 
+        public static void ClosestHumanoidDeadTarget(byte range, params int[] noto)
+        {
+            /*if (!ClientCommunication.AllowBit(FeatureBit.ClosestTargets))
+                return;*/
+
+            List<Mobile> list = new List<Mobile>();
+            foreach (Mobile m in World.MobilesInRange(range))
+            {
+                if (!m.IsGhost)
+                    continue;
+
+                if (!m.Blessed && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                {
+                    if (FriendsAgent.IsFriend(m))
+                    {
+						list.Add( m );
+					}
+                    else if (noto.Length == 0)
+                    {
+                        list.Add(m);
+					}
+                    else
+                    {
+                        for (int i = 0; i < noto.Length; i++)
+                        {
+                            if (noto[i] == m.Notoriety)
+                            {
+                                list.Add(m);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+			Mobile closest = null;
+			double closestDist = double.MaxValue;
+
+			foreach ( Mobile m in list )
+			{
+				double dist = Utility.DistanceSqrt( m.Position, World.Player.Position );
+
+				if ( dist < closestDist || closest == null )
+				{
+					closestDist = dist;
+					closest = m;
+				}
+			}
+
+			if ( closest != null )
+				SetLastTargetTo( closest );
+			else
+				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
+		}
+
 		public static void ClosestHumanoidTarget( params int[] noto )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
-				return;
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
+				return;*/
 
-			ArrayList list = new ArrayList();
+            List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
-				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
+				if ( !m.IsHuman )
 					continue;
 
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
@@ -687,17 +777,18 @@ namespace Assistant
 
 			if ( m_Intercept )
 			{
-				TargetInfo targ = new TargetInfo();
-				targ.Serial = World.Player.Serial;
-				targ.Gfx = World.Player.Body;
-				targ.Type = 0;
-				targ.X = World.Player.Position.X;
-				targ.Y = World.Player.Position.Y;
-				targ.Z = World.Player.Position.Z;
-				targ.TargID = LocalTargID;
-				targ.Flags = 0;
-			
-				OneTimeResponse( targ );
+                TargetInfo targ = new TargetInfo()
+                {
+                    Serial = World.Player.Serial,
+                    Gfx = World.Player.Body,
+                    Type = 0,
+                    X = World.Player.Position.X,
+                    Y = World.Player.Position.Y,
+                    Z = World.Player.Position.Z,
+                    TargID = LocalTargID,
+                    Flags = 0
+                };
+                OneTimeResponse( targ );
 			}
 			else
 			{
@@ -733,7 +824,7 @@ namespace Assistant
 		public static bool DoLastTarget()
 		{
 			TargetInfo targ;
-			if ( Config.GetBool( "SmartLastTarget" ) && ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+			if ( Config.GetBool( "SmartLastTarget" ) ) //&& ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 			{
 				if ( m_AllowGround && m_LastGroundTarg != null )
 					targ = m_LastGroundTarg;
@@ -805,8 +896,8 @@ namespace Assistant
 				}
 			}
 
-			if ( Config.GetBool( "RangeCheckLT" ) && ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) && ( pos == Point3D.Zero || !Utility.InRange( World.Player.Position, pos, Config.GetInt( "LTRange" ) ) ) )
-			{
+			if ( Config.GetBool( "RangeCheckLT" ) && ( pos == Point3D.Zero || !Utility.InRange( World.Player.Position, pos, Config.GetInt( "LTRange" ) ) )) // && ClientCommunication.AllowBit( FeatureBit.RangeCheckLT )
+            {
 				if ( Config.GetBool( "QueueTargets" ) )
 					m_QueueTarget = LastTargetAction;
 				World.Player.SendMessage( MsgLevel.Warning, LocString.LTOutOfRange );
@@ -837,26 +928,27 @@ namespace Assistant
 
 		private static void OneTimeResponse( object state )
 		{
-			TargetInfo info = state as TargetInfo;
+            if (state is TargetInfo info)
+            {
+                if ((info.X == 0xFFFF && info.X == 0xFFFF) && (info.Serial == 0 || info.Serial >= 0x80000000))
+                {
+                    m_OnCancel?.Invoke();
+                }
+                else
+                {
+                    if (Macros.MacroManager.AcceptActions)
+                    {
+                        if (MainForm.TypeRecording)
+                            MacroManager.Action(new TargetTypeAction(info.Serial.IsMobile, info.Gfx));
+                        else
+                            MacroManager.Action(new AbsoluteTargetAction(info));
+                    }
 
-			if ( info != null )
-			{
-				if ( ( info.X == 0xFFFF && info.X == 0xFFFF ) && ( info.Serial == 0 || info.Serial >= 0x80000000 ) )
-				{
-					if ( m_OnCancel != null )
-						m_OnCancel();
-				}
-				else
-				{	
-					if ( Macros.MacroManager.AcceptActions )
-						MacroManager.Action( new AbsoluteTargetAction( info ) );
+                    m_OnTarget?.Invoke(info.Type == 1 ? true : false, info.Serial, new Point3D(info.X, info.Y, info.Z), info.Gfx);
+                }
+            }
 
-					if ( m_OnTarget != null )
-						m_OnTarget( info.Type == 1 ? true : false, info.Serial, new Point3D( info.X, info.Y, info.Z ), info.Gfx );
-				}
-			}
-
-			EndIntercept();
+            EndIntercept();
 		}
 
 		private static void CancelTarget()
@@ -875,7 +967,7 @@ namespace Assistant
 		{
 			if ( m_ClientTarget )
 			{
-				m_FilterCancel.Add( (uint)m_CurrentID );
+				m_FilterCancel.Add( m_CurrentID );
 				ClientCommunication.SendToClient( new CancelTarget( m_CurrentID ) );
 				m_ClientTarget = false;
 			}
@@ -900,40 +992,43 @@ namespace Assistant
 
 		public static void Target( Point3D pt )
 		{
-			TargetInfo info = new TargetInfo();
-			info.Type = 1;
-			info.Flags = 0;
-			info.Serial = 0;
-			info.X = pt.X;
-			info.Y = pt.Y;
-			info.Z = pt.Z;
-			info.Gfx = 0;
-
-			Target( info );
+            TargetInfo info = new TargetInfo()
+            {
+                Type = 1,
+                Flags = 0,
+                Serial = 0,
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z,
+                Gfx = 0
+            };
+            Target( info );
 		}
 
 		public static void Target( Point3D pt, int gfx )
 		{
-			TargetInfo info = new TargetInfo();
-			info.Type = 1;
-			info.Flags = 0;
-			info.Serial = 0;
-			info.X = pt.X;
-			info.Y = pt.Y;
-			info.Z = pt.Z;
-			info.Gfx = (ushort)(gfx & 0x3FFF);
-
-			Target( info );
+            TargetInfo info = new TargetInfo()
+            {
+                Type = 1,
+                Flags = 0,
+                Serial = 0,
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z,
+                Gfx = (ushort)(gfx & 0x3FFF)
+            };
+            Target( info );
 		}
 
 		public static void Target( Serial s )
 		{
-			TargetInfo info = new TargetInfo();
-			info.Type = 0;
-			info.Flags = 0;
-			info.Serial = s;
-
-			if ( s.IsItem )
+            TargetInfo info = new TargetInfo()
+            {
+                Type = 0,
+                Flags = 0,
+                Serial = s
+            };
+            if ( s.IsItem )
 			{
 				Item item = World.FindItem( s );
 				if ( item != null )
@@ -961,45 +1056,45 @@ namespace Assistant
 
 		public static void Target( object o )
 		{
-			if ( o is Item )
-			{
-				Item item = (Item)o;
-				TargetInfo info = new TargetInfo();
-				info.Type = 0;
-				info.Flags = 0;
-				info.Serial = item.Serial;
-				info.X = item.Position.X;
-				info.Y = item.Position.Y;
-				info.Z = item.Position.Z;
-				info.Gfx = item.ItemID;
-				Target( info );
-			}
-			else if ( o is Mobile )
-			{
-				Mobile m = (Mobile)o;
-				TargetInfo info = new TargetInfo();
-				info.Type = 0;
-				info.Flags = 0;
-				info.Serial = m.Serial;
-				info.X = m.Position.X;
-				info.Y = m.Position.Y;
-				info.Z = m.Position.Z;
-				info.Gfx = m.Body;
-				Target( info );
-			}
-			else if ( o is Serial )
-			{
-				Target( (Serial)o );
-			}
-			else if ( o is TargetInfo )
-			{
-				Target( (TargetInfo)o );
-			}
-		}
+            if (o is Item item)
+            {
+                Target(new TargetInfo()
+                {
+                    Type = 0,
+                    Flags = 0,
+                    Serial = item.Serial,
+                    X = item.Position.X,
+                    Y = item.Position.Y,
+                    Z = item.Position.Z,
+                    Gfx = item.ItemID
+                });
+            }
+            else if (o is Mobile m)
+            {
+                Target(new TargetInfo()
+                {
+                    Type = 0,
+                    Flags = 0,
+                    Serial = m.Serial,
+                    X = m.Position.X,
+                    Y = m.Position.Y,
+                    Z = m.Position.Z,
+                    Gfx = m.Body
+                });
+            }
+            else if (o is Serial)
+            {
+                Target((Serial)o);
+            }
+            else if (o is TargetInfo)
+            {
+                Target((TargetInfo)o);
+            }
+        }
 
 		public static void CheckTextFlags( Mobile m )
 		{
-			if ( Config.GetBool( "SmartLastTarget" ) && ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+			if ( Config.GetBool( "SmartLastTarget" ) ) //&& ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 			{
 				bool harm = m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial;
 				bool bene = m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial;
@@ -1017,7 +1112,7 @@ namespace Assistant
 		{
 			if ( m != null )
 			{
-				if ( Config.GetBool( "SmartLastTarget" ) && ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+				if ( Config.GetBool( "SmartLastTarget" ) ) //&& ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 				{
 					if ( m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial )
 						return true;
@@ -1035,7 +1130,7 @@ namespace Assistant
 		private static int m_NextTargIdx = 0;
 		public static void NextTarget()
 		{
-			ArrayList list = World.MobilesInRange( 12 );
+		    List<Mobile> list = World.MobilesInRange( 12 );
 			TargetInfo targ = new TargetInfo();
 			Mobile m = null, old = World.FindMobile( m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial );
 
@@ -1052,7 +1147,7 @@ namespace Assistant
 				if ( m_NextTargIdx >= list.Count )
 					m_NextTargIdx = 0;
 
-				m = (Mobile)list[m_NextTargIdx];
+				m = list[m_NextTargIdx];
 
 				if ( m != null && m != World.Player && m != old )
 					break;
@@ -1098,12 +1193,12 @@ namespace Assistant
 		private static int m_NextTargHumanoidIdx = 0;
 		public static void NextTargetHumanoid()
 		{
-			ArrayList mobiles = World.MobilesInRange( 12 );
-			ArrayList list = new ArrayList();
+            List<Mobile> mobiles = World.MobilesInRange( 12 );
+            List<Mobile> list = new List<Mobile>();
 
 			foreach( Mobile mob in mobiles )
 			{
-				if ( mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E )
+				if(mob.IsHuman)
 					list.Add(mob);
 			}
 
@@ -1123,7 +1218,7 @@ namespace Assistant
 				if ( m_NextTargHumanoidIdx >= list.Count )
 					m_NextTargHumanoidIdx = 0;
 
-				m = (Mobile)list[m_NextTargHumanoidIdx];
+				m = list[m_NextTargHumanoidIdx];
 
 				if ( m != null && m != World.Player && m != old )
 					break;
@@ -1173,7 +1268,7 @@ namespace Assistant
 
 			if ( m_HasTarget && m != null && m_LastTarget != null && m.Serial == m_LastTarget.Serial && m_QueueTarget == LastTargetAction )
 			{
-				if ( Config.GetBool( "RangeCheckLT" ) && ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
+				if ( Config.GetBool( "RangeCheckLT" ) ) //&& ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
 				{
 					if ( Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
 					{
@@ -1189,7 +1284,7 @@ namespace Assistant
 			if ( World.Player == null )
 				return false;
 
-			if ( targID == m_SpellTargID && ser.IsMobile && ( World.Player.LastSpell == Spell.ToID( 1, 4 ) || World.Player.LastSpell == Spell.ToID( 4, 5 ) ) && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+			if ( targID == m_SpellTargID && ser.IsMobile && ( World.Player.LastSpell == Spell.ToID( 1, 4 ) || World.Player.LastSpell == Spell.ToID( 4, 5 ) ) && Config.GetBool( "BlockHealPoison" ) ) //&& ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				Mobile m = World.FindMobile( ser );
 
@@ -1205,17 +1300,18 @@ namespace Assistant
 		
 		private static void TargetResponse( PacketReader p, PacketHandlerEventArgs args )
 		{
-			TargetInfo info = new TargetInfo();
-			info.Type = p.ReadByte();
-			info.TargID = p.ReadUInt32();
-			info.Flags = p.ReadByte();
-			info.Serial = p.ReadUInt32();
-			info.X = p.ReadUInt16();
-			info.Y = p.ReadUInt16();
-			info.Z = p.ReadInt16();
-			info.Gfx = p.ReadUInt16();
-
-			m_ClientTarget = false;
+            TargetInfo info = new TargetInfo()
+            {
+                Type = p.ReadByte(),
+                TargID = p.ReadUInt32(),
+                Flags = p.ReadByte(),
+                Serial = p.ReadUInt32(),
+                X = p.ReadUInt16(),
+                Y = p.ReadUInt16(),
+                Z = p.ReadInt16(),
+                Gfx = p.ReadUInt16()
+            };
+            m_ClientTarget = false;
 
 			// check for cancel
 			if ( info.X == 0xFFFF && info.X == 0xFFFF && ( info.Serial <= 0 || info.Serial >= 0x80000000 ) )
@@ -1239,7 +1335,7 @@ namespace Assistant
 						ResendTarget();
 					}
 				}
-				else if ( m_FilterCancel.Contains( (uint)info.TargID ) || info.TargID == LocalTargID )
+				else if ( m_FilterCancel.Contains( info.TargID ) || info.TargID == LocalTargID )
 				{
 					args.Block = true;
 				}
@@ -1305,19 +1401,31 @@ namespace Assistant
 
 				m_LastGroundTarg = info; // ground target is the true last target
 
-				if ( Macros.MacroManager.AcceptActions )
-					MacroManager.Action( new AbsoluteTargetAction( info ) );
-			}
+                if (Macros.MacroManager.AcceptActions)
+                {
+                    if (MainForm.TypeRecording)
+                        MacroManager.Action(new TargetTypeAction(info.Serial.IsMobile, info.Gfx));
+                    else
+                        MacroManager.Action(new AbsoluteTargetAction(info));
+                }
+            }
 			else 
 			{
 				if ( Macros.MacroManager.AcceptActions )
 				{
-					KeyData hk = HotKey.Get( (int)LocString.TargetSelf );
-					if ( hk != null )
-						MacroManager.Action( new HotKeyAction( hk ) );
-					else
-						MacroManager.Action( new AbsoluteTargetAction( info ) );
-				}
+                    if (MainForm.TypeRecording)
+                    {
+                        MacroManager.Action(new TargetTypeAction(info.Serial.IsMobile, info.Gfx));
+                    }
+                    else
+                    {
+                        KeyData hk = HotKey.Get((int)LocString.TargetSelf);
+                        if (hk != null)
+                            MacroManager.Action(new HotKeyAction(hk));
+                        else
+                            MacroManager.Action(new AbsoluteTargetAction(info));
+                    }
+                }
 			}
 
 			m_FilterCancel.Clear();
@@ -1348,7 +1456,7 @@ namespace Assistant
 				return;
 			}
 
-			if ( Spell.LastCastTime + TimeSpan.FromSeconds( 3.0 ) > DateTime.Now && Spell.LastCastTime + TimeSpan.FromSeconds( 0.5 ) <= DateTime.Now && m_SpellTargID == 0 )
+			if ( Spell.LastCastTime + TimeSpan.FromSeconds( 3.0 ) > DateTime.UtcNow && Spell.LastCastTime + TimeSpan.FromSeconds( 0.5 ) <= DateTime.UtcNow && m_SpellTargID == 0 )
 				m_SpellTargID = m_CurrentID;
 
 			m_HasTarget = true;
@@ -1384,12 +1492,11 @@ namespace Assistant
 
 				if ( m_Intercept )
 				{
-					if ( m_OnCancel != null )
-						m_OnCancel();
+                    m_OnCancel?.Invoke();
 					EndIntercept();
 					World.Player.SendMessage( MsgLevel.Error, LocString.OTTCancel );
 
-					m_FilterCancel.Add( (uint)prevID );
+					m_FilterCancel.Add( prevID );
 				}
 			}
 		}

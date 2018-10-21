@@ -2333,6 +2333,11 @@ void CGameScreen::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
         bool ctrlPressed = GetAsyncKeyState(VK_CONTROL) & 0x80000000;
         bool shiftPressed = GetAsyncKeyState(VK_SHIFT) & 0x80000000;
 
+		// Disable macros to avoid mixing with a chat input if user press enter to chat.
+		// If you activate the chat with ENTER, you want to write a message not run a macro.
+		if (g_ConfigManager.GetConsoleNeedEnter() && g_EntryPointer == &g_GameConsole)
+			return;
+
         CMacro *macro =
             g_MacroManager.FindMacro((ushort)wParam, altPressed, ctrlPressed, shiftPressed);
 

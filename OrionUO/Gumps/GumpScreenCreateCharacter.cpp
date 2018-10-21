@@ -3,7 +3,7 @@
 #include "stdafx.h"
 
 CGumpScreenCreateCharacter::CGumpScreenCreateCharacter()
-    : CGump(GT_NONE, 0, 0, 0)
+    : CGump(GT_NOTHING, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;

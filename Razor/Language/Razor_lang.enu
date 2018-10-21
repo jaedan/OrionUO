@@ -1,5 +1,5 @@
 // Razor English/ENU Language Pack
-// Last modified $Date: 2006/01/17 22:02:20 $
+// Last modified $Date: 2017/09/14 21:02:20 $
 ::CliLoc=ENU
 
 [controls]
@@ -177,10 +177,6 @@ MainForm::screenAutoCap=Auto Death Screen Capture
 MainForm::setScnPath=...
 MainForm::dispTime=Include Timestamp on images
 MainForm::statusTab=Help && Status
-MainForm::mleLink=Free Desktop Wallpapers
-MainForm::forumsLink=Razor Discussion Forum
-MainForm::homeLink=Razor Homepage
-MainForm::userGuideLink=Razor User Guide
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel
@@ -244,6 +240,7 @@ InputBox::ok=&Okay
 1024=Undress Jewelry
 1025=Bandage Self
 1026=Bandage LastTarget
+1532=Bandage Ress Friend
 1027=Use Bandage (No Timer)
 1028=Drink Heal
 1029=Drink Cure
@@ -252,6 +249,10 @@ InputBox::ok=&Okay
 1032=Drink Explosion
 1033=Drink Strength
 1034=Drink Agility
+1528=Drink Invisibility
+1529=Drink Speed
+1530=Drink Mana
+1531=Drink Urticante
 1035=No bandages found
 1036=No item of type {0} found!
 1037=Double Click ({0})
@@ -283,6 +284,7 @@ InputBox::ok=&Okay
 1063=Target Random Innocent
 1064=Target Random Enemy
 1065=Target Random Friendly
+1534=Target Random Green
 1066=Target Random Non-Friendly
 1067=Say "{0}"
 1068=UseSkill {0}
@@ -567,7 +569,16 @@ InputBox::ok=&Okay
 1414=Buy Agent
 1415=Potion Hotkeys
 1416=Random Targets
-1417=Overhead Health/Stats Display
+1417=Closest Targets
+1418=Overhead Health/Stats Display
+1419=Auto Loot Agent
+1420=Bone Cutter Agent
+1421=Extended Macro Engine
+1422=Auto Remount
+1423=Auto Bandaging
+1424=Enemy Target Share
+1425=Filter Season
+1426=Spell Target Share
 // up to 1465: reserved
 1466=Feature Disallowed by Server
 1467=This feature is not allowed by the current game server.\nYou may choose to ignore the server's allowed features on the "Options" tab.\n\nTo see a list of disallowed features, check the "Help & Status" tab.
@@ -618,6 +629,7 @@ InputBox::ok=&Okay
 1512=Target Closest Innocent
 1513=Target Closest Enemy
 1514=Target Closest Friendly
+1533=Target Closest Green
 1515=Target Closest Non-Friendly
 1516=Target Closest Enemy Humaniod
 1517=Target Closest Grey Humaniod
@@ -625,7 +637,7 @@ InputBox::ok=&Okay
 1519=Target Closest Criminal Humaniod
 1520=Target Closest Criminal
 1521=Warning: The profile '{0}' is in use by another instance of Razor!\nIf you make changes to this profile it may become corrupted. It is recommended that you use a different profile for each instance of Razor.
-1522=Waiting... Timeout: 
+1522=Timeout... 
 1523=Razor was unable to locate and load a suitable UO cliloc file.\nSome text may not be displayed.
 1524=No CliLoc
 1525=Bulk Order Deed

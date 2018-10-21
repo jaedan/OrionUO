@@ -70,8 +70,8 @@ public:
 
     bool Zoomed() { return (::IsZoomed(Handle) != FALSE); }
 
-    void SetTitle(const string &text) { ::SetWindowTextA(Handle, text.c_str()); }
-    void SetTitle(const wstring &text) { ::SetWindowTextW(Handle, text.c_str()); }
+    virtual void SetTitle(const string &text) { ::SetWindowTextA(Handle, text.c_str()); }
+    virtual void SetTitle(const wstring &text) { ::SetWindowTextW(Handle, text.c_str()); }
 
     void CreateTimer(uint id, int delay) { ::SetTimer(Handle, id, delay, NULL); }
     void RemoveTimer(uint id) { ::KillTimer(Handle, id); }
@@ -106,10 +106,7 @@ protected:
     virtual void OnCharPress(const WPARAM &wParam, const LPARAM &lParam) {}
     virtual bool OnKeyDown(const WPARAM &wParam, const LPARAM &lParam) { return false; }
     virtual bool OnKeyUp(const WPARAM &wParam, const LPARAM &lParam) { return false; }
-    virtual HRESULT OnRepaint(const WPARAM &wParam, const LPARAM &lParam)
-    {
-        return (HRESULT)DefWindowProc(Handle, WM_NCPAINT, wParam, lParam);
-    }
+	virtual void OnRepaint() {}
     virtual void OnShow(bool show) {}
     virtual void OnMaximize() {}
     virtual void OnMinimize() {}

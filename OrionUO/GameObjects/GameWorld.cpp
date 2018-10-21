@@ -1125,7 +1125,7 @@ void CGameWorld::UpdatePlayer(
 
         g_Player->GetEndPosition(endX, endY, endZ, endDir);
 
-        if (endX == x && endY == y)
+        if (endX == x && endY == y && endZ == z)
         {
             /* The player was moving toward this location anyway. */
             if (endDir != dir)
@@ -1144,12 +1144,11 @@ void CGameWorld::UpdatePlayer(
                 y,
                 z,
                 dir);
-
-            g_Player->ForcePosition(x, y, z, dir);
             g_Player->CloseBank();
+			g_Player->ForcePosition(x, y, z, dir);
 
-            g_RemoveRangeXY.X = x;
-            g_RemoveRangeXY.Y = y;
+			g_RemoveRangeXY.X = x;
+			g_RemoveRangeXY.Y = y;
         }
     }
 

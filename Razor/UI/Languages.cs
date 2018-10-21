@@ -396,6 +396,16 @@ namespace Assistant
 
 		NextTargetHumanoid,
 
+        //aggiunti
+        DrinkInvis,
+        DrinkSpeed,
+        DrinkMana,
+        DrinkUrti,
+
+        BandageRessFriend,
+        TargCloseGreen,
+        TargRandGreen,
+
 		__End
 	}
 	#endregion
@@ -695,11 +705,10 @@ namespace Assistant
 			for(int i=0;i<controls.Count;i++)
 			{
 				string find = String.Format( "{0}::{1}", name, controls[i].Name );
-				string str = m_Controls[find] as string;
-				if ( str != null )
-					controls[i].Text = str;
+                if (m_Controls[find] is string str)
+                    controls[i].Text = str;
 
-				if ( controls[i] is ListView )
+                if ( controls[i] is ListView )
 				{
 					foreach ( ColumnHeader ch in ((ListView)controls[i]).Columns )
 					{
@@ -721,11 +730,10 @@ namespace Assistant
 #endif
 
 			LoadControls( form.Name, form.Controls );
-			string text = m_Controls[String.Format( "{0}::Text", form.Name )] as string;
-			if ( text != null )
-				form.Text = text;
+            if (m_Controls[String.Format("{0}::Text", form.Name)] is string text)
+                form.Text = text;
 
-			if ( form is MainForm )
+            if ( form is MainForm )
 				((MainForm)form).UpdateTitle();
 		}
 

@@ -179,7 +179,7 @@ enum WEATHER_TYPE
 
 enum GUMP_TYPE
 {
-    GT_NONE = 0,
+    GT_NOTHING = 0,
     GT_PAPERDOLL,
     GT_STATUSBAR,
     GT_DYE,
