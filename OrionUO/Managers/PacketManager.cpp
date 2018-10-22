@@ -14,6 +14,11 @@ CPacketManager g_PacketManager;
         save, name, size, DIR_SEND, 0                                                              \
     }
 
+#define SMSGH(save, name, size, smethod)                                                           \
+    {                                                                                              \
+        save, name, size, DIR_SEND, &CPacketManager::Handle##smethod                               \
+    }
+
 #define RMSG(save, name, size)                                                                     \
     {                                                                                              \
         save, name, size, DIR_RECV, 0                                                              \
@@ -37,7 +42,7 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0x0 */ SMSG(ORION_SAVE_PACKET, "Create Character", 0x68),
     /* 0x1 */ SMSG(ORION_SAVE_PACKET, "Disconnect", 0x05),
     /* 0x2 */ SMSG(ORION_IGNORE_PACKET, "Walk Request", 0x07),
-    /* 0x3 */ BMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
+    /* 0x3 */ SMSGH(ORION_SAVE_PACKET, "Client Talk", PACKET_VARIABLE_SIZE, ClientTalk),
     /* 0x4 */ BMSG(ORION_SAVE_PACKET, "Request God mode (God client)", 0x02),
     /* 0x5 */ SMSG(ORION_IGNORE_PACKET, "Attack", 0x05),
     /* 0x6 */ SMSG(ORION_IGNORE_PACKET, "Double Click", 0x05),
@@ -222,7 +227,8 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xAA */ RMSGH(ORION_IGNORE_PACKET, "Attack Reply", 0x05, AttackCharacter),
     /* 0xAB */ RMSGH(ORION_SAVE_PACKET, "Text Entry Dialog", PACKET_VARIABLE_SIZE, TextEntryDialog),
     /* 0xAC */ SMSG(ORION_SAVE_PACKET, "Text Entry Dialog Reply", PACKET_VARIABLE_SIZE),
-    /* 0xAD */ SMSG(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE),
+    /* 0xAD */
+    SMSGH(ORION_IGNORE_PACKET, "Unicode Client Talk", PACKET_VARIABLE_SIZE, OnReceiveSendPacket),
     /* 0xAE */ RMSGH(ORION_IGNORE_PACKET, "Unicode Server Talk", PACKET_VARIABLE_SIZE, UnicodeTalk),
     /* 0xAF */ RMSGH(ORION_SAVE_PACKET, "Display Death", 0x0d, DisplayDeath),
     /* 0xB0 */ RMSGH(ORION_IGNORE_PACKET, "Open Gump", PACKET_VARIABLE_SIZE, OpenGump),
@@ -296,12 +302,14 @@ CPacketInfo CPacketManager::m_Packets[0x100] = {
     /* 0xEB */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xEC */ SMSG(ORION_SAVE_PACKET, "Equip Macro", PACKET_VARIABLE_SIZE),
     /* 0xED */ SMSG(ORION_SAVE_PACKET, "Unequip item macro", PACKET_VARIABLE_SIZE),
-    /* 0xEE */ UMSG(ORION_SAVE_PACKET, 0x2000),
-    /* 0xEF */ SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x2000),
+    /* 0xEE */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
+    /* 0xEF */ SMSG(ORION_SAVE_PACKET, "KR/2D Client Login/Seed", 0x15),
     /* 0xF0 */
     BMSGH(ORION_SAVE_PACKET, "Krrios client special", PACKET_VARIABLE_SIZE, KrriosClientSpecial),
-    /* 0xF1 */ SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", 0x09),
-    /* 0xF2 */ RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", 0x19),
+    /* 0xF1 */
+    SMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Request", PACKET_VARIABLE_SIZE),
+    /* 0xF2 */
+    RMSG(ORION_SAVE_PACKET, "Client-Server Time Synchronization Response", PACKET_VARIABLE_SIZE),
     /* 0xF3 */ RMSGH(ORION_SAVE_PACKET, "Update Item (SA)", 0x1A, UpdateItemSA),
     /* 0xF4 */ UMSG(ORION_SAVE_PACKET, PACKET_VARIABLE_SIZE),
     /* 0xF5 */ RMSGH(ORION_IGNORE_PACKET, "Display New Map", 0x15, DisplayMap),
@@ -1998,7 +2006,7 @@ PACKET_HANDLER(OpenContainer)
         if (obj != NULL)
         {
             obj->Opened = true;
-            if (!obj->IsCorpse())
+            if (!obj->IsCorpse()) // && gumpid != 0xFFFF) //this is only for sphere
                 g_World->ClearContainer(obj);
         }
     }
@@ -2760,6 +2768,11 @@ PACKET_HANDLER(ClientTalk)
     }
 
     g_AbyssPacket03First = false;
+}
+
+PACKET_HANDLER(OnReceiveSendPacket)
+{
+    OnPacket();
 }
 
 PACKET_HANDLER(MultiPlacement)
@@ -3848,7 +3861,12 @@ void CPacketManager::AddHTMLGumps(CGump *gump, vector<HTMLGumpDataInfo> &list)
 
         if (data.IsXMF)
         {
-            htmlText->Text = g_ClilocManager.Cliloc(g_Language)->GetW(data.TextID);
+            if (!data.Args.empty())
+                htmlText->Text =
+                    g_ClilocManager.ParseArgumentsToClilocString(data.TextID, false, data.Args);
+            else
+                htmlText->Text = g_ClilocManager.Cliloc(g_Language)->GetW(data.TextID);
+
             htmlText->CreateTexture(!data.HaveBackground);
             htmlGump->CalculateDataSize();
         }
@@ -3901,7 +3919,7 @@ PACKET_HANDLER(OpenGump)
 
     for (const string &str : commandList)
     {
-        STRING_LIST list = cmdParser.GetTokens(str.c_str());
+        STRING_LIST list = cmdParser.GetTokens(str.c_str(), false);
 
         int listSize = (int)list.size();
 
@@ -4298,9 +4316,17 @@ PACKET_HANDLER(OpenGump)
                     htmlInfo.Color = 0x00FFFFFF;
 
                 htmlInfo.TextID = ToInt(list[8]);
-
-                if (listSize >= 10)
+                listSize--;
+                if (list[9].size() > 1 && list[listSize].size() > 1)
                 {
+                    for (int i = 9; i <= listSize; i++)
+                    {
+                        htmlInfo.Args.append(
+                            list[i].begin() + ((i == 9) ? 1 : 0),
+                            list[i].end() - ((i == listSize) ? 1 : 0));
+                        if (i < listSize)
+                            htmlInfo.Args.append(L" ");
+                    }
                 }
 
                 htmlGumlList.push_back(htmlInfo);
