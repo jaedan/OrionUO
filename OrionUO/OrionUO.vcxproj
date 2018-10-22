@@ -22,7 +22,7 @@
     <ProjectGuid>{909473C7-8499-4614-92F1-43E370383AE6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OrionUO</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
