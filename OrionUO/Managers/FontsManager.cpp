@@ -188,7 +188,7 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosA(
         if (info->CharStart == pos)
             return p;
 
-        if (pos <= info->CharStart + len)
+        if (pos <= info->CharStart + len && ptr->Data.size() >= len)
         {
             IFOR (i, 0, len)
             {
@@ -766,7 +766,8 @@ UINT_LIST CFontsManager::GeneratePixelsA(
 
                         int block = (testY * width) + ((int)x + w);
 
-                        pData[block] = pcl << 8 | 0xFF;
+                        if (block >= 0)
+                            pData[block] = pcl << 8 | 0xFF;
                     }
                 }
             }
@@ -854,7 +855,7 @@ WISP_GEOMETRY::CPoint2Di CFontsManager::GetCaretPosW(
         if (info->CharStart == pos)
             return p;
 
-        if (pos <= info->CharStart + len)
+        if (pos <= info->CharStart + len && info->Data.size() >= len)
         {
             IFOR (i, 0, len)
             {
@@ -1087,7 +1088,7 @@ wstring CFontsManager::GetTextByWidthW(uchar font, const wstring &str, int width
         uint offset = table[L'.'];
 
         if (offset && offset != 0xFFFFFFFF)
-            width -= (*((puchar)((size_t)table + offset + 2)) * 3);
+            width -= ((*((puchar)((size_t)table + offset + 2)) * 3) + 3);
     }
 
     int textLength = 0;

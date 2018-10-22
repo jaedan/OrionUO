@@ -45,6 +45,16 @@ void CEntryText::OnClick(
 {
     WISPFUN_DEBUG("c169_f4");
 
+    if (g_EntryPointer != this)
+    {
+        CGump *gumpEntry = g_GumpManager.GetTextEntryOwner();
+
+        if (gumpEntry != NULL)
+            gumpEntry->FrameCreated = false;
+
+        g_EntryPointer = this;
+        Changed = true;
+    }
     if (g_EntryPointer == this)
     {
         int oldPos = m_Position;
@@ -57,16 +67,6 @@ void CEntryText::OnClick(
 
         if (oldPos != m_Position)
             Changed = true;
-    }
-    else
-    {
-        CGump *gumpEntry = g_GumpManager.GetTextEntryOwner();
-
-        if (gumpEntry != NULL)
-            gumpEntry->FrameCreated = false;
-
-        g_EntryPointer = this;
-        Changed = true;
     }
 
     if (gump != NULL)
@@ -166,6 +166,8 @@ int CEntryText::GetLinesCountW(uchar font, TEXT_ALIGN_TYPE align, ushort flags, 
 bool CEntryText::Insert(wchar_t ch, CGump *gump)
 {
     WISPFUN_DEBUG("c169_f8");
+    if (ch == '\r')
+        return false;
 
     if (m_Position < 0)
         m_Position = 0;
