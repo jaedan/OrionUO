@@ -3,7 +3,7 @@
 #include "stdafx.h"
 
 CGumpScreenSelectProfession::CGumpScreenSelectProfession()
-    : CGump(GT_NONE, 0, 0, 0)
+    : CGump(GT_BLANK, 0, 0, 0)
 {
     WISPFUN_DEBUG("c117_f1");
     NoMove = true;

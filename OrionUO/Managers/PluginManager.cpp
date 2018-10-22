@@ -245,12 +245,3 @@ bool CPluginManager::KeyUp(uint32_t key_code)
     msg.u.key_up.key_code = key_code;
     return SendPluginMessage(&msg);
 }
-
-void CPluginManager::ActivateWindow(bool activated)
-{
-    struct UOMSG msg;
-
-    msg.type = UOMSG_ACTIVEWINDOW;
-    msg.u.active_window.active = activated;
-    SendPluginMessage(&msg);
-}

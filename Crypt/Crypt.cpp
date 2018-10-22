@@ -127,8 +127,6 @@ static int OnMessage(struct UOMSG *msg)
                 500,
                 &block);
             return block;
-        case UOMSG_ACTIVEWINDOW:
-            return SendMessage(g_razor_hwnd, msg->type, (WPARAM)msg->u.active_window.active, 0);
     }
 
     return 0;

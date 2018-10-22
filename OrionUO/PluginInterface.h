@@ -8,7 +8,6 @@
 extern "C"
 {
 #endif
-
     enum UOMSG_MOUSE_BUTTON
     {
         UOMSG_MOUSE_BUTTON_MID = 0,
@@ -32,7 +31,6 @@ extern "C"
         UOMSG_MOUSEWHEEL,
         UOMSG_KEYDOWN,
         UOMSG_KEYUP,
-        UOMSG_ACTIVEWINDOW,
     };
 
     struct UOMSG
@@ -94,11 +92,6 @@ extern "C"
             {
                 uint32_t key_code;
             } key_up;
-
-            struct
-            {
-                bool active;
-            } active_window;
         } u;
     };
 

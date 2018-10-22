@@ -34,7 +34,7 @@ class CBaseGUI;
 class CGump : public CRenderObject
 {
 public:
-    GUMP_TYPE GumpType = GT_NONE;
+    GUMP_TYPE GumpType = GT_BLANK;
     uint ID = 0;
     int MinimizedX = 0;
     int MinimizedY = 0;

@@ -8,6 +8,7 @@ enum ASSISTANTMSG
     ASSISTANTMSG_SEND,
     ASSISTANTMSG_CAST_SPELL,
     ASSISTANTMSG_ATTACK,
+    ASSISTANTMSG_TITLEBAR,
 };
 
 class CPluginManager
@@ -35,7 +36,6 @@ public:
     bool MouseWheel(bool up);
     bool KeyDown(uint32_t key_code);
     bool KeyUp(uint32_t key_code);
-    void ActivateWindow(bool activated);
 };
 
 extern CPluginManager g_PluginManager;
