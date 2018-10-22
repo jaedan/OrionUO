@@ -61,7 +61,7 @@ void CGameObject::SetName(const string &newName)
     {
         if (g_GameState >= GS_GAME)
         {
-            string title = "Ultima Online - " + g_Player->GetName();
+            string title = "Ultima Online - " + newName;
 
             CServer *server = g_ServerList.GetSelectedServer();
 
