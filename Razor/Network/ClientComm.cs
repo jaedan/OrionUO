@@ -61,12 +61,20 @@ namespace Assistant
             MOUSEWHEEL,
             KEYDOWN,
             KEYUP,
-            ACTIVEWINDOW,
 
-            Last = ACTIVEWINDOW,
+            Last = KEYUP,
         }
 
-        public struct UOMSG_PACKET
+		private enum ASSISTANTMSG_TYPE
+		{
+			RECV = WM_USER + 760,
+			SEND,
+			CAST_SPELL,
+			ATTACK,
+			TITLEBAR,
+		};
+
+		public struct UOMSG_PACKET
         {
             public byte[] packet;
             public int sz;
@@ -113,6 +121,9 @@ namespace Assistant
 
         [DllImport("user32.dll")]
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
+		private static extern uint SendMessage(IntPtr hWnd, uint msg, int wparam, IntPtr lparam);
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr LoadLibrary(string path);
@@ -198,9 +209,172 @@ namespace Assistant
 
         public static void SetNegotiate(bool negotiate) { }
 
-        public static void RequestTitlebarUpdate() { }
+        private static Timer m_TBTimer;
+        public static void RequestTitlebarUpdate()
+        {
+            if (m_TBTimer == null)
+                m_TBTimer = new TitleBarThrottle();
 
-        public static int GetZ(int x, int y, int z) { return World.Player.Position.Z; }
+            if (!m_TBTimer.Running)
+                m_TBTimer.Start();
+        }
+
+        private class TitleBarThrottle : Timer
+        {
+            public TitleBarThrottle() : base(TimeSpan.FromSeconds(0.1))
+            {
+            }
+
+            protected override void OnTick()
+            {
+                UpdateTitleBar();
+            }
+        }
+
+        private static StringBuilder m_TBBuilder = new StringBuilder();
+        private static string m_LastPlayerName = "";
+
+        private static void UpdateTitleBar()
+        {
+            if (World.Player != null && Config.GetBool("TitleBarDisplay"))
+            {
+                // reuse the same sb each time for less damn allocations
+                m_TBBuilder.Remove(0, m_TBBuilder.Length);
+                m_TBBuilder.Insert(0, Config.GetString("TitleBarText"));
+                StringBuilder sb = m_TBBuilder;
+                //StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity 
+
+                PlayerData p = World.Player;
+
+                if (p.Name != m_LastPlayerName)
+                {
+                    m_LastPlayerName = p.Name;
+
+                    Engine.MainWindow.UpdateTitle();
+                }
+
+                if (Config.GetBool("ShowNotoHue"))
+                    sb.Replace(@"{char}", String.Format("~#{0:X6}{1}~#~", p.GetNotorietyColor() & 0x00FFFFFF, p.Name));
+                else
+                    sb.Replace(@"{char}", p.Name);
+                sb.Replace(@"{shard}", World.ShardName);
+
+                if (p.CriminalTime != 0)
+                    sb.Replace(@"{crimtime}", String.Format("~^C0C0C0{0}~#~", p.CriminalTime));
+                else
+                    sb.Replace(@"{crimtime}", "-");
+
+                sb.Replace(@"{str}", p.Str.ToString());
+                sb.Replace(@"{hpmax}", p.HitsMax.ToString());
+                if (p.Poisoned)
+                    sb.Replace(@"{hp}", String.Format("~#FF8000{0}~#~", p.Hits));
+                else
+                    sb.Replace(@"{hp}", EncodeColorStat(p.Hits, p.HitsMax));
+                sb.Replace(@"{dex}", World.Player.Dex.ToString());
+                sb.Replace(@"{stammax}", World.Player.StamMax.ToString());
+                sb.Replace(@"{stam}", EncodeColorStat(p.Stam, p.StamMax));
+                sb.Replace(@"{int}", World.Player.Int.ToString());
+                sb.Replace(@"{manamax}", World.Player.ManaMax.ToString());
+                sb.Replace(@"{mana}", EncodeColorStat(p.Mana, p.ManaMax));
+
+                sb.Replace(@"{ar}", p.AR.ToString());
+                sb.Replace(@"{tithe}", p.Tithe.ToString());
+
+                sb.Replace(@"{physresist}", p.AR.ToString());
+                sb.Replace(@"{fireresist}", p.FireResistance.ToString());
+                sb.Replace(@"{coldresist}", p.ColdResistance.ToString());
+                sb.Replace(@"{poisonresist}", p.PoisonResistance.ToString());
+                sb.Replace(@"{energyresist}", p.EnergyResistance.ToString());
+
+                sb.Replace(@"{luck}", p.Luck.ToString());
+
+                sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
+
+                if (World.Player.Weight >= World.Player.MaxWeight)
+                    sb.Replace(@"{weight}", String.Format("~#FF0000{0}~#~", World.Player.Weight));
+                else
+                    sb.Replace(@"{weight}", World.Player.Weight.ToString());
+                sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
+
+                sb.Replace(@"{followers}", World.Player.Followers.ToString());
+                sb.Replace(@"{followersmax}", World.Player.FollowersMax.ToString());
+
+                sb.Replace(@"{gold}", World.Player.Gold.ToString());
+                if (BandageTimer.Running)
+                    sb.Replace(@"{bandage}", String.Format("~#FF8000{0}~#~", BandageTimer.Count));
+                else
+                    sb.Replace(@"{bandage}", "-");
+
+                if (StealthSteps.Counting)
+                    sb.Replace(@"{stealthsteps}", StealthSteps.Count.ToString());
+                else
+                    sb.Replace(@"{stealthsteps}", "-");
+
+                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+					 (int)(p.GetStatusCode()),
+					 (int)(World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99),
+					 (int)(World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99),
+					 (int)(World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99));
+
+                sb.Replace(@"{statbar}", String.Format("~SR{0}", statStr));
+                sb.Replace(@"{mediumstatbar}", String.Format("~SL{0}", statStr));
+                sb.Replace(@"{largestatbar}", String.Format("~SX{0}", statStr));
+
+                bool dispImg = Config.GetBool("TitlebarImages");
+                for (int i = 0; i<Counter.List.Count; i++)
+                {
+                    Counter c = (Counter)Counter.List[i];
+                    if (c.Enabled)
+                        sb.Replace(String.Format("{{{0}}}", c.Format), c.GetTitlebarString(dispImg && c.DisplayImage));
+                }
+
+                SetTitleStr(sb.ToString());
+            }
+            else
+            {
+                SetTitleStr("");
+            }
+        }
+
+        private static string m_LastStr;
+        private static IntPtr m_TitleData = Marshal.AllocCoTaskMem(1024);
+
+        private static void SetTitleStr(string str)
+        {
+            if (m_LastStr == str)
+                return;
+
+            m_LastStr = str;
+            byte[] copy = System.Text.Encoding.ASCII.GetBytes(str);
+            Array.Resize<byte>(ref copy, copy.Length + 1);
+            int clen = copy.Length;
+            copy[clen - 1] = 0;
+
+            if (clen > 0)
+            {
+                if (clen >= 512)
+                    clen = 511;
+                Marshal.Copy(copy, 0, m_TitleData, clen);
+            }
+
+            bool active = Config.GetBool("TitleBarDisplay") && clen > 1;
+            SendMessage(FindUOWindow(), (uint)ASSISTANTMSG_TYPE.TITLEBAR, active? clen : 0, active? m_TitleData : IntPtr.Zero);
+        }
+
+        public static string EncodeColorStat(int val, int max)
+        {
+            double perc = ((double)val) / ((double)max);
+
+            if (perc <= 0.25)
+                return String.Format("~#FF0000{0}~#~", val);
+            else if (perc <= 0.75)
+                return String.Format("~#FFFF00{0}~#~", val);
+            else
+                return val.ToString();
+        }
+
+
+		public static int GetZ(int x, int y, int z) { return World.Player.Position.Z; }
 
         public static void BeginCalibratePosition() { }
 
@@ -276,30 +450,6 @@ namespace Assistant
                     block = HotKey.OnKeyDown((int)wParam) ? 0 : 1;
                     break;
                 case UOMSG_TYPE.KEYUP:
-                    break;
-                case UOMSG_TYPE.ACTIVEWINDOW:
-                    /*
-                    if (Config.GetBool("AlwaysOnTop")) {
-                        if (lParam != 0 && !razor.TopMost) {
-                            razor.TopMost = true;
-                            SetForegroundWindow(FindUOWindow());
-                        } else if (lParam == 0 && razor.TopMost) {
-                            razor.TopMost = false;
-                            razor.SendToBack();
-                        }
-                    }
-
-                    // always use smartness for the map window
-                    if (razor.MapWindow != null && razor.MapWindow.Visible) {
-                        if (lParam != 0 && !razor.MapWindow.TopMost) {
-                            razor.MapWindow.TopMost = true;
-                            SetForegroundWindow(FindUOWindow());
-                        } else if (lParam == 0 && razor.MapWindow.TopMost) {
-                            razor.MapWindow.TopMost = false;
-                            razor.MapWindow.SendToBack();
-                        }
-                    }
-                    */
                     break;
             }
 

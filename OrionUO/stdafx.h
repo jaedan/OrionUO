@@ -22,6 +22,9 @@
 #include <string>
 #include <list>
 #include <tuple>
+#include <uxtheme.h>
+#include <vssym32.h>
+#include <dwmapi.h>
 
 #include "Dependencies/include/glew.h"
 #include "Dependencies/include/wglew.h"
@@ -34,6 +37,8 @@
 #pragma comment(lib, "Shlwapi.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "Glu32.lib")
+#pragma comment(lib, "dwmapi.lib")
+#pragma comment(lib, "uxtheme.lib")
 
 #if defined(_M_IX86)
 #pragma comment(lib, "Dependencies/lib/Win32/glew32.lib")

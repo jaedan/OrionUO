@@ -6,7 +6,7 @@ CGump *g_ResizedGump = NULL;
 CGump *g_CurrentCheckGump = NULL;
 
 CGump::CGump()
-    : CGump(GT_NONE, 0, 0, 0)
+    : CGump(GT_BLANK, 0, 0, 0)
 {
 }
 

@@ -3,7 +3,7 @@
 #include "stdafx.h"
 
 CGumpScreenConnection::CGumpScreenConnection()
-    : CGump(GT_NONE, 0, 0, 0)
+    : CGump(GT_BLANK, 0, 0, 0)
 {
     NoMove = true;
     NoClose = true;
