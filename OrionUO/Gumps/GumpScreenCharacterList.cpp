@@ -20,9 +20,9 @@ void CGumpScreenCharacterList::UpdateContent()
 
     int count = g_CharacterList.Count;
     int posInList = 0;
-    int yOffset = 125;
-    int yBonus = 45;
-    int listTitleY = 96;
+    int yOffset = 150;
+    int yBonus = 0;
+    int listTitleY = 106;
 
     Add(new CGUIGumppicTiled(0x0E14, 0, 0, 640, 480));
     Add(new CGUIGumppic(0x157C, 0, 0));

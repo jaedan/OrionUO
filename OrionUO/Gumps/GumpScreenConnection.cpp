@@ -13,14 +13,14 @@ CGumpScreenConnection::~CGumpScreenConnection()
 {
 }
 
-void CGumpScreenConnection::CreateText(int x, int y, string str, uchar font)
+void CGumpScreenConnection::CreateText(int x, int y, string str, uchar font, int width)
 {
     WISPFUN_DEBUG("c113_f1");
     if (g_ConnectionScreen.GetText().length())
         str = g_ConnectionScreen.GetText();
 
     CGUIText *obj = new CGUIText(0x0386, x, y);
-    obj->CreateTextureA(font, str, 260, TS_CENTER);
+    obj->CreateTextureA(font, str, width, TS_CENTER);
     Add(obj);
 }
 
@@ -197,7 +197,7 @@ void CGumpScreenConnection::UpdateContent()
             int index = g_ConnectionScreen.GetErrorCode();
             if (index >= 9)
                 index = 8;
-            CreateText(189, 178, text[index], 2);
+            CreateText(175, 173, text[index], 4, 290);
 
             Add(new CGUIButton(ID_CS_OK, 0x0481, 0x0482, 0x0483, 306, 304));
         }
