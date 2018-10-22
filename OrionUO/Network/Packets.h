@@ -440,6 +440,12 @@ public:
     CPacketBookPageDataRequest(int serial, int page);
 };
 
+class CPacketBookHeaderChange : public CPacket
+{
+public:
+    CPacketBookHeaderChange(class CGumpBook *gump);
+};
+
 class CPacketBuyRequest : public CPacket
 {
 public:
