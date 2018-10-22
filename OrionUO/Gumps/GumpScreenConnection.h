@@ -9,7 +9,7 @@ private:
     static const int ID_CS_OK = 1;
     static const int ID_CS_CANCEL = 2;
 
-    void CreateText(int x, int y, string str, uchar font);
+    void CreateText(int x, int y, string str, uchar font, int width = 260);
 
 public:
     CGumpScreenConnection();
