@@ -1326,7 +1326,7 @@ void CAnimationManager::FixSittingDirection(uchar &layerDirection, bool &mirror,
     {
         if (Direction == 3)
         {
-            y += 23 + data.MirrorOffsetY;
+            y += 25 + data.MirrorOffsetY;
             x += offsX - 4;
         }
         else
@@ -1343,7 +1343,7 @@ void CAnimationManager::FixSittingDirection(uchar &layerDirection, bool &mirror,
         }
         else
         {
-            y += 9 + data.OffsetY;
+            y += 10 + data.OffsetY;
             x -= offsX + 1;
         }
     }
