@@ -838,10 +838,10 @@ bool CConfigManager::Load(const string &path)
     {
         return false;
     }
-	catch (nlohmann::detail::parse_error &fail)
-	{
+    catch (nlohmann::detail::parse_error &fail)
+    {
         return false;
-	}
+    }
 
     if (SpeechDelay > 100)
     {
