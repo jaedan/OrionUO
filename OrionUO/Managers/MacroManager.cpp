@@ -701,7 +701,7 @@ MACRO_RETURN_CODE CMacroManager::Process(CMacroObject *macro)
         }
         case MC_CAST_SPELL:
         {
-            int spell = (macro->SubCode - MSC_G6_CLUMSY);
+            int spell = (macro->SubCode - MSC_G6_CLUMSY) + 1;
 
             if (spell > 0 && spell <= 151)
             {
