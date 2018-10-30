@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -25,13 +26,18 @@ namespace Assistant
 		{
 		}
 
-		public int Compare( object a, object b )
+		public int Compare(object a, object b )
 		{
-			return ((IComparable)(((ListViewItem)a).Tag)).CompareTo( ((ListViewItem)b).Tag );
+            Counter ca = ((ListViewItem)a).Tag as Counter, cb = ((ListViewItem)b).Tag as Counter;
+            if (ca == null)
+                return -1;
+            else if (cb == null)
+                return 1;
+            return ca.CompareTo(cb);
 		}
 	}
 
-	public class Counter : IComparable
+	public class Counter : IComparable<Counter>
 	{
 		private string m_Name;
 		private string m_Fmt;
@@ -148,11 +154,11 @@ namespace Assistant
 				{
 					if ( m_Enabled )
 					{
-						if ( !SupressWarnings && m_LastWarning + TimeSpan.FromSeconds( 1.0 ) < DateTime.Now && 
+						if ( !SupressWarnings && m_LastWarning + TimeSpan.FromSeconds( 1.0 ) < DateTime.UtcNow && 
 							World.Player != null && value < m_Count && Config.GetBool( "CounterWarn" ) && value < Config.GetInt( "CounterWarnAmount" ) )
 						{
 							World.Player.SendMessage( MsgLevel.Warning, LocString.CountLow, Name, value );	
-							m_LastWarning = DateTime.Now;
+							m_LastWarning = DateTime.UtcNow;
 						}
 
 						if ( ClientCommunication.NotificationCount > 0 )
@@ -236,18 +242,16 @@ namespace Assistant
 			set { m_DispImg = value; }
 		}
 
-		public int CompareTo( object comp )
+		public int CompareTo( Counter comp )
 		{
-			if ( !(comp is Counter) )
+			if ( this.Enabled && comp.Enabled )
+				return this.Name == null ? 1 : comp.Name == null ? -1 : this.Name.CompareTo(comp.Name );
+			else if ( !this.Enabled && comp.Enabled )
 				return 1;
-			else if ( this.Enabled && ((Counter)comp).Enabled )
-				return this.Name == null ? 1 : ((Counter)comp).Name == null ? -1 : this.Name.CompareTo( ((Counter)comp).Name );
-			else if ( !this.Enabled && ((Counter)comp).Enabled )
-				return 1;
-			else if ( this.Enabled && !((Counter)comp).Enabled )
+			else if ( this.Enabled && !comp.Enabled )
 				return -1;
 			else //if ( !this.Enabled && !((Counter)comp).Enabled )
-				return this.Name == null ? 1 : ((Counter)comp).Name == null ? -1 : this.Name.CompareTo( ((Counter)comp).Name ); 
+				return this.Name == null ? 1 : comp.Name == null ? -1 : this.Name.CompareTo(comp.Name ); 
 		}
 
 		public override string ToString()
@@ -256,15 +260,13 @@ namespace Assistant
 		}
 
 		private static bool m_NeedXMLSave = false;
-		private static ArrayList m_List;
+		private static List<Counter> m_List = new List<Counter>();
 		private static bool m_SupressWarn, m_SupressChecks;
-		private static Hashtable m_Cache;
-		public static ArrayList List{ get{ return m_List; } }
+		private static Dictionary<Item, ushort> m_Cache = new Dictionary<Item, ushort>();
+		public static List<Counter> List{ get{ return m_List; } }
 
 		static Counter()
 		{
-			m_List = new ArrayList();
-			m_Cache = new Hashtable();
 			Load();
 		}
 
@@ -342,7 +344,7 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					xml.WriteStartElement( "counter" );
@@ -358,7 +360,7 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 
 				if ( c.Format == "bp" || c.Format == "bm" || c.Format == "gl" || c.Format == "gs" || 
 					c.Format == "mr" || c.Format == "ns" || c.Format == "ss" || c.Format == "sa" || 
@@ -372,7 +374,7 @@ namespace Assistant
 		public static void DisableAll()
 		{
 			for(int i=0;i<m_List.Count;i++)
-				((Counter)m_List[i]).Enabled = false;
+                m_List[i].Enabled = false;
 		}
 
 		public static void LoadProfile( XmlElement xml )
@@ -393,7 +395,7 @@ namespace Assistant
 
 					for(int i=0;i<m_List.Count;i++)
 					{
-						Counter c = (Counter)m_List[i];
+						Counter c = m_List[i];
 
 						if ( c.Name == name )
 						{
@@ -454,24 +456,24 @@ namespace Assistant
 		public static void Uncount( Item item )
 		{
 			for (int i=0;i<item.Contains.Count;i++)
-				Uncount( (Item)item.Contains[i] );
+				Uncount( item.Contains[i] );
 
 			for (int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					if ( c.ItemID == item.ItemID && ( c.Hue == item.Hue || c.Hue == -1 || c.Hue == 0xFFFF ) )
 					{
-						if ( m_Cache[item] != null )
+                        ushort rem;
+						if ( m_Cache.TryGetValue(item, out rem) )
 						{
-							ushort rem = (ushort)m_Cache[item];
 							if ( rem >= c.Amount )
 								c.Amount = 0;
 							else
 								c.Amount -= rem;
 
-							m_Cache[item] = null;
+                            m_Cache.Remove(item);
 						}
 						
 						break;
@@ -484,16 +486,14 @@ namespace Assistant
 		{
 			for (int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					if ( c.ItemID == item.ItemID && ( c.Hue == item.Hue || c.Hue == 0xFFFF || c.Hue == -1 ) )
 					{
-						ushort old = 0;
-						object o = m_Cache[item];
-						if ( o != null )
+                        ushort old=0;
+						if ( m_Cache.TryGetValue(item, out old) )
 						{
-							old = (ushort)o;
 							if ( old == item.Amount )
 								break; // dont change result cause we dont need an update
 						}
@@ -505,7 +505,7 @@ namespace Assistant
 			}
 
 			for (int c=0;c<item.Contains.Count;c++)
-				Count( (Item)item.Contains[c] );
+				Count( item.Contains[c] );
 		}
 
 		public static void QuickRecount()
@@ -533,7 +533,7 @@ namespace Assistant
 				if ( World.Player.Backpack != null )
 				{
 					while ( World.Player.Backpack.Contains.Count > 0 )
-						((Item)World.Player.Backpack.Contains[0]).Remove();
+						World.Player.Backpack.Contains[0].Remove();
 				
 					PacketHandlers.IgnoreGumps.Add( World.Player.Backpack );
 					PlayerData.DoubleClick( World.Player.Backpack );
@@ -542,7 +542,7 @@ namespace Assistant
 				if ( World.Player.Quiver != null )
 				{
 					while ( World.Player.Quiver.Contains.Count > 0 )
-						((Item)World.Player.Quiver.Contains[0]).Remove();
+						World.Player.Quiver.Contains[0].Remove();
 					
 					PacketHandlers.IgnoreGumps.Add( World.Player.Quiver );
 					PlayerData.DoubleClick( World.Player.Quiver );
@@ -560,7 +560,7 @@ namespace Assistant
 			m_Cache.Clear();
 
 			for( int i=0;i<m_List.Count;i++ )
-				((Counter)m_List[i]).Amount = 0;
+                m_List[i].Amount = 0;
 			SupressWarnings = false;
 		}
 		
@@ -570,7 +570,7 @@ namespace Assistant
 			list.BeginUpdate();
 			list.Items.Clear();
 			for (int i=0;i<m_List.Count;i++)
-				list.Items.Add( ((Counter)m_List[i]).ViewItem );
+				list.Items.Add(m_List[i].ViewItem );
 			list.EndUpdate();
 			m_SupressChecks = false;
 		}

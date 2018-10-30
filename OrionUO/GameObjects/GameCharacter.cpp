@@ -361,11 +361,8 @@ int CGameCharacter::IsSitting()
     WISPFUN_DEBUG("c15_f4");
     int result = 0;
     ushort testGraphic = Graphic;
-    bool human =
-        (((testGraphic >= 0x0190) && (testGraphic <= 0x0193)) || (testGraphic == 0x03DB) ||
-         (testGraphic == 0x03DF) || (testGraphic == 0x03E2));
 
-    if (human && FindLayer(OL_MOUNT) == NULL && !TestStepNoChangeDirection(GetAnimationGroup()))
+    if (IsHuman() && FindLayer(OL_MOUNT) == NULL && !TestStepNoChangeDirection(GetAnimationGroup()))
     {
         CRenderWorldObject *obj = this;
 
@@ -505,6 +502,13 @@ int CGameCharacter::IsSitting()
     }
 
     return result;
+}
+
+bool CGameCharacter::IsHuman()
+{
+    return (Graphic < MAX_ANIMATIONS_DATA_INDEX_COUNT && g_AnimationManager.m_DataIndex[Graphic].Type == ANIMATION_GROUPS_TYPE::AGT_HUMAN);
+//(((testGraphic >= 0x0190) && (testGraphic <= 0x0193)) || (testGraphic == 0x03DB) ||
+//         (testGraphic == 0x03DF) || (testGraphic == 0x03E2));
 }
 
 void CGameCharacter::Draw(int x, int y)

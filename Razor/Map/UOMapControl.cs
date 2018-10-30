@@ -41,7 +41,8 @@ namespace Assistant.MapUO
 
 		public UOMapControl()
 		{
-			Active = false;
+            Control.CheckForIllegalCrossThreadCalls = false;
+            Active = false;
 			this.prevPoint = new Point(0, 0);
 			this.BorderStyle = BorderStyle.Fixed3D;
 			this.m_MapButtons = new ArrayList();
@@ -54,12 +55,38 @@ namespace Assistant.MapUO
 		private static Font m_RegFont = new Font( "Arial", 8 );
         public override void Refresh()
         {
-            TimeSpan now =  DateTime.Now - LastRefresh;
+            TimeSpan now =  DateTime.UtcNow - LastRefresh;
             if (now.TotalMilliseconds <= 100)
                 return;
-            LastRefresh = DateTime.Now;
+            LastRefresh = DateTime.UtcNow;
             base.Refresh();
         }
+        //beside the checkforillegalcrossthreadcalls, this is another way to do it, but every call has to be mapped inside a delegate
+        /*delegate void RefreshWindow();
+        private void BaseRefreshRequest()
+        {
+            if (base.InvokeRequired)
+            {
+                RefreshWindow d = new RefreshWindow(BaseRefreshRequest);
+                this.Invoke(d);
+            }
+            else
+            {
+                base.Refresh();
+            }
+        }
+        private void RefreshRequest()
+        {
+            if (base.InvokeRequired)
+            {
+                RefreshWindow d = new RefreshWindow(RefreshRequest);
+                this.Invoke(d);
+            }
+            else
+            {
+                this.Refresh();
+            }
+        }*/
 
         private PointF AdjustPoint(PointF center, PointF pos)
         {
@@ -399,13 +426,11 @@ namespace Assistant.MapUO
 				return false;
 
 			int x = p.X, y = p.Y;
-			int xCenter, yCenter;
-			int xWidth, yHeight;
 
-			if (!ComputeMapDetails(map, x, y, out xCenter, out yCenter, out xWidth, out yHeight))
-				return false;
+            if (!ComputeMapDetails(map, x, y, out int xCenter, out int yCenter, out int xWidth, out int yHeight))
+                return false;
 
-			double absLong = (double)((x - xCenter) * 360) / xWidth;
+            double absLong = (double)((x - xCenter) * 360) / xWidth;
 			double absLat = (double)((y - yCenter) * 360) / yHeight;
 
 			if (absLong > 180.0)

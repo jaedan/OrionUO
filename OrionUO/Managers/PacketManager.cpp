@@ -4135,7 +4135,7 @@ PACKET_HANDLER(OpenGump)
 
                 gump->Add(new CGUIHitBox(index + 1, x, y, width, height));
                 gump->Add(new CGUIScissor(true, x, y, 0, 0, width, height));
-                go = new CGUIGenericTextEntry(index + 1, textIndex, color, x, y);
+                go = new CGUIGenericTextEntry(index + 1, textIndex, color, x, y - 1);
                 ((CGUIGenericTextEntry *)go)->CheckOnSerial = true;
                 ((CGUITextEntry *)go)->m_Entry.Width = width;
                 if (!EntryChanged)
@@ -4163,7 +4163,7 @@ PACKET_HANDLER(OpenGump)
 
                 gump->Add(new CGUIHitBox(index + 1, x, y, width, height));
                 gump->Add(new CGUIScissor(true, x, y, 0, 0, width, height));
-                go = new CGUIGenericTextEntry(index + 1, textIndex, color, x, y, width, length);
+                go = new CGUIGenericTextEntry(index + 1, textIndex, color, x, y - 1, width, length);
                 ((CGUIGenericTextEntry *)go)->CheckOnSerial = true;
                 ((CGUITextEntry *)go)->m_Entry.Width = width;
                 if (!EntryChanged)

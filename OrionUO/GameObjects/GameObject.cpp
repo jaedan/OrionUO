@@ -54,10 +54,10 @@ void CGameObject::SetFlags(uchar val)
     }
 }
 
-void CGameObject::SetName(const string &newName)
+void CGameObject::SetName(const string &newName, bool force)
 {
     WISPFUN_DEBUG("c20_f4");
-    if (IsPlayer() && m_Name != newName)
+    if (IsPlayer() && (m_Name != newName || force))
     {
         if (g_GameState >= GS_GAME)
         {

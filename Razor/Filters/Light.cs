@@ -20,7 +20,7 @@ namespace Assistant.Filters
 
 		public override void OnFilter( PacketReader p, PacketHandlerEventArgs args )
 		{
-			if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) )
+			//if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) )
 			{
 				args.Block = true;
 				if ( World.Player != null )
@@ -35,7 +35,7 @@ namespace Assistant.Filters
 		{
 			base.OnEnable ();
 
-			if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) && World.Player != null )
+			//if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) && World.Player != null )
 			{
 				World.Player.LocalLightLevel = 0;
 				World.Player.GlobalLightLevel = 0;

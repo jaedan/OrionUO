@@ -486,7 +486,6 @@ void CGumpBook::OnKeyDown(const WPARAM &wParam, const LPARAM &lParam)
     WISPFUN_DEBUG("c87_f11");
     if (!Writable)
         return;
-    bool update = true;
     switch (wParam)
     {
         case VK_RETURN:

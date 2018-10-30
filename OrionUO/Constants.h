@@ -43,6 +43,8 @@ const int MAX_STEPS_COUNT = 5;
 
 const int FRAME_DELAY_ACTIVE_WINDOW = 30;
 
+const int MAX_TEXTENTRY_LENGTH = 239;
+
 const int MIN_VIEW_RANGE = 5;
 
 const int MAX_VIEW_RANGE = 18;

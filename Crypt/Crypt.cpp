@@ -9,6 +9,7 @@ using namespace Assistant;
 using namespace System::Threading;
 
 struct orion_plugin *g_plugin = nullptr;
+gcroot<Engine ^> g_engine = nullptr;
 HWND g_razor_hwnd = nullptr;
 
 #pragma unmanaged
@@ -32,107 +33,46 @@ int APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID)
     return 1;
 }
 
+#pragma managed
+
 static int OnMessage(struct UOMSG *msg)
 {
-    /* This is executing on the Orion thread, but needs to be processed
-	 * by the Razor thread. The UOMSG structure is only valid
-	 * during this call, so we can't post messages. Send them synchronously.
-	 */
-
-    ULONG block = 0;
-
+	//this is synchronously with razor thread now
     switch (msg->type)
     {
         case UOMSG_SET_SERVER_NAME:
-            return SendMessage(
-                g_razor_hwnd, msg->type, (WPARAM)msg->u.set_server_name.server_name, 0);
+            return g_engine->SetServerName(
+                msclr::interop::marshal_as<String ^>(msg->u.set_server_name.server_name));
         case UOMSG_SET_PLAYER_NAME:
-            return SendMessage(
-                g_razor_hwnd, msg->type, (WPARAM)msg->u.set_player_name.player_name, 0);
+            return g_engine->SetPlayerName(
+                msclr::interop::marshal_as<String ^>(msg->u.set_player_name.player_name));
         case UOMSG_UPDATE_PLAYER_POSITION:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)&msg->u.update_position,
-                0,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->UpdatePlayerPosition(
+                msg->u.update_position.x,
+                msg->u.update_position.y,
+                msg->u.update_position.z,
+                msg->u.update_position.dir);
         case UOMSG_RECV:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.recv.packet,
-                (LPARAM)msg->u.recv.sz,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnClientRecv(msg->u.send.packet, msg->u.send.sz);
         case UOMSG_SEND:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.send.packet,
-                (LPARAM)msg->u.send.sz,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnClientSend(msg->u.send.packet, msg->u.send.sz);
         case UOMSG_CLOSE:
-            return SendMessage(g_razor_hwnd, msg->type, 0, 0);
+            return g_engine->OnClientClose();
         case UOMSG_DISCONNECT:
-            return SendMessage(g_razor_hwnd, msg->type, 0, 0);
+            return g_engine->OnDisconnect();
         case UOMSG_MOUSEBUTTONDOWN:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.mouse_button_down.button,
-                0,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnMouseUse(true, false, msg->u.mouse_button_down.button);
         case UOMSG_MOUSEBUTTONUP:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.mouse_button_up.button,
-                0,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnMouseUse(false, false, msg->u.mouse_button_up.button);
         case UOMSG_MOUSEWHEEL:
-            SendMessageTimeout(
-                g_razor_hwnd, msg->type, (WPARAM)msg->u.mouse_wheel.up, 0, SMTO_BLOCK, 500, &block);
-            return block;
+            return g_engine->OnMouseUse(true, true, msg->u.mouse_wheel.up);
         case UOMSG_KEYDOWN:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.key_down.key_code,
-                0,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnKeyboard(true, msg->u.key_down.key_code);
         case UOMSG_KEYUP:
-            SendMessageTimeout(
-                g_razor_hwnd,
-                msg->type,
-                (WPARAM)msg->u.key_up.key_code,
-                0,
-                SMTO_BLOCK,
-                500,
-                &block);
-            return block;
+            return g_engine->OnKeyboard(true, msg->u.key_up.key_code);
     }
-
     return 0;
 }
-
-#pragma managed
 
 /* Called by Razor once it's main window initializes */
 int InstallLibrary(IntPtr razorWindow);
@@ -440,7 +380,7 @@ String ^
         return msclr::interop::marshal_as<String ^>(g_plugin->ClientVersionText);
     }
 
-    ref class RazorThread
+ref class RazorThread
 {
 public:
     static ManualResetEventSlim ^ sync;
@@ -466,8 +406,8 @@ public:
         ClientCommunication::UOClient::GetUOClientVersion =
             gcnew ClientCommunication::UOClient::GetUOClientVersionDelegate(GetUOClientVersion);
 
-        Engine ^ e = gcnew Engine();
-        e->Run(msclr::interop::marshal_as<String ^>(g_plugin->ClientPath));
+        g_engine = gcnew Engine();
+        g_engine->Run(msclr::interop::marshal_as<String ^>(g_plugin->ClientPath));
     }
 };
 

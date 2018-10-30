@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Ultima;
 
 namespace Assistant
@@ -29,7 +28,7 @@ namespace Assistant
 
 		public static int Parse( string name )
 		{
-			if ( name == null || name == "" )
+			if ( string.IsNullOrEmpty(name) )
 				return 0;
 
 			name = name.ToLower();

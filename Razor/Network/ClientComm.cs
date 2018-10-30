@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
@@ -13,31 +13,38 @@ namespace Assistant
 {
 	public class FeatureBit
 	{
-		public static readonly uint WeatherFilter	=  0;
-		public static readonly uint LightFilter		=  1;
-		public static readonly uint SmartLT			=  2;
-		public static readonly uint RangeCheckLT	=  3;
-		public static readonly uint UnequipBeforeCast= 5;
-		public static readonly uint AutoPotionEquip	=  6;
-		public static readonly uint BlockHealPoisoned= 7;
-		public static readonly uint LoopingMacros	=  8; // includes fors and macros running macros
-		public static readonly uint UseOnceAgent	=  9;
-		public static readonly uint RestockAgent	= 10;
-		public static readonly uint SellAgent		= 11;
-		public static readonly uint BuyAgent		= 12;
-		public static readonly uint PotionHotkeys	= 13;
-		public static readonly uint RandomTargets	= 14;
-		public static readonly uint ClosestTargets	= 15;
-		public static readonly uint OverheadHealth	= 16;
+		public static readonly ulong WeatherFilter	    = 0;
+		public static readonly ulong LightFilter	    = 1;
+		public static readonly ulong SmartLT		    = 2;	
+		public static readonly ulong RangeCheckLT	    = 3;
+		public static readonly ulong AutoOpenDoors	    = 4;
+		public static readonly ulong UnequipBeforeCast  = 5;
+		public static readonly ulong AutoPotionEquip	= 6;
+		public static readonly ulong BlockHealPoisoned  = 7;
+		public static readonly ulong LoopingMacros	    = 8; // includes fors and macros running macros
+		public static readonly ulong UseOnceAgent   	= 9;
+		public static readonly ulong RestockAgent   	= 10;
+		public static readonly ulong SellAgent		    = 11;
+		public static readonly ulong BuyAgent		    = 12;
+		public static readonly ulong PotionHotkeys	    = 13;
+		public static readonly ulong RandomTargets	    = 14;
+		public static readonly ulong ClosestTargets 	= 15;
+		public static readonly ulong OverheadHealth 	= 16;
+        public static readonly ulong AutoLootAgent      = 17;
+        public static readonly ulong BoneCutterAgent    = 18;
+        public static readonly ulong JScriptMacros      = 19;
+        public static readonly ulong AutoRemount        = 20;
+        public static readonly ulong AutoBandage        = 21;
+        public static readonly ulong EnemyTargetShare   = 22;
+        public static readonly ulong FilterSeason       = 23;
+        public static readonly ulong SpellTargetShare   = 24;
 
-		public static readonly uint MaxBit			= 16;
+        public static readonly ulong MaxBit			    = 24;
 	}
 
     public unsafe sealed class ClientCommunication
     {
-        public const int WM_USER = 0x400;
-
-        public enum UOMSG_MOUSE_BUTTON
+        /*public enum UOMSG_MOUSE_BUTTON
         {
             MOUSE_BUTTON_MID = 0,
             MOUSE_BUTTON_XTRA1,
@@ -62,19 +69,10 @@ namespace Assistant
             KEYDOWN,
             KEYUP,
 
-            Last = KEYUP,
+            Last = KEYUP
         }
 
-		private enum ASSISTANTMSG_TYPE
-		{
-			RECV = WM_USER + 760,
-			SEND,
-			CAST_SPELL,
-			ATTACK,
-			TITLEBAR,
-		};
-
-		public struct UOMSG_PACKET
+        public struct UOMSG_PACKET
         {
             public byte[] packet;
             public int sz;
@@ -91,7 +89,16 @@ namespace Assistant
             public uint y;
             public uint z;
             public uint dir;
-        }
+        }*/
+        public const int WM_USER = 0x400;
+        private enum ASSISTANTMSG_TYPE
+		{
+			RECV = WM_USER + 760,
+			SEND,
+			CAST_SPELL,
+			ATTACK,
+			TITLEBAR,
+		};
 
         public static class UOClient
         {
@@ -116,44 +123,16 @@ namespace Assistant
             public static GetUOClientVersionDelegate GetUOClientVersion;
         }
 
-        [DllImport("msvcrt.dll", SetLastError = false)]
-        static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
-
         [DllImport("user32.dll")]
-        internal static extern bool SetForegroundWindow(IntPtr hWnd);
-
-		[DllImport("user32.dll")]
-		private static extern uint SendMessage(IntPtr hWnd, uint msg, int wparam, IntPtr lparam);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LoadLibrary(string path);
-        [DllImport("kernel32.dll")]
-        private static extern bool FreeLibrary(IntPtr hModule);
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
-
-        [DllImport("Advapi32.dll")]
-        private static extern int GetUserNameA(StringBuilder buff, int* len);
-
-        public static string GetWindowsUserName()
-        {
-            int len = 1024;
-            StringBuilder sb = new StringBuilder(len);
-            if (GetUserNameA(sb, &len) != 0)
-                return sb.ToString();
-            else
-                return "";
-        }
+        private static extern uint SendMessage(IntPtr hWnd, uint Msg, int wParam, IntPtr lParam);
 
         public static bool IsCalibrated() { return true; }
 
-        public static void DoFeatures(int features) { }
+        //public static void DoFeatures(int features) { }
 
-        public static bool AllowBit(uint bit) { return true; }
+        //internal static void SetAllowDisconn(bool allowed) { }
 
-        internal static void SetAllowDisconn(bool allowed) { }
-
-        public static int HandleNegotiate(ulong word) { return 1; }
+        //public static int HandleNegotiate(ulong word) { return 1; }
 
         internal static string GetUOVersion() { return "7.0.15.1"; }
 
@@ -189,11 +168,7 @@ namespace Assistant
 
         public static void SetCustomNotoHue(int hue) { }
 
-        private static DateTime m_ConnStart;
-        public static DateTime ConnectionStart { get { return m_ConnStart; } }
-
-        private static IPAddress m_LastConnection;
-        public static IPAddress LastConnection { get { return m_LastConnection; } }
+        public static DateTime ConnectionStart { get; internal set; }
 
         internal static bool ClientEncrypted { get { return false; } }
         internal static bool ServerEncrypted { get { return false; } }
@@ -210,13 +185,15 @@ namespace Assistant
         public static void SetNegotiate(bool negotiate) { }
 
         private static Timer m_TBTimer;
-        public static void RequestTitlebarUpdate()
+        public static void RequestTitlebarUpdate(bool force = false)
         {
             if (m_TBTimer == null)
                 m_TBTimer = new TitleBarThrottle();
 
             if (!m_TBTimer.Running)
                 m_TBTimer.Start();
+            else if (force)
+                UpdateTitleBar();
         }
 
         private class TitleBarThrottle : Timer
@@ -311,19 +288,19 @@ namespace Assistant
                     sb.Replace(@"{stealthsteps}", "-");
 
                 string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
-					 (int)(p.GetStatusCode()),
-					 (int)(World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99),
-					 (int)(World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99),
-					 (int)(World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99));
+                    (int)(p.GetStatusCode()),
+                    (int)(World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99),
+                    (int)(World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99),
+                    (int)(World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99));
 
                 sb.Replace(@"{statbar}", String.Format("~SR{0}", statStr));
                 sb.Replace(@"{mediumstatbar}", String.Format("~SL{0}", statStr));
                 sb.Replace(@"{largestatbar}", String.Format("~SX{0}", statStr));
 
                 bool dispImg = Config.GetBool("TitlebarImages");
-                for (int i = 0; i<Counter.List.Count; i++)
+                for (int i = 0; i < Counter.List.Count; i++)
                 {
-                    Counter c = (Counter)Counter.List[i];
+                    Counter c = Counter.List[i];
                     if (c.Enabled)
                         sb.Replace(String.Format("{{{0}}}", c.Format), c.GetTitlebarString(dispImg && c.DisplayImage));
                 }
@@ -357,8 +334,9 @@ namespace Assistant
                 Marshal.Copy(copy, 0, m_TitleData, clen);
             }
 
-            bool active = Config.GetBool("TitleBarDisplay") && clen > 1;
-            SendMessage(FindUOWindow(), (uint)ASSISTANTMSG_TYPE.TITLEBAR, active? clen : 0, active? m_TitleData : IntPtr.Zero);
+            bool active = Config.GetBool("TitleBarDisplay") && clen>1;
+            SendMessage(FindUOWindow(), (uint)ASSISTANTMSG_TYPE.TITLEBAR, active ? clen : 0, active ? m_TitleData : IntPtr.Zero);
+            //PostMessage(FindUOWindow(), WM_CUSTOMTITLE, IntPtr.Zero, IntPtr.Zero);
         }
 
         public static string EncodeColorStat(int val, int max)
@@ -373,8 +351,7 @@ namespace Assistant
                 return val.ToString();
         }
 
-
-		public static int GetZ(int x, int y, int z) { return World.Player.Position.Z; }
+        public static int GetZ(int x, int y, int z) { return World.Player.Position.Z; }
 
         public static void BeginCalibratePosition() { }
 
@@ -399,20 +376,11 @@ namespace Assistant
 			Config.Save();
 		}
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct PositionData
+        /*internal static int OnMessage(UOMSG_TYPE msg, IntPtr wParam, IntPtr lParam)
         {
-            public UInt16 X;
-            public UInt16 Y;
-            public byte Z;
-            public byte Direction;
-        }
-
-        internal static int OnMessage(UOMSG_TYPE msg, IntPtr wParam, IntPtr lParam) {
-
             int block = 0;
-
-            switch (msg) {
+            switch (msg)
+            {
                 case UOMSG_TYPE.SET_SERVER_NAME:
                     break;
                 case UOMSG_TYPE.SET_PLAYER_NAME:
@@ -433,7 +401,7 @@ namespace Assistant
                     break;
                 case UOMSG_TYPE.CLOSE:
                     OnLogout();
-                    Engine.MainWindow.Close();
+                    Engine.MainWindow.OnClientClose();
                     break;
                 case UOMSG_TYPE.DISCONNECT:
                     OnLogout(false);
@@ -454,7 +422,7 @@ namespace Assistant
             }
 
             return block;
-        }
+        }*/
 
         internal static IntPtr FindUOWindow()
         {
@@ -502,14 +470,14 @@ namespace Assistant
             UOClient.Attack(serial);
         }
 
-        private static bool OnRecv(byte *packet, int len)
+        internal static bool OnRecv(byte *packet, int len)
 		{
             PacketReader p = new PacketReader(packet, len, UOClient.IsDynLength(packet[0]));
 
             return PacketHandler.OnServerPacket(p);
         }
 
-        private static bool OnSend(byte* packet, int len)
+        internal static bool OnSend(byte* packet, int len)
 		{
             PacketReader p = new PacketReader(packet, len, UOClient.IsDynLength(packet[0]));
 

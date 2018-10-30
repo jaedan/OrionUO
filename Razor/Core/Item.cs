@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -60,7 +60,7 @@ namespace Assistant
 		private object m_Parent;
 		private int m_Price;
 		private string m_BuyDesc;
-		private ArrayList m_Items;
+		private List<Item> m_Items;
 
 		private bool m_IsNew;
 		private bool m_AutoStack;
@@ -70,7 +70,7 @@ namespace Assistant
 
 		private byte m_GridNum;
 
-		public override void SaveState( BinaryWriter writer )
+		/*public override void SaveState( BinaryWriter writer )
 		{
 			base.SaveState (writer);
 
@@ -79,7 +79,7 @@ namespace Assistant
 			writer.Write( m_Direction );
 			writer.Write( (byte)GetPacketFlags() );
 			writer.Write( (byte)m_Layer );
-			writer.Write( m_Name == null ? "" : m_Name );
+			writer.Write(m_Name ?? "");
 			if ( m_Parent is UOEntity )
 				writer.Write( (uint)((UOEntity)m_Parent).Serial );
 			else if ( m_Parent is Serial )
@@ -87,10 +87,9 @@ namespace Assistant
 			else
 				writer.Write( (uint) 0 );
 
-			//writer.Write( m_Items.Count );
-			//for(int i=0;i<m_Items.Count;i++)
-			//	writer.Write( (uint)((Item)m_Items[i]).Serial );
-			writer.Write( (int) 0 );
+			writer.Write( m_Items.Count );
+			for(int i=0;i<m_Items.Count;i++)
+				writer.Write( (uint)m_Items[i].Serial );
 
 			if ( m_HouseRev != 0 && m_HousePacket == null )
 				MakeHousePacket();
@@ -121,9 +120,9 @@ namespace Assistant
 				m_Parent = null;
 
 			int count = reader.ReadInt32();
-			m_Items = new ArrayList( count );
+			Serial.Serials = new List<Serial>( count );
 			for(int i=0;i<count;i++)
-				m_Items.Add( (Serial)reader.ReadUInt32() );
+                Serial.Serials.Add(reader.ReadUInt32());
 
 			if ( version > 2 )
 			{
@@ -143,26 +142,28 @@ namespace Assistant
 
 		public override void AfterLoad()
 		{
-			for(int i=0;i<m_Items.Count;i++)
+            m_Items = new List<Item>();
+            for (int i=0;i< Serial.Serials.Count; i++)
 			{
-				if ( m_Items[i] is Serial )
+                Serial s = Serial.Serials[i];
+                if ( s.IsItem )
 				{
-					m_Items[i] = World.FindItem( (Serial)m_Items[i] );
+					Item item = World.FindItem( s );
 
-					if ( m_Items[i] == null )
-					{
-						m_Items.RemoveAt( i );
-						i--;
-					}
-				}
+                    if (item != null)
+                    {
+                        m_Items[i] = item;
+                    }
+                    Serial.Serials.RemoveAt(i);
+                    i--;
+                }
 			}
-
 			UpdateContainer();
-		}
+		}*/
 
 		public Item( Serial serial ) : base( serial )
 		{
-			m_Items = new ArrayList();
+			m_Items = new List<Item>();
 
 			m_Visible = true;
 			m_Movable = true;
@@ -204,7 +205,7 @@ namespace Assistant
 		{
 			get
 			{
-				if ( m_Name != null && m_Name != "" )
+				if ( !string.IsNullOrEmpty(m_Name) )
 				{
 					return  m_Name;
 				}
@@ -249,9 +250,10 @@ namespace Assistant
 
 		public Item FindItemByID( ItemID id, bool recurse )
 		{
-			for (int i=0;i<m_Items.Count;i++)
+            int count = m_Items.Count;
+			for (int i=0;i<count;i++)
 			{
-				Item item = (Item)m_Items[i];
+				Item item = m_Items[i];
 				if ( item.ItemID == id )
 				{
 					return item;
@@ -268,19 +270,20 @@ namespace Assistant
 
 		public int GetCount( ushort iid )
 		{
-			int count = 0;
-			for (int i=0;i<m_Items.Count;i++)
+			int amount = 0;
+            int count = m_Items.Count;
+			for (int i=0;i<count;i++)
 			{
-				Item item = (Item)m_Items[i];
+				Item item = m_Items[i];
 				if ( item.ItemID == iid )
-					count += item.Amount;
+					amount += item.Amount;
 				// fucking osi blank scrolls
 				else if ( ( item.ItemID == 0x0E34 && iid == 0x0EF3 ) || ( item.ItemID == 0x0EF3 && iid == 0x0E34 ) )
-					count += item.Amount;
-				count += item.GetCount( iid );
+					amount += item.Amount;
+				amount += item.GetCount( iid );
 			}
 
-			return count;
+			return amount;
 		}
 		
 		public object Container
@@ -360,7 +363,7 @@ namespace Assistant
 
 						for (int c=0;c<Contains.Count;c++)
 						{
-							Item icheck = (Item)Contains[c];
+							Item icheck = Contains[c];
 							if ( icheck.IsContainer && !SearchExemptionAgent.IsExempt( icheck ) && ( !icheck.IsPouch || !Config.GetBool( "NoSearchPouches" ) ) )
 							{
 								PacketHandlers.IgnoreGumps.Add( icheck );
@@ -375,20 +378,20 @@ namespace Assistant
 			return true;
 		}
 
-		private static ArrayList m_NeedContUpdate = new ArrayList();
+		private static List<Item> m_NeedContUpdate = new List<Item>();
 		public static void UpdateContainers()
 		{
 			int i = 0;
 			while ( i < m_NeedContUpdate.Count )
 			{
-				if ( ((Item)m_NeedContUpdate[i]).UpdateContainer() )
+				if (m_NeedContUpdate[i].UpdateContainer() )
 					m_NeedContUpdate.RemoveAt( i );
 				else
 					i++;
 			}
 		}
 
-		private static ArrayList m_AutoStackCache = new ArrayList();
+		private static List<Serial> m_AutoStackCache = new List<Serial>();
 		public void AutoStackResource()
 		{
 			if ( !IsResource || !Config.GetBool( "AutoStack" ) || m_AutoStackCache.Contains( Serial ) )
@@ -535,10 +538,10 @@ namespace Assistant
 			if ( IsMulti )
 				ClientCommunication.PostRemoveMulti( this );
 
-			ArrayList rem = new ArrayList( m_Items );
+			List<Item> rem = new List<Item>( m_Items );
 			m_Items.Clear();
 			for (int i=0;i<rem.Count;i++)
-				((Item)rem[i]).Remove();
+				rem[i].Remove();
 			
 			Counter.Uncount( this );
 
@@ -561,7 +564,7 @@ namespace Assistant
 			base.OnPositionChanging ( newPos );
 		}
 
-		public ArrayList Contains{ get{ return m_Items; } }
+		public List<Item> Contains{ get{ return m_Items; } }
 
 		// possibly 4 bit x/y - 16x16?
 		public byte GridNum
@@ -738,7 +741,7 @@ namespace Assistant
 				//"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.Player.Name );
 				//"Desktop/{0}/Multicache.dat", World.AccountName );
 				string path = Ultima.Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName));
-				if ( path == null || path == "" || !File.Exists( path ) )
+				if ( string.IsNullOrEmpty(path) || !File.Exists( path ) )
 					return;
 
 				using ( StreamReader reader = new StreamReader( new FileStream( path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) ) )
@@ -773,12 +776,13 @@ namespace Assistant
 							{
 								split = line.Split( ' ', '\t' );
 
-								tiles[count] = new MultiTileEntry();
-								tiles[count].m_ItemID = (ushort)Utility.ToInt32( split[0], 0 );
-								tiles[count].m_OffsetX = (short)(Utility.ToInt32( split[1], 0 ) + mcl.Center.X);
-								tiles[count].m_OffsetX = (short)(Utility.ToInt32( split[2], 0 ) + mcl.Center.Y);
-								tiles[count].m_OffsetX = (short)Utility.ToInt32( split[3], 0 );
-
+                                tiles[count] = new MultiTileEntry()
+                                {
+                                    m_ItemID = (ushort)Utility.ToInt32(split[0], 0),
+                                    m_OffsetX = (short)(Utility.ToInt32(split[1], 0) + mcl.Center.X),
+                                    m_OffsetY = (short)(Utility.ToInt32(split[2], 0) + mcl.Center.Y),
+                                    m_OffsetZ = (short)Utility.ToInt32(split[3], 0)
+                                };
 								count++;
 							}
 

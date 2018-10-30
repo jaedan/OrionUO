@@ -562,6 +562,8 @@ LRESULT COrionWindow::OnUserMessages(int message, const WPARAM &wParam, const LP
             }
             if (TitleActive && OldTitlePresent && ::SetWindowTextW(Handle, L""))
                 OldTitlePresent = false;
+            else if (!TitleActive && !OldTitlePresent && g_Player != NULL)
+                g_Player->SetName(g_Player->GetName(), true);
             RedrawTitleBar();
             break;
         }

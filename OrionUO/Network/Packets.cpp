@@ -513,7 +513,7 @@ CPacketGumpResponse::CPacketGumpResponse(CGumpGeneric *gump, int code)
             CGUITextEntry *entry = (CGUITextEntry *)item;
 
             WriteUInt16BE(entry->Serial - 1);
-            size_t len = entry->m_Entry.Length();
+            size_t len = min(entry->m_Entry.Length(), MAX_TEXTENTRY_LENGTH);
             WriteUInt16BE((ushort)len);
             WriteWString(entry->m_Entry.Data(), len, true, false);
         }

@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
@@ -8,7 +8,7 @@ namespace Assistant.Macros
 {	
 	public class MacroManager
 	{
-		private static ArrayList m_List;
+		private static List<Macro> m_MacroList;
 		private static Macro m_Current, m_PrevPlay;
 		private static MacroTimer m_Timer;
 
@@ -25,18 +25,18 @@ namespace Assistant.Macros
 
 		static MacroManager()
 		{
-			m_List = new ArrayList();
-			m_Timer = new MacroTimer();
-		}
+			m_MacroList = new List<Macro>();
+            m_Timer = new MacroTimer();
+        }
 
 		public static void Save()
 		{
             Engine.EnsureDirectory(Config.GetUserDirectory("Macros"));
-			for(int i=0;i<m_List.Count;i++)
-				((Macro)m_List[i]).Save();
+			for(int i=0;i< m_MacroList.Count;i++)
+				m_MacroList[i].Save();
 		}
-		
-		public static ArrayList List{ get{ return m_List; } }
+
+		public static List<Macro> List { get{ return m_MacroList; } }
 		public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
 		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
 		public static Macro Current{ get{ return m_Current; } }
@@ -46,13 +46,13 @@ namespace Assistant.Macros
 		public static void Add( Macro m )
 		{
 			HotKey.Add( HKCategory.Macros, HKSubCat.None, Language.Format( LocString.PlayA1, m ), new HotKeyCallbackState( HotKeyPlay ), m );
-			m_List.Add( m );
+			m_MacroList.Add( m );
 		}
 
 		public static void Remove( Macro m )
 		{
 			HotKey.Remove( Language.Format( LocString.PlayA1, m ) );
-			m_List.Remove( m );
+			m_MacroList.Remove( m );
 		}
 
 		public static void RecordAt( Macro m, int at )
@@ -188,9 +188,9 @@ namespace Assistant.Macros
 				for (int i=0;i<macros.Length;i++)
 				{ 
 					Macro m = null;
-					for(int j=0;j<m_List.Count;j++)
+					for(int j=0;j<m_MacroList.Count;j++)
 					{
-						Macro check = (Macro)m_List[j];
+						Macro check = m_MacroList[j];
 
 						if ( check.Filename == macros[i] )
 						{
@@ -204,9 +204,11 @@ namespace Assistant.Macros
 
 					if ( nodes != null )
 					{
-						TreeNode node = new TreeNode( Path.GetFileNameWithoutExtension( m.Filename ) );
-						node.Tag = m;
-						nodes.Add( node );
+                        TreeNode node = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename))
+                        {
+                            Tag = m
+                        };
+                        nodes.Add( node );
 					}
 				}
 			}
@@ -223,9 +225,11 @@ namespace Assistant.Macros
 					{
 						if ( nodes != null )
 						{
-							TreeNode node = new TreeNode( String.Format( "[{0}]", Path.GetFileName( dirs[i] ) ) );
-							node.Tag = dirs[i];
-							nodes.Add( node );
+                            TreeNode node = new TreeNode(String.Format("[{0}]", Path.GetFileName(dirs[i])))
+                            {
+                                Tag = dirs[i]
+                            };
+                            nodes.Add( node );
 							Recurse( node.Nodes, dirs[i] );
 						}
 						else

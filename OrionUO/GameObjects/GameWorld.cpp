@@ -51,16 +51,16 @@ void CGameWorld::ProcessSound(int ticks, CGameCharacter *gc)
                 if (gc->m_Steps.back().run)
                 {
                     soundID = 0x0129;
-                    delaySound = 150;
+                    delaySound = 175;
                 }
                 else
                 {
                     incID = 0;
-                    delaySound = 350;
+                    delaySound = 400;
                 }
             }
 
-            delaySound = delaySound * 13 / 10;
+            //delaySound = delaySound * 13 / 10;
 
             soundID += incID;
             gc->StepSoundOffset = (incID + 1) % 2;
@@ -1125,7 +1125,7 @@ void CGameWorld::UpdatePlayer(
 
         g_Player->GetEndPosition(endX, endY, endZ, endDir);
 
-        if (endX == x && endY == y)
+        if (endX == x && endY == y && endZ == z)
         {
             /* The player was moving toward this location anyway. */
             if (endDir != dir)
@@ -1144,9 +1144,8 @@ void CGameWorld::UpdatePlayer(
                 y,
                 z,
                 dir);
-
-            g_Player->ForcePosition(x, y, z, dir);
             g_Player->CloseBank();
+			g_Player->ForcePosition(x, y, z, dir);
 
             g_RemoveRangeXY.X = x;
             g_RemoveRangeXY.Y = y;

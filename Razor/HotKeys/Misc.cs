@@ -141,7 +141,7 @@ namespace Assistant.HotKeys
 		{
 			for (int i=0;i<cont.Contains.Count;i++)
 			{
-				Item item = (Item)cont.Contains[i];
+				Item item = cont.Contains[i];
 
 				if ( item.ItemID == 12248 && item.Hue == 1160 )
 				{
@@ -172,9 +172,16 @@ namespace Assistant.HotKeys
 			Item pack = World.Player.Backpack;
 			if ( pack == null )
 				return;
-
-			ushort id = (ushort)state;
-			if ( id == 3852 && World.Player.Poisoned && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+            ushort id;
+            ushort color = ushort.MaxValue;
+            if (state is object[] states)
+            {
+                id = (ushort)states[0];
+                color = (ushort)states[1];
+            }
+            else
+                id = (ushort)state;
+            if ( id == 3852 && World.Player.Poisoned && Config.GetBool( "BlockHealPoison" ) )//&& ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				World.Player.SendMessage( MsgLevel.Force, LocString.HealPoisonBlocked );
 				return;
@@ -196,14 +203,19 @@ namespace Assistant.HotKeys
 
 		private static bool UseItem( Item cont, ushort find )
 		{
-			if ( !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) )
-				return false;
+            return UseItem(cont, find, ushort.MaxValue);
+        }
+
+        private static bool UseItem( Item cont, ushort find, ushort hue )
+		{
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) )
+				return false;*/
 
 			for (int i=0;i<cont.Contains.Count;i++)
 			{
-				Item item = (Item)cont.Contains[i];
+				Item item = cont.Contains[i];
 
-				if ( item.ItemID == find )
+				if ( item.ItemID == find && (hue==ushort.MaxValue || hue==item.Hue))
 				{
 					PlayerData.DoubleClick( item );
 					return true;

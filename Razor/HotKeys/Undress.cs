@@ -120,7 +120,7 @@ namespace Assistant.HotKeys
 		{
 			for ( int i=0;i<World.Player.Contains.Count;i++ )
 			{
-				Item item = (Item)World.Player.Contains[i];
+				Item item = World.Player.Contains[i];
 				if ( item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair )
 				{
 					Item pack = DressList.FindUndressBag( item );

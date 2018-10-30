@@ -1,18 +1,20 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Runtime.InteropServices;
 using Assistant.Filters;
 using Assistant.Macros;
 
 namespace Assistant
 {
-	public class MainForm : System.Windows.Forms.Form
+    public class MainForm : System.Windows.Forms.Form
 	{
 		#region Class Variables
 		private System.Windows.Forms.NotifyIcon m_NotifyIcon;
@@ -166,7 +168,7 @@ namespace Assistant
 		private System.Windows.Forms.TextBox warnNum;
 		private System.Windows.Forms.CheckBox warnCount;
 		private System.Windows.Forms.CheckBox blockHealPoison;
-		private System.Windows.Forms.CheckBox negotiate;
+		//private System.Windows.Forms.CheckBox negotiate;
 		private System.Windows.Forms.Button btnMap;
 		private System.Windows.Forms.CheckBox showNotoHue;
 		private System.Windows.Forms.CheckBox showHealthOH;
@@ -185,6 +187,7 @@ namespace Assistant
 
 		public MainForm()
 		{
+            Control.CheckForIllegalCrossThreadCalls = false;
 			m_ProfileConfirmLoad = true;
 			m_Tip = new ToolTip();
 			//
@@ -245,7 +248,7 @@ namespace Assistant
             this.filters = new System.Windows.Forms.CheckedListBox();
             this.opacityLabel = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
-            this.negotiate = new System.Windows.Forms.CheckBox();
+            //this.negotiate = new System.Windows.Forms.CheckBox();
             this.setLTHilight = new System.Windows.Forms.Button();
             this.lthilight = new System.Windows.Forms.CheckBox();
             this.filterSnoop = new System.Windows.Forms.CheckBox();
@@ -567,7 +570,7 @@ namespace Assistant
             // 
             // moreOptTab
             // 
-            this.moreOptTab.Controls.Add(this.negotiate);
+            //this.moreOptTab.Controls.Add(this.negotiate);
             this.moreOptTab.Controls.Add(this.setLTHilight);
             this.moreOptTab.Controls.Add(this.lthilight);
             this.moreOptTab.Controls.Add(this.filterSnoop);
@@ -605,12 +608,12 @@ namespace Assistant
             // 
             // negotiate
             // 
-            this.negotiate.Location = new System.Drawing.Point(184, 166);
+            /*this.negotiate.Location = new System.Drawing.Point(184, 166);
             this.negotiate.Name = "negotiate";
             this.negotiate.Size = new System.Drawing.Size(224, 20);
             this.negotiate.TabIndex = 56;
             this.negotiate.Text = "Negotiate features with server";
-            this.negotiate.CheckedChanged += new System.EventHandler(this.negotiate_CheckedChanged);
+            this.negotiate.CheckedChanged += new System.EventHandler(this.negotiate_CheckedChanged);*/
             // 
             // setLTHilight
             // 
@@ -1932,7 +1935,7 @@ namespace Assistant
 		}
 		#endregion
 
-		protected override void WndProc( ref Message msg )
+		/*protected override void WndProc( ref Message msg )
 		{
             if (msg.Msg >= (int)ClientCommunication.UOMSG_TYPE.First && msg.Msg <= (int)ClientCommunication.UOMSG_TYPE.Last)
             {
@@ -1942,7 +1945,7 @@ namespace Assistant
             {
                 base.WndProc(ref msg);
             }
-        }
+        }*/
 
 		private void DisableCloseButton()
 		{
@@ -1989,11 +1992,8 @@ namespace Assistant
             m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 		}
 		
-		private bool m_Initializing = false;
 		public void InitConfig()
 		{
-			m_Initializing = true;
-			
 			this.opacity.AutoSize = false;
 			//this.opacity.Size = new System.Drawing.Size(156, 16);
 
@@ -2001,7 +2001,7 @@ namespace Assistant
 			this.Opacity = ((float)opacity.Value) / 100.0;
 			opacityLabel.Text = Language.Format( LocString.OpacityA1, opacity.Value );
 
-			this.TopMost = alwaysTop.Checked = Config.GetBool( "AlwaysOnTop" );
+            this.TopMost = alwaysTop.Checked = Config.GetBool( "AlwaysOnTop" );
 			this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
 			this.TopLevel = true;
 
@@ -2105,7 +2105,7 @@ namespace Assistant
 			potionEquip.Checked = Config.GetBool( "PotionEquip" );
 			blockHealPoison.Checked = Config.GetBool( "BlockHealPoison" );
 
-			negotiate.Checked = Config.GetBool( "Negotiate" );
+			//negotiate.Checked = Config.GetBool( "Negotiate" );
 
 			healthFmt.Enabled = showHealthOH.Checked = Config.GetBool( "ShowHealth" );
 			healthFmt.Text = Config.GetString( "HealthFmt" );
@@ -2113,8 +2113,6 @@ namespace Assistant
 
 			dressList.SelectedIndex = -1;
 			hotkeyTree.SelectedNode = null;
-
-			m_Initializing = false;
 		}
 
 		private void tabs_IndexChanged(object sender, System.EventArgs e)
@@ -2223,9 +2221,11 @@ namespace Assistant
 					items[4] = String.Format( "{0:F1}", sk.Cap );
 					items[5] = sk.Lock.ToString()[0].ToString();
 
-					ListViewItem lvi = new ListViewItem( items );
-					lvi.Tag = sk;
-					skillList.Items.Add( lvi );
+                    ListViewItem lvi = new ListViewItem(items)
+                    {
+                        Tag = sk
+                    };
+                    skillList.Items.Add( lvi );
 				}
 
 				//Config.SetProperty( "SkillListAsc", false );
@@ -2431,24 +2431,22 @@ namespace Assistant
 			if ( counters.SelectedItems.Count <= 0 )
 				return;
 
-			Counter c = counters.SelectedItems[0].Tag as Counter;
+            if (counters.SelectedItems[0].Tag is Counter c)
+            {
+                AddCounter ac = new AddCounter(c);
+                switch (ac.ShowDialog(this))
+                {
+                    case DialogResult.Abort:
+                        counters.Items.Remove(c.ViewItem);
+                        Counter.List.Remove(c);
+                        break;
 
-			if ( c != null )
-			{
-				AddCounter ac = new AddCounter( c );
-				switch ( ac.ShowDialog( this ) )
-				{
-					case DialogResult.Abort:
-						counters.Items.Remove( c.ViewItem );
-						Counter.List.Remove( c );
-						break;
-
-					case DialogResult.OK:
-						c.Set( (ushort)ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage );
-						break;
-				}
-			}
-		}
+                    case DialogResult.OK:
+                        c.Set((ushort)ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage);
+                        break;
+                }
+            }
+        }
 
 		private void addCounter_Click(object sender, System.EventArgs e)
 		{
@@ -2465,14 +2463,14 @@ namespace Assistant
 		{
 			titleStr.Enabled = showInBar.Checked;
 			Config.SetProperty( "TitleBarDisplay", showInBar.Checked );
-			ClientCommunication.RequestTitlebarUpdate();
+			ClientCommunication.RequestTitlebarUpdate(true);
 		}
 
 		private void titleStr_TextChanged(object sender, System.EventArgs e)
 		{
 			Config.SetProperty( "TitleBarText", titleStr.Text.TrimEnd() );
 			if ( Config.GetBool( "TitleBarDisplay" ) )
-				ClientCommunication.RequestTitlebarUpdate();
+				ClientCommunication.RequestTitlebarUpdate(true);
 		}
 
 		private void counters_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
@@ -2701,7 +2699,7 @@ namespace Assistant
 			}
 
 			if ( sb.Length > 0 )
-				Clipboard.SetDataObject( sb.ToString(), true );
+				Utility.ClipboardSetDataObject( sb.ToString(), true );
 		}
 
 		private void skillCopyAll_Click(object sender, System.EventArgs e)
@@ -2717,7 +2715,7 @@ namespace Assistant
 			}
 
 			if ( sb.Length > 0 )
-				Clipboard.SetDataObject( sb.ToString(), true );
+				Utility.ClipboardSetDataObject( sb.ToString(), true );
 		}
 
 		private void addDress_Click(object sender, System.EventArgs e)
@@ -2876,21 +2874,20 @@ namespace Assistant
 			{
 				for (int i=0;i<list.Items.Count;i++)
 				{
-					if ( list.Items[i] is Serial )
-					{
-						Serial serial = (Serial)list.Items[i];
-						Item item = World.FindItem( serial );
+                    if (list.Items[i] is Serial serial)
+                    {
+                        Item item = World.FindItem(serial);
 
-						if ( item != null )
-							dressItems.Items.Add( item.ToString() );
-						else
-							dressItems.Items.Add( Language.Format( LocString.OutOfRangeA1, serial ) );
-					}
-					else if ( list.Items[i] is ItemID )
-					{
-						dressItems.Items.Add( list.Items[i].ToString() );
-					}
-				}
+                        if (item != null)
+                            dressItems.Items.Add(item.ToString());
+                        else
+                            dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                    }
+                    else if (list.Items[i] is ItemID)
+                    {
+                        dressItems.Items.Add(list.Items[i].ToString());
+                    }
+                }
 			}
 			dressItems.EndUpdate();
 		}
@@ -2905,7 +2902,7 @@ namespace Assistant
 
 			for ( int i=0;i<World.Player.Contains.Count;i++ )
 			{
-				Item item = (Item)World.Player.Contains[i];
+				Item item = World.Player.Contains[i];
 				if ( item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair )
 					list.Items.Add( item.Serial );
 			}
@@ -2959,7 +2956,7 @@ namespace Assistant
 			chkShift.Checked = (hk.Mod&ModKeys.Shift)!= 0;
 			chkPass.Checked = hk.SendToUO;
 
-			if ( ( hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) ) || 
+			/*if ( ( hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) ) || 
 				( hk.LocName >= (int)LocString.TargCloseRed && hk.LocName <= (int)LocString.TargCloseCriminal && !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) ) ||
 				( (( hk.LocName >= (int)LocString.TargRandRed && hk.LocName <= (int)LocString.TargRandNFriend ) ||
 				( hk.LocName >= (int)LocString.TargRandEnemyHuman && hk.LocName <= (int)LocString.TargRandCriminal)) && !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) ) )
@@ -2972,7 +2969,7 @@ namespace Assistant
 				LockControl( unsetHK );
 				LockControl( setHK );
 				LockControl( dohotkey );
-			}
+			}*/
 		}
 
 		private KeyData GetSelectedHK()
@@ -3292,12 +3289,12 @@ namespace Assistant
 		private void MainForm_Activated(object sender, System.EventArgs e)
 		{
 			DisableCloseButton();
-			//this.TopMost = true;
+			this.TopMost = true;
 		}
 
 		private void MainForm_Deactivate(object sender, System.EventArgs e)
 		{
-			if ( this.TopMost )
+			if ( !alwaysTop.Checked )
 				this.TopMost = false;
 		}
 
@@ -3352,8 +3349,7 @@ namespace Assistant
 		private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
 		{
 			Config.SetProperty( "ShowNotoHue", showNotoHue.Checked );
-			if ( showNotoHue.Checked )
-				ClientCommunication.RequestTitlebarUpdate();
+			ClientCommunication.RequestTitlebarUpdate(true);
 		}
 
 		private void recount_Click(object sender, System.EventArgs e)
@@ -3391,19 +3387,18 @@ namespace Assistant
 			if ( sel < 0 || sel >= list.Items.Count )
 				return;
 
-			if ( list.Items[sel] is Serial )
-			{
-				Serial s = (Serial)list.Items[sel];
-				Item item = World.FindItem( s );
-				if ( item != null )
-				{
-					list.Items[sel] = item.ItemID;
-					dressItems.BeginUpdate();
-					dressItems.Items[sel] = item.ItemID.ToString();
-					dressItems.EndUpdate();
-				}
-			}
-		}
+            if (list.Items[sel] is Serial s)
+            {
+                Item item = World.FindItem(s);
+                if (item != null)
+                {
+                    list.Items[sel] = item.ItemID;
+                    dressItems.BeginUpdate();
+                    dressItems.Items[sel] = item.ItemID.ToString();
+                    dressItems.EndUpdate();
+                }
+            }
+        }
 
 		private static char[] m_InvalidNameChars = new char[]{ '/', '\\', ';', '?', ':', '*' };
 		private void newMacro_Click(object sender, System.EventArgs e)
@@ -3437,9 +3432,11 @@ namespace Assistant
 
 				Macro m = new Macro( path );
 				MacroManager.Add( m );
-				TreeNode newNode = new TreeNode( Path.GetFileNameWithoutExtension( m.Filename ) );
-				newNode.Tag = m;
-				if ( node == null )
+                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename))
+                {
+                    Tag = m
+                };
+                if ( node == null )
 					macroTree.Nodes.Add( newNode );
 				else
 					node.Nodes.Add( newNode );
@@ -3563,7 +3560,7 @@ namespace Assistant
 				m_MacroContextMenu.MenuItems[1].Enabled = sel == null;
 				m_MacroContextMenu.MenuItems[2].Enabled = sel != null;
 
-				m_MacroContextMenu.Show( this, new Point( e.X, e.Y ) );
+				m_MacroContextMenu.Show( this, new Point( e.X + 10, e.Y ) );
 			}
 
 			//RedrawMacros();
@@ -3610,13 +3607,15 @@ namespace Assistant
 			}
 			catch
 			{
-				MessageBox.Show( this, Language.Format( LocString.CanCreateDir, path ), "Unabled to Create Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+				MessageBox.Show( this, Language.Format( LocString.CanCreateDir, path ), "Unable to Create Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 				return;
 			}
 
-			TreeNode newNode = new TreeNode( String.Format( "[{0}]", Path.GetFileName( path ) ) );
-			newNode.Tag = path;
-			if ( node == null )
+            TreeNode newNode = new TreeNode(String.Format("[{0}]", Path.GetFileName(path)))
+            {
+                Tag = path
+            };
+            if ( node == null )
 				macroTree.Nodes.Add( newNode );
 			else
 				node.Nodes.Add( newNode );
@@ -3973,7 +3972,7 @@ namespace Assistant
 		private void onMacroActionDelete(object sender, System.EventArgs e)
 		{
 			Macro m = GetMacroSel();;
-			if ( m == null )
+			if ( m == null || m.Actions.Count<=0 )
 				return;
 
 			int a = actionList.SelectedIndex;
@@ -4093,7 +4092,7 @@ namespace Assistant
 			// Fuck windows, seriously.
 
 			ClientCommunication.BringToFront( this.Handle );
-			if ( Config.GetBool( "AlwaysOnTop" ) )
+			if (alwaysTop.Checked)
 				this.TopMost = true;
 			if ( WindowState != FormWindowState.Normal )
 				WindowState = FormWindowState.Normal;
@@ -4151,22 +4150,21 @@ namespace Assistant
 
 		private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			string lang = langSel.SelectedItem as String;
-			if ( lang != null && lang != Language.Current )
-			{
-				if ( !Language.Load( lang ) )
-				{
-					MessageBox.Show( this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation );
-					langSel.SelectedItem = Language.Current;
-				}
-				else
-				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage", Language.Current );
-					Language.LoadControlNames( this );
-					HotKey.RebuildList( hotkeyTree );
-				}
-			}
-		}
+            if (langSel.SelectedItem is String lang && lang != Language.Current)
+            {
+                if (!Language.Load(lang))
+                {
+                    MessageBox.Show(this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    langSel.SelectedItem = Language.Current;
+                }
+                else
+                {
+                    Config.SetRegString(Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage", Language.Current);
+                    Language.LoadControlNames(this);
+                    HotKey.RebuildList(hotkeyTree);
+                }
+            }
+        }
 
 		private void tabs_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
@@ -4269,21 +4267,21 @@ namespace Assistant
 			Config.SetProperty( "BlockHealPoison", blockHealPoison.Checked );
 		}
 
-		private void negotiate_CheckedChanged(object sender, System.EventArgs e)
+		/*private void negotiate_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if ( !m_Initializing )
 			{
 				Config.SetProperty( "Negotiate", negotiate.Checked );
 				ClientCommunication.SetNegotiate( negotiate.Checked );
 			}
-		}
+		}*/
 
 		private void lockBox_Click(object sender, System.EventArgs e)
 		{
 			MessageBox.Show( this, Language.GetString( LocString.FeatureDisabledText ), Language.GetString( LocString.FeatureDisabled ), MessageBoxButtons.OK, MessageBoxIcon.Stop );
 		}
 
-		private ArrayList m_LockBoxes = new ArrayList();
+		private List<PictureBox> m_LockBoxes = new List<PictureBox>();
 
 		public void LockControl( Control locked )
 		{
@@ -4335,7 +4333,7 @@ namespace Assistant
 			{
 				for (int i=0;i<m_LockBoxes.Count;i++)
 				{
-					PictureBox box = m_LockBoxes[i] as PictureBox;
+					PictureBox box = m_LockBoxes[i];
 					if ( box == null )
 						continue;
 
@@ -4356,9 +4354,11 @@ namespace Assistant
 		{
 			OnMacroStop();
 
+			//features.Visible = false;
+
 			for (int i=0;i<m_LockBoxes.Count;i++)
 			{
-				PictureBox box = m_LockBoxes[i] as PictureBox;
+				PictureBox box = m_LockBoxes[i];
 				if ( box == null )
 					continue;
 
@@ -4373,7 +4373,7 @@ namespace Assistant
 		{
 			for (int i=0;i<m_LockBoxes.Count;i++)
 			{
-				PictureBox box = m_LockBoxes[i] as PictureBox;
+				PictureBox box = m_LockBoxes[i];
 				if ( box == null )
 					continue;
 
@@ -4383,7 +4383,7 @@ namespace Assistant
 			}
 			m_LockBoxes.Clear();
 				
-			if ( !ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+			/*if ( !ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 				LockControl( this.smartLT );
 
 			if ( !ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
@@ -4406,7 +4406,7 @@ namespace Assistant
 				LockControl( this.showHealthOH );
 				LockControl( this.healthFmt );
 				LockControl( this.chkPartyOverhead );
-			}
+			}*/
 		}
 
 		public Assistant.MapUO.MapWindow MapWindow;

@@ -2,20 +2,22 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Assistant.Macros;
 
 namespace Assistant
 {
 	public class PacketHandlers
 	{
-		private static ArrayList m_IgnoreGumps = new ArrayList();
-		public static ArrayList IgnoreGumps{ get{ return m_IgnoreGumps; } }
+		private static List<Item> m_IgnoreGumps = new List<Item>();
+		public static List<Item> IgnoreGumps{ get{ return m_IgnoreGumps; } }
 
 		public static void Initialize()
 		{
 			//Client -> Server handlers
 			PacketHandler.RegisterClientToServerViewer( 0x00, new PacketViewerCallback( CreateCharacter ) );
-			PacketHandler.RegisterClientToServerViewer( 0x06, new PacketViewerCallback( ClientDoubleClick ) );
+            //PacketHandler.RegisterClientToServerFilter( 0xAD, new PacketFilterCallback( Command.OnSpeech ) );
+            PacketHandler.RegisterClientToServerViewer( 0x06, new PacketViewerCallback( ClientDoubleClick ) );
 			PacketHandler.RegisterClientToServerViewer( 0x07, new PacketViewerCallback( LiftRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x08, new PacketViewerCallback( DropRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( ClientSingleClick ) );
@@ -29,8 +31,8 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0xA0, new PacketViewerCallback( PlayServer ) );
 			PacketHandler.RegisterClientToServerViewer( 0xB1, new PacketViewerCallback( ClientGumpResponse ) );
 			PacketHandler.RegisterClientToServerFilter( 0xBF, new PacketFilterCallback( ExtendedClientCommand ) );
-            PacketHandler.RegisterClientToServerViewer(0xD7, new PacketViewerCallback(ClientEncodedPacket));
-            PacketHandler.RegisterClientToServerViewer(0xF8, new PacketViewerCallback(CreateCharacter));
+            PacketHandler.RegisterClientToServerViewer( 0xD7, new PacketViewerCallback( ClientEncodedPacket ) );
+            PacketHandler.RegisterClientToServerViewer( 0xF8, new PacketViewerCallback( CreateCharacter ) );
 			
 			//Server -> Client handlers
 			PacketHandler.RegisterServerToClientViewer( 0x11, new PacketViewerCallback( MobileStatus ) );
@@ -49,7 +51,8 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0x3C, new PacketFilterCallback( ContainerContent ) );
 			PacketHandler.RegisterServerToClientViewer( 0x4E, new PacketViewerCallback( PersonalLight ) );	
 			PacketHandler.RegisterServerToClientViewer( 0x4F, new PacketViewerCallback( GlobalLight ) );
-			PacketHandler.RegisterServerToClientViewer( 0x72, new PacketViewerCallback( ServerSetWarMode ) );
+            PacketHandler.RegisterServerToClientViewer( 0x55, new PacketViewerCallback( LoginCompleted ));
+            PacketHandler.RegisterServerToClientViewer( 0x72, new PacketViewerCallback( ServerSetWarMode ) );
 			PacketHandler.RegisterServerToClientViewer( 0x73, new PacketViewerCallback( PingResponse ) );
 			PacketHandler.RegisterServerToClientViewer( 0x76, new PacketViewerCallback( ServerChange ) );
 			PacketHandler.RegisterServerToClientFilter( 0x77, new PacketFilterCallback( MobileMoving ) );
@@ -67,8 +70,8 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0xC1, new PacketFilterCallback( OnLocalizedMessage ) );
 			PacketHandler.RegisterServerToClientFilter( 0xC8, new PacketFilterCallback( SetUpdateRange ) );
 			PacketHandler.RegisterServerToClientFilter( 0xCC, new PacketFilterCallback( OnLocalizedMessageAffix ) );
-			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
-			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) );
+			//PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
+			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
             PacketHandler.RegisterServerToClientFilter(0xFC, new PacketFilterCallback(OrionInfo));
 
 			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
@@ -147,11 +150,10 @@ namespace Assistant
 
 					if ( ent != null && ent.ContextMenu != null && ent.ContextMenu.ContainsKey( idx ) )
 					{
-						ushort menu = (ushort)ent.ContextMenu[idx];
-
-						if ( menu != 0 && MacroManager.AcceptActions )
-							MacroManager.Action( new ContextMenuAction( ent, idx, menu ) );
-					}
+                        // = (ushort)ent.ContextMenu[idx];
+                        if (ent.ContextMenu.TryGetValue(idx, out ushort menu) && menu != 0 && MacroManager.AcceptActions)
+                            MacroManager.Action(new ContextMenuAction(ent, idx, menu));
+                    }
 					break;
 				}
 				case 0x1C:// cast spell
@@ -249,7 +251,7 @@ namespace Assistant
 			p.Seek( 1+4+4+1, SeekOrigin.Begin ); // skip begining crap
 			World.OrigPlayerName = p.ReadStringSafe( 30 );
 
-			PlayCharTime = DateTime.Now;
+			PlayCharTime = DateTime.UtcNow;
 
 			if ( Engine.MainWindow != null )
 				Engine.MainWindow.UpdateControlLocks();
@@ -260,7 +262,7 @@ namespace Assistant
 			p.ReadUInt32(); //0xedededed
 			World.OrigPlayerName = p.ReadStringSafe( 30 );
 
-			PlayCharTime = DateTime.Now;
+            PlayCharTime = DateTime.UtcNow;
 
 			if ( Engine.MainWindow != null )
 				Engine.MainWindow.UpdateControlLocks();
@@ -284,11 +286,11 @@ namespace Assistant
 		private static void PlayServer( PacketReader p, PacketHandlerEventArgs args )
 		{
 			ushort index = p.ReadUInt16();
-
-			World.ShardName = World.Servers[index] as string;
-			if ( World.ShardName == null )
-				World.ShardName = "[Unknown]";
-		}
+            if (World.Servers.TryGetValue(index, out string name) && !string.IsNullOrEmpty(name))
+                World.ShardName = name;
+            else
+                World.ShardName = "[Unknown]";
+        }
 
 		private static void LiftRequest( PacketReader p, PacketHandlerEventArgs args )
 		{
@@ -706,10 +708,11 @@ namespace Assistant
 
 			Serial serial = p.ReadUInt32();
 
-			PlayerData m = new PlayerData( serial );
-			m.Name = World.OrigPlayerName;
-
-			Mobile test = World.FindMobile( serial );
+            PlayerData m = new PlayerData(serial)
+            {
+                Name = World.OrigPlayerName
+            };
+            Mobile test = World.FindMobile( serial );
 			if ( test != null )
 				test.Remove();
 
@@ -723,8 +726,7 @@ namespace Assistant
 
 			//ClientCommunication.SendToServer( new SkillsQuery( m ) );
 			//ClientCommunication.SendToServer( new StatusQuery( m ) );
-			
-			ClientCommunication.RequestTitlebarUpdate();
+
 			ClientCommunication.PostLogin( (int)serial.Value );
 			Engine.MainWindow.UpdateTitle(); // update player name & shard name
 			/*
@@ -803,8 +805,8 @@ namespace Assistant
 					ClientCommunication.PostHitsUpdate();
 				}
 
-				if ( ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowHealth" ) )
-				{
+				if ( Config.GetBool( "ShowHealth" ) )//ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) &&
+                {
 					int percent = (int)(m.Hits*100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
 
 					// Limit to people who are on screen and check the previous value so we dont get spammed.
@@ -841,8 +843,8 @@ namespace Assistant
 					ClientCommunication.PostStamUpdate();
 				}
 
-				if ( m != World.Player && ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowPartyStats" ) )
-				{
+				if ( m != World.Player && Config.GetBool( "ShowPartyStats" ) )// && ClientCommunication.AllowBit( FeatureBit.OverheadHealth )
+                {
 					int stamPercent = (int)(m.Stam*100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
 					int manaPercent = (int)(m.Mana*100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
 
@@ -880,8 +882,8 @@ namespace Assistant
 					ClientCommunication.PostManaUpdate();
 				}
 
-				if ( m != World.Player && ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowPartyStats" ) )
-				{
+				if ( m != World.Player && Config.GetBool( "ShowPartyStats" ) )// && ClientCommunication.AllowBit( FeatureBit.OverheadHealth )
+                {
 					int stamPercent = (int)(m.Stam*100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
 					int manaPercent = (int)(m.Mana*100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
 
@@ -1116,8 +1118,9 @@ namespace Assistant
 
 			bool wasHidden = !m.Visible;
 
-			if ( m != World.Player && Config.GetBool( "ShowMobNames" ) )
-				ClientCommunication.SendToServer( new SingleClick( m ) );
+            //UNDONE: removed, since it shows the name two times and creates a bunch of lag for the player
+			/*if ( m != World.Player && Config.GetBool( "ShowMobNames" ) )
+				ClientCommunication.SendToServer( new SingleClick( m ) );*/
 			if ( Config.GetBool( "LastTargTextFlags" ) )
 				Targeting.CheckTextFlags( m );
 
@@ -1512,6 +1515,15 @@ namespace Assistant
 			}
 		}
 
+        public static void ClientAsciiSpeech( PacketReader p, PacketHandlerEventArgs args )
+        {
+            MessageType type = (MessageType)p.ReadByte();
+            int hue = p.ReadInt16();
+            ushort font = p.ReadUInt16(); // font
+            string text = p.ReadStringSafe().Trim();
+
+        }
+
 		public static void AsciiSpeech( PacketReader p, PacketHandlerEventArgs args )
 		{
 			// 0, 1, 2
@@ -1530,7 +1542,7 @@ namespace Assistant
 				//p.Seek( 3, SeekOrigin.Begin );
 				//p.WriteAsciiFixed( "", (int)p.Length-3 );
 
-				ClientCommunication.DoFeatures( World.Player.Features ) ;
+				//ClientCommunication.DoFeatures( World.Player.Features ) ;
 			}
 			else
 			{
@@ -1732,7 +1744,7 @@ namespace Assistant
 								if ( (flags&0x02) != 0 )
 									color = p.ReadUInt16();
 
-								ent.ContextMenu.Add( idx, num );
+								ent.ContextMenu[idx]=num;
 							}
 						}
 						catch
@@ -1815,7 +1827,7 @@ namespace Assistant
 							mobile.Visible = false;
 						}
 
-						if ( mobile.Name == null || mobile.Name.Length <= 0 )
+						if (string.IsNullOrEmpty(mobile.Name))
 							mobile.Name = "(Not Seen)";
 
 						if ( !m_Party.Contains( serial ) )
@@ -1835,12 +1847,8 @@ namespace Assistant
 				case 0xFE: // Begin Handshake/Features Negotiation
 				{
 					ulong features = p.ReadRawUInt64();
-
-					if ( ClientCommunication.HandleNegotiate( features ) != 0 )
-					{
-						ClientCommunication.SendToServer( new RazorNegotiateResponse() );
-						Engine.MainWindow.UpdateControlLocks();
-					}
+					ClientCommunication.SendToServer( new RazorNegotiateResponse() );
+					Engine.MainWindow.UpdateControlLocks();
 					break;
 				}
 			}
@@ -1852,8 +1860,8 @@ namespace Assistant
         }
 
 
-        private static ArrayList m_Party = new ArrayList();
-		public static ArrayList Party { get { return m_Party; } }
+        private static List<Serial> m_Party = new List<Serial>();
+		public static List<Serial> Party { get { return m_Party; } }
 		private static Timer m_PartyDeclineTimer = null;
 		public static Serial PartyLeader = Serial.Zero;
 
@@ -1993,9 +2001,8 @@ namespace Assistant
 
 			if ( serial == Serial.MinusOne )
 			{
-				if ( HueEntry.Callback != null )
-					HueEntry.Callback( hue );				
-				args.Block = true;
+                HueEntry.Callback?.Invoke(hue);
+                args.Block = true;
 			}
 		}
 
@@ -2020,12 +2027,29 @@ namespace Assistant
 				World.Player.GlobalLightLevel = p.ReadByte();
 		}
 
-		private static void ServerSetWarMode( PacketReader p, PacketHandlerEventArgs args )
+        private static void LoginCompleted(PacketReader p, PacketHandlerEventArgs args)
+        {
+            ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private static void ServerSetWarMode( PacketReader p, PacketHandlerEventArgs args )
 		{
 			World.Player.Warmode = p.ReadBoolean();
 		}
+		
+		private static void CustomHouseInfo( PacketReader p, PacketHandlerEventArgs args )
+		{
+			p.ReadByte(); // compression
+			p.ReadByte(); // Unknown
+ 			Item i = World.FindItem( p.ReadUInt32() );
+			if ( i != null )
+			{
+				i.HouseRevision = p.ReadInt32();
+				i.HousePacket = p.CopyBytes( 0, p.Length );
+			}
+		}
 
-		private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
+		/*private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
 		{
 			if ( World.Player != null )
 			{
@@ -2036,6 +2060,6 @@ namespace Assistant
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
 
-		}
+		}*/
 	}
 }

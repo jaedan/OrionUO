@@ -94,16 +94,14 @@ namespace Assistant.MapUO
 		{
 			if (sender != null)
 			{
-				MapMenuItem mItem = sender as MapMenuItem;
-
-				if ( mItem != null )
-				{
-					Serial s = (Serial)mItem.Tag;
-					Mobile m = World.FindMobile(s);
-					this.Map.FocusMobile = m;
+                if (sender is MapMenuItem mItem)
+                {
+                    Serial s = (Serial)mItem.Tag;
+                    Mobile m = World.FindMobile(s);
+                    this.Map.FocusMobile = m;
                     this.Map.FullUpdate();
-				}
-			}
+                }
+            }
 		}
 		public static void Initialize()
 		{
@@ -262,18 +260,18 @@ namespace Assistant.MapUO
 
 		private class ReqPartyLocTimer : Timer
 		{
-			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.0 ) )
+			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 0.25 ), TimeSpan.FromSeconds( 0.5 ) )
 			{
 			}
 
 			protected override void OnTick()
 			{
 				// never send this packet to encrypted servers (could lead to OSI detecting razor)
-				if ( ClientCommunication.ServerEncrypted )
+				/*if ( ClientCommunication.ServerEncrypted )
 				{
 					Stop();
 					return;
-				}
+				}*/
 
 				if ( Engine.MainWindow == null || Engine.MainWindow.MapWindow == null || !Engine.MainWindow.MapWindow.Visible )
 					return; // don't bother when the map window isnt visible
@@ -413,8 +411,8 @@ namespace Assistant.MapUO
 
 		private void MapWindow_Deactivate(object sender, System.EventArgs e)
 		{
-			if ( this.TopMost )
-				this.TopMost = false;
+			if (!Engine.MainWindow.MapWindow.Visible)//this.TopMost )
+                this.TopMost = false;
 		}
 	}
 }

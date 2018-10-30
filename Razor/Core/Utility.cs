@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
+using System.Threading;
 
 namespace Assistant
 {
 	public class Utility
-	{	
+	{
 		private static Random m_Random = new Random();
 
 		public static int Random( int min, int max )
@@ -326,5 +326,50 @@ namespace Assistant
 				return def;
 			}
 		}
-	}
+
+        internal static void ClipboardSetText(string p_Text)
+        {
+            Thread STAThread = new Thread(
+                delegate ()
+                {
+                    // Use a fully qualified name for Clipboard otherwise it
+                    // will end up calling itself.
+                    System.Windows.Forms.Clipboard.SetText(p_Text);
+                });
+            STAThread.SetApartmentState(ApartmentState.STA);
+            STAThread.Start();
+            STAThread.Join();
+        }
+
+        internal static string ClipboardGetText()
+        {
+            string ReturnValue = string.Empty;
+            Thread STAThread = new Thread(
+                delegate ()
+                {
+                    // Use a fully qualified name for Clipboard otherwise it
+                    // will end up calling itself.
+                    ReturnValue = System.Windows.Forms.Clipboard.GetText();
+                });
+            STAThread.SetApartmentState(ApartmentState.STA);
+            STAThread.Start();
+            STAThread.Join();
+
+            return ReturnValue;
+        }
+
+        internal static void ClipboardSetDataObject(object obj, bool copy)
+        {
+            Thread STAThread = new Thread(
+               delegate ()
+               {
+                   // Use a fully qualified name for Clipboard otherwise it
+                   // will end up calling itself.
+                   System.Windows.Forms.Clipboard.SetDataObject(obj, copy);
+               });
+            STAThread.SetApartmentState(ApartmentState.STA);
+            STAThread.Start();
+            STAThread.Join();
+        }
+    }
 }

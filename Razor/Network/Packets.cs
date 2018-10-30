@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -53,11 +54,11 @@ namespace Assistant
 
 	public sealed class ContainerContent : Packet
 	{
-		public ContainerContent( ArrayList items ) : this( items, Engine.UsePostKRPackets )
+		public ContainerContent( List<Item> items ) : this( items, Engine.UsePostKRPackets )
 		{
 		}
 
-		public ContainerContent( ArrayList items, bool useKR ) : base( 0x3C )
+		public ContainerContent( List<Item> items, bool useKR ) : base( 0x3C )
 		{
 			Write( (ushort)items.Count );
 
@@ -221,6 +222,14 @@ namespace Assistant
 		}
 	}
 	
+	public sealed class AttackReq : Packet
+	{
+		public AttackReq( Serial serial ) : base( 0x05, 5 )
+		{
+			Write( (uint)serial );
+		}
+	}
+
 	public sealed class CancelTarget : Packet
 	{
 		public CancelTarget( uint id ) : base( 0x6C, 19 )
@@ -505,7 +514,7 @@ namespace Assistant
 
 	public sealed class VendorSellResponse : Packet
 	{
-		public VendorSellResponse( Mobile vendor, ArrayList list ) : base( 0x9F )
+		public VendorSellResponse( Mobile vendor, List<SellListItem> list ) : base( 0x9F )
 		{
 			EnsureCapacity( 1 + 2 + 4 + 2 + list.Count*6 );
 
@@ -514,9 +523,9 @@ namespace Assistant
 
 			for (int i=0;i<list.Count;i++)
 			{
-				SellListItem sli = (SellListItem)list[i];
+				SellListItem sli = list[i];
 				Write( (uint)sli.Serial );
-				Write( (ushort)sli.Amount );
+				Write( sli.Amount );
 			}
 		}
 	}
@@ -832,7 +841,7 @@ namespace Assistant
 
 			for ( int i = 0; i < count; ++i )
 			{
-				Item item = (Item)m.Contains[i];
+				Item item = m.Contains[i];
 
 				int itemID = item.ItemID & 0x3FFF;
 				bool writeHue = ( item.Hue != 0 );
@@ -869,7 +878,7 @@ namespace Assistant
 
 	public sealed class VendorBuyResponse : Packet
 	{
-		public VendorBuyResponse( Serial vendor, ArrayList list ) : base( 0x3B )
+		public VendorBuyResponse( Serial vendor, List<VendorBuyItem> list ) : base( 0x3B )
 		{
 			EnsureCapacity( 1 + 2 + 4 + 1 + list.Count * 7 );
 
@@ -916,15 +925,15 @@ namespace Assistant
 		}
 	}
 
-	public sealed class WalkRequest : Packet
+	/*public sealed class WalkRequest : Packet
 	{
-		public WalkRequest( Direction dir, byte seq ) : base( 0x02, 7 )
+        public WalkRequest( Direction dir, byte seq ) : base( 0x02, 7 )
 		{
 			Write( (byte)dir );
 			Write( seq );
 			Write( (int)-1 ); // key
 		}
-	}
+	}*/
 
 	public sealed class ResyncReq : Packet
 	{
@@ -1065,7 +1074,7 @@ namespace Assistant
 	{
 		public CurrentTime() : base( 0x5B, 4 )
 		{
-			DateTime now = DateTime.Now;
+			DateTime now = DateTime.UtcNow;
 
 			Write( (byte) now.Hour );
 			Write( (byte) now.Minute );
@@ -1096,11 +1105,32 @@ namespace Assistant
 	public sealed class SupportedFeatures : Packet
 	{
 		//private static int m_Value = 0x801F;
-		public SupportedFeatures( ushort val ) : base( 0xB9, 3 )
+		public SupportedFeatures( ushort val ) : base( 0xB9, 5 )
 		{
-			Write( (ushort) val ); // 0x01 = T2A, 0x02 = LBR
+			Write( (uint) val ); // 0x01 = T2A, 0x02 = LBR
 		}
 	}
+
+    public enum ScreenEffectType
+    {
+        FadeOut = 0x00,
+        FadeIn = 0x01,
+        LightFlash = 0x02,
+        FadeInOut = 0x03,
+        DarkFlash = 0x04
+    }
+
+    public sealed class ScreenEffect : Packet
+    {
+        public ScreenEffect(ScreenEffectType type)
+            : base(0x70, 28)
+        {
+            Write((byte)0x04);
+            Fill(8);
+            Write((short)type);
+            Fill(16);
+        }
+    }
 
 	public sealed class MapPatches : Packet
 	{

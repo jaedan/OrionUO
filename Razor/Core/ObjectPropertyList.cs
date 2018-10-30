@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -22,13 +22,13 @@ namespace Assistant
 			}
 		}
 
-		private ArrayList m_StringNums = new ArrayList();
+		private List<int> m_StringNums = new List<int>();
 
 		private int m_Hash = 0;
-		private ArrayList m_Content = new ArrayList();
+		private List<OPLEntry> m_Content = new List<OPLEntry>();
 		
 		private int m_CustomHash = 0;
-		private ArrayList m_CustomContent = new ArrayList();
+		private List<OPLEntry> m_CustomContent = new List<OPLEntry>();
 
 		private UOEntity m_Owner = null;
 
@@ -81,7 +81,7 @@ namespace Assistant
 
 			for(int i=0;i<m_CustomContent.Count;i++)
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( m_StringNums.Contains( ent.Number ) )
 				{
 					m_StringNums.Remove( ent.Number );
@@ -164,7 +164,7 @@ namespace Assistant
 		{
 			if ( m_StringNums.Count > 0 )
 			{
-				int num = (int)m_StringNums[0];
+				int num = m_StringNums[0];
 				m_StringNums.RemoveAt( 0 );
 				return num;
 			}
@@ -205,7 +205,7 @@ namespace Assistant
 		{
 			for ( int i = 0; i < m_Content.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_Content[i];
+				OPLEntry ent = m_Content[i];
 				if ( ent == null )
 					continue;
 
@@ -222,7 +222,7 @@ namespace Assistant
 
 					m_Content.RemoveAt( i );
 					AddHash( ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 						AddHash( ent.Args.GetHashCode() );
 
 					return true;
@@ -231,7 +231,7 @@ namespace Assistant
 
 			for ( int i = 0; i < m_CustomContent.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( ent == null )
 					continue;
 
@@ -248,7 +248,7 @@ namespace Assistant
 
 					m_CustomContent.RemoveAt( i );
 					AddHash( ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 						AddHash( ent.Args.GetHashCode() );
 					if ( m_CustomContent.Count == 0 )
 						m_CustomHash = 0;
@@ -277,7 +277,7 @@ namespace Assistant
 						m_Content.RemoveAt( i );
 
 						AddHash( ent.Number );
-						if ( ent.Args != null && ent.Args != "" )
+						if ( !string.IsNullOrEmpty(ent.Args) )
 							AddHash( ent.Args.GetHashCode() );
 						return true;
 					}
@@ -286,7 +286,7 @@ namespace Assistant
 
 			for ( int i = 0; i < m_CustomContent.Count; i++ )
 			{
-				OPLEntry ent = (OPLEntry)m_CustomContent[i];
+				OPLEntry ent = m_CustomContent[i];
 				if ( ent == null )
 					continue;
 
@@ -299,7 +299,7 @@ namespace Assistant
 						m_CustomContent.RemoveAt( i );
 
 						AddHash( ent.Number );
-						if ( ent.Args != null && ent.Args != "" )
+						if ( !string.IsNullOrEmpty(ent.Args) )
 							AddHash( ent.Args.GetHashCode() );
 						return true;
 					}
@@ -326,7 +326,7 @@ namespace Assistant
 				if ( ent != null && ent.Number != 0 )
 				{
 					p.Write( (int)ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 					{
 						int byteCount = Encoding.Unicode.GetByteCount( ent.Args );
 
@@ -355,11 +355,11 @@ namespace Assistant
 
 						p.Write( (int)ent.Number );
 
-						if ( arguments == null || arguments == "" )
+						if ( string.IsNullOrEmpty(arguments) )
 							arguments = " ";
 						arguments += "\t ";
 						
-						if ( arguments != null && arguments != "" )
+						if ( !string.IsNullOrEmpty(arguments) )
 						{
 							int byteCount = Encoding.Unicode.GetByteCount( arguments );
 

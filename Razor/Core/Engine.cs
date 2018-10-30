@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using System.Collections;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Security.Principal;
+using System.Runtime.InteropServices;
 
 namespace Assistant
 {
@@ -33,7 +33,7 @@ namespace Assistant
 			using ( StreamWriter txt = new StreamWriter( "Crash.log", true ) )
 			{
 				txt.AutoFlush = true;
-				txt.WriteLine( "Exception @ {0}", DateTime.Now.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
+				txt.WriteLine( "Exception @ {0}", Engine.MistedDateTime.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
 				txt.WriteLine( exception.ToString() );
 				txt.WriteLine( "" );
 				txt.WriteLine( "" );
@@ -157,18 +157,18 @@ namespace Assistant
 		public static MainForm MainWindow{ get{ return m_MainWnd; } }
 		public static bool Running{ get{ return m_Running; } }
 		public static Form ActiveWindow{ get{ return m_ActiveWnd; } set{ m_ActiveWnd = value; } }
-
-		public static string Version
-		{
+		
+		public static string Version 
+		{ 
 			get
-			{
+			{ 
 				if ( m_Version == null )
 				{
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
 					m_Version = String.Format( "{0}.{1}.{2}", v.Major, v.Minor, v.Build );//, v.Revision
 				}
 
-				return m_Version;
+				return m_Version; 
 			}
 		}
 
@@ -176,12 +176,30 @@ namespace Assistant
 		private static Form m_ActiveWnd;
 		private static bool m_Running;
 		private static string m_Version;
+        private static int _PreviousHour = -1;
+        private static int _Differential;
+        public static int Differential//to use in all cases where you rectify normal clocks obtained with utctimer!
+        {
+            get
+            {
+                if (_PreviousHour != DateTime.UtcNow.Hour)
+                {
+                    _PreviousHour = DateTime.UtcNow.Hour;
+                    _Differential = DateTime.Now.Subtract(DateTime.UtcNow).Hours;
+                }
+                return _Differential;
+            }
+        }
+        public static DateTime MistedDateTime
+        {
+            get { return DateTime.UtcNow.AddHours(Differential); }
+        }
 
 		public static void Run(String clientPath)
 		{
 			m_Running = true;
             Thread.CurrentThread.Name = "Razor Main Thread";
-
+            
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
@@ -189,7 +207,7 @@ namespace Assistant
 
             Ultima.Files.SetMulPath(clientPath);
 
-            if ( !Language.Load( "ENU" ) )
+			if ( !Language.Load( "ENU" ) )
 			{
 				MessageBox.Show( "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.", "No Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 				return;
@@ -239,7 +257,7 @@ namespace Assistant
 		{
 			IPAddress ipAddr = IPAddress.None;
 
-			if ( addr == null || addr == string.Empty )
+			if ( string.IsNullOrEmpty(addr) )
 				return ipAddr;
 
 			try
@@ -263,11 +281,58 @@ namespace Assistant
 			return ipAddr;
 		}
 
-		public static bool IsElevated {
-			get {
-				return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-			}
-		}
+        public static unsafe bool OnClientSend(byte* packet, int len)
+        {
+            return ClientCommunication.OnSend(packet, len);
+        }
+
+        public static unsafe bool OnClientRecv(byte* packet, int len)
+        {
+            return ClientCommunication.OnRecv(packet, len);
+        }
+
+        public static bool UpdatePlayerPosition(ushort x, ushort y, byte z, byte dir)
+        {
+            World.Player.Position = new Point3D(x,y,z);
+            World.Player.Direction = (Direction)dir;
+            return false;
+        }
+
+        public static unsafe bool SetPlayerName(string name)
+        {
+            ClientCommunication.ConnectionStart = DateTime.UtcNow;
+            return false;
+        }
+        public static unsafe bool SetServerName(string name)
+        {
+            return false;
+        }
+
+        public static bool OnClientClose()
+        {
+            ClientCommunication.OnLogout();
+            return false;
+        }
+
+        public static bool OnDisconnect()
+        {
+            ClientCommunication.OnLogout();
+            return false;
+        }
+
+        public static bool OnMouseUse(bool down, bool wheel, int id)
+        {
+            if(down)
+                HotKey.OnMouse((wheel ? 0 : id + 1), (wheel ? id : 0));
+            return false;
+        }
+
+        public static bool OnKeyboard(bool down, int id)
+        {
+            if(down)
+                return !HotKey.OnKeyDown(id);
+            return false;
+        }
     }
 }
 

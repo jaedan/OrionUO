@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -10,12 +10,12 @@ namespace Assistant
 		private Point3D m_Pos;
 		private ushort m_Hue;
 		private bool m_Deleted;
-		private Hashtable m_ContextMenu = new Hashtable();
+		private Dictionary<ushort, ushort> m_ContextMenu = new Dictionary<ushort, ushort>();
 		protected ObjectPropertyList m_ObjPropList = null;
 
 		public ObjectPropertyList ObjPropList { get { return m_ObjPropList; } }
 
-		public virtual void SaveState( BinaryWriter writer )
+		/*public virtual void SaveState( BinaryWriter writer )
 		{
 			writer.Write( (uint)m_Serial );
 			writer.Write( (int)m_Pos.X );
@@ -36,7 +36,7 @@ namespace Assistant
 
 		public virtual void AfterLoad()
 		{
-		}
+		}*/
 
 		public UOEntity( Serial ser )
 		{
@@ -69,7 +69,7 @@ namespace Assistant
 			}
 		}
 
-		public Hashtable ContextMenu
+		public Dictionary<ushort, ushort> ContextMenu
 		{
 			get { return m_ContextMenu; }
 		}

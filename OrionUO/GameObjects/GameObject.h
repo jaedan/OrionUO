@@ -32,7 +32,7 @@ protected:
 
 public:
     string GetName() { return m_Name; };
-    void SetName(const string &val);
+    void SetName(const string &val, bool force = false);
 
     bool NPC = false;
 
