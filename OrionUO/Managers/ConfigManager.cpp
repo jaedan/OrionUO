@@ -523,8 +523,8 @@ void CConfigManager::SetNoDrawRoofs(bool val)
 
     if (this == &g_ConfigManager && g_Player != NULL)
     {
-        g_Player->OldX = 0;
-        g_Player->OldY = 0;
+        g_GameScreen.OldX = 0;
+        g_GameScreen.OldY = 0;
     }
 }
 

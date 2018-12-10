@@ -12,17 +12,14 @@ public:
 
 protected:
     int m_X = 0;
+    int m_Y = 0;
 
 public:
     int GetX() { return m_X; };
     void SetX(int val);
-
-protected:
-    int m_Y = 0;
-
-public:
     int GetY() { return m_Y; };
     void SetY(int val);
+
     int RealDrawX = 0;
     int RealDrawY = 0;
     int DrawX = 0;

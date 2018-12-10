@@ -1,13 +1,5 @@
-
-
 #ifndef GAMEPLAYER_H
 #define GAMEPLAYER_H
-
-enum class PlayerMovementState
-{
-    ANIMATE_IMMEDIATELY = 0,
-    ANIMATE_ON_CONFIRM,
-};
 
 enum class WarModeState
 {
@@ -18,6 +10,16 @@ enum class WarModeState
 
 class CPlayer : public CGameCharacter
 {
+private:
+    uint m_NextAllowedStepTime = 0;
+    uint8_t m_SequenceNumber = 0;
+    uint8_t m_StepsOutstanding = 0;
+    uint16_t m_MovementX = 0;
+    uint16_t m_MovementY = 0;
+    uint8_t m_MovementZ = 0;
+    Direction m_MovementDir = Direction::DIR_NORTH;
+    int m_Resynchronizing = 0;
+
 public:
     short Str = 0;
     short Int = 0;
@@ -57,30 +59,17 @@ public:
     short CastSpeed = 0;
     short LowerManaCost = 0;
 
-    short OldX = 0;
-    short OldY = 0;
-    char OldZ = 0;
-
-    uint LastStepRequestTime = 0;
-    uint8_t SequenceNumber = 0;
-    std::deque<Step> m_RequestedSteps;
-    PlayerMovementState m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
+    CPlayer(int serial);
+    virtual ~CPlayer();
 
     std::deque<WarModeState> m_WarModeRequests;
     void RequestWarMode(WarModeState state);
     bool SetWarMode(WarModeState state);
 
-    CPlayer(int serial);
-
-    virtual ~CPlayer();
-
     bool Walk(Direction direction, bool run);
-
-    void ResetSteps();
-
-    void DenyWalk(uint8_t sequence, Direction direction, uint32_t x, uint32_t y, uint8_t z);
-
-    void ConfirmWalk(uchar sequence);
+    void ConfirmWalk();
+    virtual void ForcePosition(int x, int y, char z, Direction dir) override;
+    void Resynchronize();
 
     void CloseBank();
 

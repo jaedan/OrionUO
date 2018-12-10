@@ -130,6 +130,10 @@ public:
 
     static const uchar ID_SMOOTH_GS_LOGOUT = 1;
 
+    short OldX = 0;
+    short OldY = 0;
+    char OldZ = 0;
+
     void UpdateMaxDrawZ();
 
     virtual void ProcessSmoothAction(uchar action = 0xFF);

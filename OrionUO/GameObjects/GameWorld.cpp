@@ -1113,44 +1113,9 @@ void CGameWorld::UpdatePlayer(
 
     if (resync)
     {
-        /* Only update position on packets that represent a resynchronization point. */
-        g_Player->ResetSteps();
-
         Direction dir = (Direction)(direction & 0x7);
-        bool run = direction & 0x80;
 
-        int endX, endY;
-        char endZ;
-        Direction endDir;
-
-        g_Player->GetEndPosition(endX, endY, endZ, endDir);
-
-        if (endX == x && endY == y)
-        {
-            /* The player was moving toward this location anyway. */
-            if (endDir != dir)
-            {
-                g_Player->QueueStep(x, y, z, dir, run);
-            }
-        }
-        else
-        {
-            LOG("Player was moving to (%d, %d, %d, %x) but UpdatePlayer is snapping to (%d, %d, %d, %x)\n",
-                endX,
-                endY,
-                endZ,
-                endDir,
-                x,
-                y,
-                z,
-                dir);
-
-            g_Player->ForcePosition(x, y, z, dir);
-            g_Player->CloseBank();
-
-            g_RemoveRangeXY.X = x;
-            g_RemoveRangeXY.Y = y;
-        }
+        g_Player->ForcePosition(x, y, z, dir);
     }
 
     bool updateStatusbar = (g_Player->GetFlags() != flags);

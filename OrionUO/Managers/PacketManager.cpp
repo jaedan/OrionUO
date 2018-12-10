@@ -700,16 +700,12 @@ PACKET_HANDLER(EnterWorld)
     g_Player->Graphic = ReadUInt16BE();
     g_Player->OnGraphicChange();
 
-    g_Player->SetX(ReadUInt16BE());
-    g_Player->SetY(ReadUInt16BE());
-    g_Player->SetZ((char)ReadUInt16BE());
+    uint16_t x = ReadUInt16BE();
+    uint16_t y = ReadUInt16BE();
+    uint16_t z = ReadUInt16BE();
+    uint8_t dir = ReadUInt8();
 
-    uchar dir = ReadUInt8();
-    g_Player->Dir = (Direction)(dir & 0x7);
-    g_Player->Run = dir & 0x80;
-
-    g_RemoveRangeXY.X = g_Player->GetX();
-    g_RemoveRangeXY.Y = g_Player->GetY();
+    g_Player->ForcePosition(x, y, z, (Direction)(dir & 0x7));
 
     g_Player->OffsetX = 0;
     g_Player->OffsetY = 0;
@@ -2486,9 +2482,7 @@ PACKET_HANDLER(DenyWalk)
     Direction dir = (Direction)(ReadUInt8() & 0x7);
     uint8_t z = ReadUInt8();
 
-    g_Player->DenyWalk(sequence, dir, x, y, z);
-
-    g_World->MoveToTop(g_Player);
+    g_Player->ForcePosition(x, y, z, dir);
 }
 
 PACKET_HANDLER(ConfirmWalk)
@@ -2506,7 +2500,7 @@ PACKET_HANDLER(ConfirmWalk)
 
     g_Player->Notoriety = newnoto;
 
-    g_Player->ConfirmWalk(sequence);
+    g_Player->ConfirmWalk();
 
     g_World->MoveToTop(g_Player);
 }

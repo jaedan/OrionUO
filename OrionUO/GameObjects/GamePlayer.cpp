@@ -88,13 +88,18 @@ bool CPlayer::SetWarMode(WarModeState state)
 bool CPlayer::Walk(Direction direction, bool run)
 {
     WISPFUN_DEBUG("c177_f7");
-    if (LastStepRequestTime > g_Ticks || g_DeathScreenTimer || g_GameState != GS_GAME)
+    if (m_NextAllowedStepTime > g_Ticks || g_DeathScreenTimer || g_GameState != GS_GAME)
     {
         return false;
     }
 
-    if (m_RequestedSteps.size() >= MAX_STEPS_COUNT)
+    if (m_StepsOutstanding > MAX_STEPS_COUNT)
     {
+        if ((m_NextAllowedStepTime + 1000) > g_Ticks)
+        {
+            /* We've been waiting for a response for a full second. Resync. */
+            Resynchronize();
+        }
         return false;
     }
 
@@ -103,33 +108,15 @@ bool CPlayer::Walk(Direction direction, bool run)
     else if (!run)
         run = g_ConfigManager.AlwaysRun;
 
-    int x, y;
-    char z;
-    Direction oldDirection;
-
-    if (m_RequestedSteps.empty())
-    {
-        GetEndPosition(x, y, z, oldDirection);
-    }
-    else
-    {
-        Step &step = m_RequestedSteps.back();
-
-        x = step.x;
-        y = step.y;
-        z = step.z;
-        oldDirection = (Direction)step.dir;
-    }
-
     bool onMount = (FindLayer(OL_MOUNT) != NULL);
     ushort walkTime;
 
     Direction newDirection = direction;
-    int newX = x;
-    int newY = y;
-    char newZ = z;
+    int newX = m_MovementX;
+    int newY = m_MovementY;
+    char newZ = m_MovementZ;
 
-    if (oldDirection == newDirection)
+    if (m_MovementDir == newDirection)
     {
         if (!g_PathFinder.CanWalk(newDirection, newX, newY, newZ))
         {
@@ -144,9 +131,9 @@ bool CPlayer::Walk(Direction direction, bool run)
         else
         {
             direction = newDirection;
-            x = newX;
-            y = newY;
-            z = newZ;
+            m_MovementX = newX;
+            m_MovementY = newY;
+            m_MovementZ = newZ;
             walkTime = GetWalkSpeed(run, onMount);
         }
     }
@@ -154,18 +141,18 @@ bool CPlayer::Walk(Direction direction, bool run)
     {
         if (!g_PathFinder.CanWalk(newDirection, newX, newY, newZ))
         {
-            if (newDirection == oldDirection)
+            if (newDirection == m_MovementDir)
             {
                 return false;
             }
         }
 
-        if (oldDirection == newDirection)
+        if (m_MovementDir == newDirection)
         {
             direction = newDirection;
-            x = newX;
-            y = newY;
-            z = newZ;
+            m_MovementX = newX;
+            m_MovementY = newY;
+            m_MovementZ = newZ;
             walkTime = GetWalkSpeed(run, onMount);
         }
         else
@@ -177,145 +164,76 @@ bool CPlayer::Walk(Direction direction, bool run)
 
     CloseBank();
 
-    Step step = {};
-    step.x = x;
-    step.y = y;
-    step.z = z;
-    step.dir = direction;
-    step.run = run;
-    step.rej = 0;
-    step.seq = SequenceNumber;
+    m_MovementDir = direction;
 
-    if (g_Player->m_MovementState == PlayerMovementState::ANIMATE_IMMEDIATELY)
-    {
-        for (auto &s : m_RequestedSteps)
-        {
-            if (s.anim == false)
-            {
-                LOG("Animating catch-up step\n");
-                s.anim = true;
-                QueueStep(s.x, s.y, s.z, (Direction)s.dir, s.run);
-            }
-        }
+    g_RemoveRangeXY.X = m_MovementX;
+    g_RemoveRangeXY.Y = m_MovementY;
 
-        g_RemoveRangeXY.X = step.x;
-        g_RemoveRangeXY.Y = step.y;
+    QueueStep(m_MovementX, m_MovementY, m_MovementZ, m_MovementDir, run);
 
-        step.anim = true;
+    CPacketWalkRequest(direction, m_SequenceNumber, run).Send();
 
-        LOG("Step immediately animated\n");
-        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
-    }
-
-    m_RequestedSteps.push_back(step);
-
-    CPacketWalkRequest(direction, SequenceNumber, run).Send();
-
-    if (SequenceNumber == 0xFF)
-        SequenceNumber = 1;
+    if (m_SequenceNumber == 0xFF)
+        m_SequenceNumber = 1;
     else
-        SequenceNumber++;
+        m_SequenceNumber++;
 
     g_World->MoveToTop(this);
 
-    LastStepRequestTime = g_Ticks + walkTime;
+    m_NextAllowedStepTime = g_Ticks + walkTime;
+    m_StepsOutstanding++;
 
     GetAnimationGroup();
 
     return true;
 }
 
-void CPlayer::ResetSteps()
+void CPlayer::ConfirmWalk()
 {
-    for (auto &s : m_RequestedSteps)
+    if (m_StepsOutstanding == 0)
     {
-        s.rej = 1;
+        LOG("MOVEMENT: Received Walk Confirmation, but no steps pending.\n");
+        Resynchronize();
+        return;
     }
 
-    SequenceNumber = 0;
-    LastStepRequestTime = 0;
+    m_StepsOutstanding--;
 }
 
-void CPlayer::DenyWalk(uint8_t sequence, Direction dir, uint32_t x, uint32_t y, uint8_t z)
+void CPlayer::ForcePosition(int x, int y, char z, Direction dir)
 {
-    if (m_RequestedSteps.empty())
-    {
-        LOG("Received Deny Walk, but no steps pending.\n");
-        CPacketResend().Send();
-        return;
-    }
+    m_NextAllowedStepTime = g_Ticks;
+    m_SequenceNumber = 0;
+    m_StepsOutstanding = 0;
+    m_MovementX = x;
+    m_MovementY = y;
+    m_MovementZ = z;
+    m_MovementDir = dir;
+    m_Resynchronizing = 0;
 
-    Step &step = m_RequestedSteps.front();
-    m_RequestedSteps.pop_front();
+    g_RemoveRangeXY.X = x;
+    g_RemoveRangeXY.Y = y;
 
-    if (step.rej == 0)
-    {
-        LOG("Received new reject sequence beginning at #%u\n", step.seq);
-        ResetSteps();
-        ForcePosition(x, y, z, dir);
+    CloseBank();
+    g_World->MoveToTop(this);
 
-        if (step.seq != sequence)
-        {
-            LOG("Received DenyWalk for Sequence Number %d but it is not the next expected confirmation.\n",
-                sequence);
-            CPacketResend().Send();
-        }
-
-        g_RemoveRangeXY.X = x;
-        g_RemoveRangeXY.Y = y;
-    }
-    else
-    {
-        /* Step was already rejected, so our position has already been reset
-         * back to the correct place. We only needed to pop it off of the list. */
-        LOG("Received expected reject for sequence #%u\n", step.seq);
-    }
+    CGameCharacter::ForcePosition(x, y, z, dir);
 }
 
-void CPlayer::ConfirmWalk(uchar sequence)
+void CPlayer::Resynchronize()
 {
-    if (m_RequestedSteps.empty())
+    if (m_Resynchronizing > 0)
     {
-        LOG("Received Walk Confirmation, but no steps pending.\n");
-        CPacketResend().Send();
-        return;
-    }
-
-    Step &step = m_RequestedSteps.front();
-    m_RequestedSteps.pop_front();
-
-    if (step.seq != sequence)
-    {
-        LOG("Received Confirm Walk for Sequence Number %d but it is not the next expected confirmation.\n",
-            sequence);
-        CPacketResend().Send();
-        return;
-    }
-
-    if (!step.anim)
-    {
-        LOG("Step was not previously animated. Animating now.\n");
-
-        int endX, endY;
-        char endZ;
-        Direction endDir;
-
-        GetEndPosition(endX, endY, endZ, endDir);
-
-        if (step.dir == endDir)
+        /* Already resynchronizing. Wait at least 1 second between resyncs. */
+        if ((m_NextAllowedStepTime + (m_Resynchronizing * 1000)) > g_Ticks)
         {
-            if (m_MovementState == PlayerMovementState::ANIMATE_ON_CONFIRM)
-            {
-                LOG("Successful movement in delayed mode. Switching to animating immediately.\n");
-                m_MovementState = PlayerMovementState::ANIMATE_IMMEDIATELY;
-            }
+            return;
         }
-
-        g_RemoveRangeXY.X = step.x;
-        g_RemoveRangeXY.Y = step.y;
-
-        QueueStep(step.x, step.y, step.z, (Direction)step.dir, step.run);
     }
+
+	LOG("MOVEMENT: Resynchronizing.\n");
+    m_Resynchronizing++;
+    CPacketResend().Send();
 }
 
 void CPlayer::CloseBank()

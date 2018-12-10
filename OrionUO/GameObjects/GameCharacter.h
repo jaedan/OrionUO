@@ -23,11 +23,8 @@ struct Step
     char z;
 
     uint8_t dir : 5;
-    uint8_t anim : 1;
     uint8_t run : 1;
-    uint8_t rej : 1;
-
-    uint8_t seq;
+    uint8_t reserved : 2;
 };
 
 class CGameCharacter : public CGameObject
@@ -104,7 +101,7 @@ public:
 
     bool QueueStep(int x, int y, char z, Direction dir, bool run);
 
-    void ForcePosition(int x, int y, char z, Direction dir);
+    virtual void ForcePosition(int x, int y, char z, Direction dir);
 
     int GetWalkSpeed(bool run, bool onMount);
 

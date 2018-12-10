@@ -160,9 +160,6 @@ void CTarget::SendTarget()
 {
     WISPFUN_DEBUG("c209_f8");
 
-    LOG("Selected target. State transition to delayed animation.\n");
-    g_Player->m_MovementState = PlayerMovementState::ANIMATE_ON_CONFIRM;
-
     if (Type != 2)
         g_Orion.Send(m_Data, sizeof(m_Data));
 
